@@ -23,7 +23,7 @@ Y=Y-128;
 Cb=Cb-128;
 Cr=Cr-128;
 
-%DCT transform (fix)
+%DCT transform
 for i=1:8:505
     for j=1:8:505
         Y(i:i+7,j:j+7)=dct_tr(Y(i:i+7,j:j+7));

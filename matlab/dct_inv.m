@@ -1,6 +1,5 @@
 %Source: https://en.wikipedia.org/wiki/JPEG#Discrete_cosine_transform
 
-%Not working properly, fix
 function BlockOut = dct_inv(BlockIn)
     BlockOut=zeros(8);
     for u=0:1:7
