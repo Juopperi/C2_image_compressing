@@ -1,18 +1,18 @@
-function [Rdec,Gdec,Bdec] = decoding(Y,Cb,Cr,Q)
+function [Rdec,Gdec,Bdec] = decoding(Y,Cb,Cr,Q,height,width)
     %Dequantization
-    for i=1:8:505
-        for j=1:8:505
+    for i=1:8:height-1
+        for j=1:8:width-1
            Y(i:i+7,j:j+7)=Y(i:i+7,j:j+7).*Q;
            Cb(i:i+7,j:j+7)=Cb(i:i+7,j:j+7).*Q;
            Cr(i:i+7,j:j+7)=(Cr(i:i+7,j:j+7).*Q);
         end
     end
     %Inverse DCT
-    for i=1:8:505
-        for j=1:8:505
-            Y(i:i+7,j:j+7)=idct2(Y(i:i+7,j:j+7));
-            Cb(i:i+7,j:j+7)=idct2(Cb(i:i+7,j:j+7));
-            Cr(i:i+7,j:j+7)=idct2(Cr(i:i+7,j:j+7));
+    for i=1:8:height-1
+        for j=1:8:width-1
+            Y(i:i+7,j:j+7)=dct_inv(Y(i:i+7,j:j+7));
+            Cb(i:i+7,j:j+7)=dct_inv(Cb(i:i+7,j:j+7));
+            Cr(i:i+7,j:j+7)=dct_inv(Cr(i:i+7,j:j+7));
         end
     end
     %Adding 128
