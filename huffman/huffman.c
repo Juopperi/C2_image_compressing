@@ -1,45 +1,34 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-struct heap {
+struct node {
     char c;
     int freq;
-    struct heap *prev;
-    struct heap *next;
+    struct node *prev;
+    struct node *next;
+    struct node *left;
+    struct node *right;
+    struct node *parent;
 };
-typedef struct heap heap;
+typedef struct node node;
 
-struct leave {
-    char c;
-    int freq;
-    struct branch *parent;
-};
-typedef struct leave leave;
-
-struct branch {
-    int freq;
-    struct leave *left;
-    struct leave *right;
-    struct heap *prev;
-    struct heap *next;
-};
-typedef struct branch branch;
-
-
-void addNode(char arr, int freq, heap *currentNode){
+void addNode(char arr, int freq, node *currentNode){
     while(currentNode->next != NULL){
         currentNode = currentNode->next;
     }
-    heap *newNode = malloc(sizeof(struct heap));
+    node *newNode = malloc(sizeof(struct node));
     currentNode->next = newNode;
 
     newNode->c = arr;
     newNode->freq = freq;
     newNode->prev = currentNode;
     newNode->next = NULL;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    newNode->parent = NULL;
 }
 
-int insertBranch(heap *start, branch *insert){
+int insertBranch(node *start, node *insert){
     while(start->next != NULL){
         if(insert->freq >= start->freq && start->next->freq >= insert->freq){ //Check so the inserted value is between these two values
             insert->next = start->next;
@@ -51,36 +40,55 @@ int insertBranch(heap *start, branch *insert){
     }
 }
 
-void printHeap(heap *start){
+void printHeap(node *start){
     while(start->next != NULL){
         printf("%c %d\n",start->c,start->freq);
         start = start->next;
     } 
+    printf("\n");
 }
 
 
-struct branch* create(heap *first, heap *second){
-    leave *newLeave1 = malloc(sizeof(struct leave));
-    leave *newLeave2 = malloc(sizeof(struct leave));
-    branch *newBranch = malloc(sizeof(struct branch));
-    newLeave1->parent = newLeave2->parent = newBranch;
+struct node* create(node *first, node *second){
+    node *newBranch = malloc(sizeof(struct node));
 
-    newLeave1->c = first->c;
-    newLeave1->freq = first->freq;
-    
-    newLeave2->c = second->c;
-    newLeave2->freq = second->freq;
-
+    first->parent = newBranch;
+    second->parent = newBranch;
     
     newBranch->freq=first->freq+second->freq;
+    newBranch->c=' '; 
     newBranch->left = first;
     newBranch->right = second;
+
     newBranch->next = NULL;
     newBranch->prev = NULL;
+
+    first->prev->next = second->next;
+    second->next->prev = first->prev;
+
+    first->next=NULL;
+    first->prev=NULL;
+    second->next=NULL;
+    second->prev=NULL;
+
     return newBranch;
 }
 
-
+void printTree( struct node *root, int level )
+{
+  if ( root == NULL ) {
+    for (int i = 0; i < level; i++ )
+        putchar ( '\t' );
+    puts ( "~" );
+  }
+  else {
+    printTree ( root->right, level + 1 );
+    for (int i = 0; i < level; i++ )
+        putchar ( '\t' );
+    printf ( "%c %d\n", root->c ,root->freq);
+    printTree ( root->left, level + 1 );
+  }
+}
 
 int main(){
     char arr[] = { 'a', 'b', 'c', 'd', 'e', 'f' }; 
@@ -88,7 +96,7 @@ int main(){
 
     int size = sizeof(arr)/sizeof(arr[0]);
 
-    heap *start = malloc(sizeof(struct heap));
+    node *start = malloc(sizeof(struct node));
     start->c = '0';
     start->freq = 0;
     start->prev = NULL;
@@ -99,14 +107,13 @@ int main(){
     }
     printHeap(start);
 
-
-    branch *branch1 = create(start->next,start->next->next);
-    insertBranch(start,branch1);
+    while(start->next->next->next != NULL){
+        insertBranch(start,create(start->next,start->next->next)); 
+    }
 
     printHeap(start);
 
-
-
+    printTree(start->next,0);
 
 }
 
