@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 struct node {
     char c;
@@ -12,7 +13,7 @@ struct node {
 };
 typedef struct node node;
 
-void addNode(char arr, int freq, node *currentNode){
+void heapConstruct(char arr, int freq, node *currentNode){
     while(currentNode->next != NULL){
         currentNode = currentNode->next;
     }
@@ -40,7 +41,7 @@ int insertBranch(node *start, node *insert){
     }
 }
 
-void printHeap(node *start){
+void printHeap(node *start){ //Mostly for debugging
     while(start->next != NULL){
         printf("%c %d\n",start->c,start->freq);
         start = start->next;
@@ -49,7 +50,7 @@ void printHeap(node *start){
 }
 
 
-struct node* create(node *first, node *second){
+struct node* createBranch(node *first, node *second){ //Creates the branch of the two least frequent items 
     node *newBranch = malloc(sizeof(struct node));
 
     first->parent = newBranch;
@@ -74,25 +75,47 @@ struct node* create(node *first, node *second){
     return newBranch;
 }
 
-void printTree( struct node *root, int level )
+void printTree( struct node *root, int level ) //Mostly for debugging 
 {
   if ( root == NULL ) {
     for (int i = 0; i < level; i++ )
-        putchar ( '\t' );
-    puts ( "~" );
+        printf("       "); //Just tried different amounts until something looked good 
+    printf("\n");
   }
   else {
-    printTree ( root->right, level + 1 );
+    printTree(root->right, level + 1 );
     for (int i = 0; i < level; i++ )
-        putchar ( '\t' );
-    printf ( "%c %d\n", root->c ,root->freq);
-    printTree ( root->left, level + 1 );
+        printf("       ");
+    printf ( "%c %d", root->c ,root->freq);
+    printTree(root->left, level + 1 );
   }
+}
+
+void* addChar(char *s, char c) {
+    int l = strlen(s);  
+    s[l] = c;
+    s[l + 1] = '\0';
+}
+
+void printEncoding(struct node *root, char encoding[]){
+    if(root->right==NULL || root->left==NULL){
+        printf("%c %s\n",root->c,encoding);
+    } else {
+    char leftEncoding[20]; //Should be a better way of doing this but i'm not sure how. 
+    char rightEncoding[20];
+    strcpy(leftEncoding,encoding);
+    strcpy(rightEncoding,encoding);
+    addChar(leftEncoding,'1');
+    addChar(rightEncoding,'0');
+   
+    printEncoding(root->right,rightEncoding);
+    printEncoding(root->left,leftEncoding);
+    }
 }
 
 int main(){
     char arr[] = { 'a', 'b', 'c', 'd', 'e', 'f' }; 
-    int freq[] = { 5, 9, 12, 13, 16, 45 }; 
+    int freq[] = { 5, 9, 12, 13, 16, 27 }; 
 
     int size = sizeof(arr)/sizeof(arr[0]);
 
@@ -103,17 +126,14 @@ int main(){
     start->next = NULL;
 
     for(int index = 0; index < size+1; index++){
-        addNode(arr[index],freq[index],start);
+        heapConstruct(arr[index],freq[index],start);
     }
-    printHeap(start);
 
     while(start->next->next->next != NULL){
-        insertBranch(start,create(start->next,start->next->next)); 
+        insertBranch(start,createBranch(start->next,start->next->next)); 
     }
 
-    printHeap(start);
-
-    printTree(start->next,0);
-
+    //printTree(start->next,0);
+    printEncoding(start->next,"");
 }
 
