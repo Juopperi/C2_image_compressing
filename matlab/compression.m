@@ -1,5 +1,5 @@
 %Extract RGB values from the image
-RGB = imread("BigBen.jpg");
+RGB = imread("Flower landscape.jpg");
 r=double(RGB(:,:,1));
 g=double(RGB(:,:,2));
 b=double(RGB(:,:,3));
@@ -46,12 +46,16 @@ end
    Cr_prev_dc=0;
    VecI=[1 1 2 3 2 1 1 2 3 4 5 4 3 2 1 1 2 3 4 5 6 7 6 5 4 3 2 1 1 2 3 4 5 6 7 8 8 7 6 5 4 3 2 3 4 5 6 7 8 8 7 6 5 4 5 6 7 8 8 7 6 7 8 8];
    VecJ=[1 2 1 1 2 3 4 3 2 1 1 2 3 4 5 6 5 4 3 2 1 1 2 3 4 5 6 7 8 7 6 5 4 3 2 1 2 3 4 5 6 7 8 8 7 6 5 4 3 4 5 6 7 8 8 7 6 5 6 7 8 8 7 8];
+   fileID = fopen('zigzagOutput.txt','w');
 for i=1:8:height-1
     for j=1:8:width-1
         %Entropy
-        Y_code(bx,by)=entropy(Y(i:i+7,j:j+7),VecI,VecJ);
-        Cb_code(bx,by)=entropy(Cb(i:i+7,j:j+7),VecI,VecJ);
-        Cr_code(bx,by)=entropy(Cr(i:i+7,j:j+7),VecI,VecJ);
+        fprintf(fileID,"\nY: ");
+        Y_code(bx,by)=entropy(Y(i:i+7,j:j+7),VecI,VecJ,fileID);
+        fprintf(fileID,"\nCb: ");
+        Cb_code(bx,by)=entropy(Cb(i:i+7,j:j+7),VecI,VecJ,fileID);
+        fprintf(fileID,"\nCr: ");
+        Cr_code(bx,by)=entropy(Cr(i:i+7,j:j+7),VecI,VecJ,fileID);
         Y_dc(bx,by)=Y(i,j)-Y_prev_dc;
         Y_prev_dc=Y(i,j);
         Cb_dc(bx,by)=Cb(i,j)-Cb_prev_dc;
@@ -66,6 +70,7 @@ for i=1:8:height-1
     end
     bx=bx+1;
 end
+fclose(fileID);
 
 %Decoding and comparison with original
 [Rdec,Gdec,Bdec]=decoding(Y,Cb,Cr,Q,height,width);
