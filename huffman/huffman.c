@@ -196,7 +196,7 @@ int main(){
         printHeap(start->next);
     }
 
-    //printTree(start->next,0);
+    printTree(start->next,0);
     printEncoding(start->next,"");
 }
 
