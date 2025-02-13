@@ -1,17 +1,7 @@
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-struct node {
-    int c;
-    int freq;
-    struct node *prev;
-    struct node *next;
-    struct node *left;
-    struct node *right;
-    struct node *parent;
-};
-typedef struct node node;
+#include <stdlib.h>
+#include "huffman.h"
 
 void heapConstruct(int arr, node *currentNode){
     while(currentNode->next != NULL){
@@ -60,7 +50,6 @@ void printHeap(node *start){ //Mostly for debugging
     } 
     printf("\n");
 }
-
 
 struct node* createBranch(node *first, node *second){ //Creates the branch of the two least frequent items 
     node *newBranch = malloc(sizeof(struct node));
@@ -113,9 +102,12 @@ void* addChar(char *s, char c) {
     s[l + 1] = '\0';
 }
 
-void printEncoding(struct node *root, char encoding[]){
+void createEncoding(struct node *root, struct coding *start, char encoding[]){
     if(root->right==NULL || root->left==NULL){
-        printf("%d %s\n",root->c,encoding);
+        //printf("%d %s\n",root->c,encoding); //For debugging 
+        start->c[start->index] = root->c;
+        strcpy(start->code[start->index],encoding);
+        start->index++;
     } else {
     char leftEncoding[20]; //Should be a better way of doing this but i'm not sure how. 
     char rightEncoding[20];
@@ -124,31 +116,26 @@ void printEncoding(struct node *root, char encoding[]){
     addChar(leftEncoding,'1');
     addChar(rightEncoding,'0');
    
-    printEncoding(root->right,rightEncoding);
-    printEncoding(root->left,leftEncoding);
+    createEncoding(root->right,start,rightEncoding);
+    createEncoding(root->left,start,leftEncoding);
     }
 }
 
 struct node* bubbleSort(struct node* head) {
     if (head == NULL) return head;
-
     int swapped;
     struct node* last = NULL;
-
     do {
         swapped = 0;
         struct node* curr = head;
-
         while (curr->next != last) {
             if (curr->freq >= curr->next->freq) {
-              
                 struct node* nextNode = curr->next;
 
                 if (curr->prev == NULL) {
                     head = nextNode;
                 } 
                 else {
-                  
                     curr->prev->next = nextNode;
                 }
 
@@ -160,43 +147,13 @@ struct node* bubbleSort(struct node* head) {
                 nextNode->prev = curr->prev;
                 nextNode->next = curr;
                 curr->prev = nextNode;
-
                 swapped = 1;
             } 
             else {
                 curr = curr->next;
             }
         }
-      
         last = curr;
     } while (swapped);
-
     return head;
 }
-
-int main(){
-    int input[] = {370 ,-1 ,27 ,2 ,-7 ,-3 ,-6 ,-3 ,4 ,5 ,0 ,-2 ,1 ,2 ,0 ,-1 ,1 ,-2 ,0 ,0 ,0 ,0 ,1 ,1 ,0 ,2 ,0 ,-1 ,-1 ,0 ,0 ,0 ,1 ,0 ,-1 ,-1 ,0 ,1 ,1 ,-1 ,0 ,0 ,0 ,0 ,-1 ,0 ,-1 ,1 ,-1 ,0 ,0 ,-1 ,0 ,0 ,-1 ,0 ,1 ,-1 ,0 ,0 ,-1 ,0 ,0 ,0};
-    int size = sizeof(input)/sizeof(input[0]);
-    
-    node *start = malloc(sizeof(struct node));
-    start->c = 1337;
-    start->freq = 0;
-    start->prev = NULL;
-    start->next = NULL;
-
-    for(int index = 0; index < size; index++){
-        heapConstruct(input[index],start);
-    }
-    
-    start = bubbleSort(start);
-    printHeap(start->next);
-
-    while(start->next->next != NULL){  
-        insertBranch(start,createBranch(start->next,start->next->next));
-        printHeap(start->next);
-    }
-
-    printTree(start->next,0);
-    printEncoding(start->next,"");
-}
-
