@@ -37,7 +37,7 @@ begin
   -- clock generation
   clk_gen : process
     begin
-    while now < 5000 ns loop  
+    while now < 5000 ns loop  -- change here will result in the increase of input value, i.e. more value will be tested
       clk <= '0';
       wait for clk_period / 2;
       clk <= '1';
@@ -51,7 +51,7 @@ begin
   -- Test process
   stimulus: process (clk)
   begin
-    float_in <= float_in +1;
+    float_in <= float_in +1; -- +1 to the input every time clk changes as to automatically test all the available value
   end process stimulus;
 end test;
 
