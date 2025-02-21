@@ -1,10 +1,8 @@
-function huff_code = entropy(BlockIn,VecI,VecJ,fileID)
+function huff_code = entropy(BlockIn,VecI,VecJ)
     %Zigzag encoding
     for a=1:1:64
         VecOut(a)=BlockIn(VecI(a),VecJ(a));
-        fprintf(fileID,"%d ",VecOut(a));
     end
-    
 
     %Run-length encoding and Huffmann encoding
     huff_code="";
@@ -20,5 +18,4 @@ function huff_code = entropy(BlockIn,VecI,VecJ,fileID)
        end
     end
     huff_code=huff_code+"(0,0);";
-    %disp(huff_code);
 end
