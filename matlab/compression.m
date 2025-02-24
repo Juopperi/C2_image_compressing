@@ -19,8 +19,11 @@
         end
     end
 
-%Chroma subsampling
-    [Cb,Cr]=chromasub(Cb,Cr,2,height,width);
+%Chroma subsampling (specified in file)
+    sub_mode=0;
+    % if (sub_mode~=0)
+    %     [Cb,Cr]=chromasub(Cb,Cr,sub_mode,height,width);
+    % end
 %Extract 128 to center around zero
     Y=Y-128;
     Cb=Cb-128;
@@ -44,12 +47,12 @@
     Y_prev_dc=0;
     Cb_prev_dc=0;
     Cr_prev_dc=0;
-    Y_code=zeros(image_dim/8);
-    Cb_code=zeros(image_dim/8);
-    Cr_code=zeros(image_dim/8);
-    Y_dc=zeros(image_dim/8);
-    Cb_dc=zeros(image_dim/8);
-    Cr_dc=zeros(image_dim/8);
+    Y_code=strings(height/8,width/8);
+    Cb_code=strings(height/8,width/8);
+    Cr_code=strings(height/8,width/8);
+    Y_dc=strings(height/8,width/8);
+    Cb_dc=strings(height/8,width/8);
+    Cr_dc=strings(height/8,width/8);
     VecI=[1 1 2 3 2 1 1 2 3 4 5 4 3 2 1 1 2 3 4 5 6 7 6 5 4 3 2 1 1 2 3 4 5 6 7 8 8 7 6 5 4 3 2 3 4 5 6 7 8 8 7 6 5 4 5 6 7 8 8 7 6 7 8 8];
     VecJ=[1 2 1 1 2 3 4 3 2 1 1 2 3 4 5 6 5 4 3 2 1 1 2 3 4 5 6 7 8 7 6 5 4 3 2 1 2 3 4 5 6 7 8 8 7 6 5 4 3 4 5 6 7 8 8 7 6 5 6 7 8 8 7 8];
     for i=1:8:height-7
@@ -73,12 +76,9 @@
         end
         bx=bx+1;
     end
-    Y_code=string(Y_code);
-    Cb_code=string(Cb_code);
-    Cr_code=string(Cr_code);
 
 %File writing
-
+    file_writing(Y_dc,Cb_dc,Cr_dc,Y_code,Cb_code,Cr_code,VecI,VecJ,TableY,TableC,height,width,sub_mode);
 %Reconstructing image
     %[Rdec,Gdec,Bdec]=reconstruct(Y,Cb,Cr,TableY,TableC,height,width);
     %dec_matrix=uint8(cat(3, Rdec, Gdec, Bdec));

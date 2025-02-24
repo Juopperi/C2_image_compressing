@@ -201,9 +201,8 @@ function file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,VecI,VecJ,TableY,TableC,
             end
             %Checking for FF bytes and inserting a 00 byte after each of those to prevent them from being mistaken for a marker
             for m=1:1:length(img_data)-7
-                if(bin2dec(img_data(m:m+7))==255)
-                    img_data=strcat(img_data(1:m+7),'00000000',img_data(m+8:end));
-                end
+                if(img_data(i:i+7)='11111111')
+                img_data=strcat(img_data(1:i+7),'00000000',img_data(i+8:end))
             end
 
             %File writing

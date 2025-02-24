@@ -17,7 +17,7 @@ function code = encoding(BlockIn,VecI,VecJ,tables)
                     end
                     zeroes=zeroes-16;
                 end
-           end
+           end    
            if tables=='y'
                code=code+huffman_ac_y(zeroes,VecOut(b));
            else

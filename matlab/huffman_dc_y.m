@@ -1,6 +1,10 @@
 function code_dc_y = huffman_dc_y(previous,current)
     diff=current-previous;
-    size = floor(log2(abs(diff))) + 1;
+    if (diff~=0)
+        size = floor(log2(abs(diff))) + 1;
+    else
+        size=0;
+    end
     code_dc_y="";
 
     switch size
@@ -33,7 +37,7 @@ function code_dc_y = huffman_dc_y(previous,current)
         temp(value == '1') = '0';
         value=string(temp);
     elseif(diff==0)
-        value='0';
+        value='';
     else
         value=dec2bin(diff,size);
     end
