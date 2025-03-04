@@ -1,5 +1,5 @@
-function code_ac_cbcr = huffman_ac_cbcr(zeroes,coefficient)
-    size = floor(log2(abs(coefficient))) + 1;
+function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
+    size = floor(log2(abs(coef))) + 1;
     code_ac_cbcr="";
     switch zeroes
         case 0
@@ -340,14 +340,14 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coefficient)
             end 
     end
 
-    if(coefficient<0)
-        value=dec2bin(-coefficient,size);
+    if(coef<0)%After the code, the binary representation of the number itself is concatenated to the code; for negative numbers, one's complement is used
+        value=dec2bin(-coef,size);
         temp=value;
         temp(value == '0') = '1';
         temp(value == '1') = '0';
-        value=string(temp);
+        value=temp;
     else
-        value=dec2bin(coefficient,size);
+        value=dec2bin(coef,size);
     end
     code_ac_cbcr = code_ac_cbcr + string(value);
     

@@ -1,7 +1,9 @@
-function file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,VecI,VecJ,TableY,TableC,height,width,sub_mode)
+function [img_code, img_data] = file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,VecI,VecJ,TableY,TableC,height,width,sub_mode,filename)
     %Open file
-        filename= 'photo.jpeg';
-        fid = fopen(filename,'w');
+        fid = fopen(filename,'wb');
+        if fid == -1
+            error('Error opening file.');
+        end
 
     %Start of image
         fwrite(fid,hex2dec('FF'),'uint8');
@@ -30,20 +32,22 @@ function file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,VecI,VecJ,TableY,TableC,
         fwrite(fid,hex2dec('DB'),'uint8');
         fwrite(fid,hex2dec('00'),'uint8');%Segment length
         fwrite(fid,hex2dec('43'),'uint8');
-        fwrite(fid,hex2dec('00'),'uint8');%Destiniation: luminance
+        fwrite(fid,hex2dec('00'),'uint8');%8-bit precision; destiniation: luminance
+        coef_y=zeros(1,64);
         for a=1:1:64
-            coef_y=TableY(VecI(a),VecJ(a));
-            fwrite(fid,coef_y,'uint8');%Quant table coefficients
+            coef_y(a)=TableY(VecI(a),VecJ(a));
+            fwrite(fid,coef_y(a),'uint8');%Quant table coefficients
         end
     %Quantization table (chrominance)
         fwrite(fid,hex2dec('FF'),'uint8');%Quantization table marker
         fwrite(fid,hex2dec('DB'),'uint8');
         fwrite(fid,hex2dec('00'),'uint8');%Segment length
         fwrite(fid,hex2dec('43'),'uint8');
-        fwrite(fid,hex2dec('01'),'uint8');%Destiniation: chrominance
+        fwrite(fid,hex2dec('01'),'uint8');%8-bit precision; destiniation: chrominance
+        coef_c=zeros(1,64);
         for b=1:1:64
-            coef_c=TableC(VecI(b),VecJ(b));
-            fwrite(fid,coef_c,'uint8');%Quant table coefficients
+            coef_c(b)=TableC(VecI(b),VecJ(b));
+            fwrite(fid,coef_c(b),'uint8');%Quant table coefficients
         end
     %Start Of Frame (SOF)
         fwrite(fid,hex2dec('FF'),'uint8');%SOF marker
@@ -59,22 +63,23 @@ function file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,VecI,VecJ,TableY,TableC,
         fwrite(fid,hex2dec(width_hex(3:4)),'uint8');
         fwrite(fid,hex2dec('03'),'uint8');%Number of components (here, 3: Y, Cb, Cr)
         fwrite(fid,hex2dec('01'),'uint8');%Component 1: luminance
-        switch sub_mode
-            case 1
-                fwrite(fid,hex2dec('21'),'uint8');%4:2:2
-            case 2
-                fwrite(fid,hex2dec('22'),'uint8');%4:2:0
-            case 3
-                fwrite(fid,hex2dec('41'),'uint8');%4:1:1
-            otherwise
+        %Subsampling: the code is inly intended fo no subsampling as of now
+        %switch sub_mode
+        %    case 1
+        %        fwrite(fid,hex2dec('21'),'uint8');%4:2:2
+        %    case 2
+        %        fwrite(fid,hex2dec('22'),'uint8');%4:2:0
+        %    case 3
+        %        fwrite(fid,hex2dec('41'),'uint8');%4:1:1
+            %otherwise
                 fwrite(fid,hex2dec('11'),'uint8');%4:4:4 (no subsampling)
-        end
+        %end
         fwrite(fid,hex2dec('00'),'uint8');%First quantization table
         fwrite(fid,hex2dec('02'),'uint8');%Component 2: Cb (chrominance blue)
-        fwrite(fid,hex2dec('11'),'uint8');%Subsampling indicated in luminance
+        fwrite(fid,hex2dec('11'),'uint8');%no subsampling
         fwrite(fid,hex2dec('01'),'uint8');%Second quantization table
         fwrite(fid,hex2dec('03'),'uint8');%Component 3: Cb (chrominance red)
-        fwrite(fid,hex2dec('11'),'uint8');%Subsampling indicated in luminance
+        fwrite(fid,hex2dec('11'),'uint8');%no subsampling
         fwrite(fid,hex2dec('01'),'uint8');%Second quantization table
     
     %Huffman table (luminance DC)
@@ -175,46 +180,63 @@ function file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,VecI,VecJ,TableY,TableC,
         fwrite(fid,hex2dec('3F'),'uint8');%End of spectral selection (frequency 63, all AC components)
         fwrite(fid,hex2dec('00'),'uint8');%No succesive approximation will be used (single scan)
         %Image data
-            %This commented code is from an 8x8 reference image
-                 %ref_data=[ '27' 'BA' '17' '77' '56' 'D7' 'BA' '8D' 'D0' '89' 'A4' '88' '83' '1C' '6B' '14' 'AE' '5D' '8E' '37' 'ED' '01' 'F7' '0C' '02' 'A3' '20' '01' 'B5' '80' 'C0' '19' ...
-                 %           '05' '14' '57' '66' '57' '81' '86' '32' '8F' 'B4' '9C' '9A' 'D5' 'E8' 'AD' '6D' 'FC' 'D3' '3B' '29' 'D1' '75' '97' '3B' '93' '5E' '96' 'FF' '00' '2F' 'F8' '27'];
-                 % for z=1:2:length(ref_data)-1
-                 %     fwrite(fid,hex2dec(ref_data(z:z+1)),'uint8');
-                 % end
             %This code is only for no subsampling
             img_data="";
-            blocksh=height/8;
-            blocksw=width/8;
-            b_count=0;
             %Concatenating DC and AC for the three components and each blocks
-            for k=1:1:blocksh
-                for l=1:1:blocksw
+            for k=1:1:(height/8)
+                for l=1:1:(width/8)
                     img_data=img_data+dc_y(k,l)+ac_y(k,l)+dc_cb(k,l)+ac_cb(k,l)+dc_cr(k,l)+ac_cr(k,l);
-                    b_count=b_count+1;
                 end
             end
             img_data=char(img_data);
             %Padding
             if mod(length(img_data),8)~=0
                 padded_length = length(img_data)+8-mod(length(img_data),8);
-                img_data = pad(img_data,padded_length,'right','0');
+                img_data = pad(img_data,padded_length,'right','1');
             end
             %Checking for FF bytes and inserting a 00 byte after each of those to prevent them from being mistaken for a marker
-            for m=1:1:length(img_data)-7
-                if(bin2dec(img_data(m:m+7))==255)
-                    img_data=strcat(img_data(1:m+7),'00000000',img_data(m+8:end));
+            sb=0;
+            m=1;
+            while m <= length(img_data)-7
+                byte_val = bin2dec(img_data(m:m+7));
+                fwrite(fid, byte_val, 'uint8');
+                if byte_val == 255
+                    fprintf("FF marker found at byte %d\n", (m-1)/8 + 1 + sb);
+                    fwrite(fid, 0, 'uint8');  % Write the stuffed 0x00
+                    sb = sb + 1;  % Track added bytes
                 end
+                m = m + 8;  % Move to the next byte
             end
-
-            %File writing
-            for n=1:8:length(img_data)-7
-                fwrite(fid,bin2dec(img_data(n:n+7)),'uint8');
-            end
+            fprintf("Stuffed %d bytes\n", sb);
     %End of image
         fwrite(fid,hex2dec('FF'),'uint8');
         fwrite(fid,hex2dec('D9'),'uint8');
-        
+
     %Close file
-    fclose(fid);
+        fclose(fid);
+
+    %Reading file data
+        fid = fopen(filename, 'rb');
+        if fid == -1
+            error('Error opening file.');
+        end
+        uint8_code = fread(fid, inf, 'uint8');
+        fclose(fid);
+        img_code = char(zeros(length(uint8_code), 18));
+        o=0;
+        for n=1:1:length(uint8_code)-2
+            img_code(n,1:2) = dec2hex(uint8_code(n),2);
+            img_code(n,4:9) = pad(num2str(n-623),6,'left','0');
+            if (n>623)
+                if(uint8_code(n)==0 && uint8_code(n-1)==255)
+                    %skip byte, it's a stuffed byte
+                else
+                    img_code(n,11:18) = img_data(o*8+1:o*8+8);
+                    o=o+1;
+                end
+            end
+        end
+        img_code(end-1,1:2)='FF';
+        img_code(end,1:2)='D9';
 end
 
