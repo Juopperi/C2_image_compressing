@@ -29,23 +29,27 @@
     % if (sub_mode~=0)
     %     [Cb,Cr]=chromasub(Cb,Cr,sub_mode,height,width);
     % end
+
 %Extract 128 to center around zero
     Y=Y-128;
     Cb=Cb-128;
     Cr=Cr-128;
         matrix_writing(Y,Cb,Cr,'levelshift.txt');
+
 %DCT transform
     for i=1:8:height-7
         for j=1:8:width-7
-            Y(i:i+7,j:j+7)=dct_tr(Y(i:i+7,j:j+7));
+            Y(i:i+7,j:j+7) =dct_tr(Y(i:i+7,j:j+7));
             Cb(i:i+7,j:j+7)=dct_tr(Cb(i:i+7,j:j+7));
             Cr(i:i+7,j:j+7)=dct_tr(Cr(i:i+7,j:j+7));
         end
     end
         matrix_writing(Y,Cb,Cr,'dct.txt');
+
 %Quantization (between 0 and 100)
     [Y, Cb, Cr, TableY, TableC]=quant(Y,Cb,Cr,50,height,width);
         matrix_writing(Y,Cb,Cr,'quant.txt');
+
 %Encoding
     bx=1;
     by=1;
@@ -90,7 +94,8 @@
     end
 
 %File writing (specify desired compressed image file name as the last argument of this function)
-    %[img_code, img_data]=file_writing(Y_dc,Cb_dc,Cr_dc,Y_code,Cb_code,Cr_code,VecI,VecJ,TableY,TableC,height,width,sub_mode,"photo.jpeg");
+    [img_code, img_data]=file_writing(Y_dc,Cb_dc,Cr_dc,Y_code,Cb_code,Cr_code,VecI,VecJ,TableY,TableC,height,width,sub_mode,"photo.jpeg");
+
 %Reconstructing image from Y,Cb,Cr matrices
     % [Rdec,Gdec,Bdec]=reconstruct(Y,Cb,Cr,TableY,TableC,height,width);
     % dec_matrix=uint8(cat(3, Rdec, Gdec, Bdec));

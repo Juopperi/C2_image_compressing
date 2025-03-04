@@ -1,13 +1,16 @@
+%JPEG compression
+
 %Extract RGB values from the image, the output is a height X width X 3 array
     RGB = imread("Source pictures/8.jpeg");
     %Each individual component is extracted
     r=double(RGB(:,:,1));
-    g=RGB(:,:,2));
-    b=RGB(:,:,3));
+    g=double(RGB(:,:,2));
+    b=double(RGB(:,:,3));
     image_dim=size(r);
     height=image_dim(1);
     width=image_dim(2);
         matrix_writing(r,g,b,'rgb.txt');
+%Time for this step: 0.056 s
 
 %Obtain Y, Cb and Cr values by matrix multiplication
     %Y, Cb and Cr are defined as empty matrices
@@ -23,29 +26,37 @@
         end
     end
         matrix_writing(Y,Cb,Cr,'rgb2ycbcr.txt');
+%Time for this step: 0.030 s
 
 %Chroma subsampling (specified in file, the commented function below explains the concept, although only no subsampling works as of now)
     sub_mode=0;
     % if (sub_mode~=0)
     %     [Cb,Cr]=chromasub(Cb,Cr,sub_mode,height,width);
     % end
+
 %Extract 128 to center around zero
     Y=Y-128;
     Cb=Cb-128;
     Cr=Cr-128;
         matrix_writing(Y,Cb,Cr,'levelshift.txt');
+%time for this step: 0.087 s
+
 %DCT transform
     for i=1:8:height-7
         for j=1:8:width-7
-            Y(i:i+7,j:j+7)=dct_tr(Y(i:i+7,j:j+7));
+            Y(i:i+7,j:j+7) =dct_tr(Y(i:i+7,j:j+7));
             Cb(i:i+7,j:j+7)=dct_tr(Cb(i:i+7,j:j+7));
             Cr(i:i+7,j:j+7)=dct_tr(Cr(i:i+7,j:j+7));
         end
     end
         matrix_writing(Y,Cb,Cr,'dct.txt');
+%Time for this step: 
+
 %Quantization (between 0 and 100)
     [Y, Cb, Cr, TableY, TableC]=quant(Y,Cb,Cr,50,height,width);
         matrix_writing(Y,Cb,Cr,'quant.txt');
+%Time for this step: 0.084 s
+
 %Encoding
     bx=1;
     by=1;
@@ -90,7 +101,9 @@
     end
 
 %File writing (specify desired compressed image file name as the last argument of this function)
-    %[img_code, img_data]=file_writing(Y_dc,Cb_dc,Cr_dc,Y_code,Cb_code,Cr_code,VecI,VecJ,TableY,TableC,height,width,sub_mode,"photo.jpeg");
+    [img_code, img_data]=file_writing(Y_dc,Cb_dc,Cr_dc,Y_code,Cb_code,Cr_code,VecI,VecJ,TableY,TableC,height,width,sub_mode,"photo.jpeg");
+%Time for this step: 0.398 s
+
 %Reconstructing image from Y,Cb,Cr matrices
     % [Rdec,Gdec,Bdec]=reconstruct(Y,Cb,Cr,TableY,TableC,height,width);
     % dec_matrix=uint8(cat(3, Rdec, Gdec, Bdec));
