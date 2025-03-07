@@ -45,3 +45,8 @@ htmlcov/                         # 覆盖率 HTML 报告
 
 huffman/huffman.exe
 huffman/*.exe
+*.bak
+*.mti
+*.mpf
+*.wlf
+/huffman/huffmanVHDL/work

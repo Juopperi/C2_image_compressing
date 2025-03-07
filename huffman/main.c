@@ -16,7 +16,7 @@ int main(){
     for(int index = 0; index < size; index++){
         heapConstruct(input[index],start);
     }
-    
+    //printHeap(start);
     start = bubbleSort(start);
 
     while(start->next->next != NULL){  
@@ -25,6 +25,16 @@ int main(){
 
     coding *coding = malloc(sizeof(struct coding));
     createEncoding(start->next,coding,"");
+    //printTree(start,0);
+    
+    //Print the encoding the file
+    FILE *fptr;
+    fptr = fopen("huffmanEncoding.txt","w");
+    for(int indexCode = 0; indexCode < coding->index; indexCode++){
+        fprintf(fptr,"%d %s\n",coding->c[indexCode],coding->code[indexCode]);
+    }
+    fclose(fptr);
+
     char huffmanCode[200] ={'\0'};
     
     for(int indexInput = 0; indexInput < size; indexInput++){ //Encodes the numbers
