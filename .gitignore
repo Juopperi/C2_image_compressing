@@ -50,3 +50,4 @@ huffman/*.exe
 *.mpf
 *.wlf
 /huffman/huffmanVHDL/work
+/YCbCr_conversion/work
