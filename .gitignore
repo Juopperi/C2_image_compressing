@@ -51,3 +51,4 @@ huffman/*.exe
 *.wlf
 /huffman/huffmanVHDL/work
 /YCbCr_conversion/work
+/huffman/huffmanVHDL/workContainer
