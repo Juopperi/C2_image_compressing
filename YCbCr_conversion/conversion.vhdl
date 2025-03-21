@@ -27,14 +27,14 @@ architecture arch of conversion is
     end function to_fixed;
 
 begin
-	Y <=              Real(to_integer(unsigned(input_R)))*0.299  + Real(to_integer(unsigned(input_G)))*0.587  + Real(to_integer(unsigned(input_B)))*0.114;
+	Y <=              Real(to_integer(unsigned(input_R)))*0.299  + Real(to_integer(unsigned(input_G)))*0.587  + Real(to_integer(unsigned(input_B)))*0.114; --This could later be implemented so the decimal values is in fixedpoint
     Cb <= Real(128) - Real(to_integer(unsigned(input_R)))*0.1687 - Real(to_integer(unsigned(input_G)))*0.3313 + Real(to_integer(unsigned(input_B)))*0.5;
     Cr <= Real(128) + Real(to_integer(unsigned(input_R)))*0.5    - Real(to_integer(unsigned(input_G)))*0.4187 - Real(to_integer(unsigned(input_B)))*0.0813;
     
 
-    output_Y <= std_logic_vector(to_unsigned(to_fixed(Y,5),output_Y'length));
-    output_Cb <= std_logic_vector(to_unsigned(to_fixed(Cb,5),output_Cb'length));
-    output_Cr <= std_logic_vector(to_unsigned(to_fixed(Cr,5),output_Cr'length));
+    output_Y <= std_logic_vector(to_unsigned(to_fixed(Y,8),output_Y'length));
+    output_Cb <= std_logic_vector(to_unsigned(to_fixed(Cb,8),output_Cb'length));
+    output_Cr <= std_logic_vector(to_unsigned(to_fixed(Cr,8),output_Cr'length));
 end arch;
 
 
