@@ -63,7 +63,7 @@ function [img_code, img_data] = file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,V
         fwrite(fid,hex2dec(width_hex(3:4)),'uint8');
         fwrite(fid,hex2dec('03'),'uint8');%Number of components (here, 3: Y, Cb, Cr)
         fwrite(fid,hex2dec('01'),'uint8');%Component 1: luminance
-        %Subsampling: the code is inly intended fo no subsampling as of now
+        %Subsampling: the code is inly intended for no subsampling as of now
         %switch sub_mode
         %    case 1
         %        fwrite(fid,hex2dec('21'),'uint8');%4:2:2
