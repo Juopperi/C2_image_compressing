@@ -1,4 +1,4 @@
-function [img_code, img_data] = file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,VecI,VecJ,TableY,TableC,height,width,sub_mode,filename)
+function [img_code, img_data] = file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,VecI,VecJ,TableY,TableC,height,width,hc,wc,sub_mode,filename)
     %Open file
         fid = fopen(filename,'wb');
         if fid == -1
@@ -63,17 +63,17 @@ function [img_code, img_data] = file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,V
         fwrite(fid,hex2dec(width_hex(3:4)),'uint8');
         fwrite(fid,hex2dec('03'),'uint8');%Number of components (here, 3: Y, Cb, Cr)
         fwrite(fid,hex2dec('01'),'uint8');%Component 1: luminance
-        %Subsampling: the code is inly intended for no subsampling as of now
-        %switch sub_mode
-        %    case 1
-        %        fwrite(fid,hex2dec('21'),'uint8');%4:2:2
-        %    case 2
-        %        fwrite(fid,hex2dec('22'),'uint8');%4:2:0
-        %    case 3
-        %        fwrite(fid,hex2dec('41'),'uint8');%4:1:1
-            %otherwise
+        %Subsampling
+        switch sub_mode
+            case 1
+                fwrite(fid,hex2dec('21'),'uint8');%4:2:2
+            case 2
+                fwrite(fid,hex2dec('22'),'uint8');%4:2:0
+            case 3
+                fwrite(fid,hex2dec('41'),'uint8');%4:1:1
+            otherwise
                 fwrite(fid,hex2dec('11'),'uint8');%4:4:4 (no subsampling)
-        %end
+        end
         fwrite(fid,hex2dec('00'),'uint8');%First quantization table
         fwrite(fid,hex2dec('02'),'uint8');%Component 2: Cb (chrominance blue)
         fwrite(fid,hex2dec('11'),'uint8');%no subsampling
@@ -182,13 +182,37 @@ function [img_code, img_data] = file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,V
         %Image data
             %This code is only for no subsampling
             img_data="";
-            %Concatenating DC and AC for the three components and each blocks
-            for k=1:1:(height/8)
-                for l=1:1:(width/8)
-                    img_data=img_data+dc_y(k,l)+ac_y(k,l)+dc_cb(k,l)+ac_cb(k,l)+dc_cr(k,l)+ac_cr(k,l);
-                end
+            switch sub_mode
+                case 1%4:2:2
+                    for o=1:1:hc/8
+                       for p=1:1:wc/8
+                           img_data=img_data+dc_y(o,2*p-1)+ac_y(o,2*p-1)+dc_y(o,2*p)+ac_y(o,2*p);
+                           img_data=img_data+dc_cb(o,p)+ac_cb(o,p)+dc_cr(o,p)+ac_cr(o,p);
+                       end
+                    end
+                case 2%4:2:0
+                    for q=1:1:hc/8
+                       for r=1:1:wc/8
+                           img_data=img_data+dc_y(2*q-1,2*r-1)+ac_y(2*q-1,2*r-1)+dc_y(2*q-1,2*r)+ac_y(2*q-1,2*r)+dc_y(2*q,2*r-1)+ac_y(2*q,2*r-1)+dc_y(2*q,2*r)+ac_y(2*q,2*r);
+                           img_data=img_data+dc_cb(q,r)+ac_cb(q,r)+dc_cr(q,r)+ac_cr(q,r);
+                       end
+                    end      
+                case 3%4:1:1
+                    for s=1:1:hc/8
+                        for t=1:1:wc/8
+                            img_data=img_data+dc_y(s,4*t-3)+ac_y(s,4*t-3)+dc_y(s,4*t-2)+ac_y(s,4*t-2)+dc_y(s,4*t-1)+ac_y(s,4*t-1)+dc_y(s,4*t)+ac_y(s,4*t);
+                            img_data=img_data+dc_cb(s,t)+ac_cb(s,t)+dc_cr(s,t)+ac_cr(s,t);
+                        end
+                    end
+                otherwise
+                    for k=1:1:height/8
+                        for l=1:1:width/8
+                            img_data=img_data+dc_y(k,l)+ac_y(k,l)+dc_cb(k,l)+ac_cb(k,l)+dc_cr(k,l)+ac_cr(k,l);
+                        end
+                    end
             end
             img_data=char(img_data);
+
             %Padding
             if mod(length(img_data),8)~=0
                 padded_length = length(img_data)+8-mod(length(img_data),8);
@@ -201,7 +225,7 @@ function [img_code, img_data] = file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,V
                 byte_val = bin2dec(img_data(m:m+7));
                 fwrite(fid, byte_val, 'uint8');
                 if byte_val == 255
-                    fprintf("FF marker found at byte %d\n", (m-1)/8 + 1 + sb);
+                    fprintf("FF data at byte %d\n", (m-1)/8 + 1 + sb);
                     fwrite(fid, 0, 'uint8');  % Write the stuffed 0x00
                     sb = sb + 1;  % Track added bytes
                 end

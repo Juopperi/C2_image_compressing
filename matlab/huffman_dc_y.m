@@ -28,6 +28,8 @@ function code_dc_y = huffman_dc_y(previous,current)
             code_dc_y=code_dc_y+"111110";
         case 9
             code_dc_y=code_dc_y+"1111110";
+        case 10
+            code_dc_y=code_dc_y+"11111110";
     end
 
     if(diff<0)
@@ -35,7 +37,7 @@ function code_dc_y = huffman_dc_y(previous,current)
         temp=value;
         temp(value == '0') = '1';
         temp(value == '1') = '0';
-        value=string(temp);
+        value=temp;
     elseif(diff==0)
         value='';
     else

@@ -22,6 +22,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"111110100";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111110110";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"111111110100";
             end
         case 1
             switch size
@@ -43,6 +45,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111110001001";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111110001010";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111110001011";
             end
         case 2
             switch size
@@ -64,6 +68,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111110001110";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111110001111";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111110010000";
             end
         case 3
             switch size
@@ -85,6 +91,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111110010100";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111110010101";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111110010110";
             end 
         case 4
             switch size
@@ -106,6 +114,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111110011100";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111110011101";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111110011110";
             end 
         case 5
             switch size
@@ -127,6 +137,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111110100100";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111110100101";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111110100110"; 
             end  
         case 6
             switch size
@@ -148,6 +160,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111110101100";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111110101101";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111110101110";
             end 
         case 7
             switch size
@@ -169,6 +183,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111110110100";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111110110101";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111110110110";
             end 
         case 8
             switch size
@@ -190,6 +206,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111110111101";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111110111110";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111110111111";
             end  
         case 9
             switch size
@@ -211,6 +229,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111111000110";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111111000111";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111111001000";
             end  
         case 10
             switch size
@@ -232,6 +252,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111111001111";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111111010000";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111111010001";
             end 
         case 11
             switch size
@@ -253,6 +275,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111111011000";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111111011001";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111111011010";
             end  
         case 12
             switch size
@@ -274,6 +298,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111111100001";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111111100010";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111111100011";
             end  
         case 13
             switch size
@@ -295,6 +321,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111111101010";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111111101011";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111111101100";
             end  
         case 14
             switch size
@@ -316,6 +344,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111111110011";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111111110100";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111111110101";
             end
         case 15
             switch size
@@ -337,6 +367,8 @@ function code_ac_cbcr = huffman_ac_cbcr(zeroes,coef)
                    code_ac_cbcr=code_ac_cbcr+"1111111111111100";
                 case 9
                    code_ac_cbcr=code_ac_cbcr+"1111111111111101";
+                case 10
+                   code_ac_cbcr=code_ac_cbcr+"1111111111111110";
             end 
     end
 

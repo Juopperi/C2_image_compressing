@@ -1,5 +1,5 @@
 %Extract RGB values from the image, the output is a height X width X 3 array
-    RGB = imread("Source pictures/32.png");
+    RGB = imread("Source pictures/Lake landscape.png");
     %Each individual component is extracted
     r=double(RGB(:,:,1));
     g=double(RGB(:,:,2));
@@ -28,7 +28,10 @@
 %For subsampling, height must be multiple of 16 and width must be multiple of 32
     sub_mode=1;
      if (sub_mode~=0)
-         [Cb,Cr]=chromasub(Cb,Cr,sub_mode,height,width);
+         [Cb,Cr,hc,wc]=chromasub(Cb,Cr,sub_mode,height,width);
+     else
+         hc=height;
+         wc=width;
      end
 
 %Extract 128 to center around zero
@@ -37,10 +40,14 @@
     Cr=Cr-128;
         %matrix_writing(Y,Cb,Cr,'levelshift.txt');
 
-%DCT transform
+%DCT transform        
     for i=1:8:height-7
         for j=1:8:width-7
-            Y(i:i+7,j:j+7) =dct_tr(Y(i:i+7,j:j+7));
+            Y(i:i+7,j:j+7)=dct_tr(Y(i:i+7,j:j+7));
+        end
+    end
+    for i=1:8:(hc-7)
+        for j=1:8:(wc-7)
             Cb(i:i+7,j:j+7)=dct_tr(Cb(i:i+7,j:j+7));
             Cr(i:i+7,j:j+7)=dct_tr(Cr(i:i+7,j:j+7));
         end
@@ -48,7 +55,7 @@
         %matrix_writing(Y,Cb,Cr,'dct.txt');
 
 %Quantization (specify a level between 1 and 100)
-    [Y, Cb, Cr, TableY, TableC]=quant(Y,Cb,Cr,50,height,width);
+    [Y, Cb, Cr, TableY, TableC]=quant(Y,Cb,Cr,50,height,width,hc,wc);
         %matrix_writing(Y,Cb,Cr,'quant.txt');
 
 %Encoding
@@ -60,11 +67,11 @@
     %A string is defined for each component at each block, one for DC and
     %one for AC
     Y_code=strings(height/8,width/8);
-    Cb_code=strings(height/8,width/8);
-    Cr_code=strings(height/8,width/8);
+    Cb_code=strings(hc/8,wc/8);
+    Cr_code=strings(hc/8,wc/8);
     Y_dc=strings(height/8,width/8);
-    Cb_dc=strings(height/8,width/8);
-    Cr_dc=strings(height/8,width/8);
+    Cb_dc=strings(hc/8,wc/8);
+    Cr_dc=strings(hc/8,wc/8);
     %Define row and column vectors in zigzag order
     VecI=[1 1 2 3 2 1 1 2 3 4 5 4 3 2 1 1 2 3 4 5 6 7 6 5 4 3 2 1 1 2 3 4 5 6 7 8 8 7 6 5 4 3 2 3 4 5 6 7 8 8 7 6 5 4 5 6 7 8 8 7 6 7 8 8];
     VecJ=[1 2 1 1 2 3 4 3 2 1 1 2 3 4 5 6 5 4 3 2 1 1 2 3 4 5 6 7 8 7 6 5 4 3 2 1 2 3 4 5 6 7 8 8 7 6 5 4 3 4 5 6 7 8 8 7 6 5 6 7 8 8 7 8];
@@ -72,18 +79,12 @@
         for j=1:8:width-7
             %AC
             Y_code(bx,by)=encoding(Y(i:i+7,j:j+7),VecI,VecJ,'y');    
-            Cb_code(bx,by)=encoding(Cb(i:i+7,j:j+7),VecI,VecJ,'cbcr');
-            Cr_code(bx,by)=encoding(Cr(i:i+7,j:j+7),VecI,VecJ,'cbcr');
            
             %DC code (first element of each 8x8 block) is coded
             %differentially (each cofficient is the difference between
             %current block's 1st element and previous block's 1st element)
             Y_dc(bx,by)=huffman_dc_y(Y_prev_dc,Y(i,j));
             Y_prev_dc=Y(i,j);
-            Cb_dc(bx,by)=huffman_dc_cbcr(Cb_prev_dc,Cb(i,j));
-            Cb_prev_dc=Cb(i,j);
-            Cr_dc(bx,by)=huffman_dc_cbcr(Cr_prev_dc,Cr(i,j));
-            Cr_prev_dc=Cr(i,j);
             %Writing this data to a .txt file would not be convenient, it's
             %better to view the results in Matlab workspace
             by=by+1;
@@ -94,8 +95,29 @@
         bx=bx+1;
     end
 
+    bx=1;
+    by=1;
+    for i=1:8:hc-7
+        for j=1:8:wc-7
+            %AC   
+            Cb_code(bx,by)=encoding(Cb(i:i+7,j:j+7),VecI,VecJ,'cbcr');
+            Cr_code(bx,by)=encoding(Cr(i:i+7,j:j+7),VecI,VecJ,'cbcr');
+
+            Cb_dc(bx,by)=huffman_dc_cbcr(Cb_prev_dc,Cb(i,j));
+            Cb_prev_dc=Cb(i,j);
+            Cr_dc(bx,by)=huffman_dc_cbcr(Cr_prev_dc,Cr(i,j));
+            Cr_prev_dc=Cr(i,j);
+
+            by=by+1;
+            if (by>wc/8)
+                by=1;
+            end
+        end
+        bx=bx+1;
+    end
+
 %File writing (specify desired compressed image file name as the last argument of this function)
-    [img_code, img_data]=file_writing(Y_dc,Cb_dc,Cr_dc,Y_code,Cb_code,Cr_code,VecI,VecJ,TableY,TableC,height,width,sub_mode,"photo.jpeg");
+    [img_code, img_data]=file_writing(Y_dc,Cb_dc,Cr_dc,Y_code,Cb_code,Cr_code,VecI,VecJ,TableY,TableC,height,width,hc,wc,sub_mode,"photo.jpeg");
 
 %Reconstructing image from Y,Cb,Cr matrices
     % [Rdec,Gdec,Bdec]=reconstruct(Y,Cb,Cr,TableY,TableC,height,width);
