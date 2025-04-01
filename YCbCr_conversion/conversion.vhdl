@@ -1,9 +1,11 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.std_logic_unsigned.all;
 
 entity conversion is 
     port(
+        clk : std_logic;
         input_R : in std_logic_vector(7 downto 0);
         input_G : in std_logic_vector(7 downto 0);   
         input_B : in std_logic_vector(7 downto 0);
@@ -13,29 +15,36 @@ entity conversion is
     );
 end conversion;
 
-architecture arch of conversion is 
-    signal Y : real;
-    signal Cr : real;
-    signal Cb : real;
-
-    function to_fixed (
-        number : real;
-        fractional_bit_length : natural )
-    return integer is
-    begin
-        return integer(number*2.0**(fractional_bit_length));
-    end function to_fixed;
-
-begin
-	Y <=              Real(to_integer(unsigned(input_R)))*0.299  + Real(to_integer(unsigned(input_G)))*0.587  + Real(to_integer(unsigned(input_B)))*0.114; --This could later be implemented so the decimal values is in fixedpoint
-    Cb <= Real(128) - Real(to_integer(unsigned(input_R)))*0.1687 - Real(to_integer(unsigned(input_G)))*0.3313 + Real(to_integer(unsigned(input_B)))*0.5;
-    Cr <= Real(128) + Real(to_integer(unsigned(input_R)))*0.5    - Real(to_integer(unsigned(input_G)))*0.4187 - Real(to_integer(unsigned(input_B)))*0.0813;
+architecture conversion_arch of conversion is 
+    constant n299 : integer := 77; --0.299*256
+    constant n587 : integer := 150; --0.587*256
+    constant n144 : integer := 29; --0.114*256
     
-
-    output_Y <= std_logic_vector(to_unsigned(to_fixed(Y,8),output_Y'length));
-    output_Cb <= std_logic_vector(to_unsigned(to_fixed(Cb,8),output_Cb'length));
-    output_Cr <= std_logic_vector(to_unsigned(to_fixed(Cr,8),output_Cr'length));
-end arch;
+    constant n1687 : integer := 43; --0.1687*256
+    constant n3313 : integer := 85; --0.3313*256
+    constant n5 : integer := 128; --0.5*256
+    
+    constant n4187 : integer := 107; --0.4187*256
+    constant n0813 : integer := 21; --0.0813*256
+    
+    constant n128 : integer := 32768; --128*256
+    
+    signal Y : integer;
+    signal Cr : integer;
+    signal Cb : integer;
+    
+begin
+    process(input_R,input_G,input_B,clk)
+    begin
+    Y <= (conv_integer(input_R)*n299 + conv_integer(input_G)*n587 + conv_integer(input_B)*n144);
+    Cb <= (n128 + conv_integer(input_B)*n5 - conv_integer(input_R)*n1687 - conv_integer(input_G)*n3313);
+    Cr <= (n128 + conv_integer(input_R)*n5 - conv_integer(input_G)*n4187 - conv_integer(input_B)*n0813);
+	
+    output_Y <= std_logic_vector(to_unsigned(Y,16));
+    output_Cb <= std_logic_vector(to_unsigned(Cb,16));
+    output_Cr <= std_logic_vector(to_unsigned(Cr,16));
+    end process;
+end conversion_arch;
 
 
 

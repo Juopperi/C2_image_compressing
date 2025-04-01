@@ -53,3 +53,4 @@ huffman/*.exe
 /YCbCr_conversion/work
 /huffman/huffmanVHDL/workContainer
 /YCbCr_conversion/workContainer
+/.vscode

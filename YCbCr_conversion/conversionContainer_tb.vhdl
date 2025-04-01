@@ -11,13 +11,13 @@ use ieee.std_logic_1164.all;
 use IEEE.std_logic_textio.all;
 use ieee.numeric_std.all;
 use STD.textio.all;
-library workContainer;
-use workContainer.my_pkg.all;
+library work;
+use work.my_pkg.all;
 
-entity conversionContainer_tb is
-end entity conversionContainer_tb;
+entity conversionContainer_test is
+end entity conversionContainer_test;
 
-architecture arch of conversionContainer_tb is 
+architecture conversionContainer_tb_arch of conversionContainer_tb is 
     component conversionContainer is
         port(
             clk : in std_logic;
@@ -26,8 +26,7 @@ architecture arch of conversionContainer_tb is
             input_array_B : in input_t;
             output_array_Y: out output_t;
             output_array_Cb: out output_t;
-            output_array_Cr: out output_t;
-            finished_flag: out std_logic    
+            output_array_Cr: out output_t  
         );
     end component conversionContainer;
     
@@ -38,12 +37,10 @@ architecture arch of conversionContainer_tb is
         signal output_array_Y: output_t;
         signal output_array_Cr: output_t;
         signal output_array_Cb: output_t;
-        signal finished_flag : std_logic := '0';
     
     begin
         
-        clk <= not clk after 1 ns;
-        dut: component conversionContainer
+       dut: conversionContainer
             port map(
                 clk => clk,
                 input_array_R => input_array_R,
@@ -51,13 +48,20 @@ architecture arch of conversionContainer_tb is
                 input_array_B => input_array_B,
                 output_array_Y => output_array_Y,
                 output_array_Cb => output_array_Cb,
-                output_array_Cr => output_array_Cr,
-                finished_flag => finished_flag 
+                output_array_Cr => output_array_Cr
             );
-
+        
+        clock : process 
+        begin 
+            clk <= '1';
+             wait for 1 ns;
+             clk <= '0';
+             wait for 1 ns;
+        end process;
+        
         proc : process
-            file text_file : text open read_mode is "../matlab/rgb.txt"; --Need to take away the zeros from this file. 
-            file output_file : text open write_mode is "output_file.txt";
+            file text_file : text open read_mode is "rgb.txt";--"../../OneDrive/Documents/GitHub/C2_image_compressing/matlab/rgb.txt";--"../OneDrive/Documents/GitHub/C2_image_compressin/matlab/rgb.txt"; --Need to take away the zeros from this file. -- C:\Users\albin\OneDrive\Documents\GitHub\C2_image_compressing\matlab 
+            file output_file : text open write_mode is "output_file.txt";           -- C:\Users\albin\project_1\project_1.sim\sim_1\behav\xsim
             
             variable text_line : line;
             variable output_line : line;
@@ -73,6 +77,8 @@ architecture arch of conversionContainer_tb is
             variable array_G : input_t;
             variable array_B : input_t;
         begin
+          
+            
             while not endfile(text_file) loop
                 readline(text_file, text_line);
                 report text_line.all;
@@ -111,7 +117,7 @@ architecture arch of conversionContainer_tb is
                     state := state + 1;
                 end if;
             end loop;
-
+           
             input_array_R <= array_R;
             input_array_G <= array_G;
             input_array_B <= array_B;
@@ -154,4 +160,4 @@ architecture arch of conversionContainer_tb is
         
 
 
-end architecture arch;
+end architecture conversionContainer_tb_arch;
