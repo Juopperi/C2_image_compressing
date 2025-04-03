@@ -1,0 +1,46 @@
+========================================
+Current time: 03-Apr-2025 14:33:11
+Image name: BigBen.jpeg
+Image loading time: 0.0228 seconds
+RGB to YCbCr conversion time: 0.0167 seconds
+Chroma subsampling time: 0.0073 seconds
+Subsampled chroma dimensions: 512 x 512
+Level shift time: 0.0010 seconds
+DCT transform time: 0.7517 seconds
+Quantization time: 0.0164 seconds
+Encoding time: 0.1104 seconds
+Total execution time: 1.3083 seconds
+
+Execution time breakdown:
+Image loading: 1.74%
+RGB to YCbCr conversion: 1.28%
+Chroma subsampling: 0.56%
+Level shift: 0.07%
+DCT transform: 57.46%
+Quantization: 1.25%
+Encoding: 8.44%
+File writing: 29.11%
+========================================
+========================================
+Current time: 03-Apr-2025 14:33:46
+Image name: BigBen.jpeg
+Image loading time: 0.0151 seconds
+RGB to YCbCr conversion time: 0.0277 seconds
+Chroma subsampling time: 0.0034 seconds
+Subsampled chroma dimensions: 512 x 256
+Level shift time: 0.0018 seconds
+DCT transform time: 0.3800 seconds
+Quantization time: 0.0086 seconds
+Encoding time: 0.1203 seconds
+Total execution time: 0.9125 seconds
+
+Execution time breakdown:
+Image loading: 1.65%
+RGB to YCbCr conversion: 3.04%
+Chroma subsampling: 0.38%
+Level shift: 0.20%
+DCT transform: 41.65%
+Quantization: 0.94%
+Encoding: 13.18%
+File writing: 38.81%
+========================================

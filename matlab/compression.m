@@ -7,12 +7,22 @@
 % 5. Added upsampling in decoding process to restore full resolution
 % 6. Added percentage calculations for execution time of each stage
 
+diary('profiling_log.txt');      
+diary on
+
+% print the current time
+fprintf('========================================\n');
+fprintf('Current time: %s\n', datestr(now));
+
+
 %Start recording total execution time
 total_time_start = tic;
 
 %Extract RGB values from the image, the output is a height X width X 3 array
     time_read_start = tic;
-    RGB = imread("Source pictures/BigBen.jpeg");
+    RGB = imread("Source pictures/Flower landscape.jpeg");
+    % print the name of the image
+    fprintf('Image name: %s\n', 'BigBen.jpeg');
     %Each individual component is extracted
     r=double(RGB(:,:,1));
     g=double(RGB(:,:,2));
@@ -164,12 +174,17 @@ total_time_start = tic;
     
     time_encoding = toc(time_encoding_start);
     fprintf('Encoding time: %.4f seconds\n', time_encoding);
+    
+    diary off               
+
 
 %File writing (specify desired compressed image file name as the last argument of this function)
     time_filewriting_start = tic;
     [img_code, img_data]=file_writing(Y_dc,Cb_dc,Cr_dc,Y_code,Cb_code,Cr_code,VecI,VecJ,TableY,TableC,height,width,height_cb,width_cb,sub_mode,"photo.jpeg");
     time_filewriting = toc(time_filewriting_start);
     fprintf('File writing time: %.4f seconds\n', time_filewriting);
+
+    diary on
 
 %End recording total execution time
 total_time = toc(total_time_start);
@@ -191,3 +206,8 @@ fprintf('File writing: %.2f%%\n', time_filewriting/total_time*100);
     % dec_matrix=uint8(cat(3, Rdec, Gdec, Bdec));
     % imshow(dec_matrix);
     % title('Decoded image');
+
+fprintf('========================================\n');
+
+
+diary off               
