@@ -250,7 +250,12 @@ function [img_code, img_data] = file_writing(dc_y,dc_cb,dc_cr,ac_y,ac_cb,ac_cr,V
         o=0;
         for n=1:1:length(uint8_code)-2
             img_code(n,1:2) = dec2hex(uint8_code(n),2);
-            img_code(n,4:9) = pad(num2str(n-623),6,'left','0');
+            % Fix the size mismatch by ensuring the padded string is exactly 6 characters
+            padded_num = pad(num2str(n-623),6,'left','0');
+            if length(padded_num) > 6
+                padded_num = padded_num(end-5:end); % Take only the last 6 characters if longer
+            end
+            img_code(n,4:9) = padded_num;
             if (n>623)
                 if(uint8_code(n)==0 && uint8_code(n-1)==255)
                     %skip byte, it's a stuffed byte
