@@ -7,6 +7,8 @@
 % 5. Added upsampling in decoding process to restore full resolution
 % 6. Added percentage calculations for execution time of each stage
 
+height = width;
+
 diary('profiling_log.txt');      
 diary on
 
@@ -20,9 +22,10 @@ total_time_start = tic;
 
 %Extract RGB values from the image, the output is a height X width X 3 array
     time_read_start = tic;
-    RGB = imread("Source pictures/Flower landscape.jpeg");
+    filename = sprintf('Source Pictures/image_%dx%d.jpg', width, height);
+    RGB = imread(filename);
     % print the name of the image
-    fprintf('Image name: %s\n', 'BigBen.jpeg');
+    fprintf('Image name: %s\n', filename);
     %Each individual component is extracted
     r=double(RGB(:,:,1));
     g=double(RGB(:,:,2));

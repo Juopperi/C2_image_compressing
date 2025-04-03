@@ -1,46 +1,126 @@
 ========================================
-Current time: 03-Apr-2025 14:33:11
-Image name: BigBen.jpeg
-Image loading time: 0.0228 seconds
-RGB to YCbCr conversion time: 0.0167 seconds
-Chroma subsampling time: 0.0073 seconds
-Subsampled chroma dimensions: 512 x 512
-Level shift time: 0.0010 seconds
-DCT transform time: 0.7517 seconds
-Quantization time: 0.0164 seconds
-Encoding time: 0.1104 seconds
-Total execution time: 1.3083 seconds
+Current time: 03-Apr-2025 14:52:41
+Image name: Source Pictures/image_128x128.jpg
+Image loading time: 0.0095 seconds
+RGB to YCbCr conversion time: 0.0007 seconds
+Chroma subsampling time: 0.0010 seconds
+Subsampled chroma dimensions: 128 x 64
+Level shift time: 0.0001 seconds
+DCT transform time: 0.0416 seconds
+Quantization time: 0.0010 seconds
+Encoding time: 0.0207 seconds
+Total execution time: 0.1078 seconds
 
 Execution time breakdown:
-Image loading: 1.74%
-RGB to YCbCr conversion: 1.28%
-Chroma subsampling: 0.56%
-Level shift: 0.07%
-DCT transform: 57.46%
-Quantization: 1.25%
-Encoding: 8.44%
-File writing: 29.11%
+Image loading: 8.82%
+RGB to YCbCr conversion: 0.67%
+Chroma subsampling: 0.89%
+Level shift: 0.12%
+DCT transform: 38.56%
+Quantization: 0.90%
+Encoding: 19.20%
+File writing: 29.75%
 ========================================
 ========================================
-Current time: 03-Apr-2025 14:33:46
-Image name: BigBen.jpeg
-Image loading time: 0.0151 seconds
-RGB to YCbCr conversion time: 0.0277 seconds
-Chroma subsampling time: 0.0034 seconds
+Current time: 03-Apr-2025 14:52:41
+Image name: Source Pictures/image_256x256.jpg
+Image loading time: 0.0047 seconds
+RGB to YCbCr conversion time: 0.0011 seconds
+Chroma subsampling time: 0.0006 seconds
+Subsampled chroma dimensions: 256 x 128
+Level shift time: 0.0002 seconds
+DCT transform time: 0.0954 seconds
+Quantization time: 0.0020 seconds
+Encoding time: 0.0281 seconds
+Total execution time: 0.2323 seconds
+
+Execution time breakdown:
+Image loading: 2.03%
+RGB to YCbCr conversion: 0.49%
+Chroma subsampling: 0.25%
+Level shift: 0.10%
+DCT transform: 41.07%
+Quantization: 0.84%
+Encoding: 12.11%
+File writing: 42.71%
+========================================
+========================================
+Current time: 03-Apr-2025 14:52:41
+Image name: Source Pictures/image_512x512.jpg
+Image loading time: 0.0053 seconds
+RGB to YCbCr conversion time: 0.0063 seconds
+Chroma subsampling time: 0.0025 seconds
 Subsampled chroma dimensions: 512 x 256
-Level shift time: 0.0018 seconds
-DCT transform time: 0.3800 seconds
-Quantization time: 0.0086 seconds
-Encoding time: 0.1203 seconds
-Total execution time: 0.9125 seconds
+Level shift time: 0.0003 seconds
+DCT transform time: 0.3808 seconds
+Quantization time: 0.0083 seconds
+Encoding time: 0.0912 seconds
+Total execution time: 0.8867 seconds
 
 Execution time breakdown:
-Image loading: 1.65%
-RGB to YCbCr conversion: 3.04%
-Chroma subsampling: 0.38%
-Level shift: 0.20%
-DCT transform: 41.65%
+Image loading: 0.59%
+RGB to YCbCr conversion: 0.71%
+Chroma subsampling: 0.28%
+Level shift: 0.03%
+DCT transform: 42.94%
 Quantization: 0.94%
-Encoding: 13.18%
-File writing: 38.81%
+Encoding: 10.28%
+File writing: 44.11%
 ========================================
+========================================
+Current time: 03-Apr-2025 14:52:42
+Image name: Source Pictures/image_1024x1024.jpg
+Image loading time: 0.0110 seconds
+RGB to YCbCr conversion time: 0.0321 seconds
+Chroma subsampling time: 0.0139 seconds
+Subsampled chroma dimensions: 1024 x 512
+Level shift time: 0.0014 seconds
+DCT transform time: 1.5191 seconds
+Quantization time: 0.0297 seconds
+Encoding time: 0.2835 seconds
+Total execution time: 3.0502 seconds
+
+Execution time breakdown:
+Image loading: 0.36%
+RGB to YCbCr conversion: 1.05%
+Chroma subsampling: 0.46%
+Level shift: 0.05%
+DCT transform: 49.81%
+Quantization: 0.97%
+Encoding: 9.30%
+File writing: 37.97%
+========================================
+========================================
+Current time: 03-Apr-2025 14:52:45
+Image name: Source Pictures/image_2048x2048.jpg
+Image loading time: 0.0286 seconds
+RGB to YCbCr conversion time: 0.1188 seconds
+Chroma subsampling time: 0.0623 seconds
+Subsampled chroma dimensions: 2048 x 1024
+Level shift time: 0.0066 seconds
+DCT transform time: 6.2693 seconds
+Quantization time: 0.1283 seconds
+Encoding time: 0.8640 seconds
+Total execution time: 10.5545 seconds
+
+Execution time breakdown:
+Image loading: 0.27%
+RGB to YCbCr conversion: 1.13%
+Chroma subsampling: 0.59%
+Level shift: 0.06%
+DCT transform: 59.40%
+Quantization: 1.22%
+Encoding: 8.19%
+File writing: 29.14%
+========================================
+========================================
+Current time: 03-Apr-2025 14:52:56
+Image name: Source Pictures/image_4096x4096.jpg
+Image loading time: 0.1066 seconds
+RGB to YCbCr conversion time: 0.5101 seconds
+Chroma subsampling time: 0.3060 seconds
+Subsampled chroma dimensions: 4096 x 2048
+Level shift time: 0.0225 seconds
+DCT transform time: 25.2427 seconds
+Quantization time: 0.5188 seconds
+Encoding time: 2.6511 seconds
