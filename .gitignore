@@ -42,6 +42,8 @@ desktop.ini                      # Windows 桌面配置文件
 htmlcov/                         # 覆盖率 HTML 报告
 .cache/                          # pytest 缓存目录
 
+.DS_Store
+
 
 huffman/huffman.exe
 huffman/*.exe
