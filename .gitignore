@@ -44,6 +44,9 @@ htmlcov/                         # 覆盖率 HTML 报告
 
 .DS_Store
 
+# 或者只忽略某一目录下的
+generate_images/output_images/*
+
 
 huffman/huffman.exe
 huffman/*.exe
