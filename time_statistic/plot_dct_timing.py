@@ -4,14 +4,14 @@ import numpy as np
 
 # 步骤顺序
 steps = [
-    "Image loading",
+    # "Image loading",
     "RGB to YCbCr conversion",
     "Chroma subsampling",
     "Level shift",
     "DCT transform",
     "Quantization",
     "Encoding",
-    "File writing"
+    # "File writing"
 ]
 
 # 初始化数据
@@ -23,7 +23,7 @@ total_times = []
 
 
 # 读取日志
-with open("matlab_log_home.txt", "r") as f:
+with open("pc_log_home.txt", "r") as f:
     content = f.read()
 
 # 分段提取每组数据
