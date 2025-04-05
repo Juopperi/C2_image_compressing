@@ -23,7 +23,7 @@ total_times = []
 
 
 # 读取日志
-with open("log.txt", "r") as f:
+with open("matlab_log_home.txt", "r") as f:
     content = f.read()
 
 # 分段提取每组数据
@@ -55,6 +55,23 @@ for block in blocks:
     # 在每个 block 的循环中提取总时间（放在提取占比后）
     total_match = re.search(r'Total execution time: ([\d.]+) seconds', block)
     total_times.append(float(total_match.group(1)) if total_match else 0.0)
+    # ==== 对数据进行统一排序 ====
+    # 根据 sizes 对所有数组排序
+    sort_idx = np.argsort(sizes)
+
+    # 对尺寸排序
+    sizes = [sizes[i] for i in sort_idx]
+    sizes_np = np.array(sizes)
+    log_sizes = np.log2(sizes_np)
+
+    # 对每个阶段的时间和占比排序
+    for step in steps:
+        times[step] = [times[step][i] for i in sort_idx]
+        percentages[step] = [percentages[step][i] for i in sort_idx]
+
+    # 总时间也排序
+    total_times = [total_times[i] for i in sort_idx]
+
 
 
 # 将尺寸转为 numpy 数组（方便 log2）

@@ -1,0 +1,200 @@
+========================================
+Processing: image_1024x1024.jpg
+Width: 1024 Height: 1024 Channels: 3
+Current time: 05-Apr-2025 12:47:41
+Image name: jpg_input/image_1024x1024.jpg
+Image loading time: 0.0130 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.0324 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0014 seconds
+Quantization time: 0.0073 seconds
+Encoding time: 0.0145 seconds
+File writing time: 0.0343 seconds
+Total execution time: 0.1028 seconds
+
+Execution time breakdown:
+Image loading: 12.66%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 31.50%
+Level shift: 0.00%
+DCT transform: 1.38%
+Quantization: 7.05%
+Encoding: 14.07%
+File writing: 33.35%
+========================================
+========================================
+Processing: image_128x128.jpg
+Width: 128 Height: 128 Channels: 3
+Current time: 05-Apr-2025 12:47:41
+Image name: jpg_input/image_128x128.jpg
+Image loading time: 0.0013 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.0006 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0000 seconds
+Quantization time: 0.0001 seconds
+Encoding time: 0.0003 seconds
+File writing time: 0.0022 seconds
+Total execution time: 0.0045 seconds
+
+Execution time breakdown:
+Image loading: 28.15%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 12.60%
+Level shift: 0.00%
+DCT transform: 0.50%
+Quantization: 2.60%
+Encoding: 6.50%
+File writing: 49.64%
+========================================
+========================================
+Processing: image_16384x16384.jpg
+Width: 16384 Height: 16384 Channels: 3
+Current time: 05-Apr-2025 12:47:47
+Image name: jpg_input/image_16384x16384.jpg
+Image loading time: 1.4765 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 4.8434 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.3697 seconds
+Quantization time: 1.2893 seconds
+Encoding time: 0.8067 seconds
+File writing time: 4.8463 seconds
+Total execution time: 13.6318 seconds
+
+Execution time breakdown:
+Image loading: 10.83%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 35.53%
+Level shift: 0.00%
+DCT transform: 2.71%
+Quantization: 9.46%
+Encoding: 5.92%
+File writing: 35.55%
+========================================
+========================================
+Processing: image_2048x2048.jpg
+Width: 2048 Height: 2048 Channels: 3
+Current time: 05-Apr-2025 12:47:48
+Image name: jpg_input/image_2048x2048.jpg
+Image loading time: 0.0371 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.1098 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0058 seconds
+Quantization time: 0.0283 seconds
+Encoding time: 0.0371 seconds
+File writing time: 0.1117 seconds
+Total execution time: 0.3297 seconds
+
+Execution time breakdown:
+Image loading: 11.24%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 33.30%
+Level shift: 0.00%
+DCT transform: 1.75%
+Quantization: 8.59%
+Encoding: 11.24%
+File writing: 33.89%
+========================================
+========================================
+Processing: image_256x256.jpg
+Width: 256 Height: 256 Channels: 3
+Current time: 05-Apr-2025 12:47:48
+Image name: jpg_input/image_256x256.jpg
+Image loading time: 0.0018 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.0024 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0001 seconds
+Quantization time: 0.0005 seconds
+Encoding time: 0.0013 seconds
+File writing time: 0.0042 seconds
+Total execution time: 0.0104 seconds
+
+Execution time breakdown:
+Image loading: 17.68%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 23.48%
+Level shift: 0.00%
+DCT transform: 0.86%
+Quantization: 4.49%
+Encoding: 12.95%
+File writing: 40.54%
+========================================
+========================================
+Processing: image_4096x4096.jpg
+Width: 4096 Height: 4096 Channels: 3
+Current time: 05-Apr-2025 12:47:48
+Image name: jpg_input/image_4096x4096.jpg
+Image loading time: 0.1122 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.3801 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0231 seconds
+Quantization time: 0.1041 seconds
+Encoding time: 0.1005 seconds
+File writing time: 0.3822 seconds
+Total execution time: 1.1023 seconds
+
+Execution time breakdown:
+Image loading: 10.18%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 34.48%
+Level shift: 0.00%
+DCT transform: 2.10%
+Quantization: 9.45%
+Encoding: 9.12%
+File writing: 34.67%
+========================================
+========================================
+Processing: image_512x512.jpg
+Width: 512 Height: 512 Channels: 3
+Current time: 05-Apr-2025 12:47:48
+Image name: jpg_input/image_512x512.jpg
+Image loading time: 0.0045 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.0099 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0004 seconds
+Quantization time: 0.0018 seconds
+Encoding time: 0.0054 seconds
+File writing time: 0.0116 seconds
+Total execution time: 0.0335 seconds
+
+Execution time breakdown:
+Image loading: 13.36%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 29.38%
+Level shift: 0.00%
+DCT transform: 1.06%
+Quantization: 5.52%
+Encoding: 16.19%
+File writing: 34.49%
+========================================
+========================================
+Processing: image_8192x8192.jpg
+Width: 8192 Height: 8192 Channels: 3
+Current time: 05-Apr-2025 12:47:50
+Image name: jpg_input/image_8192x8192.jpg
+Image loading time: 0.3273 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 1.3418 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0919 seconds
+Quantization time: 0.3771 seconds
+Encoding time: 0.2782 seconds
+File writing time: 1.3442 seconds
+Total execution time: 3.7606 seconds
+
+Execution time breakdown:
+Image loading: 8.70%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 35.68%
+Level shift: 0.00%
+DCT transform: 2.44%
+Quantization: 10.03%
+Encoding: 7.40%
+File writing: 35.75%
+========================================

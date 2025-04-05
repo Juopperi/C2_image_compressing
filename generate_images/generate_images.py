@@ -3,7 +3,7 @@ import os
 
 # 配置路径和目标尺寸
 input_path = "source.jpg"            # 原始图片路径
-output_suffix = ".png"               # 输出文件后缀
+output_suffix = ".bmp"               # 输出文件后缀
 output_dir = f"output_images/{output_suffix.split('.')[-1]}"         # 输出文件夹
 base_size = (512, 512)               # 中间标准尺寸
 target_sizes = [                     # 你需要的输出尺寸列表
