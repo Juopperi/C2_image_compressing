@@ -1,0 +1,11 @@
+FROM ubuntu:22.04
+
+# 安装基本开发工具和 QEMU user-mode
+RUN apt update && \
+    apt install -y qemu-user gcc-aarch64-linux-gnu build-essential python3
+
+# 设置工作目录
+WORKDIR /workspace
+
+# 默认启动 shell
+CMD ["/bin/bash"]
