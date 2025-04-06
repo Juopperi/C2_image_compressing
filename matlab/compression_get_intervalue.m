@@ -1,5 +1,9 @@
+% This file was derived from the original compression and is used to obtain the intervalue of the image.
+% Some modifications have been made, especially adjusting certain matrix dimensions to accommodate cases without downsampling.
+% Last modified: 2025-04-06 17:28:43
+
 %Extract RGB values from the image, the output is a height X width X 3 array
-    RGB = imread("Source pictures/32.png");
+    RGB = imread("Source pictures/8.jpeg");
     %Each individual component is extracted
     r=double(RGB(:,:,1));
     g=double(RGB(:,:,2));
@@ -7,7 +11,7 @@
     image_dim=size(r);
     height=image_dim(1);
     width=image_dim(2);
-        %matrix_writing(r,g,b,'rgb.txt');
+        matrix_writing(r,g,b,'rgb.txt');
 
 %Obtain Y, Cb and Cr values by matrix multiplication
     %Y, Cb and Cr are defined as empty matrices
@@ -22,11 +26,11 @@
             Cr(i,j)=0.5*r(i,j)-0.4187*g(i,j)-0.0813*b(i,j)+128;
         end
     end
-        %matrix_writing(Y,Cb,Cr,'rgb2ycbcr.txt');
+        matrix_writing(Y,Cb,Cr,'rgb2ycbcr.txt');
 
 %Chroma subsampling
 %For subsampling, height must be multiple of 16 and width must be multiple of 32
-    sub_mode=1;
+    sub_mode=0;
      if (sub_mode~=0)
          [Cb,Cr]=chromasub(Cb,Cr,sub_mode,height,width);
      end
@@ -35,7 +39,7 @@
     Y=Y-128;
     Cb=Cb-128;
     Cr=Cr-128;
-        %matrix_writing(Y,Cb,Cr,'levelshift.txt');
+        matrix_writing(Y,Cb,Cr,'levelshift.txt');
 
 %DCT transform
     for i=1:8:height-7
@@ -45,11 +49,11 @@
             Cr(i:i+7,j:j+7)=dct_tr(Cr(i:i+7,j:j+7));
         end
     end
-        %matrix_writing(Y,Cb,Cr,'dct.txt');
+        matrix_writing(Y,Cb,Cr,'dct.txt');
 
 %Quantization (specify a level between 1 and 100)
-    [Y, Cb, Cr, TableY, TableC]=quant(Y,Cb,Cr,50,height,width);
-        %matrix_writing(Y,Cb,Cr,'quant.txt');
+    [Y, Cb, Cr, TableY, TableC]=quant(Y,Cb,Cr,50,height,width,height,width);
+        matrix_writing(Y,Cb,Cr,'quant.txt');
 
 %Encoding
     bx=1;
@@ -95,7 +99,7 @@
     end
 
 %File writing (specify desired compressed image file name as the last argument of this function)
-    [img_code, img_data]=file_writing(Y_dc,Cb_dc,Cr_dc,Y_code,Cb_code,Cr_code,VecI,VecJ,TableY,TableC,height,width,sub_mode,"photo.jpeg");
+    [img_code, img_data]=file_writing(Y_dc,Cb_dc,Cr_dc,Y_code,Cb_code,Cr_code,VecI,VecJ,TableY,TableC,height,width,height,width,sub_mode,"photo.jpeg");
 
 %Reconstructing image from Y,Cb,Cr matrices
     % [Rdec,Gdec,Bdec]=reconstruct(Y,Cb,Cr,TableY,TableC,height,width);
