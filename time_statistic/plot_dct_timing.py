@@ -23,7 +23,7 @@ percentages = {step: [] for step in steps}
 total_times = []
 
 # 读取日志内容
-with open("pc_log_home.txt", "r") as f:
+with open("PROFILE.TXT", "r") as f:
     content = f.read()
 
 # 分组解析每段日志块
@@ -31,13 +31,15 @@ blocks = content.split("========================================")
 for block in blocks:
     if "Image name" not in block:
         continue
-
-    # 提取图像宽度
-    size_match = re.search(r'image_(\d+)x\d+\.jpg', block)
-    if not size_match:
+    # ✅ 新：提取图像宽度、通道数
+    dim_match = re.search(r'Width:\s+(\d+)\s+Height:\s+(\d+)\s+Channels:\s+(\d+)', block)
+    if not dim_match:
         continue
-    size = int(size_match.group(1))
-    sizes.append(size)
+    width = int(dim_match.group(1))
+    # height = int(dim_match.group(2))  # 如需高度可启用
+    # channels = int(dim_match.group(3))  # 如需通道数可启用
+    sizes.append(width)
+
 
     # 解析每个处理阶段耗时
     raw_times = {}
@@ -61,10 +63,18 @@ for block in blocks:
     for step in steps:
         times[step].append(raw_times[step])
 
-    # 重新计算百分比
+    # ✅ 只保留有数据的阶段
+    nonzero_steps = [step for step in steps if raw_times[step] > 0]
+    active_total = sum([raw_times[step] for step in nonzero_steps])
+
+    # ✅ 动态归一化
     for step in steps:
-        percent = (raw_times[step] / adjusted_total * 100.0) if adjusted_total > 0 else 0.0
+        if step in nonzero_steps and active_total > 0:
+            percent = raw_times[step] / active_total * 100.0
+        else:
+            percent = 0.0
         percentages[step].append(percent)
+
 
 # 按图像宽度排序
 sort_idx = np.argsort(sizes)
