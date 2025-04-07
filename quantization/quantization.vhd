@@ -27,7 +27,7 @@ architecture Behavioral of quantization is
         x"00180000", x"00230000", x"00370000", x"00400000", x"00510000", x"00680000", x"00710000", x"005C0000",
         x"00310000", x"00400000", x"004E0000", x"00570000", x"00670000", x"00790000", x"00780000", x"00650000",
         x"00480000", x"005C0000", x"005F0000", x"00620000", x"00700000", x"00640000", x"00670000", x"00630000"
-    );
+    );  -- luminance table
 
     constant TC : fixed_array := (
         x"00110000", x"00120000", x"00180000", x"002F0000", x"00630000", x"00630000", x"00630000", x"00630000",
@@ -38,18 +38,28 @@ architecture Behavioral of quantization is
         x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000",
         x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000",
         x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000"
-    );
+    );  -- chrominance table
 
 begin
     process (clk)
+        -- extended lenth for division
         variable Y_extended : signed(47 downto 0);
         variable Cb_extended : signed(47 downto 0);
         variable Cr_extended : signed(47 downto 0);
+        -- quantization table in signed format
         variable TY_signed : signed(31 downto 0);
         variable TC_signed : signed(31 downto 0);
+        -- intermediate values for each i. not yet rounded
         variable temp_Y : signed(31 downto 0);
         variable temp_Cb : signed(31 downto 0);
         variable temp_Cr : signed(31 downto 0);
+        -- store values after rounded
+        variable round_Y : signed(31 downto 0);
+        variable round_Cb : signed(31 downto 0);
+        variable round_Cr : signed(31 downto 0);
+        -- add 0.5 to and truncate the last 16 bits (all decimal is set to 0)
+        constant rounding_factor : signed(31 downto 0) := X"00008000"; -- 2^15 -> 0.5
+
     begin
         if rising_edge(clk) then
             -- Perform element-wise fixed-point division
@@ -65,10 +75,18 @@ begin
                 temp_Y := resize (Y_extended / TY_signed, 32);
                 temp_Cb := resize (Cb_extended / TC_signed, 32);
                 temp_Cr := resize (Cr_extended / TC_signed, 32);
+                -- add rounding factor
+                round_Y := temp_Y + rounding_factor;
+                round_Cb := temp_Cb + rounding_factor;
+                round_Cr := temp_Cr + rounding_factor;
+                -- decimal part set to 0
+                round_Y(15 downto 0) := (others => '0');
+                round_Cb(15 downto 0) := (others => '0');
+                round_Cr(15 downto 0) := (others => '0');
 
-                Y_out(i) <= std_logic_vector(temp_Y);
-                Cb_out(i) <= std_logic_vector(temp_Cb);
-                Cr_out(i) <= std_logic_vector(temp_Cr);
+                Y_out(i) <= std_logic_vector(round_Y);
+                Cb_out(i) <= std_logic_vector(round_Cb);
+                Cr_out(i) <= std_logic_vector(round_Cr);
             end loop;
         end if;
     end process;
