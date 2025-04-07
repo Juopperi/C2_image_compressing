@@ -54,3 +54,5 @@ huffman/*.exe
 /huffman/huffmanVHDL/workContainer
 /YCbCr_conversion/workContainer
 /.vscode
+
+/generate_images/
