@@ -142,3 +142,27 @@ Quantization: 4.49%
 Encoding: 9.81%
 File writing: 34.78%
 ========================================
+========================================
+Processing: IMAGE8~1.JPG
+Width: 8192 Height: 8192 Channels: 3
+Image name: jpg_input/IMAGE8~1.JPG
+Image loading time: 27.7413 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 118.3211 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 29.7598 seconds
+Quantization time: 16.2478 seconds
+Encoding time: 27.7234 seconds
+File writing time: 118.5250 seconds
+Total execution time: 338.3184 seconds
+
+Execution time breakdown:  
+Image loading: 8.20%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 34.97%
+Level shift: 0.00%
+DCT transform: 8.80%
+Quantization: 4.80%
+Encoding: 8.19%
+File writing: 35.03%
+========================================
