@@ -23,7 +23,7 @@ percentages = {step: [] for step in steps}
 total_times = []
 
 # 读取日志内容
-with open("PROFILE.TXT", "r") as f:
+with open("pc_log.txt", "r") as f:
     content = f.read()
 
 # 分组解析每段日志块
