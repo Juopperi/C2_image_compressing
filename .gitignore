@@ -59,3 +59,7 @@ huffman/*.exe
 /huffman/huffmanVHDL/workContainer
 /YCbCr_conversion/workContainer
 /.vscode
+
+**/CMakeFiles/
+
+**/sim/

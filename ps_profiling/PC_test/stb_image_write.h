@@ -1401,10 +1401,10 @@ static int stbi_write_jpg_core(stbi__write_context *s, int width, int height, in
       const unsigned char *dataB = dataR + ofsB;
       int x, y, pos;
       if(subsample) {
-         profiler->startTimer("subsample_encoding");
          for(y = 0; y < height; y += 16) {
             for(x = 0; x < width; x += 16) {
                float Y[256], U[256], V[256];
+               profiler->startTimer("rgb2ycbcr");
                for(row = y, pos = 0; row < y+16; ++row) {
                   // row >= height => use last input row
                   int clamped_row = (row < height) ? row : height - 1;
@@ -1418,12 +1418,17 @@ static int stbi_write_jpg_core(stbi__write_context *s, int width, int height, in
                      V[pos]= +0.50000f*r - 0.41869f*g - 0.08131f*b;
                   }
                }
+               profiler->stopTimer("rgb2ycbcr");
+
                DCY = stbiw__jpg_processDU(s, &bitBuf, &bitCnt, Y+0,   16, fdtbl_Y, DCY, YDC_HT, YAC_HT);
                DCY = stbiw__jpg_processDU(s, &bitBuf, &bitCnt, Y+8,   16, fdtbl_Y, DCY, YDC_HT, YAC_HT);
                DCY = stbiw__jpg_processDU(s, &bitBuf, &bitCnt, Y+128, 16, fdtbl_Y, DCY, YDC_HT, YAC_HT);
                DCY = stbiw__jpg_processDU(s, &bitBuf, &bitCnt, Y+136, 16, fdtbl_Y, DCY, YDC_HT, YAC_HT);
 
                // subsample U,V
+      
+               profiler->startTimer("subsample_encoding");
+
                {
                   float subU[64], subV[64];
                   int yy, xx;
@@ -1437,14 +1442,17 @@ static int stbi_write_jpg_core(stbi__write_context *s, int width, int height, in
                   DCU = stbiw__jpg_processDU(s, &bitBuf, &bitCnt, subU, 8, fdtbl_UV, DCU, UVDC_HT, UVAC_HT);
                   DCV = stbiw__jpg_processDU(s, &bitBuf, &bitCnt, subV, 8, fdtbl_UV, DCV, UVDC_HT, UVAC_HT);
                }
+
+               profiler->stopTimer("subsample_encoding");
+
             }
          }
-         profiler->stopTimer("subsample_encoding");
       } else {
          profiler->startTimer("non_subsample_encoding");
          for(y = 0; y < height; y += 8) {
             for(x = 0; x < width; x += 8) {
                float Y[64], U[64], V[64];
+               profiler->startTimer("rgb2ycbcr");
                for(row = y, pos = 0; row < y+8; ++row) {
                   // row >= height => use last input row
                   int clamped_row = (row < height) ? row : height - 1;
@@ -1458,6 +1466,7 @@ static int stbi_write_jpg_core(stbi__write_context *s, int width, int height, in
                      V[pos]= +0.50000f*r - 0.41869f*g - 0.08131f*b;
                   }
                }
+               profiler->stopTimer("rgb2ycbcr");
 
                DCY = stbiw__jpg_processDU(s, &bitBuf, &bitCnt, Y, 8, fdtbl_Y,  DCY, YDC_HT, YAC_HT);
                DCU = stbiw__jpg_processDU(s, &bitBuf, &bitCnt, U, 8, fdtbl_UV, DCU, UVDC_HT, UVAC_HT);
@@ -1466,6 +1475,8 @@ static int stbi_write_jpg_core(stbi__write_context *s, int width, int height, in
          }
          profiler->stopTimer("non_subsample_encoding");
       }
+
+      profiler->stopTimer("encode_macroblocks");
 
       // Do the bit alignment of the EOI marker
       profiler->startTimer("bit_alignment");
