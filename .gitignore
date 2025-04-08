@@ -56,3 +56,6 @@ huffman/*.exe
 /.vscode
 
 /generate_images/
+**/CMakeFiles/
+
+
