@@ -58,4 +58,4 @@ huffman/*.exe
 /generate_images/
 **/CMakeFiles/
 
-
+**/sim/

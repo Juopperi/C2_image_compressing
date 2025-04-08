@@ -30,14 +30,16 @@ int main() {
         data[i] = Fixed(d);
         coeff[i] = Fixed(c);
         result = result + (data[i] * coeff[i]);
+        
+        fin       << std::hex << (uint32_t)data[i].raw() << "\n";
+        fcoef     << std::hex << (uint32_t)coeff[i].raw() << "\n";
 
-        fin       << data[i].raw() << "\n";
-        fcoef     << coeff[i].raw() << "\n";
         fin_float << d << "\n";
         fcoef_float << c << "\n";
     }
 
-    fout << result.raw() << "\n";
+    fout      << std::hex << (uint32_t)result.raw() << "\n";
+
     fout_float << result.toFloat() << "\n";
 
     std::cout << "Generated 8 fixed-point inputs and coefficients.\n";

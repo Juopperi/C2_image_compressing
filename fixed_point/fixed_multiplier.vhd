@@ -11,11 +11,12 @@ entity fixed_multiplier is
 end entity;
 
 architecture behavioral of fixed_multiplier is
-  signal temp_mul : signed(63 downto 0);
-begin
-  process(a, b)
   begin
-    temp_mul := signed(a) * signed(b);
-    mul_res <= std_logic_vector(temp_mul(47 downto 16)); 
-  end process;
-end architecture;
+    process(a, b)
+      variable temp : signed(63 downto 0);
+    begin
+      temp := signed(a) * signed(b);
+      mul_res <= std_logic_vector(temp(47 downto 16));
+    end process;
+  end architecture;
+  
