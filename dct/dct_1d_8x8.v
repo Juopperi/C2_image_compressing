@@ -1,4 +1,4 @@
-module dct_1d_8x1 #(
+module dct_1d_8x8 #(
     parameter DATA_WIDTH = 32
 )(
     input  wire clk,

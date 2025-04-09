@@ -1,6 +1,6 @@
 `include "dct_coeffs.vh"
 
-module dct_2d_8x8_full #(
+module dct_2d_8x8 #(
     parameter DATA_WIDTH = 32,
     parameter DATA_DEPTH = 8
 )(
@@ -37,7 +37,7 @@ module dct_2d_8x8_full #(
             wire [DATA_WIDTH*8-1:0] coeff_row_i;
             assign coeff_row_i = dct_coeffs[i*DATA_WIDTH*8 +: DATA_WIDTH*8];  // 提取第 i 行
 
-            dct_1d_8x1 #(
+            dct_1d_8x8 #(
                 .DATA_WIDTH(DATA_WIDTH)
             ) row_dct_inst (
                 .clk(clk),
@@ -71,7 +71,7 @@ module dct_2d_8x8_full #(
             wire [DATA_WIDTH*8-1:0] coeff_col_i;
             assign coeff_col_i = dct_coeffs[i*DATA_WIDTH*8 +: DATA_WIDTH*8];  // 复用行系数作为列变换
 
-            dct_1d_8x1 #(
+            dct_1d_8x8 #(
                 .DATA_WIDTH(DATA_WIDTH)
             ) col_dct_inst (
                 .clk(clk),
