@@ -5,4 +5,7 @@ project(dct_coeff_generator)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_executable(dct_coeff_generator main.cpp)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../)
+
+add_executable(float_coeff_generator generator_float.cpp)
+add_executable(fixed_coeff_generator generator_fixed.cpp)

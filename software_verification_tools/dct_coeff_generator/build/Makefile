@@ -117,41 +117,78 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named dct_coeff_generator
+# Target rules for targets named float_coeff_generator
 
 # Build rule for target.
-dct_coeff_generator: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dct_coeff_generator
-.PHONY : dct_coeff_generator
+float_coeff_generator: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 float_coeff_generator
+.PHONY : float_coeff_generator
 
 # fast build rule for target.
-dct_coeff_generator/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dct_coeff_generator.dir/build.make CMakeFiles/dct_coeff_generator.dir/build
-.PHONY : dct_coeff_generator/fast
+float_coeff_generator/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/float_coeff_generator.dir/build.make CMakeFiles/float_coeff_generator.dir/build
+.PHONY : float_coeff_generator/fast
 
-main.o: main.cpp.o
-.PHONY : main.o
+#=============================================================================
+# Target rules for targets named fixed_coeff_generator
+
+# Build rule for target.
+fixed_coeff_generator: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fixed_coeff_generator
+.PHONY : fixed_coeff_generator
+
+# fast build rule for target.
+fixed_coeff_generator/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fixed_coeff_generator.dir/build.make CMakeFiles/fixed_coeff_generator.dir/build
+.PHONY : fixed_coeff_generator/fast
+
+generator_fixed.o: generator_fixed.cpp.o
+.PHONY : generator_fixed.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dct_coeff_generator.dir/build.make CMakeFiles/dct_coeff_generator.dir/main.cpp.o
-.PHONY : main.cpp.o
+generator_fixed.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fixed_coeff_generator.dir/build.make CMakeFiles/fixed_coeff_generator.dir/generator_fixed.cpp.o
+.PHONY : generator_fixed.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+generator_fixed.i: generator_fixed.cpp.i
+.PHONY : generator_fixed.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dct_coeff_generator.dir/build.make CMakeFiles/dct_coeff_generator.dir/main.cpp.i
-.PHONY : main.cpp.i
+generator_fixed.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fixed_coeff_generator.dir/build.make CMakeFiles/fixed_coeff_generator.dir/generator_fixed.cpp.i
+.PHONY : generator_fixed.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+generator_fixed.s: generator_fixed.cpp.s
+.PHONY : generator_fixed.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dct_coeff_generator.dir/build.make CMakeFiles/dct_coeff_generator.dir/main.cpp.s
-.PHONY : main.cpp.s
+generator_fixed.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fixed_coeff_generator.dir/build.make CMakeFiles/fixed_coeff_generator.dir/generator_fixed.cpp.s
+.PHONY : generator_fixed.cpp.s
+
+generator_float.o: generator_float.cpp.o
+.PHONY : generator_float.o
+
+# target to build an object file
+generator_float.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/float_coeff_generator.dir/build.make CMakeFiles/float_coeff_generator.dir/generator_float.cpp.o
+.PHONY : generator_float.cpp.o
+
+generator_float.i: generator_float.cpp.i
+.PHONY : generator_float.i
+
+# target to preprocess a source file
+generator_float.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/float_coeff_generator.dir/build.make CMakeFiles/float_coeff_generator.dir/generator_float.cpp.i
+.PHONY : generator_float.cpp.i
+
+generator_float.s: generator_float.cpp.s
+.PHONY : generator_float.s
+
+# target to generate assembly for a file
+generator_float.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/float_coeff_generator.dir/build.make CMakeFiles/float_coeff_generator.dir/generator_float.cpp.s
+.PHONY : generator_float.cpp.s
 
 # Help Target
 help:
@@ -161,10 +198,14 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... dct_coeff_generator"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... fixed_coeff_generator"
+	@echo "... float_coeff_generator"
+	@echo "... generator_fixed.o"
+	@echo "... generator_fixed.i"
+	@echo "... generator_fixed.s"
+	@echo "... generator_float.o"
+	@echo "... generator_float.i"
+	@echo "... generator_float.s"
 .PHONY : help
 
 
