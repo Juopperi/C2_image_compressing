@@ -9,3 +9,4 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../)
 
 add_executable(float_intervalue_generator float_intervalue_generator.cpp)
 add_executable(fixed_intervalue_generator fixed_intervalue_generator.cpp)
+add_executable(compare_mem compare_mem.cpp)

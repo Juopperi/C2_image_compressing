@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <string>
 #include <cstdint>
+#include <random>
 #include "FixedPoint.h" // 你的 FixedPoint 模板类
 
 constexpr int N = 8;
@@ -46,10 +47,16 @@ int main() {
     Fix row_dct[N][N];
     Fix final_dct[N][N];
 
-    // 初始化输入数据，例如 f(i,j) = i + j
+    // 初始化随机数生成器，范围 [-127, 128]
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(-30, 30);
+    // std::uniform_int_distribution<int> dist(-10, 10);
+
+    // 随机整数初始化输入
     for (int i = 0; i < N; ++i)
         for (int j = 0; j < N; ++j)
-            input[i][j] = Fix(i + j);
+            input[i][j] = Fix(dist(gen));
 
     // 行 DCT
     for (int i = 0; i < N; ++i)
@@ -72,6 +79,6 @@ int main() {
     save_matrix_mem("row_dct_intermediate.mem", row_dct);
     save_matrix_mem("final_dct_result.mem", final_dct);
 
-    std::cout << "Fixed-point DCT complete. .mem files written." << std::endl;
+    std::cout << "Fixed-point DCT complete with random input. .mem files written." << std::endl;
     return 0;
 }

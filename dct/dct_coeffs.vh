@@ -1,4 +1,4 @@
-`define DCT_COEFFS_8x8 {
+wire [DATA_WIDTH*64-1:0] dct_coeffs =  {
     32'h00005A82,
     32'h00005A82,
     32'h00005A82,
@@ -63,4 +63,4 @@
     32'hFFFF9592,
     32'h0000471D,
     32'hFFFFE707
-}
+};

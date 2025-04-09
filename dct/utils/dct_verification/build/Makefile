@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/software_verification_tools/dct_verification
+CMAKE_SOURCE_DIR = /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/dct/utils/dct_verification
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/software_verification_tools/dct_verification/build
+CMAKE_BINARY_DIR = /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/dct/utils/dct_verification/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/software_verification_tools/dct_verification/build/CMakeFiles /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/software_verification_tools/dct_verification/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/dct/utils/dct_verification/build/CMakeFiles /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/dct/utils/dct_verification/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/software_verification_tools/dct_verification/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/dct/utils/dct_verification/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -141,6 +141,43 @@ fixed_intervalue_generator: cmake_check_build_system
 fixed_intervalue_generator/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fixed_intervalue_generator.dir/build.make CMakeFiles/fixed_intervalue_generator.dir/build
 .PHONY : fixed_intervalue_generator/fast
+
+#=============================================================================
+# Target rules for targets named compare_mem
+
+# Build rule for target.
+compare_mem: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 compare_mem
+.PHONY : compare_mem
+
+# fast build rule for target.
+compare_mem/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compare_mem.dir/build.make CMakeFiles/compare_mem.dir/build
+.PHONY : compare_mem/fast
+
+compare_mem.o: compare_mem.cpp.o
+.PHONY : compare_mem.o
+
+# target to build an object file
+compare_mem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compare_mem.dir/build.make CMakeFiles/compare_mem.dir/compare_mem.cpp.o
+.PHONY : compare_mem.cpp.o
+
+compare_mem.i: compare_mem.cpp.i
+.PHONY : compare_mem.i
+
+# target to preprocess a source file
+compare_mem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compare_mem.dir/build.make CMakeFiles/compare_mem.dir/compare_mem.cpp.i
+.PHONY : compare_mem.cpp.i
+
+compare_mem.s: compare_mem.cpp.s
+.PHONY : compare_mem.s
+
+# target to generate assembly for a file
+compare_mem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compare_mem.dir/build.make CMakeFiles/compare_mem.dir/compare_mem.cpp.s
+.PHONY : compare_mem.cpp.s
 
 fixed_intervalue_generator.o: fixed_intervalue_generator.cpp.o
 .PHONY : fixed_intervalue_generator.o
@@ -198,8 +235,12 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... compare_mem"
 	@echo "... fixed_intervalue_generator"
 	@echo "... float_intervalue_generator"
+	@echo "... compare_mem.o"
+	@echo "... compare_mem.i"
+	@echo "... compare_mem.s"
 	@echo "... fixed_intervalue_generator.o"
 	@echo "... fixed_intervalue_generator.i"
 	@echo "... fixed_intervalue_generator.s"

@@ -57,5 +57,5 @@ huffman/*.exe
 
 /generate_images/
 **/CMakeFiles/
-
+**/CMakeCache.txt
 **/sim/
