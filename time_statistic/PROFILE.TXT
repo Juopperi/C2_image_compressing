@@ -1,168 +1,168 @@
 ========================================
-Processing: IMAGE_~1.JPG
-Width: 128 Height: 128 Channels: 3
-Image name: jpg_input/IMAGE_~1.JPG
-Image loading time: 0.0136 seconds
-RGB to YCbCr conversion time: 0.0000 seconds
-Chroma subsampling time: 0.1352 seconds
-Level shift time: 0.0000 seconds
-DCT transform time: 0.0073 seconds
-Quantization time: 0.0041 seconds
-Encoding time: 0.1129 seconds
-File writing time: 0.1834 seconds
-Total execution time: 0.4565 seconds
-
-Execution time breakdown:  
-Image loading: 2.98%
-RGB to YCbCr conversion: 0.00%
-Chroma subsampling: 29.61%
-Level shift: 0.00%
-DCT transform: 1.60%
-Quantization: 0.89%
-Encoding: 24.73%
-File writing: 40.18%
-========================================
-========================================
-Processing: IMAGE_~2.JPG
+Processing: INPUT1.JPG
 Width: 256 Height: 256 Channels: 3
-Image name: jpg_input/IMAGE_~2.JPG
-Image loading time: 0.0451 seconds
-RGB to YCbCr conversion time: 0.0000 seconds
-Chroma subsampling time: 0.1817 seconds
+Image name: jpg_input/INPUT1.JPG
+Image loading time: 0.0446 seconds
+RGB to YCbCr conversion time: 0.0155 seconds
+Chroma subsampling time: 0.0496 seconds
 Level shift time: 0.0000 seconds
-DCT transform time: 0.0292 seconds
-Quantization time: 0.0163 seconds
-Encoding time: 0.0927 seconds
-File writing time: 0.2201 seconds
-Total execution time: 0.5850 seconds
+DCT transform time: 0.0305 seconds
+Quantization time: 0.0169 seconds
+Encoding time: 0.0989 seconds
+File writing time: 0.2291 seconds
+Total execution time: 0.4851 seconds
 
 Execution time breakdown:  
-Image loading: 7.71%
-RGB to YCbCr conversion: 0.00%
-Chroma subsampling: 31.06%
+Image loading: 9.20%
+RGB to YCbCr conversion: 3.20%
+Chroma subsampling: 10.22%
 Level shift: 0.00%
-DCT transform: 4.98%
-Quantization: 2.78%
-Encoding: 15.85%
-File writing: 37.62%
+DCT transform: 6.28%
+Quantization: 3.49%
+Encoding: 20.39%
+File writing: 47.22%
 ========================================
 ========================================
-Processing: IMAGE_~3.JPG
+Processing: INPUT2.JPG
 Width: 512 Height: 512 Channels: 3
-Image name: jpg_input/IMAGE_~3.JPG
-Image loading time: 0.1719 seconds
-RGB to YCbCr conversion time: 0.0000 seconds
-Chroma subsampling time: 0.7169 seconds
+Image name: jpg_input/INPUT2.JPG
+Image loading time: 0.1703 seconds
+RGB to YCbCr conversion time: 0.0622 seconds
+Chroma subsampling time: 0.1713 seconds
 Level shift time: 0.0000 seconds
-DCT transform time: 0.1166 seconds
-Quantization time: 0.0650 seconds
-Encoding time: 0.3612 seconds
-File writing time: 0.7525 seconds
-Total execution time: 2.1841 seconds
+DCT transform time: 0.1219 seconds
+Quantization time: 0.0675 seconds
+Encoding time: 0.3770 seconds
+File writing time: 0.7921 seconds
+Total execution time: 1.7623 seconds
 
 Execution time breakdown:  
-Image loading: 7.87%
-RGB to YCbCr conversion: 0.00%
-Chroma subsampling: 32.82%
+Image loading: 9.67%
+RGB to YCbCr conversion: 3.53%
+Chroma subsampling: 9.72%
 Level shift: 0.00%
-DCT transform: 5.34%
-Quantization: 2.98%
-Encoding: 16.54%
-File writing: 34.45%
+DCT transform: 6.92%
+Quantization: 3.83%
+Encoding: 21.39%
+File writing: 44.95%
 ========================================
 ========================================
-Processing: IMAGE_~4.JPG
+Processing: INPUT3.JPG
 Width: 1024 Height: 1024 Channels: 3
-Image name: jpg_input/IMAGE_~4.JPG
-Image loading time: 0.5748 seconds
-RGB to YCbCr conversion time: 0.0000 seconds
-Chroma subsampling time: 2.4458 seconds
+Image name: jpg_input/INPUT3.JPG
+Image loading time: 0.5721 seconds
+RGB to YCbCr conversion time: 0.2487 seconds
+Chroma subsampling time: 0.6785 seconds
 Level shift time: 0.0000 seconds
-DCT transform time: 0.4663 seconds
-Quantization time: 0.2588 seconds
-Encoding time: 1.0245 seconds
-File writing time: 2.4915 seconds
-Total execution time: 7.2618 seconds
+DCT transform time: 0.4874 seconds
+Quantization time: 0.2695 seconds
+Encoding time: 1.0536 seconds
+File writing time: 2.6063 seconds
+Total execution time: 5.9160 seconds
 
 Execution time breakdown:  
-Image loading: 7.92%
-RGB to YCbCr conversion: 0.00%
-Chroma subsampling: 33.68%
+Image loading: 9.67%
+RGB to YCbCr conversion: 4.20%
+Chroma subsampling: 11.47%
 Level shift: 0.00%
-DCT transform: 6.42%
-Quantization: 3.56%
-Encoding: 14.11%
-File writing: 34.31%
+DCT transform: 8.24%
+Quantization: 4.55%
+Encoding: 17.81%
+File writing: 44.05%
 ========================================
 ========================================
-Processing: IMC119~1.JPG
+Processing: INPUT4.JPG
 Width: 2048 Height: 2048 Channels: 3
-Image name: jpg_input/IMC119~1.JPG
-Image loading time: 2.0187 seconds
-RGB to YCbCr conversion time: 0.0000 seconds
-Chroma subsampling time: 8.6271 seconds
+Image name: jpg_input/INPUT4.JPG
+Image loading time: 2.0193 seconds
+RGB to YCbCr conversion time: 0.9990 seconds
+Chroma subsampling time: 2.5105 seconds
 Level shift time: 0.0000 seconds
-DCT transform time: 1.8631 seconds
-Quantization time: 1.0335 seconds
-Encoding time: 2.9473 seconds
-File writing time: 8.6880 seconds
-Total execution time: 25.1776 seconds
+DCT transform time: 1.9482 seconds
+Quantization time: 1.0735 seconds
+Encoding time: 3.0540 seconds
+File writing time: 9.1529 seconds
+Total execution time: 20.7574 seconds
 
 Execution time breakdown:  
-Image loading: 8.02%
-RGB to YCbCr conversion: 0.00%
-Chroma subsampling: 34.27%
+Image loading: 9.73%
+RGB to YCbCr conversion: 4.81%
+Chroma subsampling: 12.09%
 Level shift: 0.00%
-DCT transform: 7.40%
-Quantization: 4.10%
-Encoding: 11.71%
-File writing: 34.51%
+DCT transform: 9.39%
+Quantization: 5.17%
+Encoding: 14.71%
+File writing: 44.09%
 ========================================
 ========================================
-Processing: IM4044~1.JPG
+Processing: INPUT5.JPG
 Width: 4096 Height: 4096 Channels: 3
-Image name: jpg_input/IM4044~1.JPG
-Image loading time: 7.3677 seconds
-RGB to YCbCr conversion time: 0.0000 seconds
-Chroma subsampling time: 31.5952 seconds
+Image name: jpg_input/INPUT5.JPG
+Image loading time: 7.3768 seconds
+RGB to YCbCr conversion time: 3.9861 seconds
+Chroma subsampling time: 9.5187 seconds
 Level shift time: 0.0000 seconds
-DCT transform time: 7.4429 seconds
-Quantization time: 4.0939 seconds
-Encoding time: 8.9365 seconds
-File writing time: 31.6926 seconds
-Total execution time: 91.1287 seconds
+DCT transform time: 7.7938 seconds
+Quantization time: 4.2641 seconds
+Encoding time: 9.3286 seconds
+File writing time: 33.5699 seconds
+Total execution time: 75.8381 seconds
 
 Execution time breakdown:  
-Image loading: 8.08%
-RGB to YCbCr conversion: 0.00%
-Chroma subsampling: 34.67%
+Image loading: 9.73%
+RGB to YCbCr conversion: 5.26%
+Chroma subsampling: 12.55%
 Level shift: 0.00%
-DCT transform: 8.17%
-Quantization: 4.49%
-Encoding: 9.81%
-File writing: 34.78%
+DCT transform: 10.28%
+Quantization: 5.62%
+Encoding: 12.30%
+File writing: 44.27%
 ========================================
 ========================================
-Processing: IMAGE8~1.JPG
+Processing: INPUT6.JPG
 Width: 8192 Height: 8192 Channels: 3
-Image name: jpg_input/IMAGE8~1.JPG
-Image loading time: 27.7413 seconds
-RGB to YCbCr conversion time: 0.0000 seconds
-Chroma subsampling time: 118.3211 seconds
+Image name: jpg_input/INPUT6.JPG
+Image loading time: 27.7714 seconds
+RGB to YCbCr conversion time: 16.0540 seconds
+Chroma subsampling time: 36.5910 seconds
 Level shift time: 0.0000 seconds
-DCT transform time: 29.7598 seconds
-Quantization time: 16.2478 seconds
-Encoding time: 27.7234 seconds
-File writing time: 118.5250 seconds
-Total execution time: 338.3184 seconds
+DCT transform time: 31.1097 seconds
+Quantization time: 16.9372 seconds
+Encoding time: 29.2281 seconds
+File writing time: 125.9555 seconds
+Total execution time: 283.6471 seconds
 
 Execution time breakdown:  
-Image loading: 8.20%
-RGB to YCbCr conversion: 0.00%
-Chroma subsampling: 34.97%
+Image loading: 9.79%
+RGB to YCbCr conversion: 5.66%
+Chroma subsampling: 12.90%
 Level shift: 0.00%
-DCT transform: 8.80%
-Quantization: 4.80%
-Encoding: 8.19%
-File writing: 35.03%
+DCT transform: 10.97%
+Quantization: 5.97%
+Encoding: 10.30%
+File writing: 44.41%
+========================================
+========================================
+Processing: INPUT0.JPG
+Width: 128 Height: 128 Channels: 3
+Image name: jpg_input/INPUT0.JPG
+Image loading time: 0.0145 seconds
+RGB to YCbCr conversion time: 0.0039 seconds
+Chroma subsampling time: 0.0110 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0076 seconds
+Quantization time: 0.0042 seconds
+Encoding time: 0.0220 seconds
+File writing time: 0.0810 seconds
+Total execution time: 0.1444 seconds
+
+Execution time breakdown:  
+Image loading: 10.08%
+RGB to YCbCr conversion: 2.69%
+Chroma subsampling: 7.63%
+Level shift: 0.00%
+DCT transform: 5.28%
+Quantization: 2.93%
+Encoding: 15.27%
+File writing: 56.13%
 ========================================

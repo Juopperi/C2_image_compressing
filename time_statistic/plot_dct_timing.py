@@ -5,7 +5,7 @@ import matplotlib
 matplotlib.use('TkAgg')
 
 # 控制优先从文件名获取维度
-prefer_file_name_dims = True
+prefer_file_name_dims = False
 
 # 处理步骤
 steps = [
@@ -24,7 +24,7 @@ percentages = {step: [] for step in steps}
 total_times = []
 
 # 读取日志
-with open("matlab_log_home.txt", "r") as f:
+with open("PROFILE.TXT", "r") as f:
     content = f.read()
 
 blocks = content.split("========================================")
