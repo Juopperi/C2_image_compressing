@@ -5,24 +5,33 @@ use ieee.numeric_std.all;
 entity huffman_DC_Y is 
     port(   
         clk : in std_logic;
-        input_integer : in std_logic_vector(7 downto 0);
+        start : in std_logic;
+        input_integer : in std_logic_vector(9 downto 0);
         output_bit: out std_logic;
         done: out std_logic
     );
 end huffman_DC_Y;
 
 architecture arch of huffman_DC_Y is 
-    type t_state is (count_req_bits,encode,outputting_bits);
-    signal state : t_state := count_req_bits;
+    type t_state is (idle,count_req_bits,encode,outputting_bits,sync);
+    signal state : t_state := idle;
 begin
 
 code_proc : process (clk)    
     variable output_reg : std_logic_vector(8 downto 0);
-    variable size : integer range 0 to 10 := 0;
+    variable size : integer range 0 to 11 := 0;
     variable length : integer range -1 to 9 := 0; 
 begin                 
     if rising_edge(clk) then
         case state is
+            when idle =>
+                output_bit <= 'U';
+                done <= '0';
+                
+                if start = '1' then
+                    state <= count_req_bits;
+                end if;
+                
             when count_req_bits =>
                 output_bit <= 'U';
                 done <= '0';
@@ -88,8 +97,11 @@ begin
                 end if;
                 if size = 0 then
                     done <= '1';
-                    state <= count_req_bits;
+                    state <= sync;
                 end if;
+                
+             when sync =>
+                state <= idle;
         end case;
     end if;
     end process code_proc;

@@ -5,7 +5,8 @@ use ieee.numeric_std.all;
 entity huffman_AC_Y is 
     port(   
         clk : in std_logic;
-        input_integer : in std_logic_vector(7 downto 0);
+        start : in std_logic;
+        input_integer : in std_logic_vector(9 downto 0);
         zeros : in integer;
         output_bit: out std_logic;
         done: out std_logic
@@ -13,8 +14,8 @@ entity huffman_AC_Y is
 end huffman_AC_Y;
 
 architecture arch of huffman_AC_Y is 
-    type t_state is (count_req_bits,encode,outputting_bits);
-    signal state : t_state := count_req_bits;
+    type t_state is (idle,count_req_bits,encode,outputting_bits,sync);
+    signal state : t_state := idle;
 begin
 
 code_proc : process (clk)    
@@ -24,9 +25,14 @@ code_proc : process (clk)
 begin                 
 if rising_edge(clk) then
     case state is
-        when count_req_bits =>
+        when idle => 
             output_bit <= 'U';
             done <= '0';
+            if(start = '1') then
+                state <= count_req_bits;
+            end if;
+            
+        when count_req_bits =>
             for i in input_integer'length-1 downto 0 loop
                 if input_integer(i) = '1' then
                     size := i+1;
@@ -616,9 +622,13 @@ if rising_edge(clk) then
             end if;
             if size = 0 then
                 done <= '1';
-                state <= count_req_bits;
+                state <= sync;
             end if;
-
+            
+        when sync =>
+            done <= '0';
+            state <= idle;
+            
         end case;
     end if;
     end process code_proc;
