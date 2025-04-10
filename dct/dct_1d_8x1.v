@@ -12,10 +12,10 @@ module dct_1d_8x1 #(
     generate
         for (i = 0; i < 8; i = i + 1) begin : DCT_ROW
             wire [DATA_WIDTH*8-1:0] coeff_i;
-            // assign coeff_i = coeff_vector[i*DATA_WIDTH*8 +: DATA_WIDTH*8];  // 按行提取系数
+            assign coeff_i = coeff_vector[(7 - i)*DATA_WIDTH*8 +: DATA_WIDTH*8];  // 行翻转提取
 
-            assign coeff_i = coeff_vector[(7 - i)*DATA_WIDTH*8 +: DATA_WIDTH*8];
-
+            wire signed [DATA_WIDTH-1:0] dct_result_raw;
+            wire signed [DATA_WIDTH-1:0] dct_result_fixed;
 
             dct_8muladd #(
                 .DATA_WIDTH(DATA_WIDTH),
@@ -25,8 +25,13 @@ module dct_1d_8x1 #(
                 .reset_n(reset_n),
                 .data_in(data_in),
                 .coeff(coeff_i),
-                .data_out(dct_out[i*DATA_WIDTH +: DATA_WIDTH])
+                .data_out(dct_result_raw)
             );
+
+            // 对第 1/3/5/7 项做补码取负，其余保持原样
+            assign dct_result_fixed = (i % 2 == 1) ? -dct_result_raw : dct_result_raw;
+
+            assign dct_out[i*DATA_WIDTH +: DATA_WIDTH] = dct_result_fixed;
         end
     endgenerate
 

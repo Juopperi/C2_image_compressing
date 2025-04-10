@@ -39,8 +39,8 @@ module tb_dct_1d_8x1;
     integer i;
 
     initial begin
-        $readmemh("row_input_0.mem", input_vec);
-        $readmemh("row_output_0.mem", golden_vec);
+        $readmemh("row_input_5.mem", input_vec);
+        $readmemh("row_output_5.mem", golden_vec);
 
         // Flatten input_vec into data_in
         for (i = 0; i < 8; i = i + 1) begin
