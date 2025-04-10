@@ -156,6 +156,19 @@ compare_mem/fast:
 .PHONY : compare_mem/fast
 
 #=============================================================================
+# Target rules for targets named compare_1000
+
+# Build rule for target.
+compare_1000: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 compare_1000
+.PHONY : compare_1000
+
+# fast build rule for target.
+compare_1000/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compare_1000.dir/build.make CMakeFiles/compare_1000.dir/build
+.PHONY : compare_1000/fast
+
+#=============================================================================
 # Target rules for targets named fixed_full_intervalue
 
 # Build rule for target.
@@ -167,6 +180,43 @@ fixed_full_intervalue: cmake_check_build_system
 fixed_full_intervalue/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fixed_full_intervalue.dir/build.make CMakeFiles/fixed_full_intervalue.dir/build
 .PHONY : fixed_full_intervalue/fast
+
+#=============================================================================
+# Target rules for targets named gen_multi_inout
+
+# Build rule for target.
+gen_multi_inout: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gen_multi_inout
+.PHONY : gen_multi_inout
+
+# fast build rule for target.
+gen_multi_inout/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_multi_inout.dir/build.make CMakeFiles/gen_multi_inout.dir/build
+.PHONY : gen_multi_inout/fast
+
+compare_1000.o: compare_1000.cpp.o
+.PHONY : compare_1000.o
+
+# target to build an object file
+compare_1000.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compare_1000.dir/build.make CMakeFiles/compare_1000.dir/compare_1000.cpp.o
+.PHONY : compare_1000.cpp.o
+
+compare_1000.i: compare_1000.cpp.i
+.PHONY : compare_1000.i
+
+# target to preprocess a source file
+compare_1000.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compare_1000.dir/build.make CMakeFiles/compare_1000.dir/compare_1000.cpp.i
+.PHONY : compare_1000.cpp.i
+
+compare_1000.s: compare_1000.cpp.s
+.PHONY : compare_1000.s
+
+# target to generate assembly for a file
+compare_1000.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compare_1000.dir/build.make CMakeFiles/compare_1000.dir/compare_1000.cpp.s
+.PHONY : compare_1000.cpp.s
 
 compare_mem.o: compare_mem.cpp.o
 .PHONY : compare_mem.o
@@ -264,6 +314,30 @@ float_intervalue_generator.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/float_intervalue_generator.dir/build.make CMakeFiles/float_intervalue_generator.dir/float_intervalue_generator.cpp.s
 .PHONY : float_intervalue_generator.cpp.s
 
+gen_multi_inout.o: gen_multi_inout.cpp.o
+.PHONY : gen_multi_inout.o
+
+# target to build an object file
+gen_multi_inout.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_multi_inout.dir/build.make CMakeFiles/gen_multi_inout.dir/gen_multi_inout.cpp.o
+.PHONY : gen_multi_inout.cpp.o
+
+gen_multi_inout.i: gen_multi_inout.cpp.i
+.PHONY : gen_multi_inout.i
+
+# target to preprocess a source file
+gen_multi_inout.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_multi_inout.dir/build.make CMakeFiles/gen_multi_inout.dir/gen_multi_inout.cpp.i
+.PHONY : gen_multi_inout.cpp.i
+
+gen_multi_inout.s: gen_multi_inout.cpp.s
+.PHONY : gen_multi_inout.s
+
+# target to generate assembly for a file
+gen_multi_inout.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_multi_inout.dir/build.make CMakeFiles/gen_multi_inout.dir/gen_multi_inout.cpp.s
+.PHONY : gen_multi_inout.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -272,10 +346,15 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... compare_1000"
 	@echo "... compare_mem"
 	@echo "... fixed_full_intervalue"
 	@echo "... fixed_intervalue_generator"
 	@echo "... float_intervalue_generator"
+	@echo "... gen_multi_inout"
+	@echo "... compare_1000.o"
+	@echo "... compare_1000.i"
+	@echo "... compare_1000.s"
 	@echo "... compare_mem.o"
 	@echo "... compare_mem.i"
 	@echo "... compare_mem.s"
@@ -288,6 +367,9 @@ help:
 	@echo "... float_intervalue_generator.o"
 	@echo "... float_intervalue_generator.i"
 	@echo "... float_intervalue_generator.s"
+	@echo "... gen_multi_inout.o"
+	@echo "... gen_multi_inout.i"
+	@echo "... gen_multi_inout.s"
 .PHONY : help
 
 
