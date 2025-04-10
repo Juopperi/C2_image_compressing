@@ -3,7 +3,7 @@ import sys
 def merge_files(output_file, prefix="dct_2d_out_group", total_groups=1000):
     with open(output_file, 'w') as fout:
         for i in range(total_groups):
-            filename = f"{prefix}{i}.mem"
+            filename = f"./sim/{prefix}{i}.mem"
             try:
                 with open(filename, 'r') as fin:
                     for line in fin:
