@@ -1,33 +1,36 @@
 `timescale 1ns / 1ps
 
-module tb_dct_2d_8x8;
+module tb_dct_1d_8x8;
 
     parameter DATA_WIDTH = 32;
-    parameter DATA_DEPTH = 8;
-    localparam TOTAL_BITS = DATA_WIDTH * DATA_DEPTH * DATA_DEPTH;
+    localparam TOTAL_BITS = DATA_WIDTH * 64;
 
     reg clk;
     reg reset_n;
-    reg  [TOTAL_BITS-1:0] data_in_matrix;
-    wire [TOTAL_BITS-1:0] data_out_matrix;
 
-    // 实例化 DUT
-    dct_2d_8x8 #(
-        .DATA_WIDTH(DATA_WIDTH),
-        .DATA_DEPTH(DATA_DEPTH)
+    // 系数文件包含（你已经用 .vh 定义了它）
+    `include "dct_coeffs_1d_8x8.vh"
+
+    reg  [TOTAL_BITS-1:0] data_in;
+    wire [TOTAL_BITS-1:0] dct_out;
+
+    // DUT 实例
+    dct_1d_8x8 #(
+        .DATA_WIDTH(DATA_WIDTH)
     ) dut (
         .clk(clk),
         .reset_n(reset_n),
-        .data_in_matrix(data_in_matrix),
-        .data_out_matrix(data_out_matrix)
+        .data_in(data_in),
+        .coeff_vector(dct_coeffs),
+        .dct_out(dct_out)
     );
 
     // 时钟生成
     initial clk = 0;
     always #5 clk = ~clk;  // 100MHz
 
-    // 内存阵列
-    reg [DATA_WIDTH-1:0] input_mem  [0:63];
+    // 输入输出内存
+    reg [DATA_WIDTH-1:0] input_mem [0:63];
     reg [DATA_WIDTH-1:0] golden_mem [0:63];
     reg [DATA_WIDTH-1:0] out_mem    [0:63];
 
@@ -36,15 +39,15 @@ module tb_dct_2d_8x8;
     localparam signed [31:0] error_threshold = 32'sh00008000;  // Q16.16 中的 0.5
 
     initial begin
-        $display("==== TB: dct_2d_8x8 ====");
+        $display("==== TB: dct_1d_8x8 ====");
 
-        // 读取输入和golden数据
+        // 加载输入和期望输出
         $readmemh("input_matrix.mem", input_mem);
-        $readmemh("final_dct_result.mem", golden_mem);
+        $readmemh("row_dct_intermediate.mem", golden_mem);
 
-        // 数据展开（64×32bit -> data_in_matrix）
+        // 展平输入为 2048-bit 总线
         for (i = 0; i < 64; i = i + 1) begin
-            data_in_matrix[i*DATA_WIDTH +: DATA_WIDTH] = input_mem[i];
+            data_in[i*DATA_WIDTH +: DATA_WIDTH] = input_mem[i];
         end
 
         // 复位阶段
@@ -52,18 +55,18 @@ module tb_dct_2d_8x8;
         #20;
         reset_n = 1;
 
-        // 等待逻辑稳定（流水结构通常等待多个周期）
-        #180;
+        // 等待输出稳定（组合或 1~2 周期同步）
+        #100;
 
-        // 抽取输出
+        // 抽取输出数据
         for (i = 0; i < 64; i = i + 1) begin
-            out_mem[i] = data_out_matrix[i*DATA_WIDTH +: DATA_WIDTH];
+            out_mem[i] = dct_out[i*DATA_WIDTH +: DATA_WIDTH];
         end
 
-        // 输出保存
-        $writememh("dct_2d_out_dump.txt", out_mem);
+        // 输出 dump 文件
+        $writememh("dct_1d_8x8_out_dump.txt", out_mem);
 
-        // 比较结果
+        // 比对输出与 golden
         $display("==== Comparing output with golden (tolerance = 0.5 Q16.16) ====");
         for (i = 0; i < 64; i = i + 1) begin
             diff = $signed(out_mem[i]) - $signed(golden_mem[i]);
@@ -78,7 +81,7 @@ module tb_dct_2d_8x8;
             end
         end
 
-        $display("==== Test Completed ====");
+        $display("==== Test completed ====");
         #10000;
         $finish;
     end

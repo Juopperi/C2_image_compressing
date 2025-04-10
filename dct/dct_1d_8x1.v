@@ -30,6 +30,7 @@ module dct_1d_8x1 #(
 
             // 对第 1/3/5/7 项做补码取负，其余保持原样
             assign dct_result_fixed = (i % 2 == 1) ? -dct_result_raw : dct_result_raw;
+            // assign dct_result_fixed = dct_result_raw;
 
             assign dct_out[i*DATA_WIDTH +: DATA_WIDTH] = dct_result_fixed;
         end

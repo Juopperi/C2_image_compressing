@@ -8,7 +8,7 @@ module dct_2d_8x8 #(
     output wire [DATA_WIDTH*DATA_DEPTH*DATA_DEPTH-1:0] data_out_matrix     // 64个 DCT 输出
 );
 
-    localparam TOTAL_WIDTH = DATA_WIDTH * DATA_DEPTH; // = 256
+    localparam TOTAL_WIDTH = DATA_WIDTH * DATA_DEPTH;
 
     // --------- 包含定义的系数 ---------
     `include "dct_coeffs.vh"
@@ -26,7 +26,7 @@ module dct_2d_8x8 #(
         .dct_out(row_dct_flat)
     );
 
-    // --------- 矩阵转置 (8x8) ---------
+    // --------- 中间转置 (8x8) ---------
     wire [DATA_WIDTH*64-1:0] col_data_flat;
 
     genvar i, j;
@@ -40,7 +40,7 @@ module dct_2d_8x8 #(
     endgenerate
 
     // --------- 列方向 DCT ---------
-    wire [DATA_WIDTH*64-1:0] final_dct_out;
+    wire [DATA_WIDTH*64-1:0] final_dct_transposed;
 
     dct_1d_8x8 #(
         .DATA_WIDTH(DATA_WIDTH)
@@ -49,9 +49,18 @@ module dct_2d_8x8 #(
         .reset_n(reset_n),
         .data_in(col_data_flat),
         .coeff_vector(dct_coeffs),
-        .dct_out(final_dct_out)
+        .dct_out(final_dct_transposed)
     );
 
-    assign data_out_matrix = final_dct_out;
+    // --------- 最终转置回原格式 (8x8) ---------
+    genvar m, n;
+    generate
+        for (m = 0; m < 8; m = m + 1) begin : FINAL_ROW
+            for (n = 0; n < 8; n = n + 1) begin : FINAL_COL
+                assign data_out_matrix[m*8*DATA_WIDTH + n*DATA_WIDTH +: DATA_WIDTH] =
+                       final_dct_transposed[n*8*DATA_WIDTH + m*DATA_WIDTH +: DATA_WIDTH];
+            end
+        end
+    endgenerate
 
 endmodule
