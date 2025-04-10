@@ -1,23 +1,43 @@
-def mem_to_vh(mem_file, macro_name, output_vh_file):
+def mem_to_wire(mem_file, wire_name, output_file):
+    # 1) 读入 .mem 文件 (64 行)
     with open(mem_file, 'r') as f:
-        lines = [line.strip() for line in f if line.strip()]
+        lines = [l.strip() for l in f if l.strip()]
 
-    with open(output_vh_file, 'w') as f:
-        f.write(f"`define {macro_name} {{\n")
+    if len(lines) != 64:
+        print(f"[Warning] Expected 64 lines in {mem_file}, got {len(lines)}.")
+    
+    # 2) 将 64 行分成 8 组，每组 8 行(对应 row)
+    #    row0 = lines[0..7], row1 = lines[8..15], ..., row7 = lines[56..63]
+    row_chunks = [lines[i*8:(i+1)*8] for i in range(8)]
+    
+    # 3) 逆序排列 => row7 在前, row6, ..., row0 在最后
+    reordered = []
+    for row_idx in reversed(range(8)):
+        reordered.extend(row_chunks[row_idx])
 
-        for idx, val in enumerate(lines):
-            val_clean = val.lower().replace("0x", "")  # remove any 0x prefix
-            val_hex = val_clean.zfill(8).upper()       # ensure 8 hex digits
-
+    # 4) 输出为 Verilog wire 形式
+    with open(output_file, 'w') as f:
+        f.write(f"wire [32*64-1:0] {wire_name} = {{\n")
+        for idx, val in enumerate(reordered):
+            # 清理并补足 hex
+            val_clean = val.lower().replace("0x", "")
+            val_hex   = val_clean.zfill(8).upper()  # 8 位16进制
+            
+            # 每个条目写成 32'hXXXX_XXXX
             f.write(f"    32'h{val_hex}")
-            if idx != len(lines) - 1:
-                f.write(",")
-            f.write("\n")
+            # 中间加逗号，最后一个不加
+            if idx != len(reordered) - 1:
+                f.write(",\n")
+            else:
+                f.write("\n")
+        f.write("};\n")
 
-        f.write("}\n")
+    print(f"[OK] Generated {output_file} with 64 lines in descending row order.")
 
-    print(f"Macro `{macro_name}` written to {output_vh_file} with {len(lines)} values.")
+def main():
+    # 示例调用：将 coeff_table.mem 转为 dct_coeffs.v
+    # wire 名字设为 dct_coeffs
+    mem_to_wire("coeff_table.mem", "dct_coeffs", "dct_coeffs.v")
 
-# 示例用法
 if __name__ == "__main__":
-    mem_to_vh("./build/coeff_table.mem", "DCT_COEFFS_8x8", "dct_coeffs.vh")
+    main()

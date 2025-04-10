@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/software_verification_tools/dct_coeff_generator
+# Install script for directory: /mnt/e/CODE/DAT096/C2_image_compressing/dct/utils/dct_coeff_generator
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/software_verification_tools/dct_coeff_generator/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/mnt/e/CODE/DAT096/C2_image_compressing/dct/utils/dct_coeff_generator/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

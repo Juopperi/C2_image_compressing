@@ -11,7 +11,7 @@ module dct_8muladd #
     output reg  [DATA_WIDTH-1:0] data_out
 );
 
-    integer i;
+    // integer i;
 
     wire signed [DATA_WIDTH-1:0] data_array  [0:DATA_DEPTH-1];
     wire signed [DATA_WIDTH-1:0] coeff_array [0:DATA_DEPTH-1];
@@ -40,23 +40,47 @@ module dct_8muladd #
         end
     endgenerate
 
-    // 实例化加法器链
+    // -------- 树状加法器结构 --------
+    // 中间结果临时线网
+    wire signed [DATA_WIDTH-1:0] sum_stage [0:DATA_DEPTH-2];  // 7 个中间节点
+    genvar i;
+
+    // Level 1: 4 pairwise additions
     generate
-        for (idx = 0; idx < DATA_DEPTH; idx = idx + 1) begin : add_stage
+        for (i = 0; i < 4; i = i + 1) begin : add_level1
             fixed_adder add_inst (
-                .a       (add_chain[idx]),
-                .b       (mult_out[idx]),
-                .sum_out (add_chain[idx+1])
+                .a(mult_out[2*i]),
+                .b(mult_out[2*i + 1]),
+                .sum_out(sum_stage[i])
             );
         end
     endgenerate
 
-    // 输出最终结果
+    // Level 2: 2 additions
+    generate
+        for (i = 0; i < 2; i = i + 1) begin : add_level2
+            fixed_adder add_inst (
+                .a(sum_stage[2*i]),
+                .b(sum_stage[2*i + 1]),
+                .sum_out(sum_stage[4 + i])
+            );
+        end
+    endgenerate
+
+    // Level 3: final addition
+    fixed_adder add_final (
+        .a(sum_stage[4]),
+        .b(sum_stage[5]),
+        .sum_out(sum_stage[6])
+    );
+
+
+    // 输出最终值
     always @(posedge clk or negedge reset_n) begin
         if (!reset_n)
             data_out <= 0;
         else
-            data_out <= add_chain[DATA_DEPTH];
+            data_out <= sum_stage[6];
     end
 
 endmodule

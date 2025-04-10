@@ -12,7 +12,10 @@ module dct_1d_8x1 #(
     generate
         for (i = 0; i < 8; i = i + 1) begin : DCT_ROW
             wire [DATA_WIDTH*8-1:0] coeff_i;
-            assign coeff_i = coeff_vector[i*DATA_WIDTH*8 +: DATA_WIDTH*8];  // 按行提取系数
+            // assign coeff_i = coeff_vector[i*DATA_WIDTH*8 +: DATA_WIDTH*8];  // 按行提取系数
+
+            assign coeff_i = coeff_vector[(7 - i)*DATA_WIDTH*8 +: DATA_WIDTH*8];
+
 
             dct_8muladd #(
                 .DATA_WIDTH(DATA_WIDTH),
