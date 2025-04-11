@@ -4,94 +4,185 @@ use ieee.std_logic_1164.all;
 entity huff_container is
 	port(
 		clk : in std_logic;
-        	reset : in std_logic;
-		test1 : in std_logic_vector(511 downto 0);
-		test2 : out std_logic_vector(31 downto 0)-- this is 32 bits, but output_integer is 16 bits
-		--add signal that links with zigzag part to ensure that Huffman can begin (when zig zag is done)
-		--add signal to notify file-writing part that the state is 'store'
-		--add idling state at the beginning that waits for a signal from the file-writing part
-		--the coefficient's value should be concatenated
+        reset : in std_logic;
+		Y : in std_logic_vector(1023 downto 0);
+		Cb : in std_logic_vector(1023 downto 0);
+		Cr : in std_logic_vector(1023 downto 0);
+		data : out std_logic;
+		data_valid : out std_logic;
+		finished : out std_logic	
 	);
 end entity huff_container;
 
 architecture arch of huff_container is 
     component huffman_AC_Y is
         port(   
-            input_integer : in std_logic_vector(7 downto 0);
+            clk : in std_logic;
+            start : in std_logic;
+            input_integer : in std_logic_vector(9 downto 0);
             zeros : in integer;
-            output_integer: out std_logic_vector(15 downto 0);
-            length : out integer;
-            ready_next : out std_logic
+            output_bit: out std_logic;
+            done : out std_logic
         );
     end component huffman_AC_Y;
         
-        type t_State is (count_zero,load,store);
-        signal State : t_State;
+    component huffman_AC_CbCr is
+        port(   
+            clk : in std_logic;
+            start : in std_logic;
+            input_integer : in std_logic_vector(9 downto 0);
+            zeros : in integer;
+            output_bit: out std_logic;
+            done : out std_logic
+        );
+    end component huffman_AC_CbCr;
+    
+   component huffman_DC_Y is
+        port(   
+            clk : in std_logic;
+            start : in std_logic;
+            input_integer : in std_logic_vector(9 downto 0);
+            output_bit: out std_logic;
+            done : out std_logic
+        );
+    end component huffman_DC_Y;
+        
+    component huffman_DC_CbCr is
+        port(   
+            clk : in std_logic;
+            start : in std_logic;
+            input_integer : in std_logic_vector(9 downto 0);
+            output_bit: out std_logic;
+            done : out std_logic
+        );
+    end component huffman_DC_CbCr;
 
-        signal input_integer : std_logic_vector(7 downto 0) := (others => '0');
-        signal output_integer : std_logic_vector(15 downto 0);
-        signal ready_next : std_logic;
-        signal length : integer := 0; 
+        type t_State is (idle,DC_Y,AC_Y,DC_CB,AC_CB,DC_CR,AC_CR);
+        signal currentState : t_State := DC_Y;
+
+        signal input_integer : std_logic_vector(9 downto 0) := (others => '0');
+        
+        signal start_DC_Y : std_logic;
+        signal start_AC_Y : std_logic;
+        signal start_DC_CbCr : std_logic;
+        signal start_AC_CbCr : std_logic;    
+    
+        signal output_AC_Y : std_logic;
+        signal output_AC_CbCr : std_logic;
+        signal output_DC_Y : std_logic;
+        signal output_DC_CbCr : std_logic;
+
+        signal done_AC_Y : std_logic;
+        signal done_AC_CbCr : std_logic;
+        signal done_DC_Y : std_logic;
+        signal done_DC_CbCr : std_logic;
+
+
+        signal output_bit : std_logic;
         signal zeros : integer := 0;
 
     begin
         
-        test: component huffman_AC_Y
+        comp_AC_Y: component huffman_AC_Y
             port map(
+                clk => clk,
+                start => start_AC_Y,
                 input_integer => input_integer,
-                zeros => zeros,
-                output_integer => output_integer,
-                length => length,
-                ready_next => ready_next
+                zeros => zeros,               
+                output_bit => output_AC_Y,
+                done => done_AC_Y
+            );
+        
+        comp_AC_CbCr: component huffman_AC_CbCr
+            port map(
+                clk => clk,
+                start => start_AC_CbCr,
+                input_integer => input_integer,
+                zeros => zeros,               
+                output_bit => output_AC_CbCr,
+                done => done_AC_CbCr
+            );
+            
+        comp_DC_Y: component huffman_DC_Y
+            port map(
+                clk => clk,
+                start => start_DC_Y,
+                input_integer => input_integer,             
+                output_bit => output_DC_Y,
+                done => done_DC_Y
+            );
+            
+        comp_DC_CbCr: component huffman_DC_CbCr
+            port map(
+                clk => clk,
+                start => start_DC_CbCr,
+                input_integer => input_integer,             
+                output_bit => output_DC_CbCr,
+                done => done_DC_CbCr
             );
 
         proc : process(clk)
-        variable index : natural range 0 to 512 := 0;
-        variable max : natural range 0 to 512 := 7;
-        variable min : natural range 0 to 512 := 0;
+        variable max : integer range 0 to 1024 := 1001;
+        variable min : integer range -32 to 1024 := 992;
+        variable temp : std_logic_vector(9 downto 0);
         begin
-	    if rising_edge(clk) then
-            	if reset = '1' then
-                    index := 0;
-                    max := 7;
-                    min := 0;
+		if rising_edge(clk) then
+           case currentState is 
+            when idle =>
+                max := 1001;
+                min := 992;
+
+            when DC_Y =>
+                input_integer <= Y(1017 downto 1008);
+                output_bit <= output_DC_Y;
+                start_DC_Y <= '1';
+                if done_DC_Y = '1' then
+                    currentState <= AC_Y;
+                    start_DC_Y <= '0';
+                end if;
+
+            when AC_Y =>
+                temp := Y(max downto min);
+                if Y(max downto min) = "0000000000" then
+                    start_AC_Y <= '0';
+                    zeros <= zeros + 1;
+                    max := max - 16;
+                    min := min - 16;
+                    output_bit <= 'U';
                 else 
-                    case state is 
-                        when count_zero =>
-                            if test1(max downto min) = B"0000_0000" then
-                                max := max + 8;
-                                min := min + 8; 
-                                zeros <= zeros + 1;				
-                            else
-			        if max=511 then
-  				    input_integer <=end of block word
-				    state <= store;
-			        elsif zeros=16
-			            input_integer <= zero run-length word
-				    zeros <= zeros -16;
-				    state <= store;	
-		    	        end if; 
-                                state <= load;
-                            end if;
-                        when load =>
-                            input_integer <= test1(max downto min);
-                            state <= store;
-                        when store =>
-                            for k in 0 to length-1 loop
-                                test2(index) <= output_integer(k);
-                                index := index + 1;
-                            end loop;
-			    --There is an issue with using a 'for' loop. With it, I cannot receive individual bits, since I need some synchronizing signal to receive each bit. To fix that, I would remove the loop and
-				--leave the two lines inside as they are; that way, one bit would be sent every clock period, and the signal that links with zigzag could update constantly so that as soon as the first
-				--coefficient is available, it can be coded and sent to the file-writing part
-				--The other alternative is to send the full code at once, but that would be more complicated since the file has to be written in bytes
-                            zeros <= 0;
-                            max := max + 8;
-                            min := min + 8;
-                            state <= count_zero; 
-                    end case;  
-                end if;         
-   	    end if;
+                    input_integer <= Y(max downto min);
+                    start_AC_Y <= '1';
+                    output_bit <= output_AC_Y;
+                end if;
+                
+                if done_AC_Y = '1' then
+                    start_AC_Y <= '0';
+                    zeros <= 0;
+                    max := max - 16;
+                    min := min - 16;
+                end if;
+
+                if min < 0 then
+                    max := 1007;
+                    min := 998;
+                    currentState <= DC_Cb;
+                end if;
+
+            when others => max:= 0;
+            end case;
+   		end if;
         end process proc;
+
+        validate : process(clk)
+        begin
+        if rising_edge(clk) then
+            if(output_bit = '0' or output_bit = '1') then
+                data_valid <= '1';
+                data <= output_bit;
+            else
+                data_valid <= '0';
+            end if;
+        end if;
+        end process validate;
 
 end architecture arch;
