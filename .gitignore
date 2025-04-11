@@ -55,4 +55,8 @@ huffman/*.exe
 /YCbCr_conversion/workContainer
 /.vscode
 
+template_file-read/
+
+
+
 /generate_images/

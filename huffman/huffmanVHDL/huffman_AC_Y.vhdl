@@ -21,7 +21,7 @@ code_proc : process (input_integer)
     variable test : integer range 0 to 170 := 0;
 begin                 
     
-    test := to_integer(unsigned(input_integer));
+    test := to_integer(unsigned(input_integer));--this is the value of the coefficient, but this value should be the number of bits the coefficient has in binary form
     case zeros is
         when 0 =>
             case test is 
