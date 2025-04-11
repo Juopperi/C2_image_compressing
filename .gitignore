@@ -60,3 +60,6 @@ template_file-read/
 
 
 /generate_images/
+**/CMakeFiles/
+**/CMakeCache.txt
+**/sim/
