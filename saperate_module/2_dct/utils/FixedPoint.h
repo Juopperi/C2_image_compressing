@@ -15,17 +15,23 @@ private:
     static constexpr T scale = static_cast<T>(1) << fracBits;
 
 public:
+    // 默认构造
+    FixedPoint() : value(0) {}
 
-	FixedPoint() : value(0) {}
+    // 整数构造
+    FixedPoint(int integer) : value(static_cast<T>(integer) * scale) {}
 
-	FixedPoint(int integer) : value(static_cast<T>(integer) * scale) {}
+    // 浮点构造（带 round 控制）
+    FixedPoint(float f, bool round = true) {
+        value = round ? static_cast<T>(std::round(f * scale)) : static_cast<T>(f * scale);
+    }
 
-	FixedPoint(float f) : value(static_cast<T>(std::round(f * scale))) {}
+    FixedPoint(double d, bool round = true) {
+        value = round ? static_cast<T>(std::round(d * scale)) : static_cast<T>(d * scale);
+    }
 
-	FixedPoint(double d) : value(static_cast<T>(std::round(d * scale))) {}
-
-	FixedPoint(const FixedPoint& other) = default;
-
+    // 拷贝构造
+    FixedPoint(const FixedPoint& other) = default;
 
     // 从原始值构造（静态工厂函数）
     static FixedPoint fromRaw(T rawVal) {
@@ -59,7 +65,7 @@ public:
         return FixedPoint::fromRaw(value - other.value);
     }
 
-    // 乘法
+    // 乘法（带乘后右移 fracBits）
     FixedPoint operator*(const FixedPoint& other) const {
         using WideType = typename std::conditional<sizeof(T) <= 2, int32_t, int64_t>::type;
         WideType result = static_cast<WideType>(value) * static_cast<WideType>(other.value);
@@ -75,7 +81,7 @@ public:
     bool operator==(const FixedPoint& other) const { return value == other.value; }
     bool operator!=(const FixedPoint& other) const { return value != other.value; }
 
-    // 输出支持
+    // 输出
     friend std::ostream& operator<<(std::ostream& os, const FixedPoint& fp) {
         os << fp.toFloat();
         return os;
