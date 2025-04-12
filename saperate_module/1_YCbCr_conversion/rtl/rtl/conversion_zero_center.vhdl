@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 
-entity conversion is 
+entity conversion_zero is 
     generic(
         scale : integer := 16;
         fixed_point_length : integer := 32
@@ -17,9 +17,9 @@ entity conversion is
         output_Cb: out std_logic_vector(fixed_point_length-1 downto 0);
         output_Cr: out std_logic_vector(fixed_point_length-1 downto 0)
     );
-end conversion;
+end conversion_zero;
 
-architecture conversion_arch of conversion is
+architecture conversion_zero_arch of conversion_zero is
     constant n299 : integer := integer(0.299 * 2**scale);
     constant n587 : integer := integer(0.587 * 2**scale); 
     constant n144 : integer := integer(0.114 * 2**scale); 
@@ -48,7 +48,7 @@ begin
     output_Cb <= std_logic_vector(to_unsigned(Cb,fixed_point_length));
     output_Cr <= std_logic_vector(to_unsigned(Cr,fixed_point_length));
     end process;
-end conversion_arch;
+end conversion_zero_arch;
 
 
 

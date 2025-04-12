@@ -34,7 +34,7 @@ architecture arch of conversionContainerNew is
         );
     end component conversion;
     
-    type t_State is (idle,conversion);
+    type t_State is (idle, s_conversion);
     signal State : t_State := idle;
 
     signal input_R : std_logic_vector(7 downto 0);
@@ -67,12 +67,12 @@ begin
         if rising_edge(clk) then
             case State is 
                 when idle =>
-                    index = 0;
+                    index := 0;
                     if start = '1' then
-                        State <= conversion;
+                        State <= s_conversion;
                     end if;
 
-                when conversion =>
+                when s_conversion =>
                     input_R <= R((index+1)*8-1 downto index*8);
                     input_G <= G((index+1)*8-1 downto index*8);
                     input_B <= B((index+1)*8-1 downto index*8);

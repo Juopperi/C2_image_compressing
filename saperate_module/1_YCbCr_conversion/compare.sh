@@ -1,39 +1,40 @@
 #!/bin/bash
 
-set -e  # 出错即退出
+set -e
 
-# 检查参数
 if [ $# -ne 1 ]; then
-    echo "Usage: bash compare_result.sh <output_filename>"
+    echo "Usage: bash compare.sh <Y|Cb|Cr>"
     exit 1
 fi
 
 OUTNAME=$1
-EXPECTED_FILE="expected_${OUTNAME}.mem"
-ACTUAL_FILE="actual_${OUTNAME}.mem"
 
-cp "./tb/saved_output/${ACTUAL_FILE}" ./utils/build/
+EXPECTED_FILE="expected_${OUTNAME}_output.mem"
+ACTUAL_FILE="actual_${OUTNAME}_output.mem"
+
+echo ""
+echo "🔍 Comparing files: $EXPECTED_FILE vs $ACTUAL_FILE"
+
+# 拷贝到 build 路径
 cp "./tb/saved_output/${EXPECTED_FILE}" ./utils/build/
+cp "./tb/saved_output/${ACTUAL_FILE}" ./utils/build/
 
-echo "🔍 Comparing files: $EXPECTED_FILE  vs  $ACTUAL_FILE"
+cd ./utils/build || { echo "❌ Failed to enter ./utils/build"; exit 1; }
 
-# 进入 utils 目录
-cd ./utils/build || { echo "❌ Failed to enter ./utils"; exit 1; }
+# 可选构建步骤
+rm -f ./CMakeCache.txt
+cmake .. > /dev/null
+make > /dev/null
 
-rm ./CMakeCache.txt
-cmake ..
-make
-
-# 检查比较工具是否存在
 if [ ! -f ./compare_1000 ]; then
-    echo "❌ compare_1000 not found in ./utils//build"
+    echo "❌ compare_1000 not found in ./utils/build"
     exit 1
 fi
 
-# 运行比较
-echo "⚖️  Running comparison: ./compare_1000 $EXPECTED_FILE $ACTUAL_FILE"
+echo "⚖️  Running: ./compare_1000 $EXPECTED_FILE $ACTUAL_FILE"
 ./compare_1000 "$EXPECTED_FILE" "$ACTUAL_FILE"
 
-mv *.csv ../../analysis/result
-cd ..
-echo "✅ Comparison finished."
+mv *.csv ../../analysis/result/
+
+cd - > /dev/null
+echo "✅ $OUTNAME comparison complete."

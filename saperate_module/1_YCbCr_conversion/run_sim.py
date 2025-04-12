@@ -3,14 +3,16 @@ import shutil
 import subprocess
 import sys
 
+testbench_name = "tb_rgb2ycbcr_container"
+
 # -----------------------------
 # 解析参数
 # -----------------------------
 if len(sys.argv) < 2:
-    print("Usage: python main.py <output_filename> [gen]")
+    print("Usage: python main.py <set count> [gen]")
     sys.exit(1)
 
-output_filename = sys.argv[1]
+set_count = sys.argv[1]
 should_generate = len(sys.argv) > 2 and sys.argv[2].lower() == "gen"
 
 # -----------------------------
@@ -18,16 +20,21 @@ should_generate = len(sys.argv) > 2 and sys.argv[2].lower() == "gen"
 # -----------------------------
 search_dirs = [
     "rtl",
-    "tb/dct_2d_8x8",
+    "tb",
     "../fixed_point"
 ]
 
 valid_extensions = {'.v', '.sv', '.vhd', '.vhdl'}
 output_file = "simulate.ps1"
-testbench_name = "tb_dct_2d_8x8_multi"
+
 
 # -----------------------------
-# 生成 simulate.ps1 内容
+# 检查是否启用 GUI 模式
+# -----------------------------
+gui_mode = any(arg.lower() in {"gui", "-g", "--gui"} for arg in sys.argv)
+
+# -----------------------------
+# 生成 simulate.ps1 内容（含 +acc / gui 控制）
 # -----------------------------
 print("\n📦 Generating simulation script...")
 
@@ -44,12 +51,20 @@ for folder in search_dirs:
                 elif ext in {'.vhd', '.vhdl'}:
                     vlog_lines.append(f'vcom "../../{rel_path}"')
 
+vsim_cmd = f'vsim {"-c" if not gui_mode else ""} -voptargs=+acc work.{testbench_name}'
+
+if gui_mode:
+    vsim_cmd += ' -do "view wave; view structure; view signals;"'
+else:
+    vsim_cmd += ' -do "run 200 us; quit -f"'
+
 do_script = [
     "vlib work",
     "vmap work work",
     *vlog_lines,
-    f'vsim -c work.{testbench_name} -do "run 200 us; quit -f"'
+    vsim_cmd
 ]
+
 
 # Ensure the target directory exists
 
@@ -74,16 +89,16 @@ if should_generate:
     print("\n⚙️  Running: wsl bash gen_put_vector.sh ...")
 
     try:
-        max_val = int(output_filename)
+        max_val = int(set_count)
         min_val = -(max_val - 1)
         print(f"🔢 Computed range: min = {min_val}, max = {max_val}")
     except ValueError:
-        print("❌ output_filename must be an integer (e.g., 4096)")
+        print("❌ set_count must be an integer (e.g., 4096)")
         sys.exit(1)
 
     try:
         result = subprocess.run(
-            ["wsl", "bash", "gen_put_vector.sh", str(min_val), str(max_val)],
+            ["wsl", "bash", "gen_put_vector.sh", f"{set_count}"],
             check=True,
             capture_output=True,
             text=True,
@@ -125,17 +140,12 @@ except subprocess.CalledProcessError as e:
     print(e)
     sys.exit(1)
 
-# -----------------------------
-# 合并结果文件
-# -----------------------------
-os.chdir("../")  # 回到项目根目录
 
-cmd = ["python3", "merge.py", output_filename]
-print(f"\n📊 Running merge.py with output filename: {output_filename}")
-try:
-    result = subprocess.run(cmd, check=True, capture_output=True, text=True, encoding='utf-8')
-    print("✅ merge.py output:\n", result.stdout)
-except subprocess.CalledProcessError as e:
-    print("❌ merge.py failed:")
-    print(e.stderr)
-    sys.exit(1)
+import subprocess
+import glob
+import shutil
+import os
+
+for filepath in glob.glob("*output*.mem"):
+    shutil.copy(filepath, "../saved_output")
+

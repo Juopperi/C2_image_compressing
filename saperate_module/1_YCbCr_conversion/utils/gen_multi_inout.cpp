@@ -27,12 +27,12 @@ int main(int argc, char* argv[]) {
 
     int num_samples = std::stoi(argv[1]);
 
-    std::ofstream fin_r("R_input.mem");
-    std::ofstream fin_g("G_input.mem");
-    std::ofstream fin_b("B_input.mem");
-    std::ofstream fout_y("Y_output.mem");
-    std::ofstream fout_cb("Cb_output.mem");
-    std::ofstream fout_cr("Cr_output.mem");
+    std::ofstream fin_r("input_R.mem");
+    std::ofstream fin_g("input_G.mem");
+    std::ofstream fin_b("input_B.mem");
+    std::ofstream fout_y("expected_Y_output.mem");
+    std::ofstream fout_cb("expected_Cb_output.mem");
+    std::ofstream fout_cr("expected_Cr_output.mem");
 
     std::random_device rd;
     std::mt19937 gen(rd());

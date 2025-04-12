@@ -1,42 +1,64 @@
 #!/bin/bash
 
 set -e  # 出错时退出
-echo "🚀 Starting test vector generation..."
 
-# 读取输入参数
-if [ $# -ne 2 ]; then
-    echo "❌ Usage: $0 <min_value> <max_value>"
+echo -e "\n🚀 Starting test vector generation..."
+
+# -------------------------------
+# 参数检查
+# -------------------------------
+if [ $# -ne 1 ]; then
+    echo "❌ Usage: $0 <set number>"
     exit 1
 fi
 
-MIN=$1
-MAX=$2
+SET_COUNT="$1"
 
-# 创建工作目录
-echo "📁 Creating simulation work directory: ./tb/sim/work"
-mkdir -p ./tb/sim/work
+# -------------------------------
+# 路径配置
+# -------------------------------
+SIM_WORK_DIR="./tb/sim/work"
+BUILD_DIR="./utils/build"
+OUTPUT_DIR="./tb/sim"
 
-# 进入构建目录
-echo "🔧 Entering build directory: ./utils/build"
-cd ./utils/build
+# -------------------------------
+# 创建仿真工作目录
+# -------------------------------
+echo "📁 Ensuring simulation work directory exists: $SIM_WORK_DIR"
+mkdir -p "$SIM_WORK_DIR"
 
-# 编译项目
-echo "🔨 Running cmake .."
-rm ./CMakeCache.txt
-cmake ..
+# -------------------------------
+# 进入构建目录并构建
+# -------------------------------
+if [ ! -d "$BUILD_DIR" ]; then
+    echo "❌ Build directory '$BUILD_DIR' does not exist."
+    exit 1
+fi
+
+echo "🔧 Entering build directory: $BUILD_DIR"
+cd "$BUILD_DIR"
+
+echo "🧹 Cleaning CMake cache"
+rm -f CMakeCache.txt
+
+echo "⚙️  Configuring with cmake .."
+cmake .. > /dev/null
 
 echo "🧱 Building project with make"
-make
+make -sj
 
+# -------------------------------
 # 执行生成器
-echo "📡 Running: ./gen_multi_inout $MIN $MAX 1000"
-./gen_multi_inout "$MIN" "$MAX" 1000
+# -------------------------------
+echo "📤 Running generator: ./gen_multi_inout ${SET_COUNT}"
+./gen_multi_inout "${SET_COUNT}"
 
-# 返回上层目录
-cd ..
+# -------------------------------
+# 拷贝 mem 文件
+# -------------------------------
+cd - > /dev/null
 
-# 拷贝输出文件
-echo "📤 Copying generated .mem files to ../tb/sim"
-cp ./build/*.mem ../tb/sim
+echo "📦 Copying generated *.mem files to: $OUTPUT_DIR"
+find "$BUILD_DIR" -maxdepth 1 -name "*.mem" -exec cp {} "$OUTPUT_DIR" \;
 
-echo "✅ Test vector generation completed successfully."
+echo -e "\n✅ Test vector generation completed successfully."
