@@ -4,18 +4,19 @@ use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 
 entity conversion is 
-    generic(
+    generic (
         scale : integer := 16;
-        fixed_point_length : integer := 32
-        );
-    port(
+        fixed_point_length : integer := 32;
+        input_width : integer := 8  -- 允许范围：8 ~ 12
+    );
+    port (
         clk : std_logic;
-        input_R : in std_logic_vector(7 downto 0);
-        input_G : in std_logic_vector(7 downto 0);   
-        input_B : in std_logic_vector(7 downto 0);
-        output_Y: out std_logic_vector(fixed_point_length-1 downto 0);
-        output_Cb: out std_logic_vector(fixed_point_length-1 downto 0);
-        output_Cr: out std_logic_vector(fixed_point_length-1 downto 0)
+        input_R : in std_logic_vector(input_width - 1 downto 0);
+        input_G : in std_logic_vector(input_width - 1 downto 0);
+        input_B : in std_logic_vector(input_width - 1 downto 0);
+        output_Y  : out std_logic_vector(fixed_point_length - 1 downto 0);
+        output_Cb : out std_logic_vector(fixed_point_length - 1 downto 0);
+        output_Cr : out std_logic_vector(fixed_point_length - 1 downto 0)
     );
 end conversion;
 
