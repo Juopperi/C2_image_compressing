@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity conversionContainerNew is 
+entity conversionContainer is 
     port(
         clk : in std_logic;
         rst : in std_logic;
@@ -15,9 +15,9 @@ entity conversionContainerNew is
         Cr : out std_logic_vector(64*32-1 downto 0);
         conversion_done : out std_logic
     );
-end conversionContainerNew;
+end conversionContainer;
 
-architecture arch of conversionContainerNew is 
+architecture arch of conversionContainer is 
     component conversion is
         generic(
             scale : integer := 16;
@@ -34,7 +34,7 @@ architecture arch of conversionContainerNew is
         );
     end component conversion;
     
-    type t_State is (idle,conversion);
+    type t_State is (idle,convers);
     signal State : t_State := idle;
 
     signal input_R : std_logic_vector(7 downto 0);
@@ -67,12 +67,12 @@ begin
         if rising_edge(clk) then
             case State is 
                 when idle =>
-                    index = 0;
+                    index := 0;
                     if start = '1' then
-                        State <= conversion;
+                        State <= convers;
                     end if;
 
-                when conversion =>
+                when convers =>
                     input_R <= R((index+1)*8-1 downto index*8);
                     input_G <= G((index+1)*8-1 downto index*8);
                     input_B <= B((index+1)*8-1 downto index*8);

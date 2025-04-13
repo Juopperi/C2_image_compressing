@@ -5,6 +5,7 @@ entity huff_container is
 	port(
 		clk : in std_logic;
         reset : in std_logic;
+        start_huffman : in std_logic;
 		Y : in std_logic_vector(1023 downto 0);
 		Cb : in std_logic_vector(1023 downto 0);
 		Cr : in std_logic_vector(1023 downto 0);
@@ -58,7 +59,7 @@ architecture arch of huff_container is
     end component huffman_DC_CbCr;
 
         type t_State is (idle,DC_Y,AC_Y,DC_CB,AC_CB,DC_CR,AC_CR);
-        signal currentState : t_State := DC_Y;
+        signal currentState : t_State := idle;
 
         signal input_integer : std_logic_vector(9 downto 0) := (others => '0');
         
@@ -129,8 +130,12 @@ architecture arch of huff_container is
 		if rising_edge(clk) then
            case currentState is 
             when idle =>
+                finished <= '0';
                 max := 1001;
                 min := 992;
+                if start_huffman = '1' then
+                    currentState <= DC_Y;
+                end if;
 
             when DC_Y =>
                 input_integer <= Y(1017 downto 1008);
@@ -142,7 +147,6 @@ architecture arch of huff_container is
                 end if;
 
             when AC_Y =>
-                temp := Y(max downto min);
                 if Y(max downto min) = "0000000000" then
                     start_AC_Y <= '0';
                     zeros <= zeros + 1;
@@ -162,14 +166,85 @@ architecture arch of huff_container is
                     min := min - 16;
                 end if;
 
-                if min < 0 then
+                if min = 0 then
                     max := 1007;
                     min := 998;
                     currentState <= DC_Cb;
                 end if;
+          
+           when DC_Cb =>
+                input_integer <= Cb(1017 downto 1008);
+                output_bit <= output_DC_CbCr;
+                start_DC_CbCr <= '1';
+                if done_DC_CbCr = '1' then
+                    currentState <= AC_Cb;
+                    start_DC_CbCr <= '0';
+                end if;
+                
+            when AC_Cb =>
+                if Cb(max downto min) = "0000000000" then
+                    start_AC_CbCr <= '0';
+                    zeros <= zeros + 1;
+                    max := max - 16;
+                    min := min - 16;
+                    output_bit <= 'U';
+                else 
+                    input_integer <= Cb(max downto min);
+                    start_AC_CbCr <= '1';
+                    output_bit <= output_AC_CbCr;
+                end if;
+                
+                if done_AC_CbCr = '1' then
+                    start_AC_CbCr <= '0';
+                    zeros <= 0;
+                    max := max - 16;
+                    min := min - 16;
+                end if;
 
+                if min < 0 then
+                    max := 1007;
+                    min := 998;
+                    currentState <= DC_Cr;
+                end if;                
+                
+           when DC_Cr =>
+                input_integer <= Cr(1017 downto 1008);
+                output_bit <= output_DC_CbCr;
+                start_DC_CbCr <= '1';
+                if done_DC_CbCr = '1' then
+                    currentState <= AC_Cr;
+                    start_DC_CbCr <= '0';
+                end if;
+                
+            when AC_Cr =>
+                if Cr(max downto min) = "0000000000" then
+                    start_AC_CbCr <= '0';
+                    zeros <= zeros + 1;
+                    max := max - 16;
+                    min := min - 16;
+                    output_bit <= 'U';
+                else 
+                    input_integer <= Cr(max downto min);
+                    start_AC_CbCr <= '1';
+                    output_bit <= output_AC_CbCr;
+                end if;
+                
+                if done_AC_CbCr = '1' then
+                    start_AC_CbCr <= '0';
+                    zeros <= 0;
+                    max := max - 16;
+                    min := min - 16;
+                end if;
+
+                if min < 0 then
+                    max := 1007;
+                    min := 998;
+                    finished <= '1';
+                    currentState <= idle;
+                end if;                   
+                
             when others => max:= 0;
-            end case;
+            end case;                                                        
    		end if;
         end process proc;
 

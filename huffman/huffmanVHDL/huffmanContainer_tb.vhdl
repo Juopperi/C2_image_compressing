@@ -12,6 +12,7 @@ architecture arch of huff_container_tb is
         port(   
             clk : in std_logic;
             reset : in std_logic;
+            start_huffman : in std_logic;
             Y : in std_logic_vector(1023 downto 0);
             Cb : in std_logic_vector(1023 downto 0);
             Cr : in std_logic_vector(1023 downto 0);
@@ -28,6 +29,7 @@ architecture arch of huff_container_tb is
     signal data : std_logic;
     signal data_valid : std_logic;
     signal finished : std_logic;
+    signal start_huffman : std_logic;
 
     type word_array is array (0 to 63) of std_logic_vector(15 downto 0);
 
@@ -49,13 +51,17 @@ architecture arch of huff_container_tb is
         return memory;
     end load_words;
 
-    signal values : word_array := load_words(string'("Yinput.txt"));
+    signal Yvalues : word_array := load_words(string'("Yinput.txt"));
+    signal Crvalues : word_array := load_words(string'("Crinput.txt"));
+    signal Cbvalues : word_array := load_words(string'("Cbinput.txt"));
+    signal load_finished : std_logic := '0';
     begin
         
         dut: component huff_container
             port map(
                 clk => clk,
                 reset => reset,
+                start_huffman => start_huffman,
                 Y => Y,
                 Cb => Cb,
                 Cr => Cr,
@@ -69,15 +75,16 @@ architecture arch of huff_container_tb is
             variable min : integer := 1008;
             variable index : integer := 0;
         begin
-            Y(max downto min) <= values(index);
+            Y(max downto min) <= Yvalues(index);
+            Cr(max downto min) <= Crvalues(index);
+            Cb(max downto min) <= Cbvalues(index);
             max := max - 16;
             min := min - 16;
             index := index + 1;
-            if(max < 0) then
+            if(index = 64) then
+                start_huffman <= '1';
                 wait;
             end if;
-	       
-	       	
         end process load;
 
         clock : process 
@@ -86,6 +93,24 @@ architecture arch of huff_container_tb is
              wait for 10 ns;
              clk <= '0';
              wait for 10 ns;
+        end process;
+        
+        verification : process
+            file output_file : text open write_mode is "output_file.txt";
+            variable output_line : line;
+   
+        begin   
+            wait for 20 ns;
+                if data_valid = '1' then
+                    write(output_line,data);
+                end if;
+                
+                if finished = '1' then
+                    writeline(output_file,output_line);
+                    write(output_line,string'("DONE"));
+                    writeline(output_file,output_line);                    
+                    wait;
+                end if;
         end process;
 
 end architecture arch;
