@@ -3,7 +3,8 @@ import shutil
 import subprocess
 import sys
 
-testbench_name = "tb_rgb2ycbcr_container"
+testbench_name = "tb_quantize_luma"
+# testbench_name = "tb_quantize_chroma"
 
 # -----------------------------
 # 解析参数
@@ -148,4 +149,8 @@ import os
 
 for filepath in glob.glob("*output*.mem"):
     shutil.copy(filepath, "../saved_output")
+
+
+for filepath in glob.glob("*input*.mem"):
+    shutil.copy(filepath, f"../test_vector/input_{testbench_name}.mem")
 

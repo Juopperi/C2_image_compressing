@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/1_YCbCr_conversion/utils
+# Install script for directory: /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/3_quantization/utils
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/1_YCbCr_conversion/utils/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/3_quantization/utils/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

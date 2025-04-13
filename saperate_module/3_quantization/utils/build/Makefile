@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/1_YCbCr_conversion/utils
+CMAKE_SOURCE_DIR = /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/3_quantization/utils
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/1_YCbCr_conversion/utils/build
+CMAKE_BINARY_DIR = /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/3_quantization/utils/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/1_YCbCr_conversion/utils/build/CMakeFiles /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/1_YCbCr_conversion/utils/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/3_quantization/utils/build/CMakeFiles /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/3_quantization/utils/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/1_YCbCr_conversion/utils/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/3_quantization/utils/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -142,6 +142,19 @@ gen_multi_inout/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_multi_inout.dir/build.make CMakeFiles/gen_multi_inout.dir/build
 .PHONY : gen_multi_inout/fast
 
+#=============================================================================
+# Target rules for targets named qtable
+
+# Build rule for target.
+qtable: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 qtable
+.PHONY : qtable
+
+# fast build rule for target.
+qtable/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtable.dir/build.make CMakeFiles/qtable.dir/build
+.PHONY : qtable/fast
+
 compare_1000.o: compare_1000.cpp.o
 .PHONY : compare_1000.o
 
@@ -165,6 +178,30 @@ compare_1000.s: compare_1000.cpp.s
 compare_1000.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compare_1000.dir/build.make CMakeFiles/compare_1000.dir/compare_1000.cpp.s
 .PHONY : compare_1000.cpp.s
+
+gen_inverse_qtable.o: gen_inverse_qtable.cpp.o
+.PHONY : gen_inverse_qtable.o
+
+# target to build an object file
+gen_inverse_qtable.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtable.dir/build.make CMakeFiles/qtable.dir/gen_inverse_qtable.cpp.o
+.PHONY : gen_inverse_qtable.cpp.o
+
+gen_inverse_qtable.i: gen_inverse_qtable.cpp.i
+.PHONY : gen_inverse_qtable.i
+
+# target to preprocess a source file
+gen_inverse_qtable.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtable.dir/build.make CMakeFiles/qtable.dir/gen_inverse_qtable.cpp.i
+.PHONY : gen_inverse_qtable.cpp.i
+
+gen_inverse_qtable.s: gen_inverse_qtable.cpp.s
+.PHONY : gen_inverse_qtable.s
+
+# target to generate assembly for a file
+gen_inverse_qtable.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtable.dir/build.make CMakeFiles/qtable.dir/gen_inverse_qtable.cpp.s
+.PHONY : gen_inverse_qtable.cpp.s
 
 gen_multi_inout.o: gen_multi_inout.cpp.o
 .PHONY : gen_multi_inout.o
@@ -200,9 +237,13 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... compare_1000"
 	@echo "... gen_multi_inout"
+	@echo "... qtable"
 	@echo "... compare_1000.o"
 	@echo "... compare_1000.i"
 	@echo "... compare_1000.s"
+	@echo "... gen_inverse_qtable.o"
+	@echo "... gen_inverse_qtable.i"
+	@echo "... gen_inverse_qtable.s"
 	@echo "... gen_multi_inout.o"
 	@echo "... gen_multi_inout.i"
 	@echo "... gen_multi_inout.s"

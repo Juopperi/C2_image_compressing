@@ -1,59 +1,84 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import sys
+import numpy as np
+import os
 
+def analyze_position_distribution(csv_path, title="Luma", block_size=64, threshold=10):
+    df = pd.read_csv(csv_path)
+    diffs = df['diff'].to_numpy()
 
-import seaborn as sns
+    if len(diffs) % block_size != 0:
+        print("Warning: diff length is not a multiple of block size")
 
-# 替代风格
+    num_blocks = len(diffs) // block_size
+    diffs = diffs[:num_blocks * block_size].reshape((-1, block_size))
 
+    # 计算每个位置的误差统计
+    avg_error = np.mean(np.abs(diffs), axis=0)
+    max_error = np.max(np.abs(diffs), axis=0)
+    large_error_count = np.sum(np.abs(diffs) > threshold, axis=0)
 
-def analyze_and_plot(csv_file):
-    # 读取 CSV
-    df = pd.read_csv(csv_file)
+    return avg_error, max_error, large_error_count
 
-    # 检查字段
-    if not {'index', 'expected', 'actual', 'diff'}.issubset(df.columns):
-        print("CSV file must contain 'index', 'expected', 'actual', 'diff' columns.")
-        return
+def plot_position_stats(avg, maxv, count, title_prefix):
+    x = np.arange(64)
 
-    print("=== Diff Statistics ===")
-    print("Mean Error     :", df['diff'].mean())
-    print("Max Error      :", df['diff'].max())
-    print("Min Error      :", df['diff'].min())
-    print("Std Deviation  :", df['diff'].std())
-    print("Total Samples  :", len(df))
-    print()
-
-    # 绘图风格
-
-    # 误差分布直方图
-    plt.figure(figsize=(8, 4))
-    plt.hist(df['diff'], bins=50, color='skyblue', edgecolor='black')
-    plt.title('Distribution of Absolute DCT Error')
-    plt.xlabel('Absolute Error')
-    plt.ylabel('Count')
-    plt.grid(True)
-    plt.tight_layout()
-    plt.savefig('hist_diff_distribution.png')
-    print("Saved: hist_diff_distribution.png")
-
-    # 误差趋势图（index vs diff）
+    # 条形图：平均误差
     plt.figure(figsize=(10, 4))
-    plt.plot(df['index'], df['diff'], label='|expected - actual|', linewidth=0.8)
-    plt.title('DCT Error Over All Samples')
-    plt.xlabel('Sample Index')
-    plt.ylabel('Absolute Error')
+    plt.bar(x, avg)
+    plt.title(f"{title_prefix} - Avg Abs Error per Position")
+    plt.xlabel("Position in 8x8 block (0~63)")
+    plt.ylabel("Average |Error|")
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig('line_diff_trend.png')
-    print("Saved: line_diff_trend.png")
+    plt.savefig(f"result/{title_prefix.lower()}_avg_error.png")
 
-    plt.show()
+    # 条形图：最大误差
+    plt.figure(figsize=(10, 4))
+    plt.bar(x, maxv)
+    plt.title(f"{title_prefix} - Max Abs Error per Position")
+    plt.xlabel("Position in 8x8 block (0~63)")
+    plt.ylabel("Max |Error|")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(f"result/{title_prefix.lower()}_max_error.png")
+
+    # 条形图：超阈值次数
+    plt.figure(figsize=(10, 4))
+    plt.bar(x, count)
+    plt.title(f"{title_prefix} - Error > Threshold Count")
+    plt.xlabel("Position in 8x8 block (0~63)")
+    plt.ylabel("Count of |Error| > threshold")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(f"result/{title_prefix.lower()}_error_count.png")
+
+    # 热力图：平均误差 reshape 为 8x8
+    heatmap_data = avg.reshape((8, 8))  # 默认行优先排列
+
+    plt.figure(figsize=(6, 5))
+    plt.imshow(heatmap_data, cmap='hot', interpolation='nearest')
+    plt.colorbar(label="Avg |Error|")
+    plt.title(f"{title_prefix} - Heatmap of Avg Abs Error (8x8 block)")
+    plt.xticks(np.arange(8))
+    plt.yticks(np.arange(8))
+    plt.tight_layout()
+    plt.savefig(f"result/{title_prefix.lower()}_heatmap_avg_error.png")
+
+def run_all():
+    os.makedirs("result", exist_ok=True)
+
+    # Luma
+    avg_luma, max_luma, count_luma = analyze_position_distribution(
+        "result/diff_luma.csv", title="Luma", block_size=64, threshold=10)
+    plot_position_stats(avg_luma, max_luma, count_luma, "Luma")
+
+    # Chroma
+    avg_chroma, max_chroma, count_chroma = analyze_position_distribution(
+        "result/diff_chroma.csv", title="Chroma", block_size=64, threshold=10)
+    plot_position_stats(avg_chroma, max_chroma, count_chroma, "Chroma")
+
+    print("✅ 分析完成，热力图和柱状图已生成在 result/")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python analyze_diff_distribution.py <diff_distribution.csv>")
-        sys.exit(1)
-    
-    analyze_and_plot(sys.argv[1])
+    run_all()

@@ -1,7 +1,7 @@
 import subprocess
 import sys
 
-channels = ["Y", "Cb", "Cr"]
+channels = ["luma", "chroma"]
 
 for ch in channels:
     print(f"\n⚙️  Running comparison for channel: {ch}")

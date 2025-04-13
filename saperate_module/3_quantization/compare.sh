@@ -34,7 +34,7 @@ fi
 echo "⚖️  Running: ./compare_1000 $EXPECTED_FILE $ACTUAL_FILE"
 ./compare_1000 "$EXPECTED_FILE" "$ACTUAL_FILE"
 
-mv *.csv ../../analysis/result/
+mv *.csv ../../analysis/result/diff_"${OUTNAME}.csv"
 
 cd - > /dev/null
 echo "✅ $OUTNAME comparison complete."

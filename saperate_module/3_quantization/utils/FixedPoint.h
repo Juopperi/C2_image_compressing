@@ -65,6 +65,12 @@ public:
         return FixedPoint::fromRaw(value - other.value);
     }
 
+    // 一元负号（取反）
+    FixedPoint operator-() const {
+        return FixedPoint::fromRaw(-value);
+    }
+
+
     // 乘法（带乘后右移 fracBits）
     FixedPoint operator*(const FixedPoint& other) const {
         using WideType = typename std::conditional<sizeof(T) <= 2, int32_t, int64_t>::type;
@@ -87,3 +93,5 @@ public:
         return os;
     }
 };
+
+
