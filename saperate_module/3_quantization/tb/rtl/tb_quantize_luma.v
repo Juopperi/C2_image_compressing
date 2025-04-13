@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 
 module tb_quantize_luma;
 
@@ -21,7 +21,6 @@ module tb_quantize_luma;
 
     // 时钟生成
     initial clk = 0;
-    always #5 clk = ~clk;
 
     // 内存加载
     reg [DATA_WIDTH-1:0] input_mem  [0:MAX_SAMPLES*PIXEL_COUNT-1];
@@ -42,8 +41,6 @@ module tb_quantize_luma;
         $readmemh("input.mem", input_mem);
         $readmemh("expected_luma_output.mem", golden_mem);
 
-        #20;
-
         for (g = 0; g < MAX_SAMPLES; g = g + 1) begin
             $display("---- Group %0d ----", g);
 
@@ -52,9 +49,7 @@ module tb_quantize_luma;
                 input_flat[i*DATA_WIDTH +: DATA_WIDTH] = input_mem[g*PIXEL_COUNT + i];
             end
 
-            #30;
-
-
+            #1;
 
             // 抽出输出
             for (i = 0; i < PIXEL_COUNT; i = i + 1) begin
@@ -73,11 +68,12 @@ module tb_quantize_luma;
             end
 
             $display("-----------------------------");
+            #1;
         end
 
         $writememh("actual_luma_output.mem", all_output);
         $display("==== All Groups Completed ====");
-        #100;
+        #10;
         $finish;
     end
 

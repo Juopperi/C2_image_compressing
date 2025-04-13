@@ -16,7 +16,7 @@ module quantize_array #(
     generate
         for (i = 0; i < 64; i = i + 1) begin : GEN_MULTS
             wire [31:0] pixel_i    = pixels[32*i +: 32];
-            wire [31:0] inv_i      = inv_table[32*i +: 32];
+            wire [31:0] inv_i      = inv_table[64*32 - 1 - 32*i -: 32];
             wire [31:0] result_i;
 
             fixed_multiplier u_mul (

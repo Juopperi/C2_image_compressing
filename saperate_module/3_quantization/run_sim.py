@@ -3,8 +3,8 @@ import shutil
 import subprocess
 import sys
 
-testbench_name = "tb_quantize_luma"
-# testbench_name = "tb_quantize_chroma"
+# testbench_name = "tb_quantize_luma"
+testbench_name = "tb_quantize_chroma"
 
 # -----------------------------
 # 解析参数

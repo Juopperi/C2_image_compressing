@@ -1,5 +1,7 @@
 #pragma once
 
+// int N = 8;
+
 // 标准亮度量化表
 const uint8_t luma_table[N][N] = {
     {16, 11, 10, 16, 24, 40, 51, 61},
