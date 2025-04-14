@@ -51,9 +51,9 @@ architecture arch of huff_container_tb is
         return memory;
     end load_words;
 
-    signal Yvalues : word_array := load_words(string'("Yinput.txt"));
     signal Crvalues : word_array := load_words(string'("Crinput.txt"));
     signal Cbvalues : word_array := load_words(string'("Cbinput.txt"));
+    signal Yvalues : word_array := load_words(string'("Yinput.txt"));
     signal load_finished : std_logic := '0';
     begin
         
@@ -76,6 +76,7 @@ architecture arch of huff_container_tb is
             variable index : integer := 0;
         begin
             Y(max downto min) <= Yvalues(index);
+            report "Value: " & integer'image(to_integer(signed(Yvalues(index))));
             Cr(max downto min) <= Crvalues(index);
             Cb(max downto min) <= Cbvalues(index);
             max := max - 16;
@@ -101,16 +102,16 @@ architecture arch of huff_container_tb is
    
         begin   
             wait for 20 ns;
-                if data_valid = '1' then
-                    write(output_line,data);
-                end if;
-                
-                if finished = '1' then
-                    writeline(output_file,output_line);
-                    write(output_line,string'("DONE"));
-                    writeline(output_file,output_line);                    
-                    wait;
-                end if;
+            if data_valid = '1' then
+                write(output_line,data);
+            end if;
+            
+            if finished = '1' then
+                writeline(output_file,output_line);
+                write(output_line,string'("DONE1"));
+                writeline(output_file,output_line);                    
+                wait;
+            end if;
         end process;
 
 end architecture arch;
