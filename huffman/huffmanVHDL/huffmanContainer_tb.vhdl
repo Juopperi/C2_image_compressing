@@ -115,7 +115,7 @@ architecture arch of huff_container_tb is
             if data_valid = '1' then
                 write(output_line,data);
             else 
-                write(output_line,string'(" "));
+               write(output_line,string'(" "));
             end if;
             
             if finished = '1' then
