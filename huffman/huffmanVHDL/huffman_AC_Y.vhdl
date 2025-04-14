@@ -34,7 +34,7 @@ if rising_edge(clk) then
             
         when count_req_bits =>
             for i in input_integer'length-1 downto 0 loop
-                if input_integer(i) = '1' then
+                if input_integer(i) /= input_integer(9)  then
                     size := i+1;
                     exit;
                 end if;
@@ -617,12 +617,12 @@ if rising_edge(clk) then
                 output_bit <= output_reg(length-1);
                 length := length - 1;
             elsif size > 0 then
-                output_bit <= not(input_integer(size-1)); --Not for 1s complement
+                output_bit <= input_integer(size-1); --Not for 1s complement
                 size := size - 1;
             end if;
-            if size = 0 then
+            if size = 0 and length = 0 then
                 done <= '1';
-                state <= sync;
+                state <= idle;
             end if;
             
         when sync =>

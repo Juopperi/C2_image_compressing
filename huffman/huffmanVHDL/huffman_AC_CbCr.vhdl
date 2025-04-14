@@ -619,10 +619,10 @@ if rising_edge(clk) then
                 output_bit <= output_reg(length-1);
                 length := length - 1;
             elsif size > 0 then
-                output_bit <= not(input_integer(size-1)); --Not for 1s complement
+                output_bit <= input_integer(size-1); --Not for 1s complement
                 size := size - 1;
             end if;
-            if size = 0 then
+            if size = 0 and length = 0 then
                 done <= '1';
                 state <= idle;
             end if;

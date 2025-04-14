@@ -37,23 +37,20 @@ architecture arch of huff_container_tb is
         file object_file : text open read_mode is file_name;
         variable memory : word_array;
         variable L      : line;
-        variable success : boolean;
         variable int_val   : integer;
         begin
             while not endfile(object_file) loop
                 readline(object_file,L);
                 for i in 0 to 63 loop
-                    read(L,int_val,success);
-                    assert success report "Failed to read integer" severity error;
+                    read(L,int_val);
                     memory(i) := std_logic_vector(to_signed(int_val,16));
                 end loop;
             end loop;
         return memory;
     end load_words;
-
-    signal Crvalues : word_array := load_words(string'("Crinput.txt"));
-    signal Cbvalues : word_array := load_words(string'("Cbinput.txt"));
-    signal Yvalues : word_array := load_words(string'("Yinput.txt"));
+                signal Crvalues : word_array := (others => (others => '0')); --load_words(string'("Crinput.txt"));
+            signal Cbvalues : word_array := (others => (others => '0')); --load_words(string'("Cbinput.txt"));
+            signal Yvalues : word_array := (others => (others => '0')); --load_words(string'("Yinput.txt"));
     signal load_finished : std_logic := '0';
     begin
         
@@ -69,12 +66,25 @@ architecture arch of huff_container_tb is
                 data_valid => data_valid,
                 finished => finished
             );
+           
+        test : process
+            variable temp_memory : word_array;
+        begin
+        temp_memory := load_words("Crinput.txt");
+        Crvalues <= temp_memory;
+        temp_memory := load_words("Cbinput.txt");
+        Cbvalues <= temp_memory;
+        temp_memory := load_words("Yinput.txt");
+        Yvalues <= temp_memory;
+        wait;
+        end process;
         
         load : process
             variable max : integer := 1023;
             variable min : integer := 1008;
             variable index : integer := 0;
         begin
+            wait for 100 ns;
             Y(max downto min) <= Yvalues(index);
             report "Value: " & integer'image(to_integer(signed(Yvalues(index))));
             Cr(max downto min) <= Crvalues(index);
@@ -104,6 +114,8 @@ architecture arch of huff_container_tb is
             wait for 20 ns;
             if data_valid = '1' then
                 write(output_line,data);
+            else 
+                write(output_line,string'(" "));
             end if;
             
             if finished = '1' then
