@@ -40,9 +40,9 @@ architecture conversion_zero_arch of conversion_zero is
 begin
     process(input_R,input_G,input_B,clk)
     begin
-    Y <= (conv_integer(input_R)*n299 + conv_integer(input_G)*n587 + conv_integer(input_B)*n144 - n128);
-    Cb <= (conv_integer(input_B)*n5 - conv_integer(input_R)*n1687 - conv_integer(input_G)*n3313);
-    Cr <= (conv_integer(input_R)*n5 - conv_integer(input_G)*n4187 - conv_integer(input_B)*n0813);
+    Y <= (conv_integer(input_R)*n299 + conv_integer(input_G)*n587 + conv_integer(input_B)*n144 );
+    Cb <= (conv_integer(input_B)*n5 - conv_integer(input_R)*n1687 - conv_integer(input_G)*n3313 + n128);
+    Cr <= (conv_integer(input_R)*n5 - conv_integer(input_G)*n4187 - conv_integer(input_B)*n0813 + n128);
 	
     output_Y <= std_logic_vector(to_unsigned(Y,fixed_point_length));
     output_Cb <= std_logic_vector(to_unsigned(Cb,fixed_point_length));
