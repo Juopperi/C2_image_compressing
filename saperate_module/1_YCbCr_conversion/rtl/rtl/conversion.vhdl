@@ -41,13 +41,18 @@ architecture conversion_arch of conversion is
 begin
     process(input_R,input_G,input_B,clk)
     begin
-    Y <= (conv_integer(input_R)*n299 + conv_integer(input_G)*n587 + conv_integer(input_B)*n144);
-    Cb <= (n128 + conv_integer(input_B)*n5 - conv_integer(input_R)*n1687 - conv_integer(input_G)*n3313);
-    Cr <= (n128 + conv_integer(input_R)*n5 - conv_integer(input_G)*n4187 - conv_integer(input_B)*n0813);
+    Y <= (conv_integer(input_R)*n299 + conv_integer(input_G)*n587 + conv_integer(input_B)*n144 - n128);
+    Cb <= (conv_integer(input_B)*n5 - conv_integer(input_R)*n1687 - conv_integer(input_G)*n3313);
+    Cr <= (conv_integer(input_R)*n5 - conv_integer(input_G)*n4187 - conv_integer(input_B)*n0813);
 	
-    output_Y <= std_logic_vector(to_unsigned(Y,fixed_point_length));
-    output_Cb <= std_logic_vector(to_unsigned(Cb,fixed_point_length));
-    output_Cr <= std_logic_vector(to_unsigned(Cr,fixed_point_length));
+    -- output_Y <= std_logic_vector(to_unsigned(Y,fixed_point_length));
+    -- output_Cb <= std_logic_vector(to_unsigned(Cb,fixed_point_length));
+    -- output_Cr <= std_logic_vector(to_unsigned(Cr,fixed_point_length));
+
+    output_Y  <= std_logic_vector(to_signed(Y, fixed_point_length));
+    output_Cb <= std_logic_vector(to_signed(Cb, fixed_point_length));
+    output_Cr <= std_logic_vector(to_signed(Cr, fixed_point_length));
+
     end process;
 end conversion_arch;
 
