@@ -5,7 +5,7 @@
 #include <fstream>
 #include <cmath>
 #include <iomanip>
-#include "FixedPoint.h"
+#include "fixed_point.h"
 
 // Generate DCT coefficients in fixed-point format
 // This program creates the dct_coeff_matrix.mem file needed by the testbench

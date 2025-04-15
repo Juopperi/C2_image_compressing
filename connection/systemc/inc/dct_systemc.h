@@ -2,65 +2,46 @@
 #define DCT_SYSTEMC_H
 
 #include <systemc.h>
-#include "FixedPoint.h"
+#include "fixed_point.h"
+#include <iomanip>  // for setw, setfill
 
-// Fixed point multiplier for DCT coefficients
-template<typename T = int32_t, int fracBits = 16>
-SC_MODULE(fixed_multiplier) {
-    sc_in<sc_int<sizeof(T)*8>> a;
-    sc_in<sc_int<sizeof(T)*8>> b;
-    sc_out<sc_int<sizeof(T)*8>> mul_res;
+// Debug level definitions for DCT module
+#define DCT_DEBUG_NONE 0
+#define DCT_DEBUG_MINIMAL 1
+#define DCT_DEBUG_VERBOSE 2
+#define DCT_DEBUG_FULL 3
 
-    void multiply() {
-        // Get input values
-        T a_val = a.read();
-        T b_val = b.read();
+// Helper function to convert fixed-point value to double for debugging
+template<typename T, int fracBits>
+double dct_fixed_to_double(T fixed_val) {
+    return FixedPoint<T, fracBits>::fromRaw(fixed_val).toDouble();
+}
 
-        // Create FixedPoint objects
-        FixedPoint<T, fracBits> fp_a = FixedPoint<T, fracBits>::fromRaw(a_val);
-        FixedPoint<T, fracBits> fp_b = FixedPoint<T, fracBits>::fromRaw(b_val);
-
-        // Perform multiplication
-        FixedPoint<T, fracBits> result = fp_a * fp_b;
-
-        // Write result
-        mul_res.write(result.raw());
+// Helper function to print a matrix for debug
+template<typename T, int fracBits, int DATA_WIDTH, typename PORT_TYPE>
+void dct_print_matrix(const char* name, PORT_TYPE* matrix, int rows = 8, int cols = 8, bool print_fixed = true) {
+    std::cout << "=== " << name << " Matrix ===" << std::endl;
+    
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            int idx = row * cols + col;
+            T val = matrix[idx].read();
+            
+            if (print_fixed) {
+                // Print both hex and decimal float value
+                std::cout << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << val << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(val) << ") ";
+            } else {
+                // Print just the hex value
+                std::cout << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << val << std::dec << " ";
+            }
+        }
+        std::cout << std::endl;
     }
-
-    SC_CTOR(fixed_multiplier) {
-        SC_METHOD(multiply);
-        sensitive << a << b;
-    }
-};
-
-// Fixed point adder
-template<typename T = int32_t, int fracBits = 16>
-SC_MODULE(fixed_adder) {
-    sc_in<sc_int<sizeof(T)*8>> a;
-    sc_in<sc_int<sizeof(T)*8>> b;
-    sc_out<sc_int<sizeof(T)*8>> sum_out;
-
-    void add() {
-        // Get input values
-        T a_val = a.read();
-        T b_val = b.read();
-
-        // Create FixedPoint objects
-        FixedPoint<T, fracBits> fp_a = FixedPoint<T, fracBits>::fromRaw(a_val);
-        FixedPoint<T, fracBits> fp_b = FixedPoint<T, fracBits>::fromRaw(b_val);
-
-        // Perform addition
-        FixedPoint<T, fracBits> result = fp_a + fp_b;
-
-        // Write result
-        sum_out.write(result.raw());
-    }
-
-    SC_CTOR(fixed_adder) {
-        SC_METHOD(add);
-        sensitive << a << b;
-    }
-};
+    std::cout << std::endl;
+}
 
 // 8-element multiply-accumulate module
 template<typename T = int32_t, int fracBits = 16, int DATA_WIDTH = sizeof(T)*8, int DATA_DEPTH = 8>
@@ -303,7 +284,7 @@ SC_MODULE(dct_1d_8x8) {
 };
 
 // 2D DCT module (8x8)
-template<typename T = int32_t, int fracBits = 16, int DATA_WIDTH = sizeof(T)*8, int DATA_DEPTH = 8>
+template<typename T = int32_t, int fracBits = 16, int DATA_WIDTH = sizeof(T)*8, int DATA_DEPTH = 8, int DEBUG_LEVEL = DCT_DEBUG_NONE>
 SC_MODULE(dct_2d_8x8) {
     sc_in<bool> clk;
     sc_in<bool> reset_n;
@@ -316,9 +297,152 @@ SC_MODULE(dct_2d_8x8) {
     sc_signal<sc_int<DATA_WIDTH>> col_data_flat[64];
     sc_signal<sc_int<DATA_WIDTH>> final_dct_transposed[64];
 
+    // Debug cycle counter
+    sc_signal<sc_uint<32>> debug_cycle_counter;
+
     // Submodules for row and column DCT
     dct_1d_8x8<T, fracBits>* row_dct_inst;
     dct_1d_8x8<T, fracBits>* col_dct_inst;
+
+    void debug_print_input_matrix() {
+        if (DEBUG_LEVEL >= DCT_DEBUG_VERBOSE) {
+            std::cout << "=== Cycle " << debug_cycle_counter.read() << " - DCT Input Matrix ===" << std::endl;
+            
+            if (DEBUG_LEVEL == DCT_DEBUG_FULL) {
+                // Print full input matrix in full debug mode
+                dct_print_matrix<T, fracBits, DATA_WIDTH, sc_in<sc_int<DATA_WIDTH>>>("Input", data_in_matrix);
+            } else {
+                // Print just corner values in verbose mode
+                std::cout << "Input Matrix Corner Values:" << std::endl;
+                std::cout << "Input[0,0]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << data_in_matrix[0].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(data_in_matrix[0].read()) << ")" << std::endl;
+                std::cout << "Input[0,7]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << data_in_matrix[7].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(data_in_matrix[7].read()) << ")" << std::endl;
+                std::cout << "Input[7,0]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << data_in_matrix[56].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(data_in_matrix[56].read()) << ")" << std::endl;
+                std::cout << "Input[7,7]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << data_in_matrix[63].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(data_in_matrix[63].read()) << ")" << std::endl;
+                
+                std::cout << std::endl;
+            }
+        }
+    }
+
+    void debug_print_row_dct() {
+        if (DEBUG_LEVEL >= DCT_DEBUG_VERBOSE) {
+            std::cout << "=== Cycle " << debug_cycle_counter.read() << " - Row DCT Results ===" << std::endl;
+            
+            if (DEBUG_LEVEL == DCT_DEBUG_FULL) {
+                // Print full row DCT matrix in full debug mode
+                dct_print_matrix<T, fracBits, DATA_WIDTH, sc_signal<sc_int<DATA_WIDTH>>>("Row DCT", row_dct_flat);
+            } else {
+                // Print just corner values in verbose mode
+                std::cout << "Row DCT Corner Values:" << std::endl;
+                std::cout << "Row_DCT[0,0]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << row_dct_flat[0].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(row_dct_flat[0].read()) << ")" << std::endl;
+                std::cout << "Row_DCT[0,7]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << row_dct_flat[7].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(row_dct_flat[7].read()) << ")" << std::endl;
+                std::cout << "Row_DCT[7,0]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << row_dct_flat[56].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(row_dct_flat[56].read()) << ")" << std::endl;
+                std::cout << "Row_DCT[7,7]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << row_dct_flat[63].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(row_dct_flat[63].read()) << ")" << std::endl;
+                
+                std::cout << std::endl;
+            }
+        }
+    }
+
+    void debug_print_final_dct() {
+        if (DEBUG_LEVEL >= DCT_DEBUG_MINIMAL) {
+            std::cout << "=== Cycle " << debug_cycle_counter.read() << " - Final DCT Results ===" << std::endl;
+            
+            if (DEBUG_LEVEL == DCT_DEBUG_FULL) {
+                // Print full final DCT matrix in full debug mode
+                dct_print_matrix<T, fracBits, DATA_WIDTH, sc_signal<sc_int<DATA_WIDTH>>>("Final DCT", final_dct_transposed);
+            } else if (DEBUG_LEVEL == DCT_DEBUG_VERBOSE) {
+                // Print first row and column in verbose mode
+                std::cout << "Final DCT First Row:" << std::endl;
+                for (int i = 0; i < 8; i++) {
+                    std::cout << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                              << final_dct_transposed[i].read() << std::dec << " ";
+                }
+                std::cout << std::endl;
+                
+                std::cout << "Final DCT First Column:" << std::endl;
+                for (int i = 0; i < 8; i++) {
+                    std::cout << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                              << final_dct_transposed[i*8].read() << std::dec << " ";
+                }
+                std::cout << std::endl;
+            } else {
+                // Print just corner and DC coefficient values in minimal mode
+                std::cout << "Final DCT Key Values:" << std::endl;
+                std::cout << "DC[0,0]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << final_dct_transposed[0].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(final_dct_transposed[0].read()) << ")" << std::endl;
+                std::cout << "AC[0,1]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << final_dct_transposed[1].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(final_dct_transposed[1].read()) << ")" << std::endl;
+                std::cout << "AC[1,0]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << final_dct_transposed[8].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(final_dct_transposed[8].read()) << ")" << std::endl;
+                std::cout << "AC[7,7]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << final_dct_transposed[63].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(final_dct_transposed[63].read()) << ")" << std::endl;
+                
+                std::cout << std::endl;
+            }
+        }
+    }
+
+    void debug_print_coefficients() {
+        if (DEBUG_LEVEL >= DCT_DEBUG_VERBOSE) {
+            std::cout << "=== Cycle " << debug_cycle_counter.read() << " - DCT Coefficients ===" << std::endl;
+            
+            if (DEBUG_LEVEL == DCT_DEBUG_FULL) {
+                // Print full coefficient matrix in full debug mode
+                dct_print_matrix<T, fracBits, DATA_WIDTH, sc_in<sc_int<DATA_WIDTH>>>("DCT Coefficients", dct_coeffs);
+            } else {
+                // Print key coefficients in verbose mode
+                std::cout << "Key DCT Coefficients:" << std::endl;
+                std::cout << "Coeff[0,0]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << dct_coeffs[0].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(dct_coeffs[0].read()) << ")" << std::endl;
+                std::cout << "Coeff[0,1]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << dct_coeffs[1].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(dct_coeffs[1].read()) << ")" << std::endl;
+                std::cout << "Coeff[1,0]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << dct_coeffs[8].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(dct_coeffs[8].read()) << ")" << std::endl;
+                std::cout << "Coeff[7,7]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
+                          << dct_coeffs[63].read() << std::dec << "(" 
+                          << dct_fixed_to_double<T, fracBits>(dct_coeffs[63].read()) << ")" << std::endl;
+                
+                std::cout << std::endl;
+            }
+        }
+    }
+
+    void update_debug_cycle() {
+        if (!reset_n.read()) {
+            debug_cycle_counter.write(0);
+        } else {
+            debug_cycle_counter.write(debug_cycle_counter.read() + 1);
+        }
+        
+        // Print cycle marker in full debug mode
+        if (DEBUG_LEVEL == DCT_DEBUG_FULL) {
+            std::cout << "======== DCT Debug Cycle " << debug_cycle_counter.read() << " ========" << std::endl;
+        }
+    }
 
     void transpose_after_row() {
         // Transpose from row format to column format
@@ -326,6 +450,11 @@ SC_MODULE(dct_2d_8x8) {
             for (int j = 0; j < 8; j++) {
                 col_data_flat[j*8 + i].write(row_dct_flat[i*8 + j].read());
             }
+        }
+        
+        // Debug print after row DCT and transpose
+        if (DEBUG_LEVEL >= DCT_DEBUG_VERBOSE) {
+            debug_print_row_dct();
         }
     }
 
@@ -336,9 +465,24 @@ SC_MODULE(dct_2d_8x8) {
                 data_out_matrix[i*8 + j].write(final_dct_transposed[j*8 + i].read());
             }
         }
+        
+        // Debug print after final DCT
+        if (DEBUG_LEVEL >= DCT_DEBUG_MINIMAL) {
+            debug_print_final_dct();
+        }
     }
 
     SC_CTOR(dct_2d_8x8) {
+        // Initialize debug cycle counter
+        debug_cycle_counter.write(0);
+        
+        // Print debug header
+        if (DEBUG_LEVEL > DCT_DEBUG_NONE) {
+            std::cout << "\n========================================" << std::endl;
+            std::cout << "DCT 2D Module - Debug Level " << DEBUG_LEVEL << std::endl;
+            std::cout << "========================================\n" << std::endl;
+        }
+        
         // Create row DCT instance
         row_dct_inst = new dct_1d_8x8<T, fracBits>("row_dct");
         row_dct_inst->clk(clk);
@@ -382,11 +526,37 @@ SC_MODULE(dct_2d_8x8) {
         for (int i = 0; i < 64; i++) {
             sensitive << final_dct_transposed[i];
         }
+        
+        // Debug methods - only register if debug is enabled
+        if (DEBUG_LEVEL > DCT_DEBUG_NONE) {
+            SC_METHOD(update_debug_cycle);
+            sensitive << clk.pos();
+            reset_signal_is(reset_n, false);
+            
+            SC_METHOD(debug_print_input_matrix);
+            sensitive << clk.pos();
+            for (int i = 0; i < 64; i++) {
+                sensitive << data_in_matrix[i];
+            }
+
+            SC_METHOD(debug_print_coefficients);
+            sensitive << clk.pos();
+            for (int i = 0; i < 64; i++) {
+                sensitive << dct_coeffs[i];
+            }
+        }
     }
 
     ~dct_2d_8x8() {
         delete row_dct_inst;
         delete col_dct_inst;
+        
+        // Print debug footer
+        if (DEBUG_LEVEL > DCT_DEBUG_NONE) {
+            std::cout << "\n========================================" << std::endl;
+            std::cout << "DCT 2D Module - Debug Complete" << std::endl;
+            std::cout << "========================================\n" << std::endl;
+        }
     }
 };
 

@@ -1,0 +1,3027 @@
+
+========================================
+JPEG Compression Pipeline - Debug Mode 2
+========================================
+
+
+========================================
+DCT 2D Module - Debug Level 2
+========================================
+
+
+========================================
+DCT 2D Module - Debug Level 2
+========================================
+
+
+========================================
+DCT 2D Module - Debug Level 2
+========================================
+
+=== JPEG Compression Pipeline Simulation ===
+Test Mode: File I/O (Read from input files, write to output files)
+=============================================
+=== Cycle 0 - Row DCT Results ===
+Row DCT Corner Values:
+Row_DCT[0,0]: 0x00000000(0)
+Row_DCT[0,7]: 0x00000000(0)
+Row_DCT[7,0]: 0x00000000(0)
+Row_DCT[7,7]: 0x00000000(0)
+
+=== Cycle 0 - Final DCT Results ===
+Final DCT First Row:
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 
+Final DCT First Column:
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 
+=== Cycle 0 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00000000(0)
+Input[0,7]: 0x00000000(0)
+Input[7,0]: 0x00000000(0)
+Input[7,7]: 0x00000000(0)
+
+=== Cycle 0 - Row DCT Results ===
+Row DCT Corner Values:
+Row_DCT[0,0]: 0x00000000(0)
+Row_DCT[0,7]: 0x00000000(0)
+Row_DCT[7,0]: 0x00000000(0)
+Row_DCT[7,7]: 0x00000000(0)
+
+=== Cycle 0 - Final DCT Results ===
+Final DCT First Row:
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 
+Final DCT First Column:
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 
+=== Cycle 0 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00000000(0)
+Input[0,7]: 0x00000000(0)
+Input[7,0]: 0x00000000(0)
+Input[7,7]: 0x00000000(0)
+
+=== Cycle 0 - Row DCT Results ===
+Row DCT Corner Values:
+Row_DCT[0,0]: 0x00000000(0)
+Row_DCT[0,7]: 0x00000000(0)
+Row_DCT[7,0]: 0x00000000(0)
+Row_DCT[7,7]: 0x00000000(0)
+
+=== Cycle 0 - Final DCT Results ===
+Final DCT First Row:
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 
+Final DCT First Column:
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 
+=== Cycle 0 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00000000(0)
+Input[0,7]: 0x00000000(0)
+Input[7,0]: 0x00000000(0)
+Input[7,7]: 0x00000000(0)
+
+=== Cycle 0 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=0 G=0 B=0
+Pixel[1]: R=0 G=0 B=0
+Pixel[2]: R=0 G=0 B=0
+Pixel[3]: R=0 G=0 B=0
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[1]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[2]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[3]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+
+=== Cycle 0 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x00000000(0)
+DCT[0,7]: 0x00000000(0)
+DCT[7,0]: 0x00000000(0)
+DCT[7,7]: 0x00000000(0)
+
+=== Cycle 0 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x00000000
+AC[1]: 0x00000000
+AC[8]: 0x00000000
+AC[63]: 0x00000000
+
+=== Cycle 0 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x00000000 Z[1]: 0x00000000 Z[2]: 0x00000000 Z[3]: 0x00000000 
+Z[4]: 0x00000000 Z[5]: 0x00000000 Z[6]: 0x00000000 Z[7]: 0x00000000 
+Z[8]: 0x00000000 Z[9]: 0x00000000 Z[10]: 0x00000000 Z[11]: 0x00000000 
+Z[12]: 0x00000000 Z[13]: 0x00000000 Z[14]: 0x00000000 Z[15]: 0x00000000 
+
+=== Cycle 0 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 0 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 0 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 0 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x00000000 Z[1]: 0x00000000 Z[2]: 0x00000000 Z[3]: 0x00000000 
+Z[4]: 0x00000000 Z[5]: 0x00000000 Z[6]: 0x00000000 Z[7]: 0x00000000 
+Z[8]: 0x00000000 Z[9]: 0x00000000 Z[10]: 0x00000000 Z[11]: 0x00000000 
+Z[12]: 0x00000000 Z[13]: 0x00000000 Z[14]: 0x00000000 Z[15]: 0x00000000 
+
+=== Cycle 0 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x00000000
+AC[1]: 0x00000000
+AC[8]: 0x00000000
+AC[63]: 0x00000000
+
+=== Cycle 0 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x00000000(0)
+DCT[0,7]: 0x00000000(0)
+DCT[7,0]: 0x00000000(0)
+DCT[7,7]: 0x00000000(0)
+
+=== Cycle 0 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=0 G=0 B=0
+Pixel[1]: R=0 G=0 B=0
+Pixel[2]: R=0 G=0 B=0
+Pixel[3]: R=0 G=0 B=0
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[1]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[2]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[3]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+
+=== Generating Input Data (Mode 5) ===
+Reading RGB values from input files...
+
+=== Input Matrix from Files (8-bit RGB values) ===
+R Channel:
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+
+G Channel:
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+
+B Channel:
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+255 255 255 255 255 255 255 255 
+=== Cycle 0 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 0 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 0 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 0 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x00000000 Z[1]: 0x00000000 Z[2]: 0x00000000 Z[3]: 0x00000000 
+Z[4]: 0x00000000 Z[5]: 0x00000000 Z[6]: 0x00000000 Z[7]: 0x00000000 
+Z[8]: 0x00000000 Z[9]: 0x00000000 Z[10]: 0x00000000 Z[11]: 0x00000000 
+Z[12]: 0x00000000 Z[13]: 0x00000000 Z[14]: 0x00000000 Z[15]: 0x00000000 
+
+=== Cycle 0 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x00000000
+AC[1]: 0x00000000
+AC[8]: 0x00000000
+AC[63]: 0x00000000
+
+=== Cycle 0 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x00000000(0)
+DCT[0,7]: 0x00000000(0)
+DCT[7,0]: 0x00000000(0)
+DCT[7,7]: 0x00000000(0)
+
+=== Cycle 0 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=0 G=0 B=0
+Pixel[1]: R=0 G=0 B=0
+Pixel[2]: R=0 G=0 B=0
+Pixel[3]: R=0 G=0 B=0
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[1]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[2]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[3]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+
+=== Cycle 1 - Row DCT Results ===
+Row DCT Corner Values:
+Row_DCT[0,0]: 0xffffffc0(-0.000976562)
+Row_DCT[0,7]: 0x00000040(0.000976562)
+Row_DCT[7,0]: 0xffffffc0(-0.000976562)
+Row_DCT[7,7]: 0x00000040(0.000976562)
+
+=== Cycle 1 - Row DCT Results ===
+Row DCT Corner Values:
+Row_DCT[0,0]: 0xffffffc0(-0.000976562)
+Row_DCT[0,7]: 0x00000040(0.000976562)
+Row_DCT[7,0]: 0xffffffc0(-0.000976562)
+Row_DCT[7,7]: 0x00000040(0.000976562)
+
+=== Cycle 1 - Row DCT Results ===
+Row DCT Corner Values:
+Row_DCT[0,0]: 0xffffffc0(-0.000976562)
+Row_DCT[0,7]: 0x00000040(0.000976562)
+Row_DCT[7,0]: 0xffffffc0(-0.000976562)
+Row_DCT[7,7]: 0x00000040(0.000976562)
+
+=== Cycle 1 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 1 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 1 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 1 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x00000000 Z[1]: 0x00000000 Z[2]: 0x00000000 Z[3]: 0x00000000 
+Z[4]: 0x00000000 Z[5]: 0x00000000 Z[6]: 0x00000000 Z[7]: 0x00000000 
+Z[8]: 0x00000000 Z[9]: 0x00000000 Z[10]: 0x00000000 Z[11]: 0x00000000 
+Z[12]: 0x00000000 Z[13]: 0x00000000 Z[14]: 0x00000000 Z[15]: 0x00000000 
+
+=== Cycle 1 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x00000000
+AC[1]: 0x00000000
+AC[8]: 0x00000000
+AC[63]: 0x00000000
+
+=== Cycle 1 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x00000000(0)
+DCT[0,7]: 0x00000000(0)
+DCT[7,0]: 0x00000000(0)
+DCT[7,7]: 0x00000000(0)
+
+=== Cycle 1 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[1]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[2]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[3]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+
+=== Cycle 2 - Final DCT Results ===
+Final DCT First Row:
+0xffffffe0 0x00000030 0xffffffe0 0x00000020 0xffffffe0 0x00000020 0xffffffe0 0x00000020 
+Final DCT First Column:
+0xffffffe0 0x00000028 0xffffffe0 0x00000020 0xffffffe0 0x00000020 0xffffffe0 0x00000020 
+=== Cycle 2 - Final DCT Results ===
+Final DCT First Row:
+0xffffffe0 0x00000030 0xffffffe0 0x00000020 0xffffffe0 0x00000020 0xffffffe0 0x00000020 
+Final DCT First Column:
+0xffffffe0 0x00000028 0xffffffe0 0x00000020 0xffffffe0 0x00000020 0xffffffe0 0x00000020 
+=== Cycle 2 - Final DCT Results ===
+Final DCT First Row:
+0xffffffe0 0x00000030 0xffffffe0 0x00000020 0xffffffe0 0x00000020 0xffffffe0 0x00000020 
+Final DCT First Column:
+0xffffffe0 0x00000028 0xffffffe0 0x00000020 0xffffffe0 0x00000020 0xffffffe0 0x00000020 
+=== Cycle 2 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 2 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 2 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0xffffff80(-0.00195312)
+Input[0,7]: 0xffffff80(-0.00195312)
+Input[7,0]: 0xffffff80(-0.00195312)
+Input[7,7]: 0xffffff80(-0.00195312)
+
+=== Cycle 2 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0xfffffffe Z[1]: 0x00000003 Z[2]: 0x00000003 Z[3]: 0xfffffffd 
+Z[4]: 0xfffffffb Z[5]: 0xfffffffc Z[6]: 0x00000002 Z[7]: 0x00000003 
+Z[8]: 0x00000003 Z[9]: 0x00000002 Z[10]: 0xfffffffe Z[11]: 0xfffffffd 
+Z[12]: 0xfffffffe Z[13]: 0xfffffffd Z[14]: 0xfffffffe Z[15]: 0x00000000 
+
+=== Cycle 2 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0xfffffffe
+AC[1]: 0x00000003
+AC[8]: 0x00000003
+AC[63]: 0xffffffff
+
+=== Cycle 2 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0xffffffe0(-0.000488281)
+DCT[0,7]: 0x00000020(0.000488281)
+DCT[7,0]: 0x00000020(0.000488281)
+DCT[7,7]: 0xffffffe0(-0.000488281)
+
+=== Cycle 2 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[1]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[2]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+Pixel[3]: Y=00000000(0)  Cb=00000000(0)  Cr=00000000(0)
+
+=== Cycle 3 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 3 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 3 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 3 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 3 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 3 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 3 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0xfffffffe Z[1]: 0x00000003 Z[2]: 0x00000003 Z[3]: 0xfffffffd 
+Z[4]: 0xfffffffb Z[5]: 0xfffffffc Z[6]: 0x00000002 Z[7]: 0x00000003 
+Z[8]: 0x00000003 Z[9]: 0x00000002 Z[10]: 0xfffffffe Z[11]: 0xfffffffd 
+Z[12]: 0xfffffffe Z[13]: 0xfffffffd Z[14]: 0xfffffffe Z[15]: 0x00000000 
+
+=== Cycle 3 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0xfffffffe
+AC[1]: 0x00000003
+AC[8]: 0x00000003
+AC[63]: 0xffffffff
+
+=== Cycle 3 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0xffffffe0(-0.000488281)
+DCT[0,7]: 0x00000020(0.000488281)
+DCT[7,0]: 0x00000020(0.000488281)
+DCT[7,7]: 0xffffffe0(-0.000488281)
+
+=== Cycle 3 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 4 - Row DCT Results ===
+Row DCT Corner Values:
+Row_DCT[0,0]: 0x007f7f40(127.497)
+Row_DCT[0,7]: 0xff8080c0(-127.497)
+Row_DCT[7,0]: 0x007f7f40(127.497)
+Row_DCT[7,7]: 0xff8080c0(-127.497)
+
+=== Cycle 4 - Row DCT Results ===
+Row DCT Corner Values:
+Row_DCT[0,0]: 0x00000038(0.000854492)
+Row_DCT[0,7]: 0xffffffc8(-0.000854492)
+Row_DCT[7,0]: 0x00000038(0.000854492)
+Row_DCT[7,7]: 0xffffffc8(-0.000854492)
+
+=== Cycle 4 - Row DCT Results ===
+Row DCT Corner Values:
+Row_DCT[0,0]: 0x00000038(0.000854492)
+Row_DCT[0,7]: 0xffffffc8(-0.000854492)
+Row_DCT[7,0]: 0x00000038(0.000854492)
+Row_DCT[7,7]: 0xffffffc8(-0.000854492)
+
+=== Cycle 4 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 4 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 4 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 4 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0xfffffffe Z[1]: 0x00000003 Z[2]: 0x00000003 Z[3]: 0xfffffffd 
+Z[4]: 0xfffffffb Z[5]: 0xfffffffc Z[6]: 0x00000002 Z[7]: 0x00000003 
+Z[8]: 0x00000003 Z[9]: 0x00000002 Z[10]: 0xfffffffe Z[11]: 0xfffffffd 
+Z[12]: 0xfffffffe Z[13]: 0xfffffffd Z[14]: 0xfffffffe Z[15]: 0x00000000 
+
+=== Cycle 4 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0xfffffffe
+AC[1]: 0x00000003
+AC[8]: 0x00000003
+AC[63]: 0xffffffff
+
+=== Cycle 4 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0xffffffe0(-0.000488281)
+DCT[0,7]: 0x00000020(0.000488281)
+DCT[7,0]: 0x00000020(0.000488281)
+DCT[7,7]: 0xffffffe0(-0.000488281)
+
+=== Cycle 4 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 5 - Final DCT Results ===
+Final DCT First Row:
+0x003fbfa0 0xffab01d8 0x003fbfa0 0xffc04060 0x003fbfa0 0xffc04060 0x003fbfa0 0xffc04060 
+Final DCT First Column:
+0x003fbfa0 0xffab01d0 0x003fbfa0 0xffc04060 0x003fbfa0 0xffc04060 0x003fbfa0 0xffc04060 
+=== Cycle 5 - Final DCT Results ===
+Final DCT First Row:
+0x00000018 0xffffffe0 0x00000018 0xffffffe8 0x00000018 0xffffffe8 0x00000018 0xffffffe8 
+Final DCT First Column:
+0x00000018 0xffffffd8 0x00000018 0xffffffe0 0x00000018 0xffffffe0 0x00000018 0xffffffe0 
+=== Cycle 5 - Final DCT Results ===
+Final DCT First Row:
+0x00000018 0xffffffe0 0x00000018 0xffffffe8 0x00000018 0xffffffe8 0x00000018 0xffffffe8 
+Final DCT First Column:
+0x00000018 0xffffffd8 0x00000018 0xffffffe0 0x00000018 0xffffffe0 0x00000018 0xffffffe0 
+=== Cycle 5 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 5 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 5 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 5 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 5 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 5 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 5 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 6 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 6 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 6 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 6 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 6 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 6 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 6 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 7 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 7 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 7 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 7 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 7 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 7 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 7 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 8 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 8 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 8 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 8 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 8 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 8 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 8 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 9 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 9 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 9 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 9 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 9 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 9 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 9 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+
+Input data generation complete!
+Processing JPEG compression pipeline...
+=== Cycle 10 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 10 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 10 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 10 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 10 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 10 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 10 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 11 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 11 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 11 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 11 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 11 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 11 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 11 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 12 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 12 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 12 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 12 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 12 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 12 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 12 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 13 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 13 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 13 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 13 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 13 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 13 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 13 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 14 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 14 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 14 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 14 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 14 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 14 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 14 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 15 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 15 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 15 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 15 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 15 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 15 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 15 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 16 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 16 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 16 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 16 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 16 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 16 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 16 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 17 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 17 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 17 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 17 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 17 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 17 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 17 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 18 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 18 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 18 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 18 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 18 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 18 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 18 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 19 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 19 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 19 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 19 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 19 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 19 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 19 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 20 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 20 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 20 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 20 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 20 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 20 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 20 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 21 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 21 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 21 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 21 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 21 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 21 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 21 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 22 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 22 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 22 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 22 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 22 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 22 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 22 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 23 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 23 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 23 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 23 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 23 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 23 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 23 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 24 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 24 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 24 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 24 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 24 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 24 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 24 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 25 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 25 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 25 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 25 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 25 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 25 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 25 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 26 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 26 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 26 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 26 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 26 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 26 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 26 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 27 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 27 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 27 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 27 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 27 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 27 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 27 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 28 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 28 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 28 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 28 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 28 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 28 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 28 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 29 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 29 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 29 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 29 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 29 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 29 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 29 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 30 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 30 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 30 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 30 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 30 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 30 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 30 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 31 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 31 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 31 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 31 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 31 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 31 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 31 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 32 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 32 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 32 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 32 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 32 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 32 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 32 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 33 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 33 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 33 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 33 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 33 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 33 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 33 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 34 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 34 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 34 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 34 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 34 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 34 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 34 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 35 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 35 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 35 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 35 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 35 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 35 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 35 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 36 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 36 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 36 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 36 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 36 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 36 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 36 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 37 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 37 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 37 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 37 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 37 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 37 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 37 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 38 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 38 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 38 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 38 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 38 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 38 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 38 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 39 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 39 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 39 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 39 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 39 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 39 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 39 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 40 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 40 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 40 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 40 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 40 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 40 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 40 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 41 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 41 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 41 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 41 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 41 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 41 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 41 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 42 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 42 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 42 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 42 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 42 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 42 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 42 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 43 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 43 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 43 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 43 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 43 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 43 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 43 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 44 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 44 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 44 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 44 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 44 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 44 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 44 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 45 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 45 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 45 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 45 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 45 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 45 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 45 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 46 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 46 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 46 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 46 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 46 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 46 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 46 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 47 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 47 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 47 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 47 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 47 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 47 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 47 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 48 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 48 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 48 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 48 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 48 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 48 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 48 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+=== Cycle 49 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x00fefe81(254.994)
+Input[0,7]: 0x00fefe81(254.994)
+Input[7,0]: 0x00fefe81(254.994)
+Input[7,7]: 0x00fefe81(254.994)
+
+=== Cycle 49 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 49 - DCT Input Matrix ===
+Input Matrix Corner Values:
+Input[0,0]: 0x0000007f(0.00193787)
+Input[0,7]: 0x0000007f(0.00193787)
+Input[7,0]: 0x0000007f(0.00193787)
+Input[7,7]: 0x0000007f(0.00193787)
+
+=== Cycle 49 - Zigzag Stage Debug ===
+Y-Zigzag First 16 Coefficients:
+Z[0]: 0x0003fbfa Z[1]: 0xfff845ec Z[2]: 0xfff8eaee Z[3]: 0x00048da6 
+Z[4]: 0x00097148 Z[5]: 0x0006600f Z[6]: 0xfffc0406 Z[7]: 0xfff9ede4 
+Z[8]: 0xfff9765e Z[9]: 0xfffb7259 Z[10]: 0x00038aac Z[11]: 0x0004ffdf 
+Z[12]: 0x0003fbfa Z[13]: 0x00047914 Z[14]: 0x0002a811 Z[15]: 0xfffe681b 
+
+=== Cycle 49 - Quantization Stage Debug ===
+Y-Quant Coefficients:
+DC: 0x0003fbfa
+AC[1]: 0xfff845ec
+AC[8]: 0xfff8eaee
+AC[63]: 0x0000a4d9
+
+=== Cycle 49 - DCT Stage Debug ===
+Y-DCT Corner Values:
+DCT[0,0]: 0x003fbfa0(63.7485)
+DCT[0,7]: 0xffc04060(-63.7485)
+DCT[7,0]: 0xffc04060(-63.7485)
+DCT[7,7]: 0x003fbfa0(63.7485)
+
+=== Cycle 49 - Color Conversion Debug ===
+Sample RGB values (First 4 pixels):
+Pixel[0]: R=255 G=255 B=255
+Pixel[1]: R=255 G=255 B=255
+Pixel[2]: R=255 G=255 B=255
+Pixel[3]: R=255 G=255 B=255
+Sample YCbCr values (First 4 pixels):
+Pixel[0]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[1]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[2]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+Pixel[3]: Y=00feff01(254.996)  Cb=000000ff(0.00389099)  Cr=000000ff(0.00389099)
+
+
+Writing output to files...
+Writing Pixel[0]: Y=0x0003FBFA Cb=0x00000001 Cr=0x00000001
+Writing Pixel[1]: Y=0xFFF845EC Cb=0xFFFFFFFD Cr=0xFFFFFFFD
+Writing Pixel[2]: Y=0xFFF8EAEE Cb=0xFFFFFFFE Cr=0xFFFFFFFE
+Writing Pixel[3]: Y=0x00048DA6 Cb=0x00000001 Cr=0x00000001
+Output successfully written to actual_output_Y.mem, actual_output_Cb.mem, and actual_output_Cr.mem
+
+Simulation complete!
+
+Info: /OSCI/SystemC: Simulation stopped by user.
+
+========================================
+DCT 2D Module - Debug Complete
+========================================
+
+
+========================================
+DCT 2D Module - Debug Complete
+========================================
+
+
+========================================
+DCT 2D Module - Debug Complete
+========================================
+
+
+========================================
+JPEG Compression Pipeline - Debug Complete
+========================================
+

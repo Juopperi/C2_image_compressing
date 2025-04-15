@@ -86,7 +86,8 @@ int main(int argc, char* argv[]) {
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(0, 255);
+    // std::uniform_int_distribution<int> dist(0, 255);
+    std::uniform_int_distribution<int> dist(255, 255);
 
     for (int s = 0; s < num_samples; ++s) {
         float Y[N][N], Cb[N][N], Cr[N][N];

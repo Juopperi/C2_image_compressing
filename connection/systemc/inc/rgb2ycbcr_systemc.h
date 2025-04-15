@@ -1,33 +1,113 @@
-#include <systemc.h>
-#include "FixedPoint.h"
+#ifndef RGB2YCBCR_SYSTEMC_FIXED_H
+#define RGB2YCBCR_SYSTEMC_FIXED_H
 
-// Conversion module for RGB to YCbCr transformation
+#include <systemc.h>
+#include "fixed_point.h"
+
+// Debug enable flag for RGB to YCbCr
+#define RGB2YCBCR_DEBUG 0
+
+// Conversion module for RGB to YCbCr transformation with fixed-point math
 template<typename T = int, int fracBits = 16, int fixed_point_length = 32, int input_width = 8>
-SC_MODULE(conversion) {
+SC_MODULE(conversion_fixed) {
     // Input ports
     sc_in<sc_uint<input_width>> input_R;
     sc_in<sc_uint<input_width>> input_G;
     sc_in<sc_uint<input_width>> input_B;
     sc_in<bool> clk;
 
-    // Output ports
-    sc_out<sc_uint<fixed_point_length>> output_Y;
-    sc_out<sc_uint<fixed_point_length>> output_Cb;
-    sc_out<sc_uint<fixed_point_length>> output_Cr;
+    // Output ports - changed from sc_uint to sc_int to match calculation results
+    sc_out<sc_int<fixed_point_length>> output_Y;
+    sc_out<sc_int<fixed_point_length>> output_Cb;
+    sc_out<sc_int<fixed_point_length>> output_Cr;
 
     // Constants for RGB to YCbCr conversion (scaled by 2^fracBits)
-    const FixedPoint<T, fracBits> n299 = FixedPoint<T, fracBits>(0.299);
-    const FixedPoint<T, fracBits> n587 = FixedPoint<T, fracBits>(0.587);
-    const FixedPoint<T, fracBits> n114 = FixedPoint<T, fracBits>(0.114);
+    // Y = 0.299R + 0.587G + 0.114B
+    // Cb = -0.1687R - 0.3313G + 0.5B + 128
+    // Cr = 0.5R - 0.4187G - 0.0813B + 128
+    
+    const T Y_R_COEFF  = static_cast<T>(0.299 * (1 << fracBits));
+    const T Y_G_COEFF  = static_cast<T>(0.587 * (1 << fracBits));
+    const T Y_B_COEFF  = static_cast<T>(0.114 * (1 << fracBits));
+    
+    const T CB_R_COEFF = static_cast<T>(-0.1687 * (1 << fracBits));
+    const T CB_G_COEFF = static_cast<T>(-0.3313 * (1 << fracBits));
+    const T CB_B_COEFF = static_cast<T>(0.5 * (1 << fracBits));
+    
+    const T CR_R_COEFF = static_cast<T>(0.5 * (1 << fracBits));
+    const T CR_G_COEFF = static_cast<T>(-0.4187 * (1 << fracBits));
+    const T CR_B_COEFF = static_cast<T>(-0.0813 * (1 << fracBits));
+    
+    const T OFFSET_128 = static_cast<T>(128 << fracBits);
 
-    const FixedPoint<T, fracBits> n1687 = FixedPoint<T, fracBits>(0.1687);
-    const FixedPoint<T, fracBits> n3313 = FixedPoint<T, fracBits>(0.3313);
-    const FixedPoint<T, fracBits> n5 = FixedPoint<T, fracBits>(0.5);
+    // Internal signals for fixed-point multiplier and adder
+    sc_signal<sc_int<fixed_point_length>> r_fixed_sig;
+    sc_signal<sc_int<fixed_point_length>> g_fixed_sig;
+    sc_signal<sc_int<fixed_point_length>> b_fixed_sig;
+    
+    // Coefficient signals
+    sc_signal<sc_int<fixed_point_length>> y_r_coeff_sig;
+    sc_signal<sc_int<fixed_point_length>> y_g_coeff_sig;
+    sc_signal<sc_int<fixed_point_length>> y_b_coeff_sig;
+    sc_signal<sc_int<fixed_point_length>> cb_r_coeff_sig;
+    sc_signal<sc_int<fixed_point_length>> cb_g_coeff_sig;
+    sc_signal<sc_int<fixed_point_length>> cb_b_coeff_sig;
+    sc_signal<sc_int<fixed_point_length>> cr_r_coeff_sig;
+    sc_signal<sc_int<fixed_point_length>> cr_g_coeff_sig;
+    sc_signal<sc_int<fixed_point_length>> cr_b_coeff_sig;
+    sc_signal<sc_int<fixed_point_length>> offset_128_sig;
+    
+    // Multiplication result signals
+    sc_signal<sc_int<fixed_point_length>> y_r_mult_res;
+    sc_signal<sc_int<fixed_point_length>> y_g_mult_res;
+    sc_signal<sc_int<fixed_point_length>> y_b_mult_res;
+    sc_signal<sc_int<fixed_point_length>> cb_r_mult_res;
+    sc_signal<sc_int<fixed_point_length>> cb_g_mult_res;
+    sc_signal<sc_int<fixed_point_length>> cb_b_mult_res;
+    sc_signal<sc_int<fixed_point_length>> cr_r_mult_res;
+    sc_signal<sc_int<fixed_point_length>> cr_g_mult_res;
+    sc_signal<sc_int<fixed_point_length>> cr_b_mult_res;
+    
+    // Addition result signals
+    sc_signal<sc_int<fixed_point_length>> y_rg_add_res;
+    sc_signal<sc_int<fixed_point_length>> y_final_res;
+    sc_signal<sc_int<fixed_point_length>> cb_rg_add_res;
+    sc_signal<sc_int<fixed_point_length>> cb_final_res;
+    sc_signal<sc_int<fixed_point_length>> cr_rg_add_res;
+    sc_signal<sc_int<fixed_point_length>> cr_final_res;
+    
+    // Multiplier modules
+    fixed_multiplier<T, fracBits> *y_r_mult, *y_g_mult, *y_b_mult;
+    fixed_multiplier<T, fracBits> *cb_r_mult, *cb_g_mult, *cb_b_mult;
+    fixed_multiplier<T, fracBits> *cr_r_mult, *cr_g_mult, *cr_b_mult;
+    
+    // Adder modules
+    fixed_adder<T, fracBits> *y_rg_add, *y_rgb_add;
+    fixed_adder<T, fracBits> *cb_rg_add, *cb_rgb_add;
+    fixed_adder<T, fracBits> *cr_rg_add, *cr_rgb_add;
 
-    const FixedPoint<T, fracBits> n4187 = FixedPoint<T, fracBits>(0.4187);
-    const FixedPoint<T, fracBits> n0813 = FixedPoint<T, fracBits>(0.0813);
-
-    const FixedPoint<T, fracBits> n128 = FixedPoint<T, fracBits>(128);
+    // Helper to print a fixed-point value for debugging
+    void debug_print_fixed(const char* label, T value) {
+        if (RGB2YCBCR_DEBUG) {
+            double double_val = static_cast<double>(value) / (1 << fracBits);
+            std::cout << label << " = 0x" << std::hex << value 
+                      << std::dec << " (" << double_val << ")" << std::endl;
+        }
+    }
+    
+    void initialize_constants() {
+        // Initialize coefficient signals
+        y_r_coeff_sig.write(Y_R_COEFF);
+        y_g_coeff_sig.write(Y_G_COEFF);
+        y_b_coeff_sig.write(Y_B_COEFF);
+        cb_r_coeff_sig.write(CB_R_COEFF);
+        cb_g_coeff_sig.write(CB_G_COEFF);
+        cb_b_coeff_sig.write(CB_B_COEFF);
+        cr_r_coeff_sig.write(CR_R_COEFF);
+        cr_g_coeff_sig.write(CR_G_COEFF);
+        cr_b_coeff_sig.write(CR_B_COEFF);
+        offset_128_sig.write(-OFFSET_128); // Negative for Y, positive for Cb/Cr
+    }
 
     void convert() {
         // Read input values
@@ -35,52 +115,204 @@ SC_MODULE(conversion) {
         sc_uint<input_width> g_val = input_G.read();
         sc_uint<input_width> b_val = input_B.read();
 
-        // Convert to FixedPoint
-        FixedPoint<T, fracBits> r(r_val.to_int());
-        FixedPoint<T, fracBits> g(g_val.to_int());
-        FixedPoint<T, fracBits> b(b_val.to_int());
+        // Debug print input values
+        if (RGB2YCBCR_DEBUG) {
+            std::cout << "RGB2YCbCr Convert: R=" << r_val << " G=" << g_val << " B=" << b_val << std::endl;
+        }
 
-        // Calculate Y, Cb, Cr
-        FixedPoint<T, fracBits> Y = r * n299 + g * n587 + b * n114 - n128;
-        FixedPoint<T, fracBits> Cb =  b * n5 - r * n1687 - g * n3313;
-        FixedPoint<T, fracBits> Cr =  r * n5 - g * n4187 - b * n0813;
+        // Convert to fixed point (scale to fixed-point)
+        T r_fixed = static_cast<T>(r_val.to_int()) << fracBits;
+        T g_fixed = static_cast<T>(g_val.to_int()) << fracBits;
+        T b_fixed = static_cast<T>(b_val.to_int()) << fracBits;
+        
+        // Set input signals for multipliers
+        r_fixed_sig.write(r_fixed);
+        g_fixed_sig.write(g_fixed);
+        b_fixed_sig.write(b_fixed);
+        
+        // Debug print fixed-point values
+        if (RGB2YCBCR_DEBUG) {
+            debug_print_fixed("R_fixed", r_fixed);
+            debug_print_fixed("G_fixed", g_fixed);
+            debug_print_fixed("B_fixed", b_fixed);
+        }
+
+        // The calculation is now performed by the multiplier and adder modules
+        // Read the final results
+        sc_int<fixed_point_length> Y_fixed = y_final_res.read();
+        sc_int<fixed_point_length> Cb_fixed = cb_final_res.read();
+        sc_int<fixed_point_length> Cr_fixed = cr_final_res.read();
+
+        // Debug print results
+        if (RGB2YCBCR_DEBUG) {
+            debug_print_fixed("Y_fixed", Y_fixed);
+            debug_print_fixed("Cb_fixed", Cb_fixed);
+            debug_print_fixed("Cr_fixed", Cr_fixed);
+        }
 
         // Output results
-        output_Y.write(Y.raw());
-        output_Cb.write(Cb.raw());
-        output_Cr.write(Cr.raw());
+        output_Y.write(Y_fixed);
+        output_Cb.write(Cb_fixed);
+        output_Cr.write(Cr_fixed);
     }
 
-    SC_CTOR(conversion) {
+    SC_CTOR(conversion_fixed) {
+        // Create multiplier instances
+        y_r_mult = new fixed_multiplier<T, fracBits>("y_r_mult");
+        y_g_mult = new fixed_multiplier<T, fracBits>("y_g_mult");
+        y_b_mult = new fixed_multiplier<T, fracBits>("y_b_mult");
+        cb_r_mult = new fixed_multiplier<T, fracBits>("cb_r_mult");
+        cb_g_mult = new fixed_multiplier<T, fracBits>("cb_g_mult");
+        cb_b_mult = new fixed_multiplier<T, fracBits>("cb_b_mult");
+        cr_r_mult = new fixed_multiplier<T, fracBits>("cr_r_mult");
+        cr_g_mult = new fixed_multiplier<T, fracBits>("cr_g_mult");
+        cr_b_mult = new fixed_multiplier<T, fracBits>("cr_b_mult");
+        
+        // Connect multiplier inputs and outputs
+        y_r_mult->a(r_fixed_sig);
+        y_r_mult->b(y_r_coeff_sig);
+        y_r_mult->mul_res(y_r_mult_res);
+        
+        y_g_mult->a(g_fixed_sig);
+        y_g_mult->b(y_g_coeff_sig);
+        y_g_mult->mul_res(y_g_mult_res);
+        
+        y_b_mult->a(b_fixed_sig);
+        y_b_mult->b(y_b_coeff_sig);
+        y_b_mult->mul_res(y_b_mult_res);
+        
+        cb_r_mult->a(r_fixed_sig);
+        cb_r_mult->b(cb_r_coeff_sig);
+        cb_r_mult->mul_res(cb_r_mult_res);
+        
+        cb_g_mult->a(g_fixed_sig);
+        cb_g_mult->b(cb_g_coeff_sig);
+        cb_g_mult->mul_res(cb_g_mult_res);
+        
+        cb_b_mult->a(b_fixed_sig);
+        cb_b_mult->b(cb_b_coeff_sig);
+        cb_b_mult->mul_res(cb_b_mult_res);
+        
+        cr_r_mult->a(r_fixed_sig);
+        cr_r_mult->b(cr_r_coeff_sig);
+        cr_r_mult->mul_res(cr_r_mult_res);
+        
+        cr_g_mult->a(g_fixed_sig);
+        cr_g_mult->b(cr_g_coeff_sig);
+        cr_g_mult->mul_res(cr_g_mult_res);
+        
+        cr_b_mult->a(b_fixed_sig);
+        cr_b_mult->b(cr_b_coeff_sig);
+        cr_b_mult->mul_res(cr_b_mult_res);
+        
+        // Create adder instances
+        y_rg_add = new fixed_adder<T, fracBits>("y_rg_add");
+        y_rgb_add = new fixed_adder<T, fracBits>("y_rgb_add");
+        cb_rg_add = new fixed_adder<T, fracBits>("cb_rg_add");
+        cb_rgb_add = new fixed_adder<T, fracBits>("cb_rgb_add");
+        cr_rg_add = new fixed_adder<T, fracBits>("cr_rg_add");
+        cr_rgb_add = new fixed_adder<T, fracBits>("cr_rgb_add");
+        
+        // Connect adder inputs and outputs
+        y_rg_add->a(y_r_mult_res);
+        y_rg_add->b(y_g_mult_res);
+        y_rg_add->sum_out(y_rg_add_res);
+        
+        y_rgb_add->a(y_rg_add_res);
+        y_rgb_add->b(y_b_mult_res);
+        y_rgb_add->sum_out(y_final_res);
+        
+        cb_rg_add->a(cb_r_mult_res);
+        cb_rg_add->b(cb_g_mult_res);
+        cb_rg_add->sum_out(cb_rg_add_res);
+        
+        cb_rgb_add->a(cb_rg_add_res);
+        cb_rgb_add->b(cb_b_mult_res);
+        cb_rgb_add->sum_out(cb_final_res);
+        
+        cr_rg_add->a(cr_r_mult_res);
+        cr_rg_add->b(cr_g_mult_res);
+        cr_rg_add->sum_out(cr_rg_add_res);
+        
+        cr_rgb_add->a(cr_rg_add_res);
+        cr_rgb_add->b(cr_b_mult_res);
+        cr_rgb_add->sum_out(cr_final_res);
+        
+        // Initialize constants
+        SC_METHOD(initialize_constants);
+        
+        // Register convert method
         SC_METHOD(convert);
         sensitive << clk.pos();
+    }
+    
+    ~conversion_fixed() {
+        // Free allocated modules
+        delete y_r_mult;
+        delete y_g_mult;
+        delete y_b_mult;
+        delete cb_r_mult;
+        delete cb_g_mult;
+        delete cb_b_mult;
+        delete cr_r_mult;
+        delete cr_g_mult;
+        delete cr_b_mult;
+        
+        delete y_rg_add;
+        delete y_rgb_add;
+        delete cb_rg_add;
+        delete cb_rgb_add;
+        delete cr_rg_add;
+        delete cr_rgb_add;
     }
 };
 
 // Container module that instantiates multiple conversion modules
 template<typename T = int, int fracBits = 16, int fixed_point_length = 32, int num_pixels = 64, int input_width = 8>
-SC_MODULE(rgb2ycbcr_container) {
+SC_MODULE(rgb2ycbcr_container_fixed) {
     // Input ports
     sc_in<bool> clk;
     sc_in<sc_uint<input_width>> r_in[num_pixels];
     sc_in<sc_uint<input_width>> g_in[num_pixels];
     sc_in<sc_uint<input_width>> b_in[num_pixels];
 
-    // Output ports
-    sc_out<sc_uint<fixed_point_length>> y_out[num_pixels];
-    sc_out<sc_uint<fixed_point_length>> cb_out[num_pixels];
-    sc_out<sc_uint<fixed_point_length>> cr_out[num_pixels];
+    // Output ports - changed from sc_uint to sc_int to match calculation results
+    sc_out<sc_int<fixed_point_length>> y_out[num_pixels];
+    sc_out<sc_int<fixed_point_length>> cb_out[num_pixels];
+    sc_out<sc_int<fixed_point_length>> cr_out[num_pixels];
 
     // Array of conversion modules
-    conversion<T, fracBits, fixed_point_length, input_width>* converters[num_pixels];
+    conversion_fixed<T, fracBits, fixed_point_length, input_width>* converters[num_pixels];
 
-    SC_CTOR(rgb2ycbcr_container) {
+    // Debug output method
+    void debug_monitor() {
+        if (RGB2YCBCR_DEBUG) {
+            static int cycle_count = 0;
+            cycle_count++;
+            
+            if (cycle_count % 10 == 0) {  // Only print every 10 cycles
+                std::cout << "=== RGB2YCbCr Container Debug (Cycle " << cycle_count << ") ===" << std::endl;
+                
+                // Print first 4 values
+                for (int i = 0; i < 4; i++) {
+                    std::cout << "Pixel[" << i << "]: ";
+                    std::cout << "R=" << r_in[i].read() << " G=" << g_in[i].read() << " B=" << b_in[i].read();
+                    std::cout << " -> Y=0x" << std::hex << y_out[i].read() << std::dec;
+                    std::cout << " Cb=0x" << std::hex << cb_out[i].read() << std::dec;
+                    std::cout << " Cr=0x" << std::hex << cr_out[i].read() << std::dec << std::endl;
+                }
+                std::cout << std::endl;
+            }
+        }
+    }
+
+    SC_CTOR(rgb2ycbcr_container_fixed) {
         // Instantiate num_pixels converters
         for (int i = 0; i < num_pixels; i++) {
             char name[20];
-            sprintf(name, "converter_%d", i);
+            sprintf(name, "converter_fixed_%d", i);
 
-            converters[i] = new conversion<T, fracBits, fixed_point_length, input_width>(name);
+            converters[i] = new conversion_fixed<T, fracBits, fixed_point_length, input_width>(name);
 
             // Connect ports
             converters[i]->clk(clk);
@@ -91,9 +323,15 @@ SC_MODULE(rgb2ycbcr_container) {
             converters[i]->output_Cb(cb_out[i]);
             converters[i]->output_Cr(cr_out[i]);
         }
+        
+        // Only add debug method if debug is enabled
+        if (RGB2YCBCR_DEBUG) {
+            SC_METHOD(debug_monitor);
+            sensitive << clk.pos();
+        }
     }
 
-    ~rgb2ycbcr_container() {
+    ~rgb2ycbcr_container_fixed() {
         // Free the dynamically allocated converters
         for (int i = 0; i < num_pixels; i++) {
             delete converters[i];
@@ -101,107 +339,4 @@ SC_MODULE(rgb2ycbcr_container) {
     }
 };
 
-// Alternate implementation with packed arrays
-template<typename T = int, int fracBits = 16, int fixed_point_length = 32, int num_pixels = 64, int input_width = 8>
-SC_MODULE(rgb2ycbcr_container_packed) {
-    // Input ports for packed arrays
-    sc_in<bool> clk;
-    sc_in<sc_bv<input_width * num_pixels>> r_all;
-    sc_in<sc_bv<input_width * num_pixels>> g_all;
-    sc_in<sc_bv<input_width * num_pixels>> b_all;
-
-    // Output ports for packed arrays
-    sc_out<sc_bv<fixed_point_length * num_pixels>> y_all;
-    sc_out<sc_bv<fixed_point_length * num_pixels>> cb_all;
-    sc_out<sc_bv<fixed_point_length * num_pixels>> cr_all;
-
-    // Individual ports for internal connections
-    sc_signal<sc_uint<input_width>> r_sig[num_pixels];
-    sc_signal<sc_uint<input_width>> g_sig[num_pixels];
-    sc_signal<sc_uint<input_width>> b_sig[num_pixels];
-
-    sc_signal<sc_uint<fixed_point_length>> y_sig[num_pixels];
-    sc_signal<sc_uint<fixed_point_length>> cb_sig[num_pixels];
-    sc_signal<sc_uint<fixed_point_length>> cr_sig[num_pixels];
-
-    // Array of conversion modules
-    conversion<T, fracBits, fixed_point_length, input_width>* converters[num_pixels];
-
-    void unpack_inputs() {
-        // Unpack the input bit vectors into individual signals
-        for (int i = 0; i < num_pixels; i++) {
-            sc_uint<input_width> r_val;
-            sc_uint<input_width> g_val;
-            sc_uint<input_width> b_val;
-
-            for (int j = 0; j < input_width; j++) {
-                // Convert sc_bit to bool and then assign to sc_uint_bitref
-                r_val[j] = r_all.read()[(i * input_width) + j].to_bool();
-                g_val[j] = g_all.read()[(i * input_width) + j].to_bool();
-                b_val[j] = b_all.read()[(i * input_width) + j].to_bool();
-            }
-
-            r_sig[i].write(r_val);
-            g_sig[i].write(g_val);
-            b_sig[i].write(b_val);
-        }
-    }
-
-    void pack_outputs() {
-        // Pack the individual output signals into output bit vectors
-        sc_bv<fixed_point_length * num_pixels> y_packed;
-        sc_bv<fixed_point_length * num_pixels> cb_packed;
-        sc_bv<fixed_point_length * num_pixels> cr_packed;
-
-        for (int i = 0; i < num_pixels; i++) {
-            sc_uint<fixed_point_length> y_val = y_sig[i].read();
-            sc_uint<fixed_point_length> cb_val = cb_sig[i].read();
-            sc_uint<fixed_point_length> cr_val = cr_sig[i].read();
-
-            for (int j = 0; j < fixed_point_length; j++) {
-                // Convert sc_uint_bitref to bool before assigning to sc_bitref
-                y_packed[(i * fixed_point_length) + j] = (y_val[j] == 1);
-                cb_packed[(i * fixed_point_length) + j] = (cb_val[j] == 1);
-                cr_packed[(i * fixed_point_length) + j] = (cr_val[j] == 1);
-            }
-        }
-
-        y_all.write(y_packed);
-        cb_all.write(cb_packed);
-        cr_all.write(cr_packed);
-    }
-
-    SC_CTOR(rgb2ycbcr_container_packed) {
-        // Instantiate num_pixels converters
-        for (int i = 0; i < num_pixels; i++) {
-            char name[20];
-            sprintf(name, "converter_%d", i);
-
-            converters[i] = new conversion<T, fracBits, fixed_point_length, input_width>(name);
-
-            // Connect ports
-            converters[i]->clk(clk);
-            converters[i]->input_R(r_sig[i]);
-            converters[i]->input_G(g_sig[i]);
-            converters[i]->input_B(b_sig[i]);
-            converters[i]->output_Y(y_sig[i]);
-            converters[i]->output_Cb(cb_sig[i]);
-            converters[i]->output_Cr(cr_sig[i]);
-        }
-
-        SC_METHOD(unpack_inputs);
-        sensitive << r_all << g_all << b_all;
-
-        SC_METHOD(pack_outputs);
-        for (int i = 0; i < num_pixels; i++) {
-            sensitive << y_sig[i] << cb_sig[i] << cr_sig[i];
-        }
-    }
-
-    ~rgb2ycbcr_container_packed() {
-        // Free the dynamically allocated converters
-        for (int i = 0; i < num_pixels; i++) {
-            delete converters[i];
-        }
-    }
-};
+#endif // RGB2YCBCR_SYSTEMC_FIXED_H

@@ -2,7 +2,7 @@
 #define QUANTIZATION_SYSTEMC_H
 
 #include <systemc.h>
-#include "FixedPoint.h"
+#include "fixed_point.h"
 
 // Luma and Chroma quantization tables (inverse values)
 const int32_t luma_qtable_inv[64] = {
