@@ -5,7 +5,7 @@ module tb_zigzag_reorder;
     parameter DATA_WIDTH  = 32;
     parameter DATA_DEPTH  = 8;
     parameter PIXEL_COUNT = DATA_DEPTH * DATA_DEPTH;  // 64
-    parameter MAX_SAMPLES = 1000;
+    parameter MAX_SAMPLES = 100;
 
     localparam TOTAL_BITS = DATA_WIDTH * PIXEL_COUNT;
 

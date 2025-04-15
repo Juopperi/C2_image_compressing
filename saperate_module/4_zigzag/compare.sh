@@ -9,8 +9,8 @@ if [ $# -ne 1 ]; then
 fi
 
 OUTNAME=$1
-EXPECTED_FILE="expected_${OUTNAME}.mem"
-ACTUAL_FILE="actual_${OUTNAME}.mem"
+EXPECTED_FILE="expected_${OUTNAME}_output.mem"
+ACTUAL_FILE="actual_${OUTNAME}_output.mem"
 
 cp "./tb/saved_output/${ACTUAL_FILE}" ./utils/build/
 cp "./tb/saved_output/${EXPECTED_FILE}" ./utils/build/
