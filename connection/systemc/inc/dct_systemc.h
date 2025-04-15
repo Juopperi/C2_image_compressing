@@ -403,34 +403,6 @@ SC_MODULE(dct_2d_8x8) {
         }
     }
 
-    void debug_print_coefficients() {
-        if (DEBUG_LEVEL >= DCT_DEBUG_VERBOSE) {
-            std::cout << "=== Cycle " << debug_cycle_counter.read() << " - DCT Coefficients ===" << std::endl;
-            
-            if (DEBUG_LEVEL == DCT_DEBUG_FULL) {
-                // Print full coefficient matrix in full debug mode
-                dct_print_matrix<T, fracBits, DATA_WIDTH, sc_in<sc_int<DATA_WIDTH>>>("DCT Coefficients", dct_coeffs);
-            } else {
-                // Print key coefficients in verbose mode
-                std::cout << "Key DCT Coefficients:" << std::endl;
-                std::cout << "Coeff[0,0]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
-                          << dct_coeffs[0].read() << std::dec << "(" 
-                          << dct_fixed_to_double<T, fracBits>(dct_coeffs[0].read()) << ")" << std::endl;
-                std::cout << "Coeff[0,1]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
-                          << dct_coeffs[1].read() << std::dec << "(" 
-                          << dct_fixed_to_double<T, fracBits>(dct_coeffs[1].read()) << ")" << std::endl;
-                std::cout << "Coeff[1,0]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
-                          << dct_coeffs[8].read() << std::dec << "(" 
-                          << dct_fixed_to_double<T, fracBits>(dct_coeffs[8].read()) << ")" << std::endl;
-                std::cout << "Coeff[7,7]: " << std::hex << "0x" << std::setw(8) << std::setfill('0') 
-                          << dct_coeffs[63].read() << std::dec << "(" 
-                          << dct_fixed_to_double<T, fracBits>(dct_coeffs[63].read()) << ")" << std::endl;
-                
-                std::cout << std::endl;
-            }
-        }
-    }
-
     void update_debug_cycle() {
         if (!reset_n.read()) {
             debug_cycle_counter.write(0);
@@ -537,12 +509,6 @@ SC_MODULE(dct_2d_8x8) {
             sensitive << clk.pos();
             for (int i = 0; i < 64; i++) {
                 sensitive << data_in_matrix[i];
-            }
-
-            SC_METHOD(debug_print_coefficients);
-            sensitive << clk.pos();
-            for (int i = 0; i < 64; i++) {
-                sensitive << dct_coeffs[i];
             }
         }
     }
