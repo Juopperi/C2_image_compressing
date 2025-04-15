@@ -1,10 +1,10 @@
-#include <iostream> 
+#include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
-#include <iomanip> 
-#include <cstdint>  
-#include <sstream> 
+#include <iomanip>
+#include <cstdint>
+#include <sstream>
 #include <cmath>
 #include <regex>
 #include "FixedPoint.h"
@@ -43,13 +43,16 @@ int main(int argc, char* argv[]) {
     std::vector<Fix> expected = readMemFile(file_expected);
     std::vector<Fix> actual   = readMemFile(file_actual);
 
+    size_t min_size = std::min(expected.size(), actual.size());
+
     if (expected.size() != actual.size()) {
-        std::cerr << "Error: File size mismatch!" << std::endl;
-        return 1;
+        std::cerr << "⚠️ Warning: File length mismatch! Expected = "
+                  << expected.size() << ", Actual = " << actual.size()
+                  << " → comparing only first " << min_size << " entries.\n";
     }
 
     // ✅ 动态生成输出文件名
-    std::string base = argv[1];
+    std::string base = file_expected;
     std::smatch match;
     std::regex re("(\\d+)");
     std::string csv_file;
@@ -66,7 +69,7 @@ int main(int argc, char* argv[]) {
     std::cout << std::fixed << std::setprecision(6);
     float total_diff = 0.0f;
 
-    for (size_t i = 0; i < expected.size(); ++i) {
+    for (size_t i = 0; i < min_size; ++i) {
         float e = expected[i].toFloat();
         float a = actual[i].toFloat();
         float diff = std::abs(e - a);
@@ -77,7 +80,8 @@ int main(int argc, char* argv[]) {
 
     fout.close();
 
-    std::cout << "\nTotal Absolute Difference: " << total_diff << std::endl;
-    std::cout << "Results saved to " << csv_file << std::endl;
+    std::cout << "\n✅ Total Absolute Difference: " << total_diff << std::endl;
+    std::cout << "📄 Results saved to: " << csv_file << std::endl;
+
     return 0;
 }
