@@ -36,7 +36,7 @@ module tb_zigzag_reorder;
         $display("==== TB: Zigzag Reorder with File Output ====");
 
         $readmemh("zigzag_input.mem", input_mem);
-        $readmemh("zigzag_output.mem", golden_mem);
+        $readmemh("expected_zigzag_output.mem", golden_mem);
 
         #20;
 
