@@ -14,12 +14,13 @@ entity huffman_AC_CbCr is
 end huffman_AC_CbCr;
 
 architecture arch of huffman_AC_CbCr is 
-    type t_state is (idle,count_req_bits,encode,outputting_bits);
+    type t_state is (idle,count_req_bits,encode,outputting_bits,sync);
     signal state : t_state := idle;
 begin
 
 code_proc : process (clk)    
     variable output_reg : std_logic_vector(15 downto 0);
+    variable input_reg : std_logic_vector(9 downto 0);
     variable size : integer range 0 to 10 := 0;
     variable length : integer range -1 to 16 := 0; 
 begin                 
@@ -33,10 +34,14 @@ if rising_edge(clk) then
             end if;
             
         when count_req_bits =>
-            output_bit <= 'U';
-            done <= '0';
+            if input_integer(9) = '1' then
+              input_reg := std_logic_vector(-signed(input_integer));
+            else 
+                input_reg := input_integer; 
+           end if;
+                    
             for i in input_integer'length-1 downto 0 loop
-                if input_integer(i) = '1' then
+                if input_reg(i) = '1'  then
                     size := i+1;
                     exit;
                 end if;
@@ -619,13 +624,24 @@ if rising_edge(clk) then
                 output_bit <= output_reg(length-1);
                 length := length - 1;
             elsif size > 0 then
-                output_bit <= input_integer(size-1); --Not for 1s complement
-                size := size - 1;
+                if input_integer(9) = '1' then
+                    output_bit <= not(input_reg(size-1));
+                    size := size - 1;
+                else
+                    output_bit <= input_reg(size-1);
+                    size := size - 1;
+                end if;
             end if;
             if size = 0 and length = 0 then
+                input_reg := (others => '0');
                 done <= '1';
-                state <= idle;
+                state <= sync;
             end if;
+            
+        when sync =>
+            done <= '0';
+            state <= idle;
+            output_bit <= 'U';
 
         end case;
     end if;

@@ -123,7 +123,7 @@ architecture arch of huff_container is
             );
 
         proc : process(clk)
-        variable max : integer range 0 to 1024 := 1001;
+        variable max : integer range -16 to 1024 := 1001;
         variable min : integer range -32 to 1024 := 992;
         variable temp : std_logic_vector(9 downto 0);
         begin
@@ -154,23 +154,26 @@ architecture arch of huff_container is
                     min := min - 16;
                     output_bit <= 'U';
                 else 
-                    input_integer <= Y(max downto min);
+                    input_integer <= Y(max downto min); 
                     start_AC_Y <= '1';
                     output_bit <= output_AC_Y;
                 end if;
-                
+                                
                 if done_AC_Y = '1' then
                     start_AC_Y <= '0';
                     zeros <= 0;
                     max := max - 16;
                     min := min - 16;
                 end if;
-
-                if min = 0 then
-                    max := 1007;
-                    min := 998;
+                
+                if min = -16 and zeros = 0 then
+                    max := 1001;
+                    min := 992;
                     currentState <= DC_Cb;
+                else 
+                    --THE EOB STUFF
                 end if;
+ 
           
            when DC_Cb =>
                 input_integer <= Cb(1017 downto 1008);
@@ -188,6 +191,9 @@ architecture arch of huff_container is
                     max := max - 16;
                     min := min - 16;
                     output_bit <= 'U';
+                    if min = -16 then 
+                        --CREATE THE EOB OUTPUT
+                    end if;
                 else 
                     input_integer <= Cb(max downto min);
                     start_AC_CbCr <= '1';
@@ -201,9 +207,10 @@ architecture arch of huff_container is
                     min := min - 16;
                 end if;
 
-                if min < 0 then
-                    max := 1007;
-                    min := 998;
+                if min = -16 and zeros = 0 then
+                    start_AC_CbCr <= '0';
+                    max := 1001;
+                    min := 992;
                     currentState <= DC_Cr;
                 end if;                
                 
@@ -236,9 +243,10 @@ architecture arch of huff_container is
                     min := min - 16;
                 end if;
 
-                if min < 0 then
-                    max := 1007;
-                    min := 998;
+                if min = -16 and zeros = 0 then
+                    start_AC_CbCr <= '0';
+                    max := 1001;
+                    min := 992;
                     finished <= '1';
                     currentState <= idle;
                 end if;                   

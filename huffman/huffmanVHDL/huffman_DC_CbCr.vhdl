@@ -19,6 +19,7 @@ begin
 
 code_proc : process (clk)    
     variable output_reg : std_logic_vector(10 downto 0);
+    variable input_reg : std_logic_vector(9 downto 0);
     variable size : integer range 0 to 11 := 0;
     variable length : integer range -1 to 11 := 0; 
 begin                 
@@ -32,16 +33,20 @@ begin
                 end if;
             
             when count_req_bits =>
-                output_bit <= 'U';
-                done <= '0';
-                for i in input_integer'length-1 downto 0 loop
-                    if input_integer(i) = '1' then
-                        size := i+1;
-                        exit;
-                    end if;
-                end loop;
-                state <= encode;
-            
+            if input_integer(9) = '1' then
+              input_reg := std_logic_vector(-signed(input_integer));
+            else 
+                input_reg := input_integer; 
+           end if;
+                    
+            for i in input_integer'length-1 downto 0 loop
+                if input_reg(i) = '1'  then
+                    size := i+1;
+                    exit;
+                end if;
+            end loop;
+            state <= encode;
+        
             when encode =>
                 case size is 
                     when 0 =>
@@ -90,8 +95,13 @@ begin
                     output_bit <= output_reg(length-1);
                     length := length - 1;
                 elsif size > 0 then
-                    output_bit <= input_integer(size-1); --Not for 1s complement
+                if input_integer(9) = '1' then
+                    output_bit <= not(input_reg(size-1));
                     size := size - 1;
+                else
+                    output_bit <= input_reg(size-1);
+                    size := size - 1;
+                end if;
                 end if;
                 if size = 0 and length = 0 then
                     done <= '1';
