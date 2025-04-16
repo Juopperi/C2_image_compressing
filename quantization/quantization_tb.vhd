@@ -14,18 +14,18 @@ architecture test of quantization_tb is
         Y   : in  fixed_array; -- Input: 64-element array of Q16.16
         Cb  : in  fixed_array;
         Cr  : in  fixed_array;
-        Y_out  : out fixed_array; -- Output: Quantized 64-element array
-        Cb_out : out fixed_array;
-        Cr_out : out fixed_array
+        Y_out  : out fixed_array_16; -- Output: Quantized 64-element array
+        Cb_out : out fixed_array_16;
+        Cr_out : out fixed_array_16
     );
   end component;
 
         signal clk    : std_logic :='0';
-        signal Y_out  : fixed_array; -- Output: Quantized 64-element array
-        signal Cb_out : fixed_array;
-        signal Cr_out : fixed_array;
+        signal Y_out  : fixed_array_16; -- Output: Quantized 64-element array
+        signal Cb_out : fixed_array_16;
+        signal Cr_out : fixed_array_16;
   
-
+    -- inputs from DCT (retrieved from matlab)
     signal Y : fixed_array := (
         x"00006236", x"0028FFB7", x"00300D8A", x"FFB56E38", x"FFC2C4F8", x"00149472", x"00192E71", x"FFFF9FEF",
         x"003A4D0B", x"00412CD6", x"005BDFF6", x"00280297", x"FFFA9B77", x"003840D9", x"FFE14586", x"FFE2D918",
@@ -75,7 +75,6 @@ architecture test of quantization_tb is
         clk <= not clk;
         wait;
     end process;
-
 
 
 end test;
