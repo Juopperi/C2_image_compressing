@@ -10,9 +10,9 @@ entity quantization is
         Y   : in  fixed_array; -- Input: 64-element array of Q16.16
         Cb  : in  fixed_array;
         Cr  : in  fixed_array;
-        Y_out  : out fixed_array; -- Output: Quantized 64-element array
-        Cb_out : out fixed_array;
-        Cr_out : out fixed_array
+        Y_out  : out fixed_array_16; -- Output: Quantized 64-element array
+        Cb_out : out fixed_array_16;
+        Cr_out : out fixed_array_16
     );
 end quantization;
 
@@ -84,9 +84,9 @@ begin
                 round_Cb(15 downto 0) := (others => '0');
                 round_Cr(15 downto 0) := (others => '0');
 
-                Y_out(i) <= std_logic_vector(round_Y);
-                Cb_out(i) <= std_logic_vector(round_Cb);
-                Cr_out(i) <= std_logic_vector(round_Cr);
+                Y_out(i) <= std_logic_vector(round_Y(31 downto 16));
+                Cb_out(i) <= std_logic_vector(round_Cb(31 downto 16));
+                Cr_out(i) <= std_logic_vector(round_Cr(31 downto 16));
             end loop;
         end if;
     end process;
