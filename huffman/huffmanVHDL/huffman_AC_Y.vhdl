@@ -34,14 +34,15 @@ if rising_edge(clk) then
             end if;
             
         when count_req_bits =>
+            if input_integer(9) = '1' then
+              input_reg := std_logic_vector(-signed(input_integer));
+            else 
+                input_reg := input_integer; 
+           end if;
+                    
             for i in input_integer'length-1 downto 0 loop
-                if input_integer(i) /= input_integer(9)  then
+                if input_reg(i) = '1'  then
                     size := i+1;
-                    if input_integer(9) = '1' then
-                        input_reg := std_logic_vector(-signed(input_integer));
-                    else
-                       input_reg := input_integer;              
-                    end if;
                     exit;
                 end if;
             end loop;
@@ -624,21 +625,23 @@ if rising_edge(clk) then
                 length := length - 1;
             elsif size > 0 then
                 if input_integer(9) = '1' then
-                output_bit <= not(input_reg(size-1));
-                size := size - 1;
+                    output_bit <= not(input_reg(size-1));
+                    size := size - 1;
                 else
-                output_bit <= input_reg(size-1);
-                size := size - 1;
+                    output_bit <= input_reg(size-1);
+                    size := size - 1;
                 end if;
             end if;
             if size = 0 and length = 0 then
+                input_reg := (others => '0');
                 done <= '1';
-                state <= idle;
+                state <= sync;
             end if;
             
         when sync =>
             done <= '0';
             state <= idle;
+            output_bit <= 'U';
             
         end case;
     end if;
