@@ -18,7 +18,7 @@ module dct_8muladd #
     wire signed [DATA_WIDTH-1:0] mult_out    [0:DATA_DEPTH-1];
     wire signed [DATA_WIDTH-1:0] add_chain   [0:DATA_DEPTH];
 
-    assign add_chain[0] = '0;  // 初始化累加器
+    assign add_chain[0] = 0;  // 初始化累加器
 
     // 拆分输入数据和系数
     genvar idx;
