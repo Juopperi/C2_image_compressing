@@ -58,8 +58,9 @@ architecture arch of huff_container is
         );
     end component huffman_DC_CbCr;
 
-        type t_State is (idle,DC_Y,AC_Y,DC_CB,AC_CB,DC_CR,AC_CR);
+        type t_State is (idle,DC_Y,AC_Y,DC_CB,AC_CB,DC_CR,AC_CR,EOB_out,done);
         signal currentState : t_State := idle;
+        signal nextState : t_State := idle;
 
         signal input_integer : std_logic_vector(9 downto 0) := (others => '0');
         
@@ -126,6 +127,9 @@ architecture arch of huff_container is
         variable max : integer range -16 to 1024 := 1001;
         variable min : integer range -32 to 1024 := 992;
         variable temp : std_logic_vector(9 downto 0);
+        variable EOB_int : integer range -1 to 3 := 3;
+        constant EOB : std_logic_vector(3 downto 0) := "1010";
+        
         begin
 		if rising_edge(clk) then
            case currentState is 
@@ -147,12 +151,17 @@ architecture arch of huff_container is
                 end if;
 
             when AC_Y =>
-                if Y(max downto min) = "0000000000" then
+                if Y(max downto min) = "0000000000" and zeros < 15 then
                     start_AC_Y <= '0';
                     zeros <= zeros + 1;
                     max := max - 16;
                     min := min - 16;
                     output_bit <= 'U';
+                elsif Y(max downto min) = "0000000000" then
+                    input_integer <= Y(max downto min);
+                    zeros <= 16;
+                    start_AC_Y <= '1';
+                    output_bit <= output_AC_Y;
                 else 
                     input_integer <= Y(max downto min); 
                     start_AC_Y <= '1';
@@ -170,8 +179,11 @@ architecture arch of huff_container is
                     max := 1001;
                     min := 992;
                     currentState <= DC_Cb;
-                else 
-                    --THE EOB STUFF
+                elsif min = -16 then
+                    max := 1001;
+                    min := 992;                
+                    currentState <= EOB_out;
+                    nextState <= DC_Cb;
                 end if;
  
           
@@ -191,9 +203,11 @@ architecture arch of huff_container is
                     max := max - 16;
                     min := min - 16;
                     output_bit <= 'U';
-                    if min = -16 then 
-                        --CREATE THE EOB OUTPUT
-                    end if;
+               elsif Cb(max downto min) = "0000000000" then
+                    input_integer <= Cb(max downto min);
+                    zeros <= 16;
+                    start_DC_CbCr <= '1';
+                    output_bit <= output_AC_CbCr;
                 else 
                     input_integer <= Cb(max downto min);
                     start_AC_CbCr <= '1';
@@ -212,6 +226,11 @@ architecture arch of huff_container is
                     max := 1001;
                     min := 992;
                     currentState <= DC_Cr;
+                 elsif min = -16 then
+                    max := 1001;
+                    min := 992;                 
+                    currentState <= EOB_out;
+                    nextState <= DC_Cr;
                 end if;                
                 
            when DC_Cr =>
@@ -230,6 +249,11 @@ architecture arch of huff_container is
                     max := max - 16;
                     min := min - 16;
                     output_bit <= 'U';
+                elsif Cr(max downto min) = "0000000000" then
+                    input_integer <= Cr(max downto min);
+                    zeros <= 16;
+                    start_AC_CbCr <= '1';
+                    output_bit <= output_AC_CbCr;               
                 else 
                     input_integer <= Cr(max downto min);
                     start_AC_CbCr <= '1';
@@ -248,8 +272,26 @@ architecture arch of huff_container is
                     max := 1001;
                     min := 992;
                     finished <= '1';
-                    currentState <= idle;
-                end if;                   
+                    currentState <= done;
+                elsif min = -16 then
+                    max := 1001;
+                    min := 992;                
+                    currentState <= EOB_out;
+                    nextState <= done;
+                end if;       
+                            
+            when EOB_out =>
+                zeros <= 0;
+                output_bit <= EOB(EOB_int);
+                EOB_int := EOB_int - 1;
+                if EOB_int = -1 then
+                    EOB_int := 3;
+                    currentState <= nextState;
+                end if;
+                
+            when done =>
+                finished <= '1';
+                currentState <= idle;
                 
             when others => max:= 0;
             end case;                                                        
