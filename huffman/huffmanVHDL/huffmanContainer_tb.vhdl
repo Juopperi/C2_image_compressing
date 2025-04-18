@@ -114,13 +114,13 @@ architecture arch of huff_container_tb is
             wait for 20 ns;
             if data_valid = '1' then
                 write(output_line,data);
-            --else 
-            --   write(output_line,string'(" "));
+            else 
+               write(output_line,string'(" "));
             end if;
             
             if finished = '1' then
                 writeline(output_file,output_line);
-                write(output_line,string'("DONE1"));
+                write(output_line,string'("DONE"));
                 writeline(output_file,output_line);                    
                 wait;
             end if;
