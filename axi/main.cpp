@@ -2,15 +2,18 @@
 #include "xparameters.h"
 #include "xil_io.h"
 #include "xil_printf.h"
+#include <random>
 
 #define ADDER_BASE      0x40000000  // AXI4-Lite base address
 
 // Register addresses - exactly as in Verilog testbench
 #define ADDR_REG_A      (ADDER_BASE + 0x00)
 #define ADDR_REG_B      (ADDER_BASE + 0x04)
-#define ADDR_REG_CTRL   (ADDER_BASE + 0x08)
-#define ADDR_REG_STAT   (ADDER_BASE + 0x0C)
-#define ADDR_REG_RES    (ADDER_BASE + 0x10)
+
+#define ADDR_REG_RES    (ADDER_BASE + 0x08)
+
+#define ADDR_REG_CTRL   (ADDER_BASE + 0x0C)
+#define ADDR_REG_STAT   (ADDER_BASE + 0x10)
 
 #define MAX_I           (100*1000*1000)
 #define TIMEOUT_LIMIT   1000000     // Maximum poll count to prevent waiting indefinitely

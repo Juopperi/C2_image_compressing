@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity fixed_multiplier is
+entity fixed_multiplier_old is
   port (
     a        : in  std_logic_vector(31 downto 0);
     b        : in  std_logic_vector(31 downto 0);
@@ -10,7 +10,7 @@ entity fixed_multiplier is
   );
 end entity;
 
-architecture behavioral of fixed_multiplier is
+architecture behavioral of fixed_multiplier_old is
   begin
     process(a, b)
       variable temp : signed(63 downto 0);
