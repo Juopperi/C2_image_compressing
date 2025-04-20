@@ -142,6 +142,43 @@ gen_multi_inout/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_multi_inout.dir/build.make CMakeFiles/gen_multi_inout.dir/build
 .PHONY : gen_multi_inout/fast
 
+#=============================================================================
+# Target rules for targets named chen_valid
+
+# Build rule for target.
+chen_valid: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 chen_valid
+.PHONY : chen_valid
+
+# fast build rule for target.
+chen_valid/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chen_valid.dir/build.make CMakeFiles/chen_valid.dir/build
+.PHONY : chen_valid/fast
+
+chen_valid.o: chen_valid.cpp.o
+.PHONY : chen_valid.o
+
+# target to build an object file
+chen_valid.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chen_valid.dir/build.make CMakeFiles/chen_valid.dir/chen_valid.cpp.o
+.PHONY : chen_valid.cpp.o
+
+chen_valid.i: chen_valid.cpp.i
+.PHONY : chen_valid.i
+
+# target to preprocess a source file
+chen_valid.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chen_valid.dir/build.make CMakeFiles/chen_valid.dir/chen_valid.cpp.i
+.PHONY : chen_valid.cpp.i
+
+chen_valid.s: chen_valid.cpp.s
+.PHONY : chen_valid.s
+
+# target to generate assembly for a file
+chen_valid.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chen_valid.dir/build.make CMakeFiles/chen_valid.dir/chen_valid.cpp.s
+.PHONY : chen_valid.cpp.s
+
 compare_1000.o: compare_1000.cpp.o
 .PHONY : compare_1000.o
 
@@ -198,8 +235,12 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... chen_valid"
 	@echo "... compare_1000"
 	@echo "... gen_multi_inout"
+	@echo "... chen_valid.o"
+	@echo "... chen_valid.i"
+	@echo "... chen_valid.s"
 	@echo "... compare_1000.o"
 	@echo "... compare_1000.i"
 	@echo "... compare_1000.s"
