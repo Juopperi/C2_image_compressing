@@ -61,7 +61,7 @@ void dct1d_chen(const std::array<double, N>& in,
     double E2 = S0 - S3,  E3 = S1 - S2;
 
     double B0 =  (E0 + E1);                     // 去掉 ×c4
-    double B4 =  (E0 - E1);
+    double B4 =  (E0 - E1) * c4;
     double B2 =  c2 * E2 + c6 * E3;             // 改用 c2 / c6
     double B6 =  c6 * E2 - c2 * E3;
 
@@ -144,9 +144,9 @@ int main() {
     double input[N][N];
     for (int i = 0; i < N; i++)
       for (int j = 0; j < N; j++)
-        input[i][j] = static_cast<double>(i * N + j);
+        // input[i][j] = static_cast<double>(i * N + j);
         // 或使用随机数据
-        // input[i][j] = static_cast<double>(rand() % 100);
+        input[i][j] = static_cast<double>(rand() % 1000);
 
     double out_direct[N][N], out_chen[N][N];
     dct2d(input, out_direct, dct1d_direct, "direct_intermediate.txt");

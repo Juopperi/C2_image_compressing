@@ -1,37 +1,35 @@
 // -----------------------------------------------------------------------------
-// Testbench : 2‑D 8×8 DCT core (streaming) – compare against golden vectors
+// Testbench : 2‑D 8×8 DCT core (combinational) – compare against golden vectors
 // -----------------------------------------------------------------------------
 //   * Reads   chen_2d_dct_input.mem   (row‑major 64 words / block)
-//   * Reads   chen_2d_dct_golden.mem  (row‑major 64 words / block)
-//   * Stimulates DUT with one word / clk using valid handshake
-//   * Collects output stream and checks absolute error ≤ 0.5 LSB (Q16.16)
-//   * No sophisticated FSM – counters + tasks only
+//   * Reads   expected_chen_2d_dct_output.mem  (row‑major 64 words / block)
+//   * Feeds DUT with packed input and checks output immediately
+//   * Collects output and checks absolute error ≤ 0.5 LSB (Q16.16)
+//   * Pure combinational module: no need for handshaking or clock-based sampling
 // -----------------------------------------------------------------------------
 `timescale 1ns / 1ns
 
 module tb_dct2d_8x8;
     // ---------- Parameters ---------------------------------------------------
     parameter DATA_WIDTH  = 32;      // Q16.16 words
+    parameter FRAC_BITS   = 14;      // Fraction bits
+    parameter CONST_WIDTH = 16;      // Width for constants
     parameter WORDS_PER_BLK = 64;    // 8×8
     parameter MAX_BLOCKS = 100;      // must match generator
     parameter ERR_THRESH = 32'h0000_8000; // ±0.5 LSB
 
     // ---------- DUT signals --------------------------------------------------
-    reg  clk = 0; always #5 clk = ~clk;   // 100 MHz
-    reg  rst = 1;
+    reg  [DATA_WIDTH*WORDS_PER_BLK-1:0] din_flat;
+    wire [DATA_WIDTH*WORDS_PER_BLK-1:0] dout_flat;
 
-    reg  start;
-    reg  [DATA_WIDTH*WORDS_PER_BLK-1:0] x_packed;
-    wire valid_out;
-    wire [DATA_WIDTH*WORDS_PER_BLK-1:0] y_packed;
-
-    dct2d_8x8_chen #(
-        .DATA_W (DATA_WIDTH),
-        .COEF_W (32),
-        .OUT_W  (DATA_WIDTH)
+    // Instantiate the combinational dct8x8_2d module
+    dct8x8_2d #(
+        .IN_W    (DATA_WIDTH),
+        .FRAC    (FRAC_BITS),
+        .CONST_W (CONST_WIDTH)
     ) dut (
-        .clk(clk), .rst(rst), .start(start), .x(x_packed),
-        .valid_out(valid_out), .y(y_packed)
+        .din_flat(din_flat),
+        .dout_flat(dout_flat)
     );
 
     // ---------- Memories -----------------------------------------------------
@@ -71,27 +69,24 @@ module tb_dct2d_8x8;
     // ---------- Stimulus -----------------------------------------------------
     initial begin
         fout = $fopen("actual_chen_2d_dct_output.mem", "w");
-        $display("==== TB (vector mode) 2‑D 8×8 DCT ====");
+        $display("==== TB (vector mode) 2‑D 8×8 DCT Combinational ====");
 
         $readmemh("chen_2d_dct_input.mem",  input_mem);
         $readmemh("expected_chen_2d_dct_output.mem", golden_mem);
 
-        repeat(3) @(posedge clk);
-        rst <= 0; start <= 0; x_packed <= '0;
-
+        // Test each block one by one
         for (blk = 0; blk < MAX_BLOCKS; blk = blk + 1) begin
-            // drive packed input ------------------------------------------------
-            @(posedge clk);
-            x_packed <= pack_block(blk*WORDS_PER_BLK);
-            start    <= 1'b1;
-            @(posedge clk);
-            start    <= 1'b0;
-            // x_packed <= '0;
-
-            // wait for valid_out -----------------------------------------------
-            repeat(6) @(posedge clk); // known 6‑clk latency
-            wait(valid_out);
-            unpack_and_check(blk*WORDS_PER_BLK, y_packed);
+            // Pack input block
+            din_flat = pack_block(blk*WORDS_PER_BLK);
+            
+            // Add a small delay to allow combinational logic to settle
+            #1;
+            
+            // Check output immediately (no need to wait for valid signal)
+            unpack_and_check(blk*WORDS_PER_BLK, dout_flat);
+            
+            // Small delay between blocks for readability in waveform
+            #5;
         end
 
         if (err_cnt == 0) $display("==== PASS, %0d blocks ====", MAX_BLOCKS);

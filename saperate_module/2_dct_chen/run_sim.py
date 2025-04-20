@@ -47,7 +47,7 @@ for folder in search_dirs:
                 full_path = os.path.normpath(os.path.join(root, f))
                 rel_path = os.path.relpath(full_path, start=".")
                 if ext in {'.v', '.vh', '.sv'}:
-                    vlog_lines.append(f'vlog "../../{rel_path}"')
+                    vlog_lines.append(f'vlog -sv "../../{rel_path}"')
                 elif ext in {'.vhd', '.vhdl'}:
                     vlog_lines.append(f'vcom "../../{rel_path}"')
 

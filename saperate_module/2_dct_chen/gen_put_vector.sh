@@ -45,7 +45,7 @@ echo "⚙️  Configuring with cmake .."
 cmake .. > /dev/null
 
 echo "🧱 Building project with make"
-make -sj
+make -j
 
 # -------------------------------
 # 执行生成器
