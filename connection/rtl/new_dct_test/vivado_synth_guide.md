@@ -11,6 +11,7 @@
 2. 运行Vivado的批处理命令：
    ```
    vivado -mode batch -source synth.tcl
+   vivado -mode batch -source synth.tcl -tclargs -nthreads 32
    ```
 3. 脚本执行完成后，可以在`dct_1d_8x1_proj`目录下找到生成的报告文件：
    - `timing_synth.rpt`：时序报告

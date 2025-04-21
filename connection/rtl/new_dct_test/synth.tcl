@@ -6,7 +6,7 @@ set_property target_language Verilog [current_project]
 
 # 添加设计源文件 - 假设dct_8muladd.v在同一目录下
 # add_files -norecurse {../dct_1d_8x1.v ../dct_8muladd.v ../fixed_multiplier.v ../fixed_adder.v}
-add_files -norecurse {../chen_1d_dct.v }
+add_files -norecurse {../chen_1d_dct.v ../chen_2d_dct.sv}
 update_compile_order -fileset sources_1
 
 # 添加仿真源文件 (如果有)
@@ -14,10 +14,10 @@ update_compile_order -fileset sources_1
 # update_compile_order -fileset sim_1
 
 # 设置顶层模块
-set_property top dct8_chen [current_fileset]
+set_property top dct8x8_2d [current_fileset]
 
 # 综合设置
-synth_design -top dct8_chen -part xc7z020clg484-1
+synth_design -top dct8x8_2d -part xc7z020clg484-1
 
 # 执行综合
 # synth_design
