@@ -29,7 +29,7 @@
 
 module dct8x8_2d_pipe_block #(
     parameter int IN_W    = 32,
-    parameter int FRAC    = 14,
+    parameter int FRAC    = 8,
     parameter int CONST_W = 16
 )(
     input  logic                     clk,

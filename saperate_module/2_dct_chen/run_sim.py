@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import sys
 
-testbench_name = "tb_chen_2d_pipe"
+testbench_name = "tb_dct2d_8x8_pipe_ts"
 
 # -----------------------------
 # 解析参数
