@@ -12,7 +12,7 @@ module tb_chen_2d_pipe;
     // ---------- Parameters ---------------------------------------------------
     parameter DATA_WIDTH  = 32;        // Q16.16 words
     parameter FRAC_BITS   = 8;        // Fraction bits
-    parameter CONST_WIDTH = 16;        // Width for constants
+    parameter CONST_WIDTH = 10;        // Width for constants
     parameter WORDS_PER_BLK = 64;      // 8×8
     parameter MAX_BLOCKS = 100;        // must match generator
     parameter ERR_THRESH = 32'h0000_8000; // ±0.5 LSB

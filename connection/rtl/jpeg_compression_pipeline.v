@@ -38,34 +38,64 @@ module jpeg_compression_pipeline #(
     wire [DATA_WIDTH*PIXEL_COUNT-1:0] cb_dct;
     wire [DATA_WIDTH*PIXEL_COUNT-1:0] cr_dct;
 
-    dct_2d_8x8 #(
-        .DATA_WIDTH(DATA_WIDTH),
-        .DATA_DEPTH(DATA_DEPTH)
+    wire y_in_ready;
+    wire y_out_valid;
+    reg y_in_valid = 1'b1;
+    reg y_out_ready = 1'b1;
+
+    dct8x8_2d_pipe_block #(
+        .IN_W    (DATA_WIDTH),
+        .FRAC    (8),         // 根据您的需要调整
+        .CONST_W (10)          // 根据您的需要调整
     ) dct_y_stage (
         .clk(clk),
-        .reset_n(reset_n),
-        .data_in_matrix(y_raw),
-        .data_out_matrix(y_dct)
+        .rst_n(reset_n),
+        .in_valid(y_in_valid),
+        .in_block(y_raw),
+        .in_ready(y_in_ready),
+        .out_valid(y_out_valid),
+        .out_block(y_dct),
+        .out_ready(y_out_ready)
     );
 
-    dct_2d_8x8 #(
-        .DATA_WIDTH(DATA_WIDTH),
-        .DATA_DEPTH(DATA_DEPTH)
+    wire cb_in_ready;
+    wire cb_out_valid;
+    reg cb_in_valid = 1'b1;
+    reg cb_out_ready = 1'b1;
+
+    dct8x8_2d_pipe_block #(
+        .IN_W    (DATA_WIDTH),
+        .FRAC    (8),         // 根据您的需要调整
+        .CONST_W (10)          // 根据您的需要调整
     ) dct_cb_stage (
         .clk(clk),
-        .reset_n(reset_n),
-        .data_in_matrix(cb_raw),
-        .data_out_matrix(cb_dct)
+        .rst_n(reset_n),
+        .in_valid(cb_in_valid),
+        .in_block(cb_raw),
+        .in_ready(cb_in_ready),
+        .out_valid(cb_out_valid),
+        .out_block(cb_dct),
+        .out_ready(cb_out_ready)
     );
 
-    dct_2d_8x8 #(
-        .DATA_WIDTH(DATA_WIDTH),
-        .DATA_DEPTH(DATA_DEPTH)
+    wire cr_in_ready;
+    wire cr_out_valid;
+    reg cr_in_valid = 1'b1;
+    reg cr_out_ready = 1'b1;
+
+    dct8x8_2d_pipe_block #(
+        .IN_W    (DATA_WIDTH),
+        .FRAC    (8),         // 根据您的需要调整
+        .CONST_W (10)          // 根据您的需要调整
     ) dct_cr_stage (
         .clk(clk),
-        .reset_n(reset_n),
-        .data_in_matrix(cr_raw),
-        .data_out_matrix(cr_dct)
+        .rst_n(reset_n),
+        .in_valid(cr_in_valid),
+        .in_block(cr_raw),
+        .in_ready(cr_in_ready),
+        .out_valid(cr_out_valid),
+        .out_block(cr_dct),
+        .out_ready(cr_out_ready)
     );
 
     // Stage 3: Quantization for Y/Cb/Cr channels

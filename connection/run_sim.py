@@ -19,7 +19,8 @@ should_generate = len(sys.argv) > 2 and sys.argv[2].lower() == "gen"
 # 源码路径配置
 # -----------------------------
 search_dirs = [
-    "rtl"
+    "rtl",
+    "tb"
 ]
 
 valid_extensions = {'.v', '.sv', '.vhd', '.vhdl'}

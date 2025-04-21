@@ -24,8 +24,8 @@
 
 module dct8x8_2d #(
     parameter int IN_W    = 32,
-    parameter int FRAC    = 14,
-    parameter int CONST_W = 16
+    parameter int FRAC    = 8,
+    parameter int CONST_W = 10
 )(
     input  logic [IN_W*64-1:0] din_flat,
     output logic [IN_W*64-1:0] dout_flat
