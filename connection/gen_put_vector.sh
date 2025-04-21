@@ -50,8 +50,11 @@ make -sj
 # -------------------------------
 # 执行生成器
 # -------------------------------
-echo "📤 Running generator: ./gen_multi_inout ${SET_COUNT}"
-./gen_multi_inout "${SET_COUNT}"
+# echo "📤 Running generator: ./gen_multi_inout ${SET_COUNT}"
+# ./gen_multi_inout "${SET_COUNT}"
+
+echo "📤 Running generator: ./gen_normal ${SET_COUNT}"
+./gen_normal "${SET_COUNT}"
 
 # -------------------------------
 # 拷贝 mem 文件

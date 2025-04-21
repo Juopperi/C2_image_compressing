@@ -3,13 +3,13 @@ import shutil
 import subprocess
 import sys
 
-testbench_name = "tb_dct2d_8x8_pipe_ts"
+testbench_name = "tb_dct8x8_chen_2d"
 
 # -----------------------------
 # 解析参数
 # -----------------------------
 if len(sys.argv) < 2:
-    print("Usage: python main.py <set count> [gen]")
+    print("Usage: python main.py <set count> [gen] [gui]")
     sys.exit(1)
 
 set_count = sys.argv[1]

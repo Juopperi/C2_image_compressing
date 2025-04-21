@@ -6,10 +6,10 @@ set_property target_language Verilog [current_project]
 
 # 添加所有必要的设计源文件
 add_files -norecurse {
-    ../rtl/jpeg_compression_pipeline_shared.sv
+    ../rtl/jpeg_compression_pipeline.sv
     ../rtl/converter.v
-    ../rtl/chen_2d_pipe.sv
-    ../rtl/chen_1d_dct.v
+    ../rtl/dct8_chen_ts.sv 
+    ../rtl/dct8x8_chen_2d.sv
     ../rtl/quantization.v
     ../rtl/fixed_multiplier.v
     ../rtl/fixed_adder.v
@@ -22,19 +22,21 @@ set_property library work [get_files ../rtl/zigzag.vhd]
 set_property library work [get_files ../rtl/conversion.vhdl]
 
 # 显式将文件类型设置为SystemVerilog
-set_property file_type SystemVerilog [get_files ../rtl/jpeg_compression_pipeline_shared.sv] 
+set_property file_type SystemVerilog [get_files ../rtl/jpeg_compression_pipeline.sv] 
 
 # 更新编译顺序
 update_compile_order -fileset sources_1
 
 # 设置顶层模块
-set_property top jpeg_compression_pipeline_shared [current_fileset]
+set_property top jpeg_compression_pipeline [current_fileset]
 
 # 综合设置
-synth_design -top jpeg_compression_pipeline_shared -part xc7z020clg484-1
+synth_design -top jpeg_compression_pipeline -part xc7z020clg484-1
 
 # 生成报告
 report_utilization -file utilization_synth.rpt
+
+report_utilization -hierarchical -file utilization_synth_hierarchical.rpt
 
 # 添加优化步骤
 opt_design

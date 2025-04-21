@@ -9,3 +9,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(compare_1000 compare_1000.cpp)
 add_executable(gen_multi_inout gen_multi_inout.cpp)
+add_executable(gen_normal gen_normal.cpp)

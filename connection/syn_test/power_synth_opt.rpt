@@ -1,10 +1,10 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
-| Date             : Mon Apr 21 17:14:48 2025
+| Date             : Mon Apr 21 19:50:02 2025
 | Host             : wenruoxu running 64-bit major release  (build 9200)
 | Command          : report_power -file power_synth_opt.rpt
-| Design           : jpeg_compression_pipeline_shared
+| Design           : jpeg_compression_pipeline
 | Device           : xc7z020clg484-1
 | Design State     : synthesized
 | Grade            : commercial
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+------------------------------------+
-| Total On-Chip Power (W)  | 2608.244 (Junction temp exceeded!) |
+| Total On-Chip Power (W)  | 2600.001 (Junction temp exceeded!) |
 | Design Power Budget (W)  | Unspecified*                       |
 | Power Budget Margin (W)  | NA                                 |
-| Dynamic (W)              | 2607.204                           |
+| Dynamic (W)              | 2598.961                           |
 | Device Static (W)        | 1.039                              |
 | Effective TJA (C/W)      | 11.5                               |
 | Max Ambient (C)          | 0.0                                |
@@ -52,18 +52,18 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
-| Slice Logic    |   420.558 |   131224 |       --- |             --- |
-|   LUT as Logic |   352.475 |    74884 |     53200 |          140.76 |
-|   CARRY4       |    66.281 |    21173 |     13300 |          159.20 |
-|   Register     |     1.681 |    14042 |    106400 |           13.20 |
-|   F7/F8 Muxes  |     0.090 |      256 |     53200 |            0.48 |
-|   BUFG         |     0.032 |        4 |        32 |           12.50 |
-|   Others       |     0.000 |     3769 |       --- |             --- |
-| Signals        |   355.693 |   127995 |       --- |             --- |
+| Slice Logic    |   495.986 |   183908 |       --- |             --- |
+|   LUT as Logic |   417.269 |   102985 |     53200 |          193.58 |
+|   CARRY4       |    75.803 |    26486 |     13300 |          199.14 |
+|   Register     |     2.589 |    27561 |    106400 |           25.90 |
+|   F7/F8 Muxes  |     0.319 |      958 |     53200 |            1.80 |
+|   BUFG         |     0.006 |        1 |        32 |            3.13 |
+|   Others       |     0.000 |     3697 |       --- |             --- |
+| Signals        |   373.945 |   162491 |       --- |             --- |
 | DSPs           |    57.305 |      110 |       220 |           50.00 |
-| I/O            |  1773.649 |     7682 |       200 |         3841.00 |
+| I/O            |  1671.726 |     7682 |       200 |         3841.00 |
 | Static Power   |     1.039 |          |           |                 |
-| Total          |  2608.244 |          |           |                 |
+| Total          |  2600.001 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -73,11 +73,11 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |   840.051 |     839.752 |      0.299 |       NA    | Unspecified | NA         |
-| Vccaux    |       1.800 |   144.414 |     144.315 |      0.100 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |   933.730 |     933.432 |      0.299 |       NA    | Unspecified | NA         |
+| Vccaux    |       1.800 |   136.071 |     135.971 |      0.100 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
-| Vcco18    |       1.800 |   837.605 |     837.604 |      0.001 |       NA    | Unspecified | NA         |
+| Vcco18    |       1.800 |   789.324 |     789.323 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco15    |       1.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco135   |       1.350 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco12    |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -147,184 +147,276 @@ Table of Contents
 +-------------------------------------+-----------+
 | Name                                | Power (W) |
 +-------------------------------------+-----------+
-| jpeg_compression_pipeline_shared    |  2607.205 |
-|   u_dct8x8                          |   432.548 |
-|   u_quant_chroma                    |     3.031 |
-|     GEN_MULTS[0].u_mul              |     0.347 |
-|     GEN_MULTS[10].u_mul             |     0.007 |
-|     GEN_MULTS[11].u_mul             |     0.004 |
+| jpeg_compression_pipeline           |  2598.961 |
+|   dct_cb_stage                      |   209.453 |
+|     u_dct                           |    80.756 |
+|   dct_cr_stage                      |   150.501 |
+|     u_dct                           |    78.047 |
+|   dct_y_stage                       |   208.250 |
+|     u_dct                           |    90.122 |
+|   quant_cb_stage                    |     6.072 |
+|     GEN_MULTS[0].u_mul              |     0.253 |
+|     GEN_MULTS[10].u_mul             |     0.243 |
+|     GEN_MULTS[11].u_mul             |     0.197 |
 |     GEN_MULTS[12].u_mul             |     0.004 |
-|     GEN_MULTS[13].u_mul             |     0.003 |
-|     GEN_MULTS[14].u_mul             |     0.003 |
-|     GEN_MULTS[15].u_mul             |     0.002 |
-|     GEN_MULTS[16].u_mul             |     0.417 |
-|     GEN_MULTS[17].u_mul             |     0.072 |
-|     GEN_MULTS[18].u_mul             |     0.002 |
-|     GEN_MULTS[19].u_mul             |     0.006 |
-|     GEN_MULTS[1].u_mul              |     0.087 |
+|     GEN_MULTS[13].u_mul             |     0.004 |
+|     GEN_MULTS[14].u_mul             |     0.004 |
+|     GEN_MULTS[15].u_mul             |     0.004 |
+|     GEN_MULTS[16].u_mul             |     0.283 |
+|     GEN_MULTS[17].u_mul             |     0.238 |
+|     GEN_MULTS[18].u_mul             |     0.102 |
+|     GEN_MULTS[19].u_mul             |     0.140 |
+|     GEN_MULTS[1].u_mul              |     0.312 |
 |     GEN_MULTS[20].u_mul             |     0.003 |
 |     GEN_MULTS[21].u_mul             |     0.003 |
-|     GEN_MULTS[22].u_mul             |     0.002 |
+|     GEN_MULTS[22].u_mul             |     0.003 |
 |     GEN_MULTS[23].u_mul             |     0.003 |
-|     GEN_MULTS[24].u_mul             |     0.350 |
-|     GEN_MULTS[25].u_mul             |     0.058 |
-|     GEN_MULTS[26].u_mul             |     0.008 |
-|     GEN_MULTS[27].u_mul             |     0.003 |
-|     GEN_MULTS[28].u_mul             |     0.003 |
-|     GEN_MULTS[2].u_mul              |     0.007 |
-|     GEN_MULTS[31].u_mul             |     0.003 |
-|     GEN_MULTS[32].u_mul             |     0.252 |
-|     GEN_MULTS[33].u_mul             |     0.034 |
-|     GEN_MULTS[34].u_mul             |     0.006 |
-|     GEN_MULTS[35].u_mul             |     0.003 |
-|     GEN_MULTS[36].u_mul             |     0.002 |
-|     GEN_MULTS[39].u_mul             |     0.002 |
-|     GEN_MULTS[40].u_mul             |     0.252 |
-|     GEN_MULTS[41].u_mul             |     0.030 |
-|     GEN_MULTS[42].u_mul             |     0.004 |
-|     GEN_MULTS[48].u_mul             |     0.249 |
-|     GEN_MULTS[49].u_mul             |     0.028 |
-|     GEN_MULTS[4].u_mul              |     0.002 |
-|     GEN_MULTS[50].u_mul             |     0.002 |
-|     GEN_MULTS[56].u_mul             |     0.247 |
-|     GEN_MULTS[57].u_mul             |     0.028 |
-|     GEN_MULTS[58].u_mul             |     0.002 |
-|     GEN_MULTS[5].u_mul              |     0.003 |
-|     GEN_MULTS[6].u_mul              |     0.003 |
-|     GEN_MULTS[7].u_mul              |     0.003 |
-|     GEN_MULTS[8].u_mul              |     0.435 |
-|     GEN_MULTS[9].u_mul              |     0.047 |
-|   u_quant_luma                      |     2.349 |
-|     GEN_MULTS[0].u_mul              |     0.011 |
-|     GEN_MULTS[10].u_mul             |     0.003 |
-|     GEN_MULTS[11].u_mul             |     0.003 |
-|     GEN_MULTS[12].u_mul             |     0.002 |
-|     GEN_MULTS[13].u_mul             |     0.002 |
-|     GEN_MULTS[14].u_mul             |     0.002 |
-|     GEN_MULTS[15].u_mul             |     0.002 |
-|     GEN_MULTS[16].u_mul             |     0.106 |
-|     GEN_MULTS[17].u_mul             |     0.040 |
-|     GEN_MULTS[18].u_mul             |     0.004 |
-|     GEN_MULTS[19].u_mul             |     0.005 |
-|     GEN_MULTS[1].u_mul              |     0.051 |
-|     GEN_MULTS[20].u_mul             |     0.002 |
-|     GEN_MULTS[21].u_mul             |     0.002 |
-|     GEN_MULTS[22].u_mul             |     0.002 |
-|     GEN_MULTS[23].u_mul             |     0.002 |
-|     GEN_MULTS[24].u_mul             |     0.105 |
-|     GEN_MULTS[25].u_mul             |     0.070 |
-|     GEN_MULTS[26].u_mul             |     0.010 |
-|     GEN_MULTS[27].u_mul             |     0.002 |
-|     GEN_MULTS[28].u_mul             |     0.002 |
-|     GEN_MULTS[29].u_mul             |     0.002 |
-|     GEN_MULTS[2].u_mul              |     0.006 |
-|     GEN_MULTS[30].u_mul             |     0.002 |
-|     GEN_MULTS[31].u_mul             |     0.002 |
-|     GEN_MULTS[32].u_mul             |     0.437 |
-|     GEN_MULTS[33].u_mul             |     0.071 |
-|     GEN_MULTS[34].u_mul             |     0.010 |
-|     GEN_MULTS[35].u_mul             |     0.002 |
-|     GEN_MULTS[36].u_mul             |     0.002 |
-|     GEN_MULTS[37].u_mul             |     0.002 |
-|     GEN_MULTS[38].u_mul             |     0.002 |
-|     GEN_MULTS[39].u_mul             |     0.002 |
-|     GEN_MULTS[3].u_mul              |     0.004 |
-|     GEN_MULTS[40].u_mul             |     0.421 |
-|     GEN_MULTS[41].u_mul             |     0.015 |
-|     GEN_MULTS[42].u_mul             |     0.003 |
-|     GEN_MULTS[43].u_mul             |     0.002 |
-|     GEN_MULTS[44].u_mul             |     0.002 |
-|     GEN_MULTS[45].u_mul             |     0.002 |
-|     GEN_MULTS[46].u_mul             |     0.002 |
+|     GEN_MULTS[24].u_mul             |     0.250 |
+|     GEN_MULTS[25].u_mul             |     0.201 |
+|     GEN_MULTS[26].u_mul             |     0.149 |
+|     GEN_MULTS[27].u_mul             |     0.149 |
+|     GEN_MULTS[28].u_mul             |     0.004 |
+|     GEN_MULTS[29].u_mul             |     0.004 |
+|     GEN_MULTS[2].u_mul              |     0.289 |
+|     GEN_MULTS[30].u_mul             |     0.004 |
+|     GEN_MULTS[31].u_mul             |     0.004 |
+|     GEN_MULTS[32].u_mul             |     0.149 |
+|     GEN_MULTS[33].u_mul             |     0.149 |
+|     GEN_MULTS[34].u_mul             |     0.149 |
+|     GEN_MULTS[35].u_mul             |     0.149 |
+|     GEN_MULTS[36].u_mul             |     0.004 |
+|     GEN_MULTS[37].u_mul             |     0.004 |
+|     GEN_MULTS[38].u_mul             |     0.004 |
+|     GEN_MULTS[39].u_mul             |     0.004 |
+|     GEN_MULTS[3].u_mul              |     0.245 |
+|     GEN_MULTS[40].u_mul             |     0.148 |
+|     GEN_MULTS[41].u_mul             |     0.148 |
+|     GEN_MULTS[42].u_mul             |     0.148 |
+|     GEN_MULTS[43].u_mul             |     0.148 |
+|     GEN_MULTS[44].u_mul             |     0.004 |
+|     GEN_MULTS[45].u_mul             |     0.004 |
+|     GEN_MULTS[46].u_mul             |     0.004 |
 |     GEN_MULTS[47].u_mul             |     0.004 |
-|     GEN_MULTS[48].u_mul             |     0.277 |
-|     GEN_MULTS[49].u_mul             |     0.002 |
-|     GEN_MULTS[4].u_mul              |     0.002 |
-|     GEN_MULTS[50].u_mul             |     0.003 |
-|     GEN_MULTS[51].u_mul             |     0.002 |
-|     GEN_MULTS[52].u_mul             |     0.002 |
-|     GEN_MULTS[53].u_mul             |     0.002 |
+|     GEN_MULTS[48].u_mul             |     0.149 |
+|     GEN_MULTS[49].u_mul             |     0.149 |
+|     GEN_MULTS[4].u_mul              |     0.004 |
+|     GEN_MULTS[50].u_mul             |     0.149 |
+|     GEN_MULTS[51].u_mul             |     0.149 |
+|     GEN_MULTS[52].u_mul             |     0.004 |
+|     GEN_MULTS[53].u_mul             |     0.004 |
+|     GEN_MULTS[54].u_mul             |     0.004 |
+|     GEN_MULTS[55].u_mul             |     0.004 |
+|     GEN_MULTS[56].u_mul             |     0.148 |
+|     GEN_MULTS[57].u_mul             |     0.148 |
+|     GEN_MULTS[58].u_mul             |     0.148 |
+|     GEN_MULTS[59].u_mul             |     0.148 |
+|     GEN_MULTS[5].u_mul              |     0.004 |
+|     GEN_MULTS[60].u_mul             |     0.004 |
+|     GEN_MULTS[61].u_mul             |     0.004 |
+|     GEN_MULTS[62].u_mul             |     0.004 |
+|     GEN_MULTS[63].u_mul             |     0.004 |
+|     GEN_MULTS[6].u_mul              |     0.004 |
+|     GEN_MULTS[7].u_mul              |     0.004 |
+|     GEN_MULTS[8].u_mul              |     0.311 |
+|     GEN_MULTS[9].u_mul              |     0.217 |
+|   quant_cr_stage                    |     6.064 |
+|     GEN_MULTS[0].u_mul              |     0.252 |
+|     GEN_MULTS[10].u_mul             |     0.242 |
+|     GEN_MULTS[11].u_mul             |     0.196 |
+|     GEN_MULTS[12].u_mul             |     0.004 |
+|     GEN_MULTS[13].u_mul             |     0.004 |
+|     GEN_MULTS[14].u_mul             |     0.004 |
+|     GEN_MULTS[15].u_mul             |     0.004 |
+|     GEN_MULTS[16].u_mul             |     0.282 |
+|     GEN_MULTS[17].u_mul             |     0.237 |
+|     GEN_MULTS[18].u_mul             |     0.101 |
+|     GEN_MULTS[19].u_mul             |     0.140 |
+|     GEN_MULTS[1].u_mul              |     0.311 |
+|     GEN_MULTS[20].u_mul             |     0.003 |
+|     GEN_MULTS[21].u_mul             |     0.003 |
+|     GEN_MULTS[22].u_mul             |     0.003 |
+|     GEN_MULTS[23].u_mul             |     0.003 |
+|     GEN_MULTS[24].u_mul             |     0.250 |
+|     GEN_MULTS[25].u_mul             |     0.201 |
+|     GEN_MULTS[26].u_mul             |     0.149 |
+|     GEN_MULTS[27].u_mul             |     0.149 |
+|     GEN_MULTS[28].u_mul             |     0.004 |
+|     GEN_MULTS[29].u_mul             |     0.004 |
+|     GEN_MULTS[2].u_mul              |     0.289 |
+|     GEN_MULTS[30].u_mul             |     0.004 |
+|     GEN_MULTS[31].u_mul             |     0.004 |
+|     GEN_MULTS[32].u_mul             |     0.149 |
+|     GEN_MULTS[33].u_mul             |     0.149 |
+|     GEN_MULTS[34].u_mul             |     0.149 |
+|     GEN_MULTS[35].u_mul             |     0.149 |
+|     GEN_MULTS[36].u_mul             |     0.004 |
+|     GEN_MULTS[37].u_mul             |     0.004 |
+|     GEN_MULTS[38].u_mul             |     0.004 |
+|     GEN_MULTS[39].u_mul             |     0.004 |
+|     GEN_MULTS[3].u_mul              |     0.245 |
+|     GEN_MULTS[40].u_mul             |     0.148 |
+|     GEN_MULTS[41].u_mul             |     0.148 |
+|     GEN_MULTS[42].u_mul             |     0.148 |
+|     GEN_MULTS[43].u_mul             |     0.148 |
+|     GEN_MULTS[44].u_mul             |     0.004 |
+|     GEN_MULTS[45].u_mul             |     0.004 |
+|     GEN_MULTS[46].u_mul             |     0.004 |
+|     GEN_MULTS[47].u_mul             |     0.004 |
+|     GEN_MULTS[48].u_mul             |     0.149 |
+|     GEN_MULTS[49].u_mul             |     0.149 |
+|     GEN_MULTS[4].u_mul              |     0.004 |
+|     GEN_MULTS[50].u_mul             |     0.149 |
+|     GEN_MULTS[51].u_mul             |     0.149 |
+|     GEN_MULTS[52].u_mul             |     0.004 |
+|     GEN_MULTS[53].u_mul             |     0.004 |
+|     GEN_MULTS[54].u_mul             |     0.004 |
+|     GEN_MULTS[55].u_mul             |     0.004 |
+|     GEN_MULTS[56].u_mul             |     0.148 |
+|     GEN_MULTS[57].u_mul             |     0.148 |
+|     GEN_MULTS[58].u_mul             |     0.148 |
+|     GEN_MULTS[59].u_mul             |     0.148 |
+|     GEN_MULTS[5].u_mul              |     0.004 |
+|     GEN_MULTS[60].u_mul             |     0.004 |
+|     GEN_MULTS[61].u_mul             |     0.004 |
+|     GEN_MULTS[62].u_mul             |     0.004 |
+|     GEN_MULTS[63].u_mul             |     0.004 |
+|     GEN_MULTS[6].u_mul              |     0.004 |
+|     GEN_MULTS[7].u_mul              |     0.004 |
+|     GEN_MULTS[8].u_mul              |     0.310 |
+|     GEN_MULTS[9].u_mul              |     0.216 |
+|   quant_y_stage                     |     5.488 |
+|     GEN_MULTS[0].u_mul              |     0.003 |
+|     GEN_MULTS[10].u_mul             |     0.071 |
+|     GEN_MULTS[11].u_mul             |     0.296 |
+|     GEN_MULTS[12].u_mul             |     0.014 |
+|     GEN_MULTS[13].u_mul             |     0.009 |
+|     GEN_MULTS[14].u_mul             |     0.003 |
+|     GEN_MULTS[15].u_mul             |     0.002 |
+|     GEN_MULTS[16].u_mul             |     0.069 |
+|     GEN_MULTS[17].u_mul             |     0.155 |
+|     GEN_MULTS[18].u_mul             |     0.003 |
+|     GEN_MULTS[19].u_mul             |     0.307 |
+|     GEN_MULTS[1].u_mul              |     0.232 |
+|     GEN_MULTS[20].u_mul             |     0.008 |
+|     GEN_MULTS[21].u_mul             |     0.013 |
+|     GEN_MULTS[22].u_mul             |     0.011 |
+|     GEN_MULTS[23].u_mul             |     0.004 |
+|     GEN_MULTS[24].u_mul             |     0.073 |
+|     GEN_MULTS[25].u_mul             |     0.276 |
+|     GEN_MULTS[26].u_mul             |     0.298 |
+|     GEN_MULTS[27].u_mul             |     0.194 |
+|     GEN_MULTS[28].u_mul             |     0.004 |
+|     GEN_MULTS[29].u_mul             |     0.010 |
+|     GEN_MULTS[2].u_mul              |     0.160 |
+|     GEN_MULTS[30].u_mul             |     0.008 |
+|     GEN_MULTS[31].u_mul             |     0.003 |
+|     GEN_MULTS[32].u_mul             |     0.338 |
+|     GEN_MULTS[33].u_mul             |     0.298 |
+|     GEN_MULTS[34].u_mul             |     0.344 |
+|     GEN_MULTS[35].u_mul             |     0.121 |
+|     GEN_MULTS[36].u_mul             |     0.011 |
+|     GEN_MULTS[37].u_mul             |     0.007 |
+|     GEN_MULTS[38].u_mul             |     0.012 |
+|     GEN_MULTS[39].u_mul             |     0.010 |
+|     GEN_MULTS[3].u_mul              |     0.003 |
+|     GEN_MULTS[40].u_mul             |     0.316 |
+|     GEN_MULTS[41].u_mul             |     0.082 |
+|     GEN_MULTS[42].u_mul             |     0.057 |
+|     GEN_MULTS[43].u_mul             |     0.003 |
+|     GEN_MULTS[44].u_mul             |     0.008 |
+|     GEN_MULTS[45].u_mul             |     0.008 |
+|     GEN_MULTS[46].u_mul             |     0.002 |
+|     GEN_MULTS[47].u_mul             |     0.001 |
+|     GEN_MULTS[48].u_mul             |     0.219 |
+|     GEN_MULTS[49].u_mul             |     0.003 |
+|     GEN_MULTS[4].u_mul              |     0.015 |
+|     GEN_MULTS[50].u_mul             |     0.061 |
+|     GEN_MULTS[51].u_mul             |     0.231 |
+|     GEN_MULTS[52].u_mul             |     0.012 |
+|     GEN_MULTS[53].u_mul             |     0.007 |
 |     GEN_MULTS[54].u_mul             |     0.002 |
-|     GEN_MULTS[55].u_mul             |     0.002 |
-|     GEN_MULTS[56].u_mul             |     0.329 |
-|     GEN_MULTS[57].u_mul             |     0.011 |
-|     GEN_MULTS[58].u_mul             |     0.005 |
-|     GEN_MULTS[59].u_mul             |     0.002 |
-|     GEN_MULTS[5].u_mul              |     0.002 |
-|     GEN_MULTS[60].u_mul             |     0.002 |
-|     GEN_MULTS[61].u_mul             |     0.002 |
-|     GEN_MULTS[62].u_mul             |     0.002 |
-|     GEN_MULTS[63].u_mul             |     0.002 |
-|     GEN_MULTS[6].u_mul              |     0.002 |
-|     GEN_MULTS[7].u_mul              |     0.002 |
-|     GEN_MULTS[8].u_mul              |     0.231 |
-|     GEN_MULTS[9].u_mul              |     0.039 |
-|   u_rgb2ycbcr                       |   136.612 |
-|     gen_conversion[0].u_conversion  |     0.725 |
-|     gen_conversion[10].u_conversion |     1.538 |
-|     gen_conversion[11].u_conversion |     1.538 |
-|     gen_conversion[12].u_conversion |     1.538 |
-|     gen_conversion[13].u_conversion |     1.538 |
-|     gen_conversion[14].u_conversion |     1.538 |
-|     gen_conversion[15].u_conversion |     1.538 |
-|     gen_conversion[16].u_conversion |     1.538 |
-|     gen_conversion[17].u_conversion |     1.538 |
-|     gen_conversion[18].u_conversion |     1.538 |
-|     gen_conversion[19].u_conversion |     1.538 |
-|     gen_conversion[1].u_conversion  |     0.725 |
-|     gen_conversion[20].u_conversion |     1.538 |
-|     gen_conversion[21].u_conversion |     1.538 |
-|     gen_conversion[22].u_conversion |     1.538 |
-|     gen_conversion[23].u_conversion |     1.538 |
-|     gen_conversion[24].u_conversion |     1.538 |
-|     gen_conversion[25].u_conversion |     1.538 |
-|     gen_conversion[26].u_conversion |     1.538 |
-|     gen_conversion[27].u_conversion |     0.725 |
-|     gen_conversion[28].u_conversion |     1.538 |
-|     gen_conversion[29].u_conversion |     1.703 |
-|     gen_conversion[2].u_conversion  |     0.725 |
-|     gen_conversion[30].u_conversion |     1.704 |
-|     gen_conversion[31].u_conversion |     1.702 |
-|     gen_conversion[32].u_conversion |     1.702 |
-|     gen_conversion[33].u_conversion |     1.704 |
-|     gen_conversion[34].u_conversion |     1.703 |
-|     gen_conversion[35].u_conversion |     1.704 |
-|     gen_conversion[36].u_conversion |     1.704 |
-|     gen_conversion[37].u_conversion |     3.451 |
-|     gen_conversion[38].u_conversion |     3.452 |
-|     gen_conversion[39].u_conversion |     1.538 |
-|     gen_conversion[3].u_conversion  |     0.725 |
-|     gen_conversion[40].u_conversion |     3.450 |
-|     gen_conversion[41].u_conversion |     3.452 |
-|     gen_conversion[42].u_conversion |     3.451 |
-|     gen_conversion[43].u_conversion |     3.452 |
-|     gen_conversion[44].u_conversion |     3.452 |
-|     gen_conversion[45].u_conversion |     3.451 |
-|     gen_conversion[46].u_conversion |     3.452 |
-|     gen_conversion[47].u_conversion |     3.450 |
-|     gen_conversion[48].u_conversion |     3.450 |
-|     gen_conversion[49].u_conversion |     3.452 |
-|     gen_conversion[4].u_conversion  |     0.725 |
-|     gen_conversion[50].u_conversion |     1.538 |
-|     gen_conversion[51].u_conversion |     3.452 |
-|     gen_conversion[52].u_conversion |     3.452 |
-|     gen_conversion[53].u_conversion |     3.451 |
-|     gen_conversion[54].u_conversion |     3.452 |
-|     gen_conversion[55].u_conversion |     3.450 |
-|     gen_conversion[56].u_conversion |     3.450 |
-|     gen_conversion[57].u_conversion |     3.452 |
-|     gen_conversion[58].u_conversion |     3.451 |
-|     gen_conversion[59].u_conversion |     3.452 |
-|     gen_conversion[5].u_conversion  |     0.725 |
-|     gen_conversion[60].u_conversion |     3.452 |
-|     gen_conversion[61].u_conversion |     1.703 |
-|     gen_conversion[62].u_conversion |     3.452 |
-|     gen_conversion[63].u_conversion |     0.725 |
-|     gen_conversion[6].u_conversion  |     0.725 |
-|     gen_conversion[7].u_conversion  |     1.538 |
-|     gen_conversion[8].u_conversion  |     1.538 |
-|     gen_conversion[9].u_conversion  |     1.538 |
-|   u_zigzag                          |     9.478 |
+|     GEN_MULTS[55].u_mul             |     0.003 |
+|     GEN_MULTS[56].u_mul             |     0.231 |
+|     GEN_MULTS[57].u_mul             |     0.052 |
+|     GEN_MULTS[58].u_mul             |     0.196 |
+|     GEN_MULTS[59].u_mul             |     0.249 |
+|     GEN_MULTS[5].u_mul              |     0.008 |
+|     GEN_MULTS[60].u_mul             |     0.003 |
+|     GEN_MULTS[61].u_mul             |     0.006 |
+|     GEN_MULTS[62].u_mul             |     0.012 |
+|     GEN_MULTS[63].u_mul             |     0.005 |
+|     GEN_MULTS[6].u_mul              |     0.004 |
+|     GEN_MULTS[7].u_mul              |     0.006 |
+|     GEN_MULTS[8].u_mul              |     0.160 |
+|     GEN_MULTS[9].u_mul              |     0.160 |
+|   ycbcr_stage                       |   112.049 |
+|     gen_conversion[0].u_conversion  |     1.537 |
+|     gen_conversion[10].u_conversion |     1.537 |
+|     gen_conversion[11].u_conversion |     1.537 |
+|     gen_conversion[12].u_conversion |     1.537 |
+|     gen_conversion[13].u_conversion |     1.537 |
+|     gen_conversion[14].u_conversion |     1.537 |
+|     gen_conversion[15].u_conversion |     1.537 |
+|     gen_conversion[16].u_conversion |     1.537 |
+|     gen_conversion[17].u_conversion |     1.537 |
+|     gen_conversion[18].u_conversion |     1.537 |
+|     gen_conversion[19].u_conversion |     1.537 |
+|     gen_conversion[1].u_conversion  |     1.537 |
+|     gen_conversion[20].u_conversion |     1.537 |
+|     gen_conversion[21].u_conversion |     1.537 |
+|     gen_conversion[22].u_conversion |     1.537 |
+|     gen_conversion[23].u_conversion |     1.537 |
+|     gen_conversion[24].u_conversion |     1.537 |
+|     gen_conversion[25].u_conversion |     0.724 |
+|     gen_conversion[26].u_conversion |     0.724 |
+|     gen_conversion[27].u_conversion |     0.724 |
+|     gen_conversion[28].u_conversion |     0.724 |
+|     gen_conversion[29].u_conversion |     1.144 |
+|     gen_conversion[2].u_conversion  |     1.537 |
+|     gen_conversion[30].u_conversion |     1.144 |
+|     gen_conversion[31].u_conversion |     1.144 |
+|     gen_conversion[32].u_conversion |     1.144 |
+|     gen_conversion[33].u_conversion |     1.144 |
+|     gen_conversion[34].u_conversion |     1.144 |
+|     gen_conversion[35].u_conversion |     1.144 |
+|     gen_conversion[36].u_conversion |     1.144 |
+|     gen_conversion[37].u_conversion |     1.144 |
+|     gen_conversion[38].u_conversion |     1.144 |
+|     gen_conversion[39].u_conversion |     1.537 |
+|     gen_conversion[3].u_conversion  |     1.537 |
+|     gen_conversion[40].u_conversion |     1.144 |
+|     gen_conversion[41].u_conversion |     1.144 |
+|     gen_conversion[42].u_conversion |     1.144 |
+|     gen_conversion[43].u_conversion |     2.783 |
+|     gen_conversion[44].u_conversion |     2.783 |
+|     gen_conversion[45].u_conversion |     2.783 |
+|     gen_conversion[46].u_conversion |     2.783 |
+|     gen_conversion[47].u_conversion |     2.783 |
+|     gen_conversion[48].u_conversion |     2.783 |
+|     gen_conversion[49].u_conversion |     2.783 |
+|     gen_conversion[4].u_conversion  |     1.537 |
+|     gen_conversion[50].u_conversion |     1.537 |
+|     gen_conversion[51].u_conversion |     2.783 |
+|     gen_conversion[52].u_conversion |     2.783 |
+|     gen_conversion[53].u_conversion |     2.783 |
+|     gen_conversion[54].u_conversion |     2.783 |
+|     gen_conversion[55].u_conversion |     2.783 |
+|     gen_conversion[56].u_conversion |     2.783 |
+|     gen_conversion[57].u_conversion |     2.783 |
+|     gen_conversion[58].u_conversion |     2.783 |
+|     gen_conversion[59].u_conversion |     2.783 |
+|     gen_conversion[5].u_conversion  |     1.537 |
+|     gen_conversion[60].u_conversion |     2.783 |
+|     gen_conversion[61].u_conversion |     1.144 |
+|     gen_conversion[62].u_conversion |     2.783 |
+|     gen_conversion[63].u_conversion |     1.537 |
+|     gen_conversion[6].u_conversion  |     1.537 |
+|     gen_conversion[7].u_conversion  |     1.537 |
+|     gen_conversion[8].u_conversion  |     1.537 |
+|     gen_conversion[9].u_conversion  |     1.537 |
+|   zigzag_cb_stage                   |    16.345 |
+|   zigzag_cr_stage                   |    16.339 |
+|   zigzag_y_stage                    |    17.085 |
 +-------------------------------------+-----------+
 
 

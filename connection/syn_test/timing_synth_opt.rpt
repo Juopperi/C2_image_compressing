@@ -1,10 +1,10 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
-| Date         : Mon Apr 21 17:14:51 2025
+| Date         : Mon Apr 21 19:50:06 2025
 | Host         : wenruoxu running 64-bit major release  (build 9200)
 | Command      : report_timing_summary -file timing_synth_opt.rpt
-| Design       : jpeg_compression_pipeline_shared
+| Design       : jpeg_compression_pipeline
 | Device       : 7z020-clg484
 | Speed File   : -1  PRODUCTION 1.12 2019-11-22
 | Design State : Optimized
@@ -49,10 +49,10 @@ check_timing report
 
 Table of Contents
 -----------------
-1. checking no_clock (25334)
+1. checking no_clock (27561)
 2. checking constant_clock (0)
 3. checking pulse_width_clock (0)
-4. checking unconstrained_internal_endpoints (20681)
+4. checking unconstrained_internal_endpoints (49008)
 5. checking no_input_delay (1537)
 6. checking no_output_delay (6144)
 7. checking multiple_clock (0)
@@ -62,19 +62,9 @@ Table of Contents
 11. checking partial_output_delay (0)
 12. checking latch_loops (0)
 
-1. checking no_clock (25334)
+1. checking no_clock (27561)
 ----------------------------
- There are 8396 register/latch pins with no clock driven by root clock pin: clk (HIGH)
-
- There are 5646 register/latch pins with no clock driven by root clock pin: FSM_onehot_state_reg[2]/Q (HIGH)
-
- There are 1882 register/latch pins with no clock driven by root clock pin: channel_reg[0]/Q (HIGH)
-
- There are 3764 register/latch pins with no clock driven by root clock pin: channel_reg[0]_rep__36/Q (HIGH)
-
- There are 3764 register/latch pins with no clock driven by root clock pin: channel_reg[1]_rep__2/Q (HIGH)
-
- There are 1882 register/latch pins with no clock driven by root clock pin: channel_reg[1]_rep__40/Q (HIGH)
+ There are 27561 register/latch pins with no clock driven by root clock pin: clk (HIGH)
 
 
 2. checking constant_clock (0)
@@ -87,9 +77,9 @@ Table of Contents
  There are 0 register/latch pins which need pulse_width check
 
 
-4. checking unconstrained_internal_endpoints (20681)
+4. checking unconstrained_internal_endpoints (49008)
 ----------------------------------------------------
- There are 20681 pins that are not constrained for maximum delay. (HIGH)
+ There are 49008 pins that are not constrained for maximum delay. (HIGH)
 
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 

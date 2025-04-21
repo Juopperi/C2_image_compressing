@@ -43,19 +43,19 @@ module jpeg_compression_pipeline #(
     reg y_in_valid = 1'b1;
     reg y_out_ready = 1'b1;
 
-    dct8x8_2d_pipe_block #(
+    // 使用新的DCT模块 - Y通道
+    dct8x8_chen_2d #(
         .IN_W    (DATA_WIDTH),
-        .FRAC    (8),         // 根据您的需要调整
-        .CONST_W (10)          // 根据您的需要调整
+        .FRAC    (8)         // 分数位数
     ) dct_y_stage (
         .clk(clk),
         .rst_n(reset_n),
         .in_valid(y_in_valid),
-        .in_block(y_raw),
         .in_ready(y_in_ready),
+        .in_data(y_raw),
         .out_valid(y_out_valid),
-        .out_block(y_dct),
-        .out_ready(y_out_ready)
+        .out_ready(y_out_ready),
+        .out_data(y_dct)
     );
 
     wire cb_in_ready;
@@ -63,19 +63,19 @@ module jpeg_compression_pipeline #(
     reg cb_in_valid = 1'b1;
     reg cb_out_ready = 1'b1;
 
-    dct8x8_2d_pipe_block #(
+    // 使用新的DCT模块 - Cb通道
+    dct8x8_chen_2d #(
         .IN_W    (DATA_WIDTH),
-        .FRAC    (8),         // 根据您的需要调整
-        .CONST_W (10)          // 根据您的需要调整
+        .FRAC    (8)         // 分数位数
     ) dct_cb_stage (
         .clk(clk),
         .rst_n(reset_n),
         .in_valid(cb_in_valid),
-        .in_block(cb_raw),
         .in_ready(cb_in_ready),
+        .in_data(cb_raw),
         .out_valid(cb_out_valid),
-        .out_block(cb_dct),
-        .out_ready(cb_out_ready)
+        .out_ready(cb_out_ready),
+        .out_data(cb_dct)
     );
 
     wire cr_in_ready;
@@ -83,19 +83,19 @@ module jpeg_compression_pipeline #(
     reg cr_in_valid = 1'b1;
     reg cr_out_ready = 1'b1;
 
-    dct8x8_2d_pipe_block #(
+    // 使用新的DCT模块 - Cr通道
+    dct8x8_chen_2d #(
         .IN_W    (DATA_WIDTH),
-        .FRAC    (8),         // 根据您的需要调整
-        .CONST_W (10)          // 根据您的需要调整
+        .FRAC    (8)         // 分数位数
     ) dct_cr_stage (
         .clk(clk),
         .rst_n(reset_n),
         .in_valid(cr_in_valid),
-        .in_block(cr_raw),
         .in_ready(cr_in_ready),
+        .in_data(cr_raw),
         .out_valid(cr_out_valid),
-        .out_block(cr_dct),
-        .out_ready(cr_out_ready)
+        .out_ready(cr_out_ready),
+        .out_data(cr_dct)
     );
 
     // Stage 3: Quantization for Y/Cb/Cr channels
