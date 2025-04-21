@@ -7,7 +7,7 @@
 <Project Product="Vivado" Version="7" Minor="68" Path="C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/connection/syn_test/jpeg_pipeline_proj/jpeg_pipeline_proj.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="adc15545c64345ac93dc726fcad79c69"/>
+    <Option Name="Id" Val="7ae1e70ddcd74ea28d1c64dc6ca91150"/>
     <Option Name="Part" Val="xc7z020clg484-1"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="CompiledLibDirXSim" Val=""/>

@@ -1,5 +1,5 @@
 module jpeg_compression_pipeline #(
-    parameter DATA_WIDTH = 32,
+    parameter DATA_WIDTH = 15,
     parameter INPUT_WIDTH = 8,
     parameter DATA_DEPTH = 8,
     parameter PIXEL_COUNT = DATA_DEPTH * DATA_DEPTH  // 64 pixels (8x8 block)
