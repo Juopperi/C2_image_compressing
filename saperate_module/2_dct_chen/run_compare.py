@@ -3,7 +3,7 @@ import sys
 
 print("\n⚙️  Running 2D Chen DCT comparison")
 
-name = "chen_2d_dct"
+name = "chen_2d_pipe"
 
 try:
     result = subprocess.run(

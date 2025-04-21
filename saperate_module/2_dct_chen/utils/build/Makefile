@@ -155,6 +155,32 @@ chen_valid/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chen_valid.dir/build.make CMakeFiles/chen_valid.dir/build
 .PHONY : chen_valid/fast
 
+#=============================================================================
+# Target rules for targets named gen_1d_test_vectors
+
+# Build rule for target.
+gen_1d_test_vectors: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gen_1d_test_vectors
+.PHONY : gen_1d_test_vectors
+
+# fast build rule for target.
+gen_1d_test_vectors/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_1d_test_vectors.dir/build.make CMakeFiles/gen_1d_test_vectors.dir/build
+.PHONY : gen_1d_test_vectors/fast
+
+#=============================================================================
+# Target rules for targets named gen_2d_pipe_test_vectors
+
+# Build rule for target.
+gen_2d_pipe_test_vectors: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gen_2d_pipe_test_vectors
+.PHONY : gen_2d_pipe_test_vectors
+
+# fast build rule for target.
+gen_2d_pipe_test_vectors/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_2d_pipe_test_vectors.dir/build.make CMakeFiles/gen_2d_pipe_test_vectors.dir/build
+.PHONY : gen_2d_pipe_test_vectors/fast
+
 chen_valid.o: chen_valid.cpp.o
 .PHONY : chen_valid.o
 
@@ -203,6 +229,54 @@ compare_1000.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compare_1000.dir/build.make CMakeFiles/compare_1000.dir/compare_1000.cpp.s
 .PHONY : compare_1000.cpp.s
 
+gen_1d_test_vectors.o: gen_1d_test_vectors.cpp.o
+.PHONY : gen_1d_test_vectors.o
+
+# target to build an object file
+gen_1d_test_vectors.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_1d_test_vectors.dir/build.make CMakeFiles/gen_1d_test_vectors.dir/gen_1d_test_vectors.cpp.o
+.PHONY : gen_1d_test_vectors.cpp.o
+
+gen_1d_test_vectors.i: gen_1d_test_vectors.cpp.i
+.PHONY : gen_1d_test_vectors.i
+
+# target to preprocess a source file
+gen_1d_test_vectors.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_1d_test_vectors.dir/build.make CMakeFiles/gen_1d_test_vectors.dir/gen_1d_test_vectors.cpp.i
+.PHONY : gen_1d_test_vectors.cpp.i
+
+gen_1d_test_vectors.s: gen_1d_test_vectors.cpp.s
+.PHONY : gen_1d_test_vectors.s
+
+# target to generate assembly for a file
+gen_1d_test_vectors.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_1d_test_vectors.dir/build.make CMakeFiles/gen_1d_test_vectors.dir/gen_1d_test_vectors.cpp.s
+.PHONY : gen_1d_test_vectors.cpp.s
+
+gen_2d_pipe_test_vectors.o: gen_2d_pipe_test_vectors.cpp.o
+.PHONY : gen_2d_pipe_test_vectors.o
+
+# target to build an object file
+gen_2d_pipe_test_vectors.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_2d_pipe_test_vectors.dir/build.make CMakeFiles/gen_2d_pipe_test_vectors.dir/gen_2d_pipe_test_vectors.cpp.o
+.PHONY : gen_2d_pipe_test_vectors.cpp.o
+
+gen_2d_pipe_test_vectors.i: gen_2d_pipe_test_vectors.cpp.i
+.PHONY : gen_2d_pipe_test_vectors.i
+
+# target to preprocess a source file
+gen_2d_pipe_test_vectors.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_2d_pipe_test_vectors.dir/build.make CMakeFiles/gen_2d_pipe_test_vectors.dir/gen_2d_pipe_test_vectors.cpp.i
+.PHONY : gen_2d_pipe_test_vectors.cpp.i
+
+gen_2d_pipe_test_vectors.s: gen_2d_pipe_test_vectors.cpp.s
+.PHONY : gen_2d_pipe_test_vectors.s
+
+# target to generate assembly for a file
+gen_2d_pipe_test_vectors.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_2d_pipe_test_vectors.dir/build.make CMakeFiles/gen_2d_pipe_test_vectors.dir/gen_2d_pipe_test_vectors.cpp.s
+.PHONY : gen_2d_pipe_test_vectors.cpp.s
+
 gen_multi_inout.o: gen_multi_inout.cpp.o
 .PHONY : gen_multi_inout.o
 
@@ -237,6 +311,8 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... chen_valid"
 	@echo "... compare_1000"
+	@echo "... gen_1d_test_vectors"
+	@echo "... gen_2d_pipe_test_vectors"
 	@echo "... gen_multi_inout"
 	@echo "... chen_valid.o"
 	@echo "... chen_valid.i"
@@ -244,6 +320,12 @@ help:
 	@echo "... compare_1000.o"
 	@echo "... compare_1000.i"
 	@echo "... compare_1000.s"
+	@echo "... gen_1d_test_vectors.o"
+	@echo "... gen_1d_test_vectors.i"
+	@echo "... gen_1d_test_vectors.s"
+	@echo "... gen_2d_pipe_test_vectors.o"
+	@echo "... gen_2d_pipe_test_vectors.i"
+	@echo "... gen_2d_pipe_test_vectors.s"
 	@echo "... gen_multi_inout.o"
 	@echo "... gen_multi_inout.i"
 	@echo "... gen_multi_inout.s"
