@@ -1,0 +1,181 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
+| Date         : Mon Apr 21 20:31:08 2025
+| Host         : wenruoxu running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -file utilization_synth_hierarchical.rpt
+| Design       : jpeg_compression_pipeline
+| Device       : xc7z020clg484-1
+| Speed File   : -1
+| Design State : Synthesized
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++-------------------------------------+----------------------------------+------------+------------+---------+------+-------+--------+--------+------------+
+|               Instance              |              Module              | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | DSP Blocks |
++-------------------------------------+----------------------------------+------------+------------+---------+------+-------+--------+--------+------------+
+| jpeg_compression_pipeline           |                            (top) |      46947 |      46947 |       0 |    0 | 11560 |      0 |      0 |        110 |
+|   (jpeg_compression_pipeline)       |                            (top) |       9452 |       9452 |       0 |    0 |     0 |      0 |      0 |          0 |
+|   dct_cb_stage                      |                   dct8x8_chen_2d |      12140 |      12140 |       0 |    0 |  3149 |      0 |      0 |          0 |
+|     (dct_cb_stage)                  |                   dct8x8_chen_2d |       9743 |       9743 |       0 |    0 |  2756 |      0 |      0 |          0 |
+|     u_dct                           |                 dct8_chen_ts_140 |       2397 |       2397 |       0 |    0 |   393 |      0 |      0 |          0 |
+|   dct_cr_stage                      |                 dct8x8_chen_2d_0 |      11108 |      11108 |       0 |    0 |  3148 |      0 |      0 |          0 |
+|     (dct_cr_stage)                  |                 dct8x8_chen_2d_0 |       8719 |       8719 |       0 |    0 |  2755 |      0 |      0 |          0 |
+|     u_dct                           |                 dct8_chen_ts_139 |       2389 |       2389 |       0 |    0 |   393 |      0 |      0 |          0 |
+|   dct_y_stage                       |                 dct8x8_chen_2d_1 |      10661 |      10661 |       0 |    0 |  3140 |      0 |      0 |          0 |
+|     (dct_y_stage)                   |                 dct8x8_chen_2d_1 |       8263 |       8263 |       0 |    0 |  2747 |      0 |      0 |          0 |
+|     u_dct                           |                     dct8_chen_ts |       2398 |       2398 |       0 |    0 |   393 |      0 |      0 |          0 |
+|   quant_cb_stage                    |   quantize_array__parameterized0 |       1707 |       1707 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[0].u_mul              |             fixed_multiplier_115 |         43 |         43 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[11].u_mul             |             fixed_multiplier_116 |         38 |         38 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[12].u_mul             |             fixed_multiplier_117 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[13].u_mul             |             fixed_multiplier_118 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[14].u_mul             |             fixed_multiplier_119 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[15].u_mul             |             fixed_multiplier_120 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[16].u_mul             |             fixed_multiplier_121 |        125 |        125 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[17].u_mul             |             fixed_multiplier_122 |         71 |         71 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[18].u_mul             |             fixed_multiplier_123 |         36 |         36 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[1].u_mul              |             fixed_multiplier_124 |         65 |         65 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[24].u_mul             |             fixed_multiplier_125 |         96 |         96 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[25].u_mul             |             fixed_multiplier_126 |         38 |         38 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[26].u_mul             |             fixed_multiplier_127 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[27].u_mul             |             fixed_multiplier_128 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[28].u_mul             |             fixed_multiplier_129 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[29].u_mul             |             fixed_multiplier_130 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[2].u_mul              |             fixed_multiplier_131 |        125 |        125 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[3].u_mul              |             fixed_multiplier_132 |         96 |         96 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[4].u_mul              |             fixed_multiplier_133 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[5].u_mul              |             fixed_multiplier_134 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[6].u_mul              |             fixed_multiplier_135 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[7].u_mul              |             fixed_multiplier_136 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[8].u_mul              |             fixed_multiplier_137 |         65 |         65 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[9].u_mul              |             fixed_multiplier_138 |        117 |        117 |       0 |    0 |     0 |      0 |      0 |          0 |
+|   quant_cr_stage                    | quantize_array__parameterized0_2 |       1707 |       1707 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[0].u_mul              |              fixed_multiplier_91 |         43 |         43 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[11].u_mul             |              fixed_multiplier_92 |         38 |         38 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[12].u_mul             |              fixed_multiplier_93 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[13].u_mul             |              fixed_multiplier_94 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[14].u_mul             |              fixed_multiplier_95 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[15].u_mul             |              fixed_multiplier_96 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[16].u_mul             |              fixed_multiplier_97 |        125 |        125 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[17].u_mul             |              fixed_multiplier_98 |         71 |         71 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[18].u_mul             |              fixed_multiplier_99 |         36 |         36 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[1].u_mul              |             fixed_multiplier_100 |         65 |         65 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[24].u_mul             |             fixed_multiplier_101 |         96 |         96 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[25].u_mul             |             fixed_multiplier_102 |         38 |         38 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[26].u_mul             |             fixed_multiplier_103 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[27].u_mul             |             fixed_multiplier_104 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[28].u_mul             |             fixed_multiplier_105 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[29].u_mul             |             fixed_multiplier_106 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[2].u_mul              |             fixed_multiplier_107 |        125 |        125 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[3].u_mul              |             fixed_multiplier_108 |         96 |         96 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[4].u_mul              |             fixed_multiplier_109 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[5].u_mul              |             fixed_multiplier_110 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[6].u_mul              |             fixed_multiplier_111 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[7].u_mul              |             fixed_multiplier_112 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[8].u_mul              |             fixed_multiplier_113 |         65 |         65 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[9].u_mul              |             fixed_multiplier_114 |        117 |        117 |       0 |    0 |     0 |      0 |      0 |          0 |
+|   quant_y_stage                     |                   quantize_array |       1677 |       1677 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[0].u_mul              |                 fixed_multiplier |          1 |          1 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[11].u_mul             |              fixed_multiplier_68 |         98 |         98 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[12].u_mul             |              fixed_multiplier_69 |         71 |         71 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[13].u_mul             |              fixed_multiplier_70 |         66 |         66 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[14].u_mul             |              fixed_multiplier_71 |         58 |         58 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[15].u_mul             |              fixed_multiplier_72 |         35 |         35 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[16].u_mul             |              fixed_multiplier_73 |         25 |         25 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[17].u_mul             |              fixed_multiplier_74 |         85 |         85 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[18].u_mul             |              fixed_multiplier_75 |          1 |          1 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[1].u_mul              |              fixed_multiplier_76 |        138 |        138 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[24].u_mul             |              fixed_multiplier_77 |         25 |         25 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[25].u_mul             |              fixed_multiplier_78 |         43 |         43 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[26].u_mul             |              fixed_multiplier_79 |        125 |        125 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[27].u_mul             |              fixed_multiplier_80 |         69 |         69 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[28].u_mul             |              fixed_multiplier_81 |         89 |         89 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[29].u_mul             |              fixed_multiplier_82 |         94 |         94 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[2].u_mul              |              fixed_multiplier_83 |         86 |         86 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[3].u_mul              |              fixed_multiplier_84 |          1 |          1 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[4].u_mul              |              fixed_multiplier_85 |        125 |        125 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[5].u_mul              |              fixed_multiplier_86 |         95 |         95 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[6].u_mul              |              fixed_multiplier_87 |         89 |         89 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[7].u_mul              |              fixed_multiplier_88 |         88 |         88 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[8].u_mul              |              fixed_multiplier_89 |         85 |         85 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     GEN_MULTS[9].u_mul              |              fixed_multiplier_90 |         85 |         85 |       0 |    0 |     0 |      0 |      0 |          0 |
+|   ycbcr_stage                       |              rgb2ycbcr_container |        832 |        832 |       0 |    0 |     0 |      0 |      0 |        110 |
+|     gen_conversion[0].u_conversion  |                       conversion |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[10].u_conversion |                     conversion_5 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[11].u_conversion |                     conversion_6 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[12].u_conversion |                     conversion_7 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[13].u_conversion |                     conversion_8 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[14].u_conversion |                     conversion_9 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[15].u_conversion |                    conversion_10 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[16].u_conversion |                    conversion_11 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[17].u_conversion |                    conversion_12 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[18].u_conversion |                    conversion_13 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[19].u_conversion |                    conversion_14 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[1].u_conversion  |                    conversion_15 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[20].u_conversion |                    conversion_16 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[21].u_conversion |                    conversion_17 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[22].u_conversion |                    conversion_18 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[23].u_conversion |                    conversion_19 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[24].u_conversion |                    conversion_20 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[25].u_conversion |                    conversion_21 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[26].u_conversion |                    conversion_22 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[27].u_conversion |                    conversion_23 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[28].u_conversion |                    conversion_24 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[29].u_conversion |                    conversion_25 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[2].u_conversion  |                    conversion_26 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[30].u_conversion |                    conversion_27 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[31].u_conversion |                    conversion_28 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[32].u_conversion |                    conversion_29 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[33].u_conversion |                    conversion_30 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[34].u_conversion |                    conversion_31 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[35].u_conversion |                    conversion_32 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[36].u_conversion |                    conversion_33 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[37].u_conversion |                    conversion_34 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[38].u_conversion |                    conversion_35 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[39].u_conversion |                    conversion_36 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[3].u_conversion  |                    conversion_37 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[40].u_conversion |                    conversion_38 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[41].u_conversion |                    conversion_39 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[42].u_conversion |                    conversion_40 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[43].u_conversion |                    conversion_41 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[44].u_conversion |                    conversion_42 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[45].u_conversion |                    conversion_43 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[46].u_conversion |                    conversion_44 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[47].u_conversion |                    conversion_45 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[48].u_conversion |                    conversion_46 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[49].u_conversion |                    conversion_47 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[4].u_conversion  |                    conversion_48 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[50].u_conversion |                    conversion_49 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[51].u_conversion |                    conversion_50 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[52].u_conversion |                    conversion_51 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[53].u_conversion |                    conversion_52 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[54].u_conversion |                    conversion_53 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[55].u_conversion |                    conversion_54 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[56].u_conversion |                    conversion_55 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[57].u_conversion |                    conversion_56 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[58].u_conversion |                    conversion_57 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[59].u_conversion |                    conversion_58 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[5].u_conversion  |                    conversion_59 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[60].u_conversion |                    conversion_60 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[61].u_conversion |                    conversion_61 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          1 |
+|     gen_conversion[62].u_conversion |                    conversion_62 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[63].u_conversion |                    conversion_63 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[6].u_conversion  |                    conversion_64 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[7].u_conversion  |                    conversion_65 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[8].u_conversion  |                    conversion_66 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|     gen_conversion[9].u_conversion  |                    conversion_67 |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          2 |
+|   zigzag_cb_stage                   |                   zigzag_reorder |          0 |          0 |       0 |    0 |   700 |      0 |      0 |          0 |
+|   zigzag_cr_stage                   |                 zigzag_reorder_3 |          0 |          0 |       0 |    0 |   700 |      0 |      0 |          0 |
+|   zigzag_y_stage                    |                 zigzag_reorder_4 |          0 |          0 |       0 |    0 |   723 |      0 |      0 |          0 |
++-------------------------------------+----------------------------------+------------+------------+---------+------+-------+--------+--------+------------+
+
+

@@ -3,9 +3,9 @@
 #include <iomanip>
 #include <random>
 #include <cstdint>
-#include <algorithm> // std::clamp
 #include <cmath>
 #include <string>
+#include <algorithm>
 #include "FixedPoint.h"
 
 constexpr int N = 8;
@@ -86,20 +86,15 @@ int main(int argc, char* argv[]) {
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> noise_dist(-10.0f, 10.0f);  // 小扰动
+    std::uniform_int_distribution<int> dist(0, 255);
 
     for (int s = 0; s < num_samples; ++s) {
         float Y[N][N], Cb[N][N], Cr[N][N];
         for (int i = 0; i < N; ++i)
             for (int j = 0; j < N; ++j) {
-                // 基于正弦变化 + 局部扰动生成亮度图
-                float base = 128.0f + 50.0f * std::sin(2 * M_PI * i / N) * std::cos(2 * M_PI * j / N);
-                float noise = noise_dist(gen);
-                float val = std::clamp(base + noise, 0.0f, 255.0f);
-
-                uint8_t R = static_cast<uint8_t>(val);
-                uint8_t G = static_cast<uint8_t>(val);
-                uint8_t B = static_cast<uint8_t>(val);
+                uint8_t R = dist(gen);
+                uint8_t G = dist(gen);
+                uint8_t B = dist(gen);
 
                 fout_r << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << static_cast<int>(R) << std::endl;
                 fout_g << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << static_cast<int>(G) << std::endl;
@@ -136,7 +131,6 @@ int main(int argc, char* argv[]) {
             }
         };
 
-    
         process_channel(Y,  luma_table,   fout_y);
         process_channel(Cb, chroma_table, fout_cb);
         process_channel(Cr, chroma_table, fout_cr);

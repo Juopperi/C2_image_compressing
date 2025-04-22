@@ -19,7 +19,8 @@ should_generate = len(sys.argv) > 2 and sys.argv[2].lower() == "gen"
 # 源码路径配置
 # -----------------------------
 search_dirs = [
-    "rtl"
+    "rtl",
+    "tb"
 ]
 
 valid_extensions = {'.v', '.sv', '.vhd', '.vhdl'}
@@ -49,12 +50,12 @@ for folder in search_dirs:
                 elif ext in {'.vhd', '.vhdl'}:
                     vlog_lines.append(f'vcom "../../{rel_path}"')
 
-vsim_cmd = f'vsim {"-c" if not gui_mode else ""} -voptargs=+acc work.{testbench_name}'
+vsim_cmd = f'vsim {"-c" if not gui_mode else ""} '
 
 if gui_mode:
-    vsim_cmd += ' -do "view wave; view structure; view signals;"'
+    vsim_cmd += f' -voptargs=+acc work.{testbench_name} -do "view wave; view structure; view signals;"'
 else:
-    vsim_cmd += ' -do "run 200 us; quit -f"'
+    vsim_cmd += f' work.{testbench_name}  -do "run 200 us; quit -f"'
 
 do_script = [
     "vlib work",

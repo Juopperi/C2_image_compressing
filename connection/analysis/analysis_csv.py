@@ -31,7 +31,7 @@ def plot_position_stats(avg, maxv, count, title_prefix):
     plt.ylabel("Average |Error|")
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig(f"result/{title_prefix.lower()}_avg_error.png")
+    plt.savefig(f"result/avg_error_{title_prefix.lower()}.png")
 
     # 条形图：最大误差
     plt.figure(figsize=(10, 4))
@@ -41,7 +41,7 @@ def plot_position_stats(avg, maxv, count, title_prefix):
     plt.ylabel("Max |Error|")
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig(f"result/{title_prefix.lower()}_max_error.png")
+    plt.savefig(f"result/max_error_{title_prefix.lower()}.png")
 
     # 条形图：超阈值次数
     plt.figure(figsize=(10, 4))
@@ -51,7 +51,7 @@ def plot_position_stats(avg, maxv, count, title_prefix):
     plt.ylabel("Count of |Error| > threshold")
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig(f"result/{title_prefix.lower()}_error_count.png")
+    plt.savefig(f"result/error_count_{title_prefix.lower()}.png")
 
     # 热力图：平均误差 reshape 为 8x8
     heatmap_data = avg.reshape((8, 8))  # 默认行优先排列
@@ -63,7 +63,7 @@ def plot_position_stats(avg, maxv, count, title_prefix):
     plt.xticks(np.arange(8))
     plt.yticks(np.arange(8))
     plt.tight_layout()
-    plt.savefig(f"result/{title_prefix.lower()}_heatmap_avg_error.png")
+    plt.savefig(f"result/heatmap_avg_error_{title_prefix.lower()}.png")
 
 def run_all():
     os.makedirs("result", exist_ok=True)
