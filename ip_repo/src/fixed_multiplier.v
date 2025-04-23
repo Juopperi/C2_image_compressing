@@ -1,4 +1,4 @@
-module fixed_multiplier_shift (
+module fixed_multiplier (
     input  wire [31:0] a,
     input  wire [31:0] b,
     output wire [31:0] mul_res
