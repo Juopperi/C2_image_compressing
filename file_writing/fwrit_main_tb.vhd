@@ -50,9 +50,17 @@ begin
         wait for 10 ns;
         rst <='0';
         wait for 10 ns;
-        newcode <='1';
+        start <='1';
         wait for 10 ns;
-        newcode <='0';
+        start <='0';
+        wait for 6000 ns;
+        validcode <='1';
+        wait for 10 ns;
+        validcode <='0';
+        wait for 10 ns;
+        done <='1';
+        wait for 10 ns;
+        done <='0';
         wait;
    end process;
 

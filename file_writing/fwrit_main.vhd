@@ -149,7 +149,6 @@ begin
              when info2 =>
                 writeinfo<='1';
                 dataready<='0';
-                entropy_el <= 7;
                 if array_el=618 then
                     dataready<='1';
                     next_state <= idle2;
