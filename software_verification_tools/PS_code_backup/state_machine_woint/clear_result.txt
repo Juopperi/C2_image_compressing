@@ -1,0 +1,60 @@
+
+
+JPG Full AXI RGB to YCbCr Converter Test
+AXI Base Address: 0x7AA00000
+Generating RGB data with pattern 4...
+Writing RGB data to the module...
+Starting RGB to YCbCr conversion...
+Polling for completion...
+Reading back YCbCr data...
+
+Sample RGB and YCbCr values:
+Pixel 0: RGB(  0,  0,  0) -> YCbCr(0xFFFFFFFF,0xFFA7E330,0xFFF01900)
+Pixel 1: RGB( 10, 10, 10) -> YCbCr(0x0005CA00,0xFFAC0474,0xFFECC8E0)
+Pixel 2: RGB( 20, 20, 20) -> YCbCr(0x0009F9E0,0xFFB025B8,0xFFE978C0)
+Pixel 3: RGB( 30, 30, 30) -> YCbCr(0x000E29C0,0xFFB446FC,0xFFE628A0)
+Pixel 4: RGB( 40, 40, 40) -> YCbCr(0x001259A0,0xFF9B3940,0xFFE2D880)
+Pixel 5: RGB( 50, 50, 50) -> YCbCr(0x002B5980,0xFF9F5A84,0xFFDF8860)
+Pixel 6: RGB( 60, 60, 60) -> YCbCr(0x002F8960,0xFFA37BC8,0xFFDC3840)
+Pixel 7: RGB( 70, 70, 70) -> YCbCr(0x0033B940,0xFFA79D0C,0xFFD8E820)
+RGB to YCbCr conversion test completed.
+
+
+JPG Full AXI RGB to YCbCr Converter Test
+AXI Base Address: 0x7AA00000
+Generating RGB data with pattern 4...
+Writing RGB data to the module...
+Starting RGB to YCbCr conversion...
+Polling for completion...
+Reading back YCbCr data...
+
+Sample RGB and YCbCr values:
+Pixel 0: RGB(  0,  0,  0) -> YCbCr(0xFFFFFFFF,0xFFA7E330,0xFFF01900)
+Pixel 1: RGB( 10, 10, 10) -> YCbCr(0x0005CA00,0xFFAC0474,0xFFECC8E0)
+Pixel 2: RGB( 20, 20, 20) -> YCbCr(0x0009F9E0,0xFFB025B8,0xFFE978C0)
+Pixel 3: RGB( 30, 30, 30) -> YCbCr(0x000E29C0,0xFFB446FC,0xFFE628A0)
+Pixel 4: RGB( 40, 40, 40) -> YCbCr(0x001259A0,0xFF9B3940,0xFFE2D880)
+Pixel 5: RGB( 50, 50, 50) -> YCbCr(0x002B5980,0xFF9F5A84,0xFFDF8860)
+Pixel 6: RGB( 60, 60, 60) -> YCbCr(0x002F8960,0xFFA37BC8,0xFFDC3840)
+Pixel 7: RGB( 70, 70, 70) -> YCbCr(0x0033B940,0xFFA79D0C,0xFFD8E820)
+RGB to YCbCr conversion test completed.
+
+
+JPG Full AXI RGB to YCbCr Converter Test
+AXI Base Address: 0x7AA00000
+Generating RGB data with pattern 0...
+Writing RGB data to the module...
+Starting RGB to YCbCr conversion...
+Polling for completion...
+Reading back YCbCr data...
+
+Sample RGB and YCbCr values:
+Pixel 0: RGB(  0,  0,  0) -> YCbCr(0xFF800000,0x00000000,0xFFFFFFFF)
+Pixel 1: RGB(  0,  0,  0) -> YCbCr(0xFF800000,0x00000000,0x00000000)
+Pixel 2: RGB(  0,  0,  0) -> YCbCr(0xFF800000,0x00000000,0x00000000)
+Pixel 3: RGB(  0,  0,  0) -> YCbCr(0xFF800000,0x00000000,0x00000000)
+Pixel 4: RGB(  0,  0,  0) -> YCbCr(0xFF800000,0x00000000,0x00000000)
+Pixel 5: RGB(  0,  0,  0) -> YCbCr(0xFF800000,0x00000000,0x00000000)
+Pixel 6: RGB(  0,  0,  0) -> YCbCr(0xFF800000,0x00000000,0x00000000)
+Pixel 7: RGB(  0,  0,  0) -> YCbCr(0xFF800000,0x00000000,0x00000000)
+RGB to YCbCr conversion test completed.
