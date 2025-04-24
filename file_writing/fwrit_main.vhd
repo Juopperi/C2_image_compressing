@@ -181,14 +181,16 @@ begin
     process(clk)
     begin
         if rising_edge(clk) then
-            if current_state=dim then
-		        --write height or width to memory
+            if current_state=dim then     
                 dim_el <= dim_el + 1;
                 if dim_el=1 then
                     dim_el<=0;
+		    --write width
+		else
+		    --write height;
                 end if;
             elsif writeinfo='1' then
-		        --write data to memory
+		--write data to memory
                 array_el <= array_el + 1;
                 if array_el=620 then
                     array_el <= 0;
