@@ -10,9 +10,9 @@ def fixed_to_float(hex_value):
 
 # RGB -> YCbCr 标准转换公式
 def rgb_to_ycbcr(r, g, b):
-    y  =  0.299*r + 0.587*g + 0.114*b - 128
-    cb = -0.168736*r - 0.331264*g + 0.5*b 
-    cr =  0.5*r - 0.418688*g - 0.081312*b 
+    y  =  0.299*r + 0.587*g + 0.114*b - 128 +128
+    cb = -0.168736*r - 0.331264*g + 0.5*b +128
+    cr =  0.5*r - 0.418688*g - 0.081312*b +128
     return y, cb, cr
 
 # 解析日志并计算差异
@@ -39,14 +39,15 @@ def parse_log_and_compare(log_text):
 
 # 示例日志
 log_text = '''
-Sample RGB and YCbCr values: Pixel 0: RGB(0,0,0) -> YCbCr(0xFFFFFFFF,0xDEADBEEF,0xFFD24140)
-Pixel 1: RGB(0,32,16) -> YCbCr(0xFFA3FFE0,0xFFDAE500,0x002ACC00)
-Pixel 2: RGB(0,64,32) -> YCbCr(0xFFAA9B80,0xFFC06400,0x00317F00)
-Pixel 3: RGB(0,96,48) -> YCbCr(0xFFB13720,0xFFD04B00,0x00383200)
-Pixel 4: RGB(0,128,64) -> YCbCr(0xFFB7D2C0,0xFFCAFE00,0x003EE500)
-Pixel 5: RGB(0,160,80) -> YCbCr(0xFFBE6E60,0xFFC5B100,0x00459800)
-Pixel 6: RGB(0,192,96) -> YCbCr(0xFFC50A00,0xFFC06400,0x004C4B00)
-Pixel 7: RGB(0,224,112) -> YCbCr(0xFFCBA5A0,0xFFBB1700,0x0052FE00)
+Sample RGB and YCbCr values: Pixel 0: RGB(0,0,0) -> YCbCr(0xFF800000,0x00000000,0x00000000)
+Pixel 1: RGB(10,10,10) -> YCbCr(0xFF8069BA,0xFFFFAB30,0x00006B30)
+Pixel 2: RGB(20,20,20) -> YCbCr(0xFF8069BA,0xFFFFAB30,0x00006B30)
+Pixel 3: RGB(30,30,30) -> YCbCr(0xFF8069BA,0xFFFFAB30,0x00006B30)
+Pixel 4: RGB(40,40,40) -> YCbCr(0xFF8069BA,0xFFFFAB30,0x00006B30)
+Pixel 5: RGB(50,50,50) -> YCbCr(0xFF8069BA,0xFFFFAB30,0x00006B30)
+Pixel 6: RGB(60,60,60) -> YCbCr(0xFF8069BA,0xFFFFAB30,0x00006B30)
+Pixel 7: RGB(70,70,70) -> YCbCr(0x0033B940,0xFFA79D0C,0xFFD8E820)
+
 RGB to YCbCr conversion test completed.
 '''
 
