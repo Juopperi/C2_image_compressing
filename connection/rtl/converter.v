@@ -7,7 +7,8 @@ module rgb2ycbcr_container #(
     input wire [8*64-1:0] b_all, // 64个8位B
     output wire [fixed_point_length*64-1:0] y_all,
     output wire [fixed_point_length*64-1:0] cb_all,
-    output wire [fixed_point_length*64-1:0] cr_all
+    output wire [fixed_point_length*64-1:0] cr_all,
+    output wire done
 );
 
     genvar i;
@@ -26,7 +27,8 @@ module rgb2ycbcr_container #(
                 .input_B(b),
                 .output_Y(y),
                 .output_Cb(cb),
-                .output_Cr(cr)
+                .output_Cr(cr),
+                .done(done)
             );
 
             assign y_all[i*fixed_point_length +: fixed_point_length] = y;
