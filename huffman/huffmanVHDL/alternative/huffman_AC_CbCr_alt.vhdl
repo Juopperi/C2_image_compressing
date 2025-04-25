@@ -615,7 +615,7 @@ if rising_edge(clk) then
                     end case;                                                                    
                                                                                                                                             
                 when others =>
-                    output_reg := "1111111010";
+                    output_reg := "XXXXXX1111111010";
                     length := 10;                               
             end case;
             state <= outputting_bits;
