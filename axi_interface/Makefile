@@ -7,7 +7,7 @@ VERILATOR_FLAGS += --trace-max-array 512
 
 # Source files
 VERILOG_SOURCES = axi_self_test.v
-CPP_SOURCES = sim_main.cpp
+CPP_SOURCES = sim_main.cpp 
 
 # Output directory
 OBJ_DIR = obj_dir

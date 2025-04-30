@@ -63,3 +63,5 @@ template_file-read/
 **/CMakeFiles/
 **/CMakeCache.txt
 **/sim/
+
+**/obj_dir/

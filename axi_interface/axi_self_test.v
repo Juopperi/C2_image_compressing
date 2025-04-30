@@ -11,7 +11,7 @@ module axi_self_test #(
     parameter integer C_S_AXI_BUSER_WIDTH   = 0,
     parameter integer CONFIG_AREA          	= 16, // 0x80~0x8F
     parameter integer WRITE_AREA          	= 64, // 0x00~0x3F
-    parameter integer READ_AREA          	= 64  // 0x40~0xF
+    parameter integer READ_AREA          	= 64  // 0x40~0xFF
 )(
     // Clock and Reset
     input  wire                              S_AXI_ACLK,
@@ -40,18 +40,19 @@ module axi_self_test #(
 
 parameter integer REG_RW_DEPTH = WRITE_AREA + READ_AREA;
 reg [C_S_AXI_DATA_WIDTH-1:0] axi_reg_rw     [0:REG_RW_DEPTH-1];
-reg [C_S_AXI_DATA_WIDTH-1:0] axi_reg_cfg    [0:CONFIG_AREA-1];
-
-wire is_config_area;
-assign is_config_area = axi_awaddr[C_S_AXI_ADDR_WIDTH-1];
+reg [C_S_AXI_DATA_WIDTH-1:0] axi_reg_cfg    [0:REG_RW_DEPTH-1];
 
 // Register for internal address storage
 reg [C_S_AXI_ADDR_WIDTH-1:0] axi_araddr;
 reg [C_S_AXI_ADDR_WIDTH-1:0] axi_awaddr;
 
+wire is_config_area;
+assign is_config_area = S_AXI_ARADDR[C_S_AXI_ADDR_WIDTH-1] || S_AXI_AWADDR[C_S_AXI_ADDR_WIDTH-1];
+
 // ----------------------
 // Write Address Channel
 // ----------------------
+// 写地址就绪
 always @(posedge S_AXI_ACLK) begin
     if (!S_AXI_ARESETN) begin
         S_AXI_AWREADY <= 1'b0;
@@ -72,6 +73,8 @@ end
 // ----------------------
 // Write Data Channel
 // ----------------------
+
+// 写数据就绪
 always @(posedge S_AXI_ACLK) begin
     if (!S_AXI_ARESETN) begin
         S_AXI_WREADY <= 1'b0;
@@ -119,7 +122,11 @@ always @(posedge S_AXI_ACLK) begin
     end
     else begin
         if (S_AXI_WREADY && S_AXI_WVALID && S_AXI_AWREADY && S_AXI_AWVALID && is_config_area) begin
+            $display("Write config area: 0x%h", axi_awaddr);
+            $display("Write data: 0x%h", S_AXI_WDATA);
+            
             axi_reg_cfg[axi_awaddr] <= S_AXI_WDATA;
+
         end
     end
 end
@@ -147,22 +154,28 @@ end
 // ----------------------
 // Read Data Channel
 // ----------------------
+
 always @(posedge S_AXI_ACLK) begin
     if (!S_AXI_ARESETN) begin
-        S_AXI_RVALID <= 1'b0;
-        S_AXI_RDATA <= 0;
+        S_AXI_RDATA         <= 0;
+        S_AXI_RVALID        <= 1'b0;
     end
     else begin
-        if (S_AXI_ARREADY && S_AXI_ARVALID && ~S_AXI_RVALID) begin
-            // 读数据就绪
-            S_AXI_RVALID <= 1'b1;
-            S_AXI_RDATA <= axi_reg_rw[axi_araddr];
+        if (S_AXI_RREADY) begin
+            if (is_config_area) begin
+                S_AXI_RDATA <= axi_reg_cfg[axi_araddr];
+                S_AXI_RVALID <= 1'b1;
+            end
+            else begin
+                S_AXI_RDATA <= axi_reg_rw[axi_araddr];
+                S_AXI_RVALID <= 1'b1;
+            end
         end
-        else if (S_AXI_RVALID && S_AXI_RREADY) begin
-            // 读数据被接受
+        else begin
             S_AXI_RVALID <= 1'b0;
         end
     end
 end
 
 endmodule
+
