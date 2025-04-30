@@ -1,166 +1,116 @@
-#include "Vproc_full_axi.h"
+#include "Vaxi_self_test.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 #include <iostream>
 #include <iomanip>
 
 // 仿真时间单位
-#define SIM_TIME 1000
+#define RESET_PERIOD  5
+#define PERIOD        10
+#define SIM_PERIOD    1000
 
 // 内存映射地址
-#define REG_START 0x00
-#define REG_STAT  0x04
-#define INPUT_BASE 0x40
-#define OUTPUT_BASE 0x60
+#define CONFIG_BASE 0x80
+#define CONFIG_AREA 16
+#define WRITE_BASE  0x00
+#define WRITE_AREA  64
+#define READ_BASE   0x40
+#define READ_AREA   64
 
-// 辅助函数：打印32位数据
-void print_data(uint32_t data) {
-    std::cout << "0x" << std::hex << std::setw(8) << std::setfill('0') << data << std::endl;
-}
+vluint64_t sim_time = 0;  // 仿真时间计数器
 
 int main(int argc, char** argv) {
-    // 初始化Verilator
     Verilated::commandArgs(argc, argv);
-    Verilated::traceEverOn(true);
     
-    // 创建模型和波形跟踪
-    Vproc_full_axi* top = new Vproc_full_axi;
+    Verilated::traceEverOn(true);  // 开启追踪功能
+
+    // 创建模块实例
+    Vaxi_self_test* top = new Vaxi_self_test;
+
+    // 创建波形文件
     VerilatedVcdC* tfp = new VerilatedVcdC;
     top->trace(tfp, 99);
-    tfp->open("waveform.vcd");
+    tfp->open("wave.vcd");
 
-    // 初始化信号
+    // 初始化
     top->S_AXI_ACLK = 0;
     top->S_AXI_ARESETN = 0;
-    
-    // 复位
-    for (int i = 0; i < 10; i++) {
-        top->S_AXI_ACLK = !top->S_AXI_ACLK;
-        top->eval();
-        tfp->dump(i);
-    }
-    top->S_AXI_ARESETN = 1;
-
-    // 测试写入输入缓冲区
-    std::cout << "Writing test data to input buffer..." << std::endl;
-    for (int i = 0; i < 32; i++) {
-        // 设置写地址
-        top->S_AXI_AWADDR = INPUT_BASE + (i * 4);
-        top->S_AXI_AWVALID = 1;
-        top->S_AXI_WDATA = 0x12345678 + i;
-        top->S_AXI_WVALID = 1;
-        top->S_AXI_WSTRB = 0xF;  // 所有字节有效
-
-        // 等待握手
-        while (!top->S_AXI_AWREADY || !top->S_AXI_WREADY) {
-            top->S_AXI_ACLK = !top->S_AXI_ACLK;
-            top->eval();
-            tfp->dump(SIM_TIME + i * 2);
-            top->S_AXI_ACLK = !top->S_AXI_ACLK;
-            top->eval();
-            tfp->dump(SIM_TIME + i * 2 + 1);
-        }
-
-        // 清除写信号
-        top->S_AXI_AWVALID = 0;
-        top->S_AXI_WVALID = 0;
-    }
-
-    // 启动处理
-    std::cout << "Starting processing..." << std::endl;
-    top->S_AXI_AWADDR = REG_START;
-    top->S_AXI_AWVALID = 1;
-    top->S_AXI_WDATA = 1;  // 写1启动
-    top->S_AXI_WVALID = 1;
-    top->S_AXI_WSTRB = 0xF;
-
-    // 等待握手
-    while (!top->S_AXI_AWREADY || !top->S_AXI_WREADY) {
-        top->S_AXI_ACLK = !top->S_AXI_ACLK;
-        top->eval();
-        tfp->dump(SIM_TIME + 100);
-        top->S_AXI_ACLK = !top->S_AXI_ACLK;
-        top->eval();
-        tfp->dump(SIM_TIME + 101);
-    }
-
-    // 清除写信号
     top->S_AXI_AWVALID = 0;
     top->S_AXI_WVALID = 0;
+    top->S_AXI_ARVALID = 0;
+    top->S_AXI_RREADY = 0;
+    
+    // 记录初始状态
+    top->eval();
+    tfp->dump(sim_time);
+    sim_time++;
 
-    // 等待处理完成
-    std::cout << "Waiting for processing to complete..." << std::endl;
-    bool done = false;
-    int timeout = 0;
-    while (!done && timeout < 1000) {
-        // 读取状态寄存器
-        top->S_AXI_ARADDR = REG_STAT;
-        top->S_AXI_ARVALID = 1;
-
-        // 等待握手
-        while (!top->S_AXI_ARREADY) {
-            top->S_AXI_ACLK = !top->S_AXI_ACLK;
-            top->eval();
-            tfp->dump(SIM_TIME + 200 + timeout * 2);
-            top->S_AXI_ACLK = !top->S_AXI_ACLK;
-            top->eval();
-            tfp->dump(SIM_TIME + 200 + timeout * 2 + 1);
-        }
-
-        // 检查完成位
-        done = (top->S_AXI_RDATA & 1);
+    // 主仿真循环
+    for (int i = 0; i < SIM_PERIOD; i++) {
+        // 翻转时钟 - 只翻转一次!
+        top->S_AXI_ACLK = !top->S_AXI_ACLK;
         
-        // 清除读信号
-        top->S_AXI_ARVALID = 0;
+        // 复位阶段处理
+        if (i < RESET_PERIOD) {
+            top->S_AXI_ARESETN = 0;
+            top->S_AXI_AWVALID = 0;
+            top->S_AXI_WVALID = 0;
+            top->S_AXI_ARVALID = 0;
+        }
+        else {
+            top->S_AXI_ARESETN = 1;
+        }
+
+        // 写入测试
+        if (i >= RESET_PERIOD) {
+            // 只在AWREADY和WREADY为1时才发送新的写请求
+            if (!top->S_AXI_AWVALID || (top->S_AXI_AWVALID && top->S_AXI_AWREADY)) {
+                top->S_AXI_AWVALID = 1;
+                top->S_AXI_AWADDR = 0x00;
+            }
+            
+            if (!top->S_AXI_WVALID || (top->S_AXI_WVALID && top->S_AXI_WREADY)) {
+                top->S_AXI_WVALID = 1;
+                top->S_AXI_WDATA = 127;
+            }
+            
+            // 在READY信号有效时撤销VALID信号 (正确的AXI握手协议)
+            if (top->S_AXI_AWVALID && top->S_AXI_AWREADY) {
+                // 可以打印输出以确认握手成功
+                if (top->S_AXI_ACLK) {  // 只在时钟上升沿输出
+                    std::cout << "AWADDR握手成功，时间: " << sim_time << std::endl;
+                }
+            }
+            
+            if (top->S_AXI_WVALID && top->S_AXI_WREADY) {
+                // 可以打印输出以确认握手成功
+                if (top->S_AXI_ACLK) {  // 只在时钟上升沿输出
+                    std::cout << "WDATA握手成功，时间: " << sim_time << std::endl;
+                }
+            }
+        }
         
-        timeout++;
-    }
-
-    if (done) {
-        std::cout << "Processing completed successfully!" << std::endl;
-    } else {
-        std::cout << "Processing timed out!" << std::endl;
-    }
-
-    // 读取输出缓冲区
-    std::cout << "Reading output buffer..." << std::endl;
-    for (int i = 0; i < 32; i++) {
-        // 设置读地址
-        top->S_AXI_ARADDR = OUTPUT_BASE + (i * 4);
-        top->S_AXI_ARVALID = 1;
-
-        // 等待握手
-        while (!top->S_AXI_ARREADY) {
-            top->S_AXI_ACLK = !top->S_AXI_ACLK;
-            top->eval();
-            tfp->dump(SIM_TIME + 300 + i * 2);
-            top->S_AXI_ACLK = !top->S_AXI_ACLK;
-            top->eval();
-            tfp->dump(SIM_TIME + 300 + i * 2 + 1);
+        // 运行仿真，递增时间
+        top->eval();
+        tfp->dump(sim_time);
+        sim_time++;
+        
+        // 每10个周期刷新一次波形文件
+        if (i % 10 == 0) {
+            tfp->flush();
         }
-
-        // 等待数据有效
-        while (!top->S_AXI_RVALID) {
-            top->S_AXI_ACLK = !top->S_AXI_ACLK;
-            top->eval();
-            tfp->dump(SIM_TIME + 400 + i * 2);
-            top->S_AXI_ACLK = !top->S_AXI_ACLK;
-            top->eval();
-            tfp->dump(SIM_TIME + 400 + i * 2 + 1);
-        }
-
-        // 打印数据
-        std::cout << "Output[" << i << "]: ";
-        print_data(top->S_AXI_RDATA);
-
-        // 清除读信号
-        top->S_AXI_ARVALID = 0;
     }
+
+    // 确保最后的状态被记录
+    top->eval();
+    tfp->dump(sim_time);
+    tfp->flush();
 
     // 清理
     tfp->close();
     delete top;
     delete tfp;
     
+    std::cout << "仿真完成，总时间: " << sim_time << std::endl;
     return 0;
-} 
+}

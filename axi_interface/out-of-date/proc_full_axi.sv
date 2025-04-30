@@ -11,63 +11,72 @@ module proc_full_axi #(
     parameter integer C_S_AXI_WUSER_WIDTH   = 0,
     parameter integer C_S_AXI_RUSER_WIDTH   = 0,
     parameter integer C_S_AXI_BUSER_WIDTH   = 0,
-    parameter integer BUF_DEPTH          	= 32
+    parameter integer BUF_DEPTH          	= 64
 )(
-    input wire  S_AXI_ACLK,
-    input wire  S_AXI_ARESETN,
-    input wire [C_S_AXI_ID_WIDTH-1 : 0] S_AXI_AWID,
-    input wire [C_S_AXI_ADDR_WIDTH-1 : 0] S_AXI_AWADDR,
-    input wire [7 : 0] S_AXI_AWLEN,
-    input wire [2 : 0] S_AXI_AWSIZE,
-    input wire [1 : 0] S_AXI_AWBURST,
-    input wire  S_AXI_AWLOCK,
-    input wire [3 : 0] S_AXI_AWCACHE,
-    input wire [2 : 0] S_AXI_AWPROT,
-    input wire [3 : 0] S_AXI_AWQOS,
-    input wire [3 : 0] S_AXI_AWREGION,
-    input wire [C_S_AXI_AWUSER_WIDTH-1 : 0] S_AXI_AWUSER,
-    input wire  S_AXI_AWVALID,
-    output wire  S_AXI_AWREADY,
-    input wire [C_S_AXI_DATA_WIDTH-1 : 0] S_AXI_WDATA,
-    input wire [(C_S_AXI_DATA_WIDTH/8)-1 : 0] S_AXI_WSTRB,
-    input wire  S_AXI_WLAST,
-    input wire [C_S_AXI_WUSER_WIDTH-1 : 0] S_AXI_WUSER,
-    input wire  S_AXI_WVALID,
-    output wire  S_AXI_WREADY,
-    output wire [C_S_AXI_ID_WIDTH-1 : 0] S_AXI_BID,
-    output wire [1 : 0] S_AXI_BRESP,
-    output wire [C_S_AXI_BUSER_WIDTH-1 : 0] S_AXI_BUSER,
-    output wire  S_AXI_BVALID,
-    input wire  S_AXI_BREADY,
-    input wire [C_S_AXI_ID_WIDTH-1 : 0] S_AXI_ARID,
-    input wire [C_S_AXI_ADDR_WIDTH-1 : 0] S_AXI_ARADDR,
-    input wire [7 : 0] S_AXI_ARLEN,
-    input wire [2 : 0] S_AXI_ARSIZE,
-    input wire [1 : 0] S_AXI_ARBURST,
-    input wire  S_AXI_ARLOCK,
-    input wire [3 : 0] S_AXI_ARCACHE,
-    input wire [2 : 0] S_AXI_ARPROT,
-    input wire [3 : 0] S_AXI_ARQOS,
-    input wire [3 : 0] S_AXI_ARREGION,
-    input wire [C_S_AXI_ARUSER_WIDTH-1 : 0] S_AXI_ARUSER,
-    input wire  S_AXI_ARVALID,
-    output wire  S_AXI_ARREADY,
-    output wire [C_S_AXI_ID_WIDTH-1 : 0] S_AXI_RID,
-    output wire [C_S_AXI_DATA_WIDTH-1 : 0] S_AXI_RDATA,
-    output wire [1 : 0] S_AXI_RRESP,
-    output wire  S_AXI_RLAST,
-    output wire [C_S_AXI_RUSER_WIDTH-1 : 0] S_AXI_RUSER,
-    output wire  S_AXI_RVALID,
-    input wire  S_AXI_RREADY
+    // Clock and Reset
+    input  wire                              S_AXI_ACLK,
+    input  wire                              S_AXI_ARESETN,
+
+    // Write Address Channel
+    input  wire [C_S_AXI_ID_WIDTH-1:0]       S_AXI_AWID,
+    input  wire [C_S_AXI_ADDR_WIDTH-1:0]     S_AXI_AWADDR,
+    input  wire [7:0]                        S_AXI_AWLEN,
+    input  wire [2:0]                        S_AXI_AWSIZE,
+    input  wire [1:0]                        S_AXI_AWBURST,
+    input  wire                              S_AXI_AWLOCK,
+    input  wire [3:0]                        S_AXI_AWCACHE,
+    input  wire [2:0]                        S_AXI_AWPROT,
+    input  wire [3:0]                        S_AXI_AWQOS,
+    input  wire [3:0]                        S_AXI_AWREGION,
+    input  wire [C_S_AXI_AWUSER_WIDTH-1:0]   S_AXI_AWUSER,
+    input  wire                              S_AXI_AWVALID,
+    output wire                              S_AXI_AWREADY,
+
+    // Write Data Channel
+    input  wire [C_S_AXI_DATA_WIDTH-1:0]     S_AXI_WDATA,
+    input  wire [(C_S_AXI_DATA_WIDTH/8)-1:0] S_AXI_WSTRB,
+    input  wire                              S_AXI_WLAST,
+    input  wire [C_S_AXI_WUSER_WIDTH-1:0]    S_AXI_WUSER,
+    input  wire                              S_AXI_WVALID,
+    output wire                              S_AXI_WREADY,
+
+    // Write Response Channel
+    output wire [C_S_AXI_ID_WIDTH-1:0]       S_AXI_BID,
+    output wire [1:0]                        S_AXI_BRESP,
+    output wire [C_S_AXI_BUSER_WIDTH-1:0]    S_AXI_BUSER,
+    output wire                              S_AXI_BVALID,
+    input  wire                              S_AXI_BREADY,
+
+    // Read Address Channel
+    input  wire [C_S_AXI_ID_WIDTH-1:0]       S_AXI_ARID,
+    input  wire [C_S_AXI_ADDR_WIDTH-1:0]     S_AXI_ARADDR,
+    input  wire [7:0]                        S_AXI_ARLEN,
+    input  wire [2:0]                        S_AXI_ARSIZE,
+    input  wire [1:0]                        S_AXI_ARBURST,
+    input  wire                              S_AXI_ARLOCK,
+    input  wire [3:0]                        S_AXI_ARCACHE,
+    input  wire [2:0]                        S_AXI_ARPROT,
+    input  wire [3:0]                        S_AXI_ARQOS,
+    input  wire [3:0]                        S_AXI_ARREGION,
+    input  wire [C_S_AXI_ARUSER_WIDTH-1:0]   S_AXI_ARUSER,
+    input  wire                              S_AXI_ARVALID,
+    output wire                              S_AXI_ARREADY,
+
+    // Read Data Channel
+    output wire [C_S_AXI_ID_WIDTH-1:0]       S_AXI_RID,
+    output wire [C_S_AXI_DATA_WIDTH-1:0]     S_AXI_RDATA,
+    output wire [1:0]                        S_AXI_RRESP,
+    output wire                              S_AXI_RLAST,
+    output wire [C_S_AXI_RUSER_WIDTH-1:0]    S_AXI_RUSER,
+    output wire                              S_AXI_RVALID,
+    input  wire                              S_AXI_RREADY
 );
 
     // ============= 1. 内存映射常量 =========================
     localparam int ADDR_BITS = C_S_AXI_ADDR_WIDTH;
     localparam int REG_START = 7'h00;   // 0x00 CTRL
     localparam int REG_STAT  = 7'h04;   // 0x04 STAT
-    // 数据区按 32bit word 编址
-    // 0b1_0_xxxxx : input  (0x40~0x5F)
-    // 0b1_1_xxxxx : output (0x60~0x7F)
+
     localparam bit INPUT_SEL  = 1'b0;
     localparam bit OUTPUT_SEL = 1'b1;
 

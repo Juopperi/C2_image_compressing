@@ -1,25 +1,29 @@
-# 启动 XQuartz
+# ============================================
+# PowerShell Script to Start Docker Container
+# for ysyx-env with GUI (X11 forwarding)
+# ============================================
 
-# Run in wsl
-#docker run --rm -it   -e DISPLAY=$DISPLAY   -v /tmp/.X11-unix:/tmp/.X11-unix   -v "$PWD":/workspace   ysyx-env
+# 设置 DISPLAY 环境变量（Windows/macOS Docker Desktop）
+$env:DISPLAY = "host.docker.internal:0.0"
 
+# 允许 XQuartz 或 VcXsrv 接受本地连接
+# (如果你需要的话，Windows下一般不需要xhost)
 
-# 允许 root/local 连接
-#Start-Process "/opt/X11/bin/xhost" -ArgumentList "+local:root"
+# 获取当前工作目录
+$localPath = Get-Location
 
-$env:DISPLAY="host.docker.internal:0.0"
-
-# 当前路径变量
-#$localPath = Get-Location
-
-# 启动容器（不要挂 /tmp/.X11-unix，macOS/Windows 不支持）
-#docker run -it --rm `
-#  -e DISPLAY=host.docker.internal:0 `
-#  -v "${localPath}:/workspace" `
-#  -w /workspace `
-#  verilator-env
+# 启动 Docker 容器
 docker run --rm -it `
--e DISPLAY=$env:DISPLAY `
--v /tmp/.X11-unix:/tmp/.X11-unix `
--v "${PWD}:/workspace" `
-ysyx-env
+  -e DISPLAY=$env:DISPLAY `
+  -v /tmp/.X11-unix:/tmp/.X11-unix `
+  -v "${localPath}:/workspace" `
+  -w /workspace `
+  ysyx-env
+
+# ============================================
+# 说明：
+# - DISPLAY 指向 host.docker.internal:0.0
+# - /tmp/.X11-unix 共享（macOS 必须，Windows 有时不需要）
+# - 当前工作目录挂载到容器内 /workspace
+# - 使用 ysyx-env 镜像
+# ============================================
