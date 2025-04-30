@@ -1,146 +1,63 @@
 `timescale 1 ns / 1 ps
 
-module proc_full_axi #
-(
-    // Users to add parameters here
-    // User parameters ends
-    // Do not modify the parameters beyond this line
+`define DEBUG_SWITCH 1
 
-    parameter integer C_S_AXI_ID_WIDTH    = 1,
+module proc_full_axi #(
+    parameter integer C_S_AXI_ID_WIDTH    	= 1,
     parameter integer C_S_AXI_DATA_WIDTH    = 32,
     parameter integer C_S_AXI_ADDR_WIDTH    = 7,
-    parameter integer C_S_AXI_AWUSER_WIDTH    = 0,
-    parameter integer C_S_AXI_ARUSER_WIDTH    = 0,
-    parameter integer C_S_AXI_WUSER_WIDTH    = 0,
-    parameter integer C_S_AXI_RUSER_WIDTH    = 0,
-    parameter integer C_S_AXI_BUSER_WIDTH    = 0,
-
-    parameter integer BUF_DEPTH          = 32,
-)
-(
+    parameter integer C_S_AXI_AWUSER_WIDTH  = 0,
+    parameter integer C_S_AXI_ARUSER_WIDTH  = 0,
+    parameter integer C_S_AXI_WUSER_WIDTH   = 0,
+    parameter integer C_S_AXI_RUSER_WIDTH   = 0,
+    parameter integer C_S_AXI_BUSER_WIDTH   = 0,
+    parameter integer BUF_DEPTH          	= 32
+)(
     input wire  S_AXI_ACLK,
     input wire  S_AXI_ARESETN,
     input wire [C_S_AXI_ID_WIDTH-1 : 0] S_AXI_AWID,
     input wire [C_S_AXI_ADDR_WIDTH-1 : 0] S_AXI_AWADDR,
-
     input wire [7 : 0] S_AXI_AWLEN,
     input wire [2 : 0] S_AXI_AWSIZE,
-
     input wire [1 : 0] S_AXI_AWBURST,
-    // Lock type. Provides additional information about the
-    // atomic characteristics of the transfer.
     input wire  S_AXI_AWLOCK,
-    // Memory type. This signal indicates how transactions
-    // are required to progress through a system.
     input wire [3 : 0] S_AXI_AWCACHE,
-    // Protection type. This signal indicates the privilege
-    // and security level of the transaction, and whether
-    // the transaction is a data access or an instruction access.
     input wire [2 : 0] S_AXI_AWPROT,
-    // Quality of Service, QoS identifier sent for each
-    // write transaction.
     input wire [3 : 0] S_AXI_AWQOS,
-    // Region identifier. Permits a single physical interface
-    // on a slave to be used for multiple logical interfaces.
     input wire [3 : 0] S_AXI_AWREGION,
-    // Optional User-defined signal in the write address channel.
     input wire [C_S_AXI_AWUSER_WIDTH-1 : 0] S_AXI_AWUSER,
-    // Write address valid. This signal indicates that
-    // the channel is signaling valid write address and
-    // control information.
     input wire  S_AXI_AWVALID,
-    // Write address ready. This signal indicates that
-    // the slave is ready to accept an address and associated
-    // control signals.
     output wire  S_AXI_AWREADY,
-    // Write Data
     input wire [C_S_AXI_DATA_WIDTH-1 : 0] S_AXI_WDATA,
-    // Write strobes. This signal indicates which byte
-    // lanes hold valid data. There is one write strobe
-    // bit for each eight bits of the write data bus.
     input wire [(C_S_AXI_DATA_WIDTH/8)-1 : 0] S_AXI_WSTRB,
-    // Write last. This signal indicates the last transfer
-    // in a write burst.
     input wire  S_AXI_WLAST,
-    // Optional User-defined signal in the write data channel.
     input wire [C_S_AXI_WUSER_WIDTH-1 : 0] S_AXI_WUSER,
-    // Write valid. This signal indicates that valid write
-    // data and strobes are available.
     input wire  S_AXI_WVALID,
-    // Write ready. This signal indicates that the slave
-    // can accept the write data.
     output wire  S_AXI_WREADY,
-    // Response ID tag. This signal is the ID tag of the
-    // write response.
     output wire [C_S_AXI_ID_WIDTH-1 : 0] S_AXI_BID,
-    // Write response. This signal indicates the status
-    // of the write transaction.
     output wire [1 : 0] S_AXI_BRESP,
-    // Optional User-defined signal in the write response channel.
     output wire [C_S_AXI_BUSER_WIDTH-1 : 0] S_AXI_BUSER,
-    // Write response valid. This signal indicates that the
-    // channel is signaling a valid write response.
     output wire  S_AXI_BVALID,
-    // Response ready. This signal indicates that the master
-    // can accept a write response.
     input wire  S_AXI_BREADY,
-    // Read address ID. This signal is the identification
-    // tag for the read address group of signals.
     input wire [C_S_AXI_ID_WIDTH-1 : 0] S_AXI_ARID,
-    // Read address. This signal indicates the initial
-    // address of a read burst transaction.
     input wire [C_S_AXI_ADDR_WIDTH-1 : 0] S_AXI_ARADDR,
-    // Burst length. The burst length gives the exact number of transfers in a burst
     input wire [7 : 0] S_AXI_ARLEN,
-    // Burst size. This signal indicates the size of each transfer in the burst
     input wire [2 : 0] S_AXI_ARSIZE,
-    // Burst type. The burst type and the size information, 
-    // determine how the address for each transfer within the burst is calculated.
     input wire [1 : 0] S_AXI_ARBURST,
-    // Lock type. Provides additional information about the
-    // atomic characteristics of the transfer.
     input wire  S_AXI_ARLOCK,
-    // Memory type. This signal indicates how transactions
-    // are required to progress through a system.
     input wire [3 : 0] S_AXI_ARCACHE,
-    // Protection type. This signal indicates the privilege
-    // and security level of the transaction, and whether
-    // the transaction is a data access or an instruction access.
     input wire [2 : 0] S_AXI_ARPROT,
-    // Quality of Service, QoS identifier sent for each
-    // read transaction.
     input wire [3 : 0] S_AXI_ARQOS,
-    // Region identifier. Permits a single physical interface
-    // on a slave to be used for multiple logical interfaces.
     input wire [3 : 0] S_AXI_ARREGION,
-    // Optional User-defined signal in the read address channel.
     input wire [C_S_AXI_ARUSER_WIDTH-1 : 0] S_AXI_ARUSER,
-    // Write address valid. This signal indicates that
-    // the channel is signaling valid read address and
-    // control information.
     input wire  S_AXI_ARVALID,
-    // Read address ready. This signal indicates that
-    // the slave is ready to accept an address and associated
-    // control signals.
     output wire  S_AXI_ARREADY,
-    // Read ID tag. This signal is the identification tag
-    // for the read data group of signals generated by the slave.
     output wire [C_S_AXI_ID_WIDTH-1 : 0] S_AXI_RID,
-    // Read Data
     output wire [C_S_AXI_DATA_WIDTH-1 : 0] S_AXI_RDATA,
-    // Read response. This signal indicates the status of
-    // the read transfer.
     output wire [1 : 0] S_AXI_RRESP,
-    // Read last. This signal indicates the last transfer
-    // in a read burst.
     output wire  S_AXI_RLAST,
-    // Optional User-defined signal in the read address channel.
     output wire [C_S_AXI_RUSER_WIDTH-1 : 0] S_AXI_RUSER,
-    // Read valid. This signal indicates that the channel
-    // is signaling the required read data.
     output wire  S_AXI_RVALID,
-    // Read ready. This signal indicates that the master can
-    // accept the read data and response information.
     input wire  S_AXI_RREADY
 );
 
@@ -155,12 +72,12 @@ module proc_full_axi #
     localparam bit OUTPUT_SEL = 1'b1;
 
     // ============= 2. Buffer ===============================
-    logic [C_S_AXI_DATA_WIDTH-1:0] in_buf [BUF_DEPTH];
-    logic [C_S_AXI_DATA_WIDTH-1:0] out_buf[BUF_DEPTH];
+    reg [C_S_AXI_DATA_WIDTH-1:0] in_buf [0:BUF_DEPTH-1];
+    reg [C_S_AXI_DATA_WIDTH-1:0] out_buf[0:BUF_DEPTH-1];
 
     // ============= 3. 寄存器域 =============================
-    logic start_reg;          // 写 1 启动
-    logic done_reg;           // 核写 1 完成
+    reg start_reg;          // 写 1 启动
+    reg done_reg;           // 核写 1 完成
 
     // AXI4FULL signals
     reg [C_S_AXI_ADDR_WIDTH-1 : 0]     axi_awaddr;
@@ -229,13 +146,11 @@ module proc_full_axi #
     assign  ar_wrap_en = ((axi_araddr & ar_wrap_size) == ar_wrap_size)? 1'b1: 1'b0;
 
     // ============= 4. AXI 写通路 ===========================
-    // 这里只给出与"用户区"有关的写入
-    // 完整握手与地址增量逻辑可直接沿用旧代码
-    always_ff @(posedge S_AXI_ACLK) begin
+    always @(posedge S_AXI_ACLK) begin
         if (!S_AXI_ARESETN) begin
             start_reg <= 1'b0;
             // Initialize input buffer to 0
-            for (int i = 0; i < BUF_DEPTH; i = i + 1) begin
+            for (integer i = 0; i < BUF_DEPTH; i = i + 1) begin
                 in_buf[i] <= {C_S_AXI_DATA_WIDTH{1'b0}};
             end
             // Initialize address latches
@@ -249,7 +164,7 @@ module proc_full_axi #
             
             // Handle AXI writes when write data valid and ready
             if (S_AXI_WVALID && axi_wready) begin
-                unique case (awaddr_latched[ADDR_BITS-1:0])
+                case (awaddr_latched[ADDR_BITS-1:0])
                     REG_START : start_reg <= S_AXI_WDATA[0];
                     REG_STAT  : done_reg <= (done_reg & S_AXI_WDATA[0]); // Can clear the done bit by writing 0
                     default   : begin
@@ -266,9 +181,9 @@ module proc_full_axi #
     end
 
     // ============= 5. AXI 读通路 ===========================
-    logic [C_S_AXI_DATA_WIDTH-1:0] axi_rdata;
+    reg [C_S_AXI_DATA_WIDTH-1:0] axi_rdata;
     
-    always_comb begin
+    always @(*) begin
         if (araddr_latched[ADDR_BITS-1:0] == REG_STAT) begin
             axi_rdata = {31'b0, done_reg};
         end
@@ -289,7 +204,7 @@ module proc_full_axi #
     assign S_AXI_RDATA = axi_rdata;
 
     // ============= 6. 处理核实例 ===========================
-    logic core_busy, core_done;
+    wire core_busy, core_done;
     
     (* keep = "true" *)   // 防止综合优化掉端口数组
     user_core_pass_thru #(
@@ -306,7 +221,7 @@ module proc_full_axi #
     );
 
     // ============= 7. 完成/清零逻辑 ========================
-    always_ff @(posedge S_AXI_ACLK) begin
+    always @(posedge S_AXI_ACLK) begin
         if (!S_AXI_ARESETN) begin
             done_reg <= 1'b0;
             // Initialize address latches

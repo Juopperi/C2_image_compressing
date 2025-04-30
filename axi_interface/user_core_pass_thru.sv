@@ -4,16 +4,16 @@ module user_core_pass_thru #(
   parameter integer DEPTH      = 32,
   parameter integer CORE_LATENCY = 8
 )(
-  input  logic                   clk, rst_n, start,
-  output logic                   busy, done,
-  input  logic [DATA_WIDTH-1:0]  in_buf [DEPTH],
-  output logic [DATA_WIDTH-1:0]  out_buf[DEPTH]
+  input  wire                   clk, rst_n, start,
+  output reg                    busy, done,
+  input  wire [DATA_WIDTH-1:0]  in_buf [0:DEPTH-1],
+  output reg  [DATA_WIDTH-1:0]  out_buf[0:DEPTH-1]
 );
-  typedef enum logic [1:0] {IDLE, RUN, FIN} state_t;
-  state_t state;
-  int cnt;
+  parameter IDLE = 2'b00, RUN = 2'b01, FIN = 2'b10;
+  reg [1:0] state;
+  reg [7:0] cnt;
 
-  always_ff @(posedge clk) begin
+  always @(posedge clk) begin
     if (!rst_n) begin
       state <= IDLE; 
       done <= 0; 
@@ -21,12 +21,12 @@ module user_core_pass_thru #(
       cnt <= 0;
     end
     else begin
-      unique case (state)
+      case(state)
         IDLE: if (start) begin
                 busy <= 1; 
                 state <= RUN; 
                 cnt <= 0;
-                for (int i=0; i<DEPTH; i++) 
+                for (integer i=0; i<DEPTH; i=i+1) 
                   out_buf[i] <= in_buf[i]; // 直通
               end
         RUN : if (cnt==CORE_LATENCY-1) begin
