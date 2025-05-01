@@ -1,4 +1,4 @@
-`define CONFIG_PROCESS_DONE     4'h9 // if the config area is done, set this to 1, it is set by the user_functional_module
+`define CONFIG_PROCESS_DONE     8'h89 // if the config area is done, set this to 1, it is set by the user_functional_module
 
 /*
 ToDo:
@@ -6,23 +6,28 @@ ToDo:
     2. When we should get into the done state
 */
 
-module user_functional_module (
-    input wire              clk,
-    input wire              rst_n,
-    input wire              start,
-    output reg      [7:0]   data_in_addr,
-    input wire      [31:0]  data_in,
-    output reg      [7:0]   data_out_addr,
-    output wire     [31:0]  data_out
+module user_functional_module(
+    input wire          clk,       // 时钟
+    input wire          rst_n,     // 复位信号，低电平有效
+    input wire          start,     // 启动信号
+    
+    // 输入数据接口
+    output reg [7:0]    data_in_addr, // 输入数据地址
+    input wire [31:0]   data_in,      // 输入数据
+    
+    // 输出数据接口
+    output reg [7:0]    data_out_addr, // 输出数据地址
+    output reg [31:0]   data_out       // 输出数据
 );
 
-reg [32:0] data_in_array    [0:63];
-reg [32:0] data_out_array   [0:63];
 
-reg process_done, save_done, load_done;
+reg [31:0] data_in_array [0:63];
+reg [31:0] data_out_array [0:63];
 
 assign data_out = data_out_array[data_out_addr];
 
+
+reg process_done, save_done, load_done;
 
 typedef enum reg [3:0] {
     IDLE,
@@ -144,19 +149,15 @@ always @(posedge clk or negedge rst_n) begin
             save_done <= 1;
         end
     end
+    else if (state == DONE) begin
+        data_out_addr <= `CONFIG_PROCESS_DONE;
+        save_done <= 1;
+    end
     else begin
         data_out_addr <= 0;
         save_done <= 0;
     end
 end
 
-always @(posedge clk or negedge rst_n) begin
-    if (state == DONE) begin
-        data_out_array[`CONFIG_PROCESS_DONE] <= 1;
-    end
-    else if (state == LOAD_DATA) begin
-        data_out_array[`CONFIG_PROCESS_DONE] <= 0;
-    end
-end
 
 endmodule

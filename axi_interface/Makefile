@@ -6,7 +6,7 @@ VERILATOR_FLAGS += --top-module axi_self_test
 VERILATOR_FLAGS += --trace-max-array 512
 
 # Source files
-VERILOG_SOURCES = axi_self_test.sv
+VERILOG_SOURCES = axi_self_test.sv user_functional_module.sv
 CPP_SOURCES = sim_main.cpp axi_helper.cpp
 
 # Output directory

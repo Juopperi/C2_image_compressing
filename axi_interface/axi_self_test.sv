@@ -1,5 +1,6 @@
 `define CONFIG_WRITE_OUTRANGE   4'h8
 `define CONFIG_PROCESS_DONE     4'h9 // if the config area is done, set this to 1, it is set by the user_functional_module
+`define CONFIG_PROCESS_BEGIN    4'h1 // if the config area is done, set this to 1, it is set by the user_functional_module
 
 module axi_self_test #(
     parameter integer C_S_AXI_DATA_WIDTH    = 32,
@@ -81,6 +82,43 @@ wire complete_flag_read, complete_flag_write, complete_flag;
 assign complete_flag_read   = axi_reg_cfg[axi_araddr[C_S_AXI_ADDR_WIDTH-4:0]] == S_AXI_ARADDR || axi_reg_rw[axi_araddr[C_S_AXI_ADDR_WIDTH-1:0]] == S_AXI_ARADDR;
 assign complete_flag_write  = axi_reg_cfg[axi_awaddr[C_S_AXI_ADDR_WIDTH-4:0]] == S_AXI_AWADDR || axi_reg_rw[axi_awaddr[C_S_AXI_ADDR_WIDTH-1:0]] == S_AXI_AWADDR;
 
+// ----------------------
+// User Functional Module
+// ----------------------
+
+wire            ufm_start;
+wire [7:0]      ufm_data_in_addr;
+wire [31:0]     ufm_data_in;
+wire [31:0]     ufm_data_out;
+wire [7:0]      ufm_data_out_addr;
+
+reg [31:0]      ufm_data_out_array [0:63];
+
+assign ufm_start = axi_reg_cfg[`CONFIG_PROCESS_BEGIN] == 1;
+
+user_functional_module ufm(
+    .clk(S_AXI_ACLK),
+    .rst_n(S_AXI_ARESETN),
+    .start(ufm_start),
+    .data_in_addr(ufm_data_in_addr),
+    .data_in(ufm_data_in),
+    .data_out_addr(ufm_data_out_addr),
+    .data_out(ufm_data_out)
+);
+
+assign ufm_data_in = axi_reg_rw[ufm_data_in_addr];
+
+always @(posedge S_AXI_ACLK) begin
+    if (!S_AXI_ARESETN) begin
+        integer i;
+        for (i = 0; i < 64; i = i + 1) begin
+            ufm_data_out_array[i] <= 0;
+        end
+    end
+    else begin
+        ufm_data_out_array[ufm_data_out_addr] <= ufm_data_out;
+    end
+end
 
 // ----------------------
 // Read State Machine
@@ -237,10 +275,14 @@ always @(posedge S_AXI_ACLK) begin
         end
     end
     else begin
+        integer j;
         if (write_state == WR_SAVE_DATA && ~write_is_config_area) begin
             axi_reg_rw[axi_awaddr[C_S_AXI_ADDR_WIDTH-1:0]] <= S_AXI_WDATA;
             if (axi_awaddr[C_S_AXI_ADDR_WIDTH-1:0] >= WRITE_AREA && ~write_is_config_area) begin
                 axi_reg_cfg[`CONFIG_WRITE_OUTRANGE] <= axi_reg_cfg[`CONFIG_WRITE_OUTRANGE] + 1;
+            end
+            for (j = 0; j < 64; j = j + 1) begin
+                axi_reg_rw[j+WRITE_AREA] <= ufm_data_out_array[j];
             end
         end
     end

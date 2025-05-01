@@ -57,25 +57,25 @@ int main(int argc, char** argv) {
     print_region_info("Write Area测试", WRITE_BASE, WRITE_AREA);
     sweep_write(top, tfp, sim_time, WRITE_BASE, WRITE_AREA);
     
-    std::cout << "========= Undefined Behavior Test =========" << std::endl;
-    print_region_info("读区域写测试", READ_BASE, READ_AREA);
-    sweep_write(top, tfp, sim_time, READ_BASE, READ_AREA);
-
-    std::cout << "========= Check Error Information =========" << std::endl;
-    uint32_t error_message = axi_read(top, CONFIG_WRITE_OUTRANGE, tfp, sim_time);
-    print_axi_result("读取错误计数器", CONFIG_WRITE_OUTRANGE, error_message, true);
+    axi_write(top, CONFIG_BASE + 1, 1, tfp, sim_time);
     
     // 延迟几个周期
     delay_clock(top, tfp, sim_time, 4);
-    
+
+    uint32_t config_area_data = axi_read(top, CONFIG_BASE + 9, tfp, sim_time);
+    while (config_area_data != 1) {
+        delay_clock(top, tfp, sim_time, 1);
+        if (sim_time > SIM_PERIOD) {
+            std::cout << "Timeout" << std::endl;
+            break;
+        }
+        config_area_data = axi_read(top, CONFIG_BASE + 9, tfp, sim_time);
+    }
+
     // 测试读取
     std::cout << "========= Start AXI Read Test =========" << std::endl;
     print_region_info("Read Area测试", READ_BASE, READ_AREA);
     sweep_read(top, tfp, sim_time, READ_BASE, READ_AREA);
-    
-    std::cout << "========= Read Write Area Test =========" << std::endl;
-    print_region_info("读写区域测试", WRITE_BASE, WRITE_AREA);
-    sweep_read(top, tfp, sim_time, WRITE_BASE, WRITE_AREA);
     
     std::cout << "========= Read Config Area =========" << std::endl;
     print_region_info("配置区域测试", CONFIG_BASE, CONFIG_AREA);
