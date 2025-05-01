@@ -1,14 +1,10 @@
-`define CONFIG_WRITE_OUTRANGE 4'h8
+`define CONFIG_WRITE_OUTRANGE   4'h8
+`define CONFIG_PROCESS_DONE     4'h9 // if the config area is done, set this to 1, it is set by the user_functional_module
+`define CONFIG_PROCESS_BEGIN    4'h1 // if the config area is done, set this to 1, it is set by the user_functional_module
 
 module axi_self_test #(
-    parameter integer C_S_AXI_ID_WIDTH    	= 1,
     parameter integer C_S_AXI_DATA_WIDTH    = 32,
     parameter integer C_S_AXI_ADDR_WIDTH    = 8, // 0x00~0xFF : maximum 256 bytes
-    parameter integer C_S_AXI_AWUSER_WIDTH  = 0,
-    parameter integer C_S_AXI_ARUSER_WIDTH  = 0,
-    parameter integer C_S_AXI_WUSER_WIDTH   = 0,
-    parameter integer C_S_AXI_RUSER_WIDTH   = 0,
-    parameter integer C_S_AXI_BUSER_WIDTH   = 0,
     parameter integer CONFIG_AREA          	= 16, // 0x80~0x8F
     parameter integer WRITE_AREA          	= 64, // 0x00~0x3F
     parameter integer READ_AREA          	= 64  // 0x40~0xFF
@@ -27,6 +23,11 @@ module axi_self_test #(
     input  wire                              S_AXI_WVALID,
     output reg                               S_AXI_WREADY,
 
+    // Write Response Channel
+    output reg  [1:0]                        S_AXI_BRESP,
+    output reg                               S_AXI_BVALID,
+    input  wire                              S_AXI_BREADY,
+
     // Read Address Channel
     input  wire [C_S_AXI_ADDR_WIDTH-1:0]     S_AXI_ARADDR,
     input  wire                              S_AXI_ARVALID,
@@ -34,6 +35,7 @@ module axi_self_test #(
 
     // Read Data Channel
     output reg [C_S_AXI_DATA_WIDTH-1:0]      S_AXI_RDATA,
+    output reg [1:0]                         S_AXI_RRESP,
     output reg                               S_AXI_RVALID,
     input  wire                              S_AXI_RREADY
 );
@@ -59,6 +61,7 @@ typedef enum reg [2:0] {
     WR_SAVE_ADDRESS,
     WR_READY_DATA,
     WR_SAVE_DATA,
+    WR_RESPONSE,
     WR_DONE
 } state_write;
 
@@ -78,6 +81,44 @@ wire complete_flag_read, complete_flag_write, complete_flag;
 
 assign complete_flag_read   = axi_reg_cfg[axi_araddr[C_S_AXI_ADDR_WIDTH-4:0]] == S_AXI_ARADDR || axi_reg_rw[axi_araddr[C_S_AXI_ADDR_WIDTH-1:0]] == S_AXI_ARADDR;
 assign complete_flag_write  = axi_reg_cfg[axi_awaddr[C_S_AXI_ADDR_WIDTH-4:0]] == S_AXI_AWADDR || axi_reg_rw[axi_awaddr[C_S_AXI_ADDR_WIDTH-1:0]] == S_AXI_AWADDR;
+
+// ----------------------
+// User Functional Module
+// ----------------------
+
+wire            ufm_start;
+wire [7:0]      ufm_data_in_addr;
+wire [31:0]     ufm_data_in;
+wire [31:0]     ufm_data_out;
+wire [7:0]      ufm_data_out_addr;
+
+reg [31:0]      ufm_data_out_array [0:63];
+
+assign ufm_start = axi_reg_cfg[`CONFIG_PROCESS_BEGIN] == 1;
+
+user_functional_module ufm(
+    .clk(S_AXI_ACLK),
+    .rst_n(S_AXI_ARESETN),
+    .start(ufm_start),
+    .data_in_addr(ufm_data_in_addr),
+    .data_in(ufm_data_in),
+    .data_out_addr(ufm_data_out_addr),
+    .data_out(ufm_data_out)
+);
+
+assign ufm_data_in = axi_reg_rw[ufm_data_in_addr];
+
+always @(posedge S_AXI_ACLK) begin
+    if (!S_AXI_ARESETN) begin
+        integer i;
+        for (i = 0; i < 64; i = i + 1) begin
+            ufm_data_out_array[i] <= 0;
+        end
+    end
+    else begin
+        ufm_data_out_array[ufm_data_out_addr] <= ufm_data_out;
+    end
+end
 
 // ----------------------
 // Read State Machine
@@ -114,7 +155,12 @@ always @(*) begin
             read_next_state = RD_VALID_DATA;
         end
         RD_VALID_DATA: begin
-            read_next_state = RD_DONE;
+            if (S_AXI_RREADY) begin
+                read_next_state = RD_DONE;
+            end
+            else begin
+                read_next_state = RD_VALID_DATA;
+            end
         end
         RD_DONE: begin
             read_next_state = RD_IDLE;
@@ -143,10 +189,23 @@ always @(*) begin
             write_next_state = WR_READY_DATA;
         end 
         WR_READY_DATA: begin
-            write_next_state = WR_SAVE_DATA;
+            if (S_AXI_WVALID) begin
+                write_next_state = WR_SAVE_DATA;
+            end
+            else begin
+                write_next_state = WR_READY_DATA;
+            end
         end
         WR_SAVE_DATA: begin
-            write_next_state = WR_DONE;
+            write_next_state = WR_RESPONSE;
+        end
+        WR_RESPONSE: begin
+            if (S_AXI_BREADY) begin
+                write_next_state = WR_DONE;
+            end
+            else begin
+                write_next_state = WR_RESPONSE;
+            end
         end
         WR_DONE: begin
             write_next_state = WR_IDLE;
@@ -198,7 +257,7 @@ always @(posedge S_AXI_ACLK) begin
         S_AXI_WREADY <= 1'b0;
     end
     else begin
-        if (write_state >= WR_READY_DATA) begin // keep ready until done maybe not perfect
+        if (write_state == WR_READY_DATA) begin
             S_AXI_WREADY <= 1'b1;
         end
         else begin
@@ -216,17 +275,41 @@ always @(posedge S_AXI_ACLK) begin
         end
     end
     else begin
+        integer j;
         if (write_state == WR_SAVE_DATA && ~write_is_config_area) begin
             axi_reg_rw[axi_awaddr[C_S_AXI_ADDR_WIDTH-1:0]] <= S_AXI_WDATA;
-            // If the address is out of the write area, write a special value to a specific register in the config area
-            if (axi_awaddr[C_S_AXI_ADDR_WIDTH:0] >= WRITE_AREA && ~write_is_config_area) begin
+            if (axi_awaddr[C_S_AXI_ADDR_WIDTH-1:0] >= WRITE_AREA && ~write_is_config_area) begin
                 axi_reg_cfg[`CONFIG_WRITE_OUTRANGE] <= axi_reg_cfg[`CONFIG_WRITE_OUTRANGE] + 1;
+            end
+            for (j = 0; j < 64; j = j + 1) begin
+                axi_reg_rw[j+WRITE_AREA] <= ufm_data_out_array[j];
             end
         end
     end
 end 
 
-
+// 写响应通道
+always @(posedge S_AXI_ACLK) begin
+    if (!S_AXI_ARESETN) begin
+        S_AXI_BRESP <= 2'b00;  // OKAY
+        S_AXI_BVALID <= 1'b0;
+    end
+    else begin
+        if (write_state == WR_RESPONSE) begin
+            S_AXI_BVALID <= 1'b1;
+            // Check if address is out of range
+            if (axi_awaddr[C_S_AXI_ADDR_WIDTH-1:0] >= WRITE_AREA && ~write_is_config_area) begin
+                S_AXI_BRESP <= 2'b00;  // SLVERR
+            end
+            else begin
+                S_AXI_BRESP <= 2'b00;  // OKAY
+            end
+        end
+        else begin
+            S_AXI_BVALID <= 1'b0;
+        end
+    end
+end
 
 // ----------------------
 // Config Area Write
@@ -277,19 +360,23 @@ end
 
 always @(posedge S_AXI_ACLK) begin
     if (!S_AXI_ARESETN) begin
-        S_AXI_RVALID <= 1'b0;
+        S_AXI_RDATA <= 0;
+        S_AXI_RRESP <= 2'b00;  // OKAY
     end
     else begin
         if (read_state >= RD_OUTPUT_DATA) begin // keep output data until done 
             if (read_is_config_area) begin
                 S_AXI_RDATA <= axi_reg_cfg[axi_araddr[C_S_AXI_ADDR_WIDTH-4:0]];
+                S_AXI_RRESP <= 2'b00;  // OKAY
             end
             else begin
                 S_AXI_RDATA <= axi_reg_rw[axi_araddr[C_S_AXI_ADDR_WIDTH-1:0]];
+                S_AXI_RRESP <= 2'b00;  // OKAY
             end
         end
         else begin
             S_AXI_RDATA <= 0;
+            S_AXI_RRESP <= 2'b00;  // OKAY
         end
     end
 end

@@ -6,8 +6,8 @@ VERILATOR_FLAGS += --top-module axi_self_test
 VERILATOR_FLAGS += --trace-max-array 512
 
 # Source files
-VERILOG_SOURCES = axi_self_test.sv
-CPP_SOURCES = sim_main.cpp 
+VERILOG_SOURCES = axi_self_test.sv user_functional_module.sv
+CPP_SOURCES = sim_main.cpp axi_helper.cpp
 
 # Output directory
 OBJ_DIR = obj_dir
@@ -24,8 +24,17 @@ verilate:
 build: verilate
 	make -C $(OBJ_DIR) -f Vaxi_self_test.mk Vaxi_self_test
 
+# Run simulation
+run: build
+	$(SIM_BINARY)
+
+# Run with waveform viewer
+run_wave: build
+	$(SIM_BINARY)
+	gtkwave wave.vcd &
+
 # Clean up
 clean:
-	rm -rf $(OBJ_DIR)
+	rm -rf $(OBJ_DIR) *.vcd
 
-.PHONY: all clean verilate build
+.PHONY: all clean verilate build run run_wave
