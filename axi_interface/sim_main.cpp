@@ -22,6 +22,15 @@
 
 // AXI写函数 - 向指定地址写入数据
 bool axi_write(Vaxi_self_test* top, uint32_t addr, uint32_t data, VerilatedVcdC* tfp, vluint64_t& sim_time) {
+
+
+    // 复位阶段
+    for (int i = 0; i < RESET_PERIOD * 2; i++) { // *2因为每个周期有上升沿和下降沿
+        top->S_AXI_ACLK = !top->S_AXI_ACLK;
+        top->eval();
+        tfp->dump(sim_time++);
+    }
+
     bool write_addr_done = false;
     bool write_data_done = false;
     int timeout = 20; // 超时设置（时钟周期数）
@@ -50,14 +59,15 @@ bool axi_write(Vaxi_self_test* top, uint32_t addr, uint32_t data, VerilatedVcdC*
             write_addr_done = true;
             // std::cout << "AWADDR握手成功，时间: " << sim_time << ", 地址: 0x" 
             //           << std::hex << addr << std::dec << std::endl;
-            top->S_AXI_AWVALID = 0; // 握手完成后撤销VALID
+            // 握手完成后撤销VALID - 这可能是问题所在，在评估WREADY之前不应该撤销
+            // 先保持AWVALID有效，直到两个握手都完成
         }
         
         if (top->S_AXI_WVALID && top->S_AXI_WREADY) {
             write_data_done = true;
             // std::cout << "WDATA握手成功，时间: " << sim_time << ", 数据: " 
-                    //   << data << std::endl;
-            top->S_AXI_WVALID = 0; // 握手完成后撤销VALID
+            //           << data << std::endl;
+            // 握手完成后撤销VALID - 同样，先保持WVALID有效
         }
         
         // 时钟下降沿
@@ -68,9 +78,21 @@ bool axi_write(Vaxi_self_test* top, uint32_t addr, uint32_t data, VerilatedVcdC*
         count++;
     }
     
+    // 握手完成后再撤销信号
+    if (write_addr_done) {
+        top->S_AXI_AWVALID = 0;
+    }
+    
+    if (write_data_done) {
+        top->S_AXI_WVALID = 0;
+    }
+    
     // 超时处理
     if (!write_addr_done || !write_data_done) {
         std::cerr << "AXI写操作超时!" << std::endl;
+        if (!write_addr_done) std::cerr << "  地址通道握手失败" << std::endl;
+        if (!write_data_done) std::cerr << "  数据通道握手失败" << std::endl;
+        
         top->S_AXI_AWVALID = 0;
         top->S_AXI_WVALID = 0;
         return false;
@@ -85,7 +107,6 @@ bool axi_write(Vaxi_self_test* top, uint32_t addr, uint32_t data, VerilatedVcdC*
     
     return true;
 }
-
 // AXI读函数 - 从指定地址读取数据
 uint32_t axi_read(Vaxi_self_test* top, uint32_t addr, VerilatedVcdC* tfp, vluint64_t& sim_time) {
     bool read_addr_done = false;
@@ -153,17 +174,28 @@ uint32_t axi_read(Vaxi_self_test* top, uint32_t addr, VerilatedVcdC* tfp, vluint
 
 void sweep_read(Vaxi_self_test* top, VerilatedVcdC* tfp, vluint64_t& sim_time, int read_begin, int read_range) {
     for (int i = read_begin; i < read_begin + read_range; i++) {
+        
+
         uint32_t read_data = axi_read(top, i, tfp, sim_time);
         std::cout << "Address: 0x" << std::setw(2) << std::hex << i << " Data: 0x" << std::setw(8) << std::setfill('0') << std::hex << read_data << std::dec << std::endl;
+        if (read_data == 0xFFFFFFFF) {
+            std::cerr << "[ERROR] Read Failed: Address: 0x" << std::setw(2) << std::hex << i << std::endl;
+        }
+        else if (read_data != i) {
+            std::cerr << "[ERROR] Data is not correct: Address: 0x" << std::setw(2) << std::hex << i << " Data: 0x" << std::setw(8) << std::setfill('0') << std::hex << read_data << std::dec << std::endl;
+        }
     }
 }
 
 void sweep_write(Vaxi_self_test* top, VerilatedVcdC* tfp, vluint64_t& sim_time, int write_begin, int write_range) {
+
+
+
     for (int i = write_begin; i < write_begin + write_range; i++) {
         bool write_success = axi_write(top, i, i, tfp, sim_time);
         std::cout << "Address: 0x" << std::setw(2) << std::hex << i << " Data: 0x" << std::setw(8) << std::setfill('0') << std::hex << i << std::dec << std::endl;
         if (!write_success) {
-            std::cerr << "Address: 0x" << std::setw(2) << std::hex << i << " Write Failed" << std::endl;
+            std::cerr << "[ERROR] Write Failed: Address: 0x" << std::setw(2) << std::hex << i << std::endl;
         }
     }
 }
@@ -204,6 +236,8 @@ int main(int argc, char** argv) {
     // 复位结束
     top->S_AXI_ARESETN = 1;
     top->eval();
+
+    
     
     // 测试写入
     std::cout << "========= Start AXI Write Test =========" << std::endl;
@@ -212,6 +246,7 @@ int main(int argc, char** argv) {
     std::cout << "Undefine behavior test" << std::endl;
     std::cout << "Write to Read Area test: from 0x" << std::setw(2) << std::hex << READ_BASE << " to 0x" << std::setw(2) << std::hex << READ_AREA << std::endl;
     sweep_write(top, tfp, sim_time, READ_BASE, READ_AREA);
+
     std::cout << "Write config area test" << std::endl;
     std::cout << "Write to config area: from 0x" << std::setw(2) << std::hex << CONFIG_BASE << " to 0x" << std::setw(2) << std::hex << CONFIG_AREA << std::endl;
     sweep_write(top, tfp, sim_time, CONFIG_BASE, CONFIG_AREA);
