@@ -1,4 +1,3 @@
-library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use std.textio.all; 
@@ -71,7 +70,7 @@ architecture test of quantization_tb is
 
     process
     begin
-        wait for 500 ns;
+        wait for 20 ns;
         clk <= not clk;
         wait;
     end process;
