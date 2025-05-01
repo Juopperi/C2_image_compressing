@@ -94,6 +94,17 @@ wire [7:0]      ufm_data_out_addr;
 
 reg [31:0]      ufm_data_out_array [0:63];
 
+
+typedef enum reg [3:0] {
+    IDLE,
+    LOAD_DATA,
+    PROCESS_DATA,
+    SAVE_DATA,
+    DONE
+} state_t_user_functional_module;
+
+state_t_user_functional_module ufm_state;
+
 assign ufm_start = axi_reg_cfg[`CONFIG_PROCESS_BEGIN] == 1;
 
 user_functional_module ufm(
@@ -103,10 +114,15 @@ user_functional_module ufm(
     .data_in_addr(ufm_data_in_addr),
     .data_in(ufm_data_in),
     .data_out_addr(ufm_data_out_addr),
-    .data_out(ufm_data_out)
+    .data_out(ufm_data_out),
+    .state_out(ufm_state)
 );
 
 assign ufm_data_in = axi_reg_rw[ufm_data_in_addr];
+
+reg [C_S_AXI_ADDR_WIDTH-2:0] ufm_save_counter;
+
+assign ufm_data_out_addr = ufm_save_counter;
 
 always @(posedge S_AXI_ACLK) begin
     if (!S_AXI_ARESETN) begin
@@ -114,9 +130,16 @@ always @(posedge S_AXI_ACLK) begin
         for (i = 0; i < 64; i = i + 1) begin
             ufm_data_out_array[i] <= 0;
         end
+        ufm_save_counter <= 0;
     end
     else begin
-        ufm_data_out_array[ufm_data_out_addr] <= ufm_data_out;
+        if (ufm_state == SAVE_DATA) begin
+            ufm_data_out_array[ufm_save_counter] <= ufm_data_out;
+            ufm_save_counter <= ufm_save_counter + 1;
+        end
+        else begin
+            ufm_save_counter <= 0;
+        end
     end
 end
 
@@ -281,8 +304,11 @@ always @(posedge S_AXI_ACLK) begin
             if (axi_awaddr[C_S_AXI_ADDR_WIDTH-1:0] >= WRITE_AREA && ~write_is_config_area) begin
                 axi_reg_cfg[`CONFIG_WRITE_OUTRANGE] <= axi_reg_cfg[`CONFIG_WRITE_OUTRANGE] + 1;
             end
+        end
+        if (ufm_state == DONE) begin
             for (j = 0; j < 64; j = j + 1) begin
                 axi_reg_rw[j+WRITE_AREA] <= ufm_data_out_array[j];
+                axi_reg_cfg[`CONFIG_PROCESS_DONE] <= 1;
             end
         end
     end

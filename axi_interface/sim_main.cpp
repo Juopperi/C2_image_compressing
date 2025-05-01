@@ -57,10 +57,16 @@ int main(int argc, char** argv) {
     print_region_info("Write Area测试", WRITE_BASE, WRITE_AREA);
     sweep_write(top, tfp, sim_time, WRITE_BASE, WRITE_AREA);
     
+    // set begin signal
     axi_write(top, CONFIG_BASE + 1, 1, tfp, sim_time);
     
     // 延迟几个周期
-    delay_clock(top, tfp, sim_time, 4);
+    // delay_clock(top, tfp, sim_time, 10);
+
+    // axi_write(top, CONFIG_BASE + 1, 0, tfp, sim_time);
+
+    // 延迟几个周期
+    delay_clock(top, tfp, sim_time, 1000);
 
     uint32_t config_area_data = axi_read(top, CONFIG_BASE + 9, tfp, sim_time);
     while (config_area_data != 1) {

@@ -16,13 +16,26 @@ module user_functional_module(
     input wire [31:0]   data_in,      // 输入数据
     
     // 输出数据接口
-    output reg [7:0]    data_out_addr, // 输出数据地址
-    output reg [31:0]   data_out       // 输出数据
+    input wire [7:0]    data_out_addr, // 输出数据地址
+    output reg [31:0]   data_out,       // 输出数据
+    output wire [3:0]   state_out       // 输出状态
 );
 
 
 reg [31:0] data_in_array [0:63];
 reg [31:0] data_out_array [0:63];
+
+reg last_start;
+
+always @(posedge clk or negedge rst_n) begin : record_start_process
+    if (!rst_n) begin
+        last_start <= 0;
+    end
+    else begin
+        last_start <= start;
+    end
+end
+
 
 assign data_out = data_out_array[data_out_addr];
 
@@ -35,9 +48,11 @@ typedef enum reg [3:0] {
     PROCESS_DATA,
     SAVE_DATA,
     DONE
-} state_t;
+} state_t_user_functional_module;
 
-state_t state, next_state;
+state_t_user_functional_module state, next_state;
+
+assign state_out = state;
 
 always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
@@ -51,7 +66,7 @@ end
 always @(*) begin
     case (state)
         IDLE: begin
-            if (start) begin
+            if (start && !last_start) begin
                 next_state <= LOAD_DATA;
             end
             else begin
@@ -83,7 +98,12 @@ always @(*) begin
             end
         end
         DONE: begin
-            next_state <= IDLE;
+            if (last_start) begin
+                next_state <= DONE;
+            end
+            else begin
+                next_state <= IDLE;
+            end
         end
         default: begin
             next_state <= IDLE;
@@ -92,7 +112,8 @@ always @(*) begin
 end
 
 // Load data from axi_self_test, one by one, process index in another process
-always @(posedge clk or negedge rst_n) begin
+// @note: this process is not sensitive to the state, it is always running
+always @(posedge clk or negedge rst_n) begin : load_data_process
     if (!rst_n) begin
         integer i;
         for (i = 0; i < 64; i = i + 1) begin
@@ -107,8 +128,8 @@ always @(posedge clk or negedge rst_n) begin
 end
 
 // Increase index
-always @(posedge clk or negedge rst_n) begin
-    if (state == PROCESS_DATA) begin
+always @(posedge clk or negedge rst_n) begin : increase_index_process
+    if (state == LOAD_DATA) begin
         data_in_addr <= data_in_addr + 1;
         if (data_in_addr == 63) begin
             load_done <= 1;
@@ -144,20 +165,27 @@ end
 // Increase index
 always @(posedge clk or negedge rst_n) begin
     if (state == SAVE_DATA) begin
-        data_out_addr <= data_out_addr + 1;
-        if (data_out_addr == 63) begin
+        if (data_out_addr == 64) begin
             save_done <= 1;
         end
     end
     else if (state == DONE) begin
-        data_out_addr <= `CONFIG_PROCESS_DONE;
         save_done <= 1;
     end
     else begin
-        data_out_addr <= 0;
         save_done <= 0;
     end
 end
 
+
+endmodule
+
+
+module inverter(
+    input wire [31:0] data_in,
+    output wire [31:0] data_out
+);
+
+assign data_out = ~data_in;
 
 endmodule
