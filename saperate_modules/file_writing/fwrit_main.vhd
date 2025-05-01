@@ -16,7 +16,9 @@ entity fwrit_main is
     Port ( height, width: in std_logic_vector (15 downto 0);
            data_out: out std_logic_vector (7 downto 0);
            clk, rst, in_bit, start, datavalid, done: in std_logic;
-           dataready: out std_logic);
+           dataready: out std_logic;
+           axi_valid : out std_logic;
+           axi_ready: in std_logic);
 end fwrit_main;
 
 architecture Behavioral of fwrit_main is

@@ -1,7 +1,0 @@
-Running: xsim.dir/fwrit_main_tb_behav/xsimk.exe -simmode gui -wdb fwrit_main_tb_behav.wdb -simrunnum 0 -socket 51145
-Design successfully loaded
-Design Loading Memory Usage: 27036 KB (Peak: 27036 KB)
-Design Loading CPU Usage: 889 ms
-Simulation completed
-Simulation Memory Usage: 27796 KB (Peak: 27796 KB)
-Simulation CPU Usage: 983 ms
