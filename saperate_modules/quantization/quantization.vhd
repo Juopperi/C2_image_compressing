@@ -19,76 +19,76 @@ end quantization;
 architecture Behavioral of quantization is
     -- Quantization tables in Q16.16 format (scaled by 65536)
     constant TY : fixed_array := (
-        x"00100000", x"000B0000", x"000A0000", x"00100000", x"00180000", x"00280000", x"00330000", x"003D0000",
-        x"000C0000", x"000C0000", x"000E0000", x"00130000", x"001A0000", x"003A0000", x"003C0000", x"00370000",
-        x"000E0000", x"000D0000", x"00100000", x"00180000", x"00280000", x"00390000", x"00450000", x"00380000",
-        x"000E0000", x"00110000", x"00160000", x"001D0000", x"00330000", x"00570000", x"00500000", x"003E0000",
-        x"00120000", x"00160000", x"00250000", x"00380000", x"00440000", x"006D0000", x"00670000", x"004D0000",
-        x"00180000", x"00230000", x"00370000", x"00400000", x"00510000", x"00680000", x"00710000", x"005C0000",
-        x"00310000", x"00400000", x"004E0000", x"00570000", x"00670000", x"00790000", x"00780000", x"00650000",
-        x"00480000", x"005C0000", x"005F0000", x"00620000", x"00700000", x"00640000", x"00670000", x"00630000"
+        x"00001000", x"00001746", x"0000199A", x"00001000",
+        x"00000AAB", x"00000666", x"00000505", x"00000432",
+        x"00001555", x"00001555", x"00001249", x"00000D79",
+        x"000009D9", x"0000046A", x"00000444", x"000004A8",
+        x"00001249", x"000013B1", x"00001000", x"00000AAB",
+        x"00000666", x"0000047E", x"000003B6", x"00000492",
+        x"00001249", x"00000F0F", x"00000BA3", x"000008D4",
+        x"00000505", x"000002F1", x"00000333", x"00000421",
+        x"00000E39", x"00000BA3", x"000006EB", x"00000492",
+        x"000003C4", x"00000259", x"0000027C", x"00000353",
+        x"00000AAB", x"00000750", x"000004A8", x"00000400",
+        x"00000329", x"00000276", x"00000244", x"000002C8",
+        x"00000539", x"00000400", x"00000348", x"000002F1",
+        x"0000027C", x"0000021E", x"00000222", x"00000289",
+        x"0000038E", x"000002C8", x"000002B2", x"0000029D",
+        x"00000249", x"0000028F", x"0000027C", x"00000296"
     );  -- luminance table
 
     constant TC : fixed_array := (
-        x"00110000", x"00120000", x"00180000", x"002F0000", x"00630000", x"00630000", x"00630000", x"00630000",
-        x"00120000", x"00150000", x"001A0000", x"00420000", x"00630000", x"00630000", x"00630000", x"00630000",
-        x"00180000", x"001A0000", x"00380000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000",
-        x"002F0000", x"00420000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000",
-        x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000",
-        x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000",
-        x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000",
-        x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000", x"00630000"
+        x"00000F0F", x"00000E39", x"00000AAB", x"00000572",
+        x"00000296", x"00000296", x"00000296", x"00000296",
+        x"00000E39", x"00000C31", x"000009D9", x"000003E1",
+        x"00000296", x"00000296", x"00000296", x"00000296",
+        x"00000AAB", x"000009D9", x"00000492", x"00000296",
+        x"00000296", x"00000296", x"00000296", x"00000296",
+        x"00000572", x"000003E1", x"00000296", x"00000296",
+        x"00000296", x"00000296", x"00000296", x"00000296",
+        x"00000296", x"00000296", x"00000296", x"00000296",
+        x"00000296", x"00000296", x"00000296", x"00000296",
+        x"00000296", x"00000296", x"00000296", x"00000296",
+        x"00000296", x"00000296", x"00000296", x"00000296",
+        x"00000296", x"00000296", x"00000296", x"00000296",
+        x"00000296", x"00000296", x"00000296", x"00000296",
+        x"00000296", x"00000296", x"00000296", x"00000296",
+        x"00000296", x"00000296", x"00000296", x"00000296"
     );  -- chrominance table
+           constant rounding_factor : signed(31 downto 0) := x"00008000"; -- 2^15 = 0.5
 
 begin
-    process (clk)
-        -- extended lenth for division
-        variable Y_extended : signed(47 downto 0);
-        variable Cb_extended : signed(47 downto 0);
-        variable Cr_extended : signed(47 downto 0);
-        -- quantization table in signed format
-        variable TY_signed : signed(31 downto 0);
-        variable TC_signed : signed(31 downto 0);
-        -- intermediate values for each i. not yet rounded
-        variable temp_Y : signed(31 downto 0);
-        variable temp_Cb : signed(31 downto 0);
-        variable temp_Cr : signed(31 downto 0);
-        -- store values after rounded
-        variable round_Y : signed(31 downto 0);
-        variable round_Cb : signed(31 downto 0);
-        variable round_Cr : signed(31 downto 0);
-        -- add 0.5 to and truncate the last 16 bits (all decimal is set to 0)
-        constant rounding_factor : signed(31 downto 0) := X"00008000"; -- 2^15 -> 0.5
+ gen_quantize : for i in 0 to 63 generate
+        process (clk)
+            variable Y_temp : signed(63 downto 0);
+            variable Cb_temp : signed(63 downto 0);
+            variable Cr_temp : signed(63 downto 0);
+            variable round_Y : signed(31 downto 0);
+            variable round_Cb : signed(31 downto 0);
+            variable round_Cr : signed(31 downto 0);
+        begin
+            if rising_edge(clk) then
+                -- Fixed-point multiplication
+                Y_temp := signed(Y(i)) * signed(TY(i));
+                Cb_temp := signed(Cb(i)) * signed(TC(i));
+                Cr_temp := signed(Cr(i)) * signed(TC(i));
 
-    begin
-        if rising_edge(clk) then
-            -- Perform element-wise fixed-point division
-            for i in 0 to 63 loop
-                -- Fixed-Point Division: (A * 65536) / B
-                Y_extended := resize(signed(Y(i)) & to_signed(0, 16), 48);
-                Cb_extended := resize(signed(Cb(i)) & to_signed(0, 16), 48);
-                Cr_extended := resize(signed(Cr(i)) & to_signed(0, 16), 48);
+                -- Add rounding
+                round_Y := Y_temp(47 downto 16) + rounding_factor;
+                round_Cb := Cb_temp(47 downto 16) + rounding_factor;
+                round_Cr := Cr_temp(47 downto 16) + rounding_factor;
 
-                TY_signed := signed(TY(i));
-                TC_signed := signed(TC(i));
-
-                temp_Y := resize (Y_extended / TY_signed, 32);
-                temp_Cb := resize (Cb_extended / TC_signed, 32);
-                temp_Cr := resize (Cr_extended / TC_signed, 32);
-                -- add rounding factor
-                round_Y := temp_Y + rounding_factor;
-                round_Cb := temp_Cb + rounding_factor;
-                round_Cr := temp_Cr + rounding_factor;
-                -- decimal part set to 0
+                -- Truncate the fractional bits
                 round_Y(15 downto 0) := (others => '0');
                 round_Cb(15 downto 0) := (others => '0');
                 round_Cr(15 downto 0) := (others => '0');
 
+                -- Assign output
                 Y_out(i) <= std_logic_vector(round_Y(31 downto 16));
                 Cb_out(i) <= std_logic_vector(round_Cb(31 downto 16));
                 Cr_out(i) <= std_logic_vector(round_Cr(31 downto 16));
-            end loop;
-        end if;
-    end process;
+            end if;
+        end process;
+    end generate;
 
 end Behavioral;
