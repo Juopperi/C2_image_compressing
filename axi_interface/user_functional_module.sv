@@ -1,9 +1,8 @@
 `define CONFIG_PROCESS_DONE     8'h89 // if the config area is done, set this to 1, it is set by the user_functional_module
 
 /*
-ToDo:
-    1. How to process the read and write logic relation with axi_self_test module
-    2. When we should get into the done state
+    Why use 64 as the trigger index number of the data_out_addr?
+    It is the barrier of the data register array, so when it comes to 64, the mission of saving all data to the master machine is done.
 */
 
 module user_functional_module(
@@ -141,14 +140,25 @@ always @(posedge clk or negedge rst_n) begin : increase_index_process
     end
 end
 
+generate
+    genvar i;
+    for (i = 0; i < 64; i = i + 1) begin : inverter_inst
+        inverter inverter_inst(
+            .data_in(data_in_array[i]),
+            .data_out(data_out_array[i])
+        );
+    end
+endgenerate
+
 // Process data
 always @(posedge clk or negedge rst_n) begin
     if (state == PROCESS_DATA) begin
-        integer i;
-        for (i = 0; i < 64; i = i + 1) begin
-            data_out_array[i] <= ~data_in_array[i];
+        if (data_in_array[5] == ~data_out_array[5]) begin
+            process_done <= 1;
         end
-        process_done <= 1;
+        else begin
+            process_done <= 0;
+        end
     end
     else begin
         process_done <= 0;
