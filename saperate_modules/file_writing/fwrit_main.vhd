@@ -1,22 +1,22 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
---use IEEE.STD_LOGIC_UNSIGNED.ALL;
---use std.textio.all;
---use ieee.std_logic_textio.all;
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+    --use IEEE.STD_LOGIC_UNSIGNED.ALL;
+    --use std.textio.all;
+    --use ieee.std_logic_textio.all;
+    -- Uncomment the following library declaration if using
+    -- arithmetic functions with Signed or Unsigned values
+    --use IEEE.NUMERIC_STD.ALL;
+    -- Uncomment the following library declaration if instantiating
+    -- any Xilinx leaf cells in this code.
+    --library UNISIM;
+    --use UNISIM.VComponents.all;
 
 entity fwrit_main is
     Port ( height, width: in std_logic_vector (15 downto 0);
-           data_out: out std_logic_vector (7 downto 0);
+           axi_data: out std_logic_vector (7 downto 0);
            clk, rst, in_bit, start, datavalid, done: in std_logic;
-           dataready: out std_logic;
+           dataready: out std_logic; --signals Huffman block that we are ready to receive data
            axi_valid : out std_logic;
            axi_ready: in std_logic);
 end fwrit_main;
@@ -125,10 +125,10 @@ begin
             end if;
         end process;
     
-    state_outputs:process(current_state,datavalid,done,array_el,dim_el)
+    state_outputs:process(current_state,start,datavalid,done,array_el,dim_el)
     begin
-          case current_state is
-             when idle =>
+        case current_state is
+            when idle =>
                 writeinfo<='0';
                 dataready<='0';
                 if start='1' then
@@ -136,26 +136,26 @@ begin
                 else
                     next_state <= idle;
                 end if;
-             when info1 =>
+            when info1 =>
                 writeinfo<='1';
                 dataready<='0';
                 if array_el=162 then
                     next_state <= dim;
                 end if;
-             when dim =>
+            when dim =>
                 writeinfo<='0';
                 dataready<='0';
                 if dim_el=1 then
                     next_state <= info2;
                 end if;
-             when info2 =>
+            when info2 =>
                 writeinfo<='1';
                 dataready<='0';
                 if array_el=618 then
                     dataready<='1';
                     next_state <= idle2;
                 end if;
-             when idle2 =>
+            when idle2 =>
                 writeinfo<='0';
                 dataready<='1';
                 entropy_el <= 7;
@@ -163,21 +163,21 @@ begin
                     dataready<='0';
                     next_state <= data;
                 end if;
-             when data=>
+            when data=>
                 writeinfo<='0';
                 dataready<='0';
                 if done='1' then
                     dataready<='0';
                     next_state <= eoi;
                 end if;
-             when eoi=>
+            when eoi=>
                 writeinfo<='1';
                 dataready<='0';
                 if array_el=620 then
                     next_state <= idle;
                 end if;
-             when others => null;
-          end case;
+            when others => null;
+        end case;
     end process;
     
     process(clk)
@@ -187,18 +187,18 @@ begin
                 dim_el <= dim_el + 1;
                 if dim_el=1 then
                     dim_el<=0;
-		    --write width
-		else
-		    --write height;
-                end if;
+		            --write width
+		        else
+		            --write height;
+                end if;  
             elsif writeinfo='1' then
-		--write data to memory
+		        --write data to memory
                 array_el <= array_el + 1;
                 if array_el=620 then
                     array_el <= 0;
                 end if;
             elsif current_state=data and datavalid='1' then
-                ent_buf (entropy_el) <= in_bit;
+                ent_buf(entropy_el) <= in_bit;
                 if entropy_el = 0 then
                     entropy_el <= 7;
                     --write data to memory
@@ -207,6 +207,15 @@ begin
                     end if;
                 else
                     entropy_el <= entropy_el - 1;
+                    if done='1' then
+                        for i in entropy_el downto 0 loop
+                            ent_buf(i) <= '1';
+                        end loop;
+                        --write data to memory
+                        if ent_buf = "11111111" then
+                            --write "00000000" to memory 
+                        end if;
+                    end if;  
                 end if;  
             end if;
         end if;
@@ -218,6 +227,6 @@ begin
         ent_buf when (current_state=data) else
         x"00";
     
-    data_out<=current_byte;
+    axi_data<=current_byte;
     
 end Behavioral;
