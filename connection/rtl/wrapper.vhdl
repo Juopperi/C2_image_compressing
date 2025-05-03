@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 use work.FixedPoint_Types.all;
 
-entity conversion is 
+entity wrapper is 
     port (
         clk : in std_logic;
         rst_n : in std_logic;
@@ -13,9 +13,9 @@ entity conversion is
         B : in std_logic_vector(511 downto 0);
         finished : out std_logic
     );
-end conversion;
+end wrapper;
 
-architecture conversion_arch of conversion is
+architecture wrapper_arch of wrapper is
     
     component conversion is
         generic (
@@ -64,7 +64,7 @@ architecture conversion_arch of conversion is
         );
     end component quantization;
 
-    type t_State is (idle,RGBtoYCbCr,dct,quant);
+    type t_State is (idle,RGBtoYCbCr,dct,quant_load,quant_read);
     signal currentState : t_State := idle;
 
     signal input_R : std_logic_vector(7 downto 0);
@@ -202,14 +202,20 @@ architecture conversion_arch of conversion is
 
                         end case;
 
-                    when quant =>
-                       Y_array(i) <= Y(15*(index+1) downto 15*index);
-                       Cb_array(i) <= Cb(15*(index+1) downto 15*index);
-                       Cr_array(i) <= Cr(15*(index+1) downto 15*index);
-                       index := index + 1;
-                        Y(15*(index+1) downto 15*index) <= Y_array_out(i);
-                        Cb(15*(index+1) downto 15*index) <= Cb_array_out(i);
-                        Cr(15*(index+1) downto 15*index) <= Cr_array_out(i);
+                    when quant_load =>
+                        for i in 0 to 63 loop:
+                       Y_array(i) <= Y(15*(i+1) downto 15*i);
+                       Cb_array(i) <= Cb(15*(i+1) downto 15*i);
+                       Cr_array(i) <= Cr(15*(i+1) downto 15*i);
+                        end loop;
+
+                    when quant_read =>
+                        for i in 0 to 63 loop:
+                        Y(15*(i+1) downto 15*i) <= Y_array_out(i);
+                        Cb(15*(i+1) downto 15*i) <= Cb_array_out(i);
+                        Cr(15*(i+1) downto 15*i) <= Cr_array_out(i);
+                        end loop;
+
                     when others => 
                 end case;
             end if;
