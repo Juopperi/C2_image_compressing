@@ -58,9 +58,9 @@ architecture wrapper_arch of wrapper is
             Y : in fixed_array;
             Cb : in fixed_array;
             Cr : in fixed_array;
-            Y_out : in fixed_array_16;
-            Cb_out : in fixed_array_16;
-            Cr_out : in fixed_array_16
+            Y_out : out fixed_array;
+            Cb_out : out fixed_array;
+            Cr_out : out fixed_array
         );
     end component quantization;
 

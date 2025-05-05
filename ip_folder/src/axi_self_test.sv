@@ -7,7 +7,8 @@ module axi_self_test #(
     parameter integer C_S_AXI_ADDR_WIDTH    = 8, // 0x00~0xFF : maximum 256 bytes
     parameter integer CONFIG_AREA          	= 16, // 0x80~0x8F
     parameter integer WRITE_AREA          	= 64, // 0x00~0x3F
-    parameter integer READ_AREA          	= 64  // 0x40~0xFF
+    parameter integer READ_AREA          	= 64,  // 0x40~0xFF
+    parameter integer REG_RW_DEPTH          = 128
 )(
     // Clock and Reset
     input  wire                              S_AXI_ACLK,
