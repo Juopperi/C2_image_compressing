@@ -10,37 +10,61 @@ end fwrit_main_tb;
 
 architecture Behavioral of fwrit_main_tb is
     Component fwrit_main
-    port ( huff_code, height,width: in STD_LOGIC_VECTOR (15 downto 0);
-           clk, rst, newcode: in STD_LOGIC;
-           data_out : out STD_LOGIC_VECTOR (7 downto 0);
-           dataready : out STD_LOGIC);
+    port ( height, width: in std_logic_vector (15 downto 0);
+           clk, rst, in_bit, start, datavalid, done: in std_logic;
+           dataready: out std_logic;
+           axi_valid: out std_logic;
+           axi_ready: in std_logic;
+           axi_data: out std_logic_vector(31 downto 0);
+           axi_keep: out std_logic_vector (3 downto 0));
     end component;
     
-    signal huff_code, height, width: STD_LOGIC_VECTOR(15 downto 0);
-    signal clk,rst,newcode: std_logic :='0';
-    signal data_out : STD_LOGIC_VECTOR(7 downto 0);
-    signal dataready : STD_LOGIC :='0';
+    signal height: STD_LOGIC_VECTOR(15 downto 0):= x"123f";
+    signal width: STD_LOGIC_VECTOR(15 downto 0):= x"456e";
+    signal clk, rst, in_bit, start, datavalid, done, dataready, axi_valid, axi_ready: std_logic;
+    signal axi_data : STD_LOGIC_VECTOR(31 downto 0);
+    signal axi_keep : STD_LOGIC_VECTOR(3 downto 0);
     
-     constant clk_period : time := 10 ns;
+    constant clk_period : time := 10 ns;
 begin
     uut: fwrit_main port map (
-                        huff_code    => huff_code,
                         height       => height,
                         width        => width,
                         clk          => clk,
                         rst          => rst,
-                        newcode      => newcode,
-                        data_out     => data_out,
-                        dataready    => dataready
-                        
+                        in_bit       => in_bit,
+                        start        => start,
+                        datavalid    => datavalid,
+                        done         => done,
+                        dataready    => dataready,
+                        axi_data     => axi_data,
+                        axi_valid    => axi_valid,
+                        axi_ready    => axi_ready,
+                        axi_keep     => axi_keep                                         
     );
 
    clk_process: process
    begin
-		clk <= '0';
+        clk <= '0';
 		wait for clk_period/2;
 		clk <= '1';
 		wait for clk_period/2;
+   end process;
+   
+   in_bit_process: process
+   begin
+        in_bit <= '0';
+		wait for clk_period*2;
+		in_bit <= '1';
+		wait for clk_period;
+   end process;
+ 
+   datavalid_process: process
+   begin
+        datavalid <='1';
+        wait for 50 ns;
+        datavalid <='0';
+        wait for 40 ns;       
    end process;
   
   stim_process: process
@@ -53,11 +77,8 @@ begin
         start <='1';
         wait for 10 ns;
         start <='0';
-        wait for 6000 ns;
-        validcode <='1';
-        wait for 10 ns;
-        validcode <='0';
-        wait for 10 ns;
+        wait for 2000 ns;
+
         done <='1';
         wait for 10 ns;
         done <='0';

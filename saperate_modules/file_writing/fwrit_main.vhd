@@ -14,17 +14,18 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 
 entity fwrit_main is
     Port ( height, width: in std_logic_vector (15 downto 0);
-           axi_data: out std_logic_vector (7 downto 0);
            clk, rst, in_bit, start, datavalid, done: in std_logic;
            dataready: out std_logic; --signals Huffman block that we are ready to receive data
-           axi_valid : out std_logic;
-           axi_ready: in std_logic);
+           axi_valid: out std_logic;
+           axi_ready: in std_logic;
+           axi_data: out std_logic_vector(31 downto 0);
+           axi_keep: out std_logic_vector (3 downto 0));
 end fwrit_main;
 
 architecture Behavioral of fwrit_main is
     
-    type image_info is array (0 to 620) of std_logic_vector(7 downto 0);
-    constant img_info: image_info := (
+    type image_info is array (0 to 624) of std_logic_vector(7 downto 0);
+    signal img_info: image_info := (
         x"FF", x"D8",--SOI
         x"FF", x"E0", x"00", x"10",--APP0
         x"4A", x"46", x"49", x"46", x"00",
@@ -47,8 +48,8 @@ architecture Behavioral of fwrit_main is
             x"63", x"63", x"63", x"63", x"63", x"63", x"63", x"63",
             x"63", x"63", x"63", x"63", x"63", x"63", x"63", x"63",
             x"63", x"63", x"63", x"63", x"63", x"63", x"63", x"63",
-        x"FF", x"C0", x"00", x"11", x"08",--SOF, last element up to now is index 162
-        --write height and width
+        x"FF", x"C0", x"00", x"11", x"08",--SOF
+        x"00", x"00", x"00", x"00",--here are height and width
         x"03", x"01", x"11", x"00", x"02", x"11", x"01", x"03", x"11", x"01",
         x"FF", x"C4", x"00", x"1F", x"00",--DHT Y DC
             x"00", x"01", x"05", x"11", x"11", x"11", x"11", x"11", x"11", x"00", x"00", x"00", x"00", x"00", x"00", x"00",
@@ -106,127 +107,123 @@ architecture Behavioral of fwrit_main is
         x"FF", x"D9" --EOI
     );
     
-    type state_type is (idle,info1,dim,info2,idle2,data,eoi);
+    type state_type is (idle,header,waiting,data,eoi);
     signal current_state, next_state : state_type;
-    signal writeinfo: std_logic;
-    signal current_byte, ent_buf: std_logic_vector (7 downto 0);
+    signal ent_buf: std_logic_vector(7 downto 0);
     signal array_el : integer range 0 to 1023;
-    signal dim_el : integer range 0 to 1;
-    signal entropy_el : integer range 0 to 7;
+    signal entropy_el : integer range 0 to 7 := 7;
+
+    signal ent_load: std_logic_vector(1 downto 0);
+    signal valid: std_logic;
+    signal datareg: std_logic_vector(31 downto 0);
+    signal keep: std_logic_vector(3 downto 0);
     
 begin
 
-    state_update:process(clk,rst)
-        begin
-            if rst='1' then
-                current_state <= idle;
-            elsif rising_edge(clk) then
-                current_state<=next_state;          
-            end if;
-        end process;
+    state_update: process(clk,rst)
+    begin
+        if rst='1' then
+            current_state <= idle;
+        elsif rising_edge(clk) then
+            current_state<=next_state;          
+        end if;
+    end process;
     
-    state_outputs:process(current_state,start,datavalid,done,array_el,dim_el)
+    state_change: process(current_state,start,array_el,datavalid,done)
     begin
         case current_state is
             when idle =>
-                writeinfo<='0';
-                dataready<='0';
                 if start='1' then
-                    next_state <= info1;
-                else
-                    next_state <= idle;
+                    next_state <= header;
                 end if;
-            when info1 =>
-                writeinfo<='1';
-                dataready<='0';
-                if array_el=162 then
-                    next_state <= dim;
+            when header =>
+                if array_el=620 then
+                    next_state <= waiting;
                 end if;
-            when dim =>
-                writeinfo<='0';
-                dataready<='0';
-                if dim_el=1 then
-                    next_state <= info2;
-                end if;
-            when info2 =>
-                writeinfo<='1';
-                dataready<='0';
-                if array_el=618 then
-                    dataready<='1';
-                    next_state <= idle2;
-                end if;
-            when idle2 =>
-                writeinfo<='0';
-                dataready<='1';
-                entropy_el <= 7;
+            when waiting =>  
                 if datavalid='1' then
-                    dataready<='0';
                     next_state <= data;
                 end if;
-            when data=>
-                writeinfo<='0';
-                dataready<='0';
+            when data =>    
                 if done='1' then
-                    dataready<='0';
                     next_state <= eoi;
                 end if;
-            when eoi=>
-                writeinfo<='1';
-                dataready<='0';
-                if array_el=620 then
-                    next_state <= idle;
-                end if;
+            when eoi=>       
+                next_state <= idle;
             when others => null;
         end case;
     end process;
     
-    process(clk)
+    writing_proc: process(clk)
     begin
         if rising_edge(clk) then
-            if current_state=dim then     
-                dim_el <= dim_el + 1;
-                if dim_el=1 then
-                    dim_el<=0;
-		            --write width
-		        else
-		            --write height;
-                end if;  
-            elsif writeinfo='1' then
-		        --write data to memory
-                array_el <= array_el + 1;
-                if array_el=620 then
+            if current_state = header then
+                valid<='1';
+                if array_el = 620 then
+                    datareg <= x"00" & img_info(array_el) & img_info(array_el+1) & img_info(array_el+2);
+                    keep <= "0111";
                     array_el <= 0;
-                end if;
-            elsif current_state=data and datavalid='1' then
-                ent_buf(entropy_el) <= in_bit;
-                if entropy_el = 0 then
-                    entropy_el <= 7;
-                    --write data to memory
-                    if ent_buf = "11111111" then
-                        --write "00000000" to memory 
-                    end if;
                 else
-                    entropy_el <= entropy_el - 1;
-                    if done='1' then
-                        for i in entropy_el downto 0 loop
-                            ent_buf(i) <= '1';
-                        end loop;
-                        --write data to memory
+                    if array_el=160 then    
+                        datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & height(15 downto 8);
+                    elsif array_el=164 then
+                        datareg <= height(7 downto 0) & width(15 downto 8) & width(7 downto 0) & img_info(171);
+                    else
+                        datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & img_info(array_el+3);
+                    end if;
+                    keep <= "1111";
+                    array_el <= array_el + 4;
+                end if;
+            elsif current_state = data then
+                if datavalid='1' then
+                    ent_buf(entropy_el) <= in_bit;
+                    if entropy_el = 0 then
+                        entropy_el <= 7;
+                        ent_load<="01";
                         if ent_buf = "11111111" then
-                            --write "00000000" to memory 
+                            ent_load<="11";
                         end if;
-                    end if;  
-                end if;  
+                    else
+                        entropy_el <= entropy_el - 1;
+                        if done='1' then
+                            for i in entropy_el downto 0 loop
+                                ent_buf(i) <= '1';
+                            end loop;
+                            ent_load<="01";
+                            if ent_buf = "11111111" then
+                                ent_load<="11";
+                            end if;
+                            valid <= '1';
+                        end if;  
+                    end if;
+                end if;
+                if ent_load="01" then
+                    datareg <= x"000000" & ent_buf;
+                    keep <= "0001";
+                    valid<='1';
+                    ent_load<="00";
+                elsif ent_load="11" then
+                    datareg <= x"0000" & ent_buf & x"00";
+                    keep <= "0011";
+                    valid<='1';
+                    ent_load<="00";
+                elsif axi_ready = '1' then
+                    valid <= '0';
+                end if;
+            elsif current_state = eoi then
+                datareg <= x"0000" & img_info(623) & img_info(624);
+                keep <= "0011";
+            else
+                valid<='0';
+                keep<="0000";
             end if;
         end if;
     end process;
     
-    current_byte<=img_info(array_el) when writeinfo='1' else
-        height when (current_state=dim and dim_el=0) else
-        width when (current_state=dim and dim_el=1) else
-        ent_buf when (current_state=data) else
-        x"00";
-    
-    axi_data<=current_byte;
+    dataready<='1' when current_state = waiting else '0';
+
+    axi_data <= datareg;
+    axi_valid <= valid;
+    axi_keep <= keep;
     
 end Behavioral;
