@@ -171,8 +171,8 @@ architecture wrapper_arch of wrapper is
                             end if;
                             if index = 64 then
                                 index := 0;
-                                --currentState <= dct;
-                                currentState <= done; --By chaning to go here directly this output is printed. 
+                                currentState <= dct;
+                                --currentState <= done; --By chaning to go here directly this output is printed. 
                             end if;
                         end if;
 
