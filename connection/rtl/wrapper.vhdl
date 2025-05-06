@@ -8,6 +8,7 @@ entity wrapper is
     port (
         clk : in std_logic;
         rst_n : in std_logic;
+        start : in std_logic;
         R : in std_logic_vector(511 downto 0);
         G : in std_logic_vector(511 downto 0);
         B : in std_logic_vector(511 downto 0);
@@ -37,18 +38,18 @@ architecture wrapper_arch of wrapper is
 
     component dct8x8_chen_2d is
         generic(
-            IN_W : integer = 32;
-            FRAC : integer = 8
+            IN_W : integer := 32;
+            FRAC : integer := 8
         );
         port (
             clk : in std_logic;
             rst_n : in std_logic;
             in_valid : in std_logic;
             in_ready : out std_logic;
-            in_data : in std_logic_vector(64*IN_W-1:0);
+            in_data : in std_logic_vector(64*IN_W-1 downto 0);
             out_valid : out std_logic;
             out_ready : in std_logic;
-            out_data : out std_logic_vector(64*IN_W-1:0)
+            out_data : out std_logic_vector(64*IN_W-1 downto 0)
         );
     end component dct8x8_chen_2d;
 
@@ -78,10 +79,10 @@ architecture wrapper_arch of wrapper is
     signal Y : std_logic_vector(1023 downto 0);
     signal Cb : std_logic_vector(1023 downto 0);
     signal Cr : std_logic_vector(1023 downto 0);
-    signal in_valid_dct : std_logic;
+    signal in_valid_dct : std_logic := '0';
     signal in_ready_dct : std_logic;
     signal out_valid_dct: std_logic;
-    signal out_ready_dct : std_logic;
+    signal out_ready_dct : std_logic := '0';
     signal in_data_dct : std_logic_vector(1023 downto 0);
     signal out_data_dct : std_logic_vector(1023 downto 0);
 
@@ -94,7 +95,7 @@ architecture wrapper_arch of wrapper is
     begin
 
         comp_conversion : component conversion
-            generic map(scale = 8,fixed_point_length = 16,input_width = 8 );
+            generic map(scale => 8, fixed_point_length => 16, input_width => 8 )
             port map(
                 clk => clk,
                 input_R => input_R,
@@ -107,7 +108,7 @@ architecture wrapper_arch of wrapper is
             );
 
         comp_dct : component dct8x8_chen_2d 
-            generic map(IN_W = 16,FRAC = 8);
+            generic map(IN_W => 16, FRAC => 8)
             port map(
                 clk => clk,
                 rst_n => rst_n,
@@ -132,16 +133,20 @@ architecture wrapper_arch of wrapper is
 
         proc : process(clk)
             variable index : integer := 0;
-            type dct_State is (Y_state,Cb_state,Cr_state);
-            variable dct_state : dct_State := Y;
+            type dct_states is (Y_state_send,Y_state_wait,Cb_state_send,Cb_state_wait,Cr_state_send,Cr_state_wait);
+            variable dct_state : dct_states := Y_state_send;
         begin
             if rising_edge(clk) then
-                case currentState is =>     
+                case currentState is    
                     when idle =>
                         index := 0;
-                        dct_state := Y;
+                        dct_state := Y_state_send;
+                        finished <= '0';
+                        if start = '1' then
+                            currentState <= RGBtoYCbCr;
+                        end if;
 
-                    when RGBtoTCbCr => 
+                    when RGBtoYCbCr => 
                         input_R <= R(7*(index+1) downto 7*index);
                         input_G <= G(7*(index+1) downto 7*index);
                         input_B <= B(7*(index+1) downto 7*index);
@@ -157,60 +162,66 @@ architecture wrapper_arch of wrapper is
                         end if;
 
                     when dct => 
-                        case dct_state is =>
-                            when Y_state =>
+                        case dct_state is
+                            when Y_state_send =>
+                                in_data_dct <= Y;
+                                in_valid_dct <= '1';
                                 if in_ready_dct = '1' then       
-                                    in_data_dct <= Y;
-                                    in_valid_dct <= '1';
-                                    out_ready_dct <= '1';
+                                   in_valid_dct <= '0';
+                                   dct_state := Y_state_wait;
                                 end if;
 
+                            when Y_state_wait =>
+                                out_ready_dct <= '1';
                                 if out_valid_dct = '1' then
-                                    Y <= data_out_dct;
-                                    in_valid_dct <= '0';
                                     out_ready_dct <= '0';
-                                    dct_state <= Cb_state;
+                                    Y <= out_data_dct;
+                                    dct_state := Cb_state_send;
                                 end if;
 
-                            when Cb_state =>
+                            when Cb_state_send =>
+                                in_data_dct <= Cb;
+                                in_valid_dct <= '1';
                                 if in_ready_dct = '1' then       
-                                    in_data_dct <= Cb;
-                                    in_valid_dct <= '1';
-                                    out_ready_dct <= '1';
+                                   in_valid_dct <= '0';
+                                   dct_state := Cb_state_wait;
                                 end if;
 
+                            when Cb_state_wait =>
+                                out_ready_dct <= '1';
                                 if out_valid_dct = '1' then
-                                    Cb <= data_out_dct;
-                                    in_valid_dct <= '0';
                                     out_ready_dct <= '0';
-                                    dct_state <= Cr_state;
+                                    Cb <= out_data_dct;
+                                    dct_state := Cr_state_send;
                                 end if;
 
-                            when Cr_state =>
+                            when Cr_state_send =>
+                                in_data_dct <= Cr;
+                                in_valid_dct <= '1';
                                 if in_ready_dct = '1' then       
-                                    in_data_dct <= Cr;
-                                    in_valid_dct <= '1';
-                                    out_ready_dct <= '1';
+                                   in_valid_dct <= '0';
+                                   dct_state := Cr_state_wait;
                                 end if;
 
+                            when Cr_state_wait =>
+                                out_ready_dct <= '1';
                                 if out_valid_dct = '1' then
-                                    Cr <= data_out_dct;
-                                    in_valid_dct <= '0';
                                     out_ready_dct <= '0';
-                                    currentState <= quant;
+                                    Cr <= out_data_dct;
+                                    currentState <= quant_load;
                                 end if;
 
                         end case;
 
                     when quant_load =>
-                        for i in 0 to 63 loop:
-                       Y_array(i) <= Y(15*(i+1) downto 15*i);
-                       Cb_array(i) <= Cb(15*(i+1) downto 15*i);
-                       Cr_array(i) <= Cr(15*(i+1) downto 15*i);
+                        for i in 0 to 63 loop
+                       Y_array(i) <= "00000000" & Y(15*(i+1) downto 15*i) & "00000000";
+                       Cb_array(i) <= "00000000" & Cb(15*(i+1) downto 15*i) & "00000000";
+                       Cr_array(i) <= "00000000" & Cr(15*(i+1) downto 15*i) & "00000000";
                         end loop;
 
                     when quant_read =>
-                        for i in 0 to 63 loop:
+                        for i in 0 to 63 loop
                         Y(15*(i+1) downto 15*i) <= Y_array_out(i);
                         Cb(15*(i+1) downto 15*i) <= Cb_array_out(i);
                         Cr(15*(i+1) downto 15*i) <= Cr_array_out(i);
