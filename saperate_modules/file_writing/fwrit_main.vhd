@@ -25,7 +25,7 @@ end fwrit_main;
 architecture Behavioral of fwrit_main is
     
     type image_info is array (0 to 624) of std_logic_vector(7 downto 0);
-    signal img_info: image_info := (
+    constant img_info: image_info := (
         x"FF", x"D8",--SOI
         x"FF", x"E0", x"00", x"10",--APP0
         x"4A", x"46", x"49", x"46", x"00",
