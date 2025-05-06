@@ -12,6 +12,7 @@ entity wrapper is
         R : in std_logic_vector(511 downto 0);
         G : in std_logic_vector(511 downto 0);
         B : in std_logic_vector(511 downto 0);
+        Y_out : out std_logic_vector(1023 downto 0);
         finished : out std_logic
     );
 end wrapper;
@@ -25,7 +26,8 @@ architecture wrapper_arch of wrapper is
             input_width : integer := 8
         );
         port (
-            clk : in std_logic;--THIS WILL PROBABLY NEED A START ASWELL
+            clk : in std_logic;
+            start : in std_logic;
             input_R : in std_logic_vector(input_width - 1 downto 0);
             input_G : in std_logic_vector(input_width - 1 downto 0);
             input_B : in std_logic_vector(input_width - 1 downto 0);
@@ -59,15 +61,19 @@ architecture wrapper_arch of wrapper is
             Y : in fixed_array;
             Cb : in fixed_array;
             Cr : in fixed_array;
-            Y_out : out fixed_array;
-            Cb_out : out fixed_array;
-            Cr_out : out fixed_array
+            Y_out : out fixed_array_16;
+            Cb_out : out fixed_array_16;
+            Cr_out : out fixed_array_16
         );
     end component quantization;
 
-    type t_State is (idle,RGBtoYCbCr,dct,quant_load,quant_read);
+    type t_State is (idle,RGBtoYCbCr,dct,quant_load,quant_read,done);
     signal currentState : t_State := idle;
 
+    type dct_states is (Y_state_send,Y_state_middle,Y_state_wait,Cb_state_send,Cb_state_wait,Cr_state_send,Cr_state_wait);
+    signal dct_state : dct_states := Y_state_send;
+
+    signal convertStart : std_logic := '0';
     signal input_R : std_logic_vector(7 downto 0);
     signal input_G : std_logic_vector(7 downto 0);
     signal input_B : std_logic_vector(7 downto 0);
@@ -98,6 +104,7 @@ architecture wrapper_arch of wrapper is
             generic map(scale => 8, fixed_point_length => 16, input_width => 8 )
             port map(
                 clk => clk,
+                start => convertStart,
                 input_R => input_R,
                 input_G => input_G,
                 input_B => input_B,
@@ -133,100 +140,123 @@ architecture wrapper_arch of wrapper is
 
         proc : process(clk)
             variable index : integer := 0;
-            type dct_states is (Y_state_send,Y_state_wait,Cb_state_send,Cb_state_wait,Cr_state_send,Cr_state_wait);
-            variable dct_state : dct_states := Y_state_send;
+            variable state : integer := 0;
         begin
             if rising_edge(clk) then
                 case currentState is    
                     when idle =>
                         index := 0;
-                        dct_state := Y_state_send;
+                        dct_state <= Y_state_send;
                         finished <= '0';
+                        state := 0;
                         if start = '1' then
                             currentState <= RGBtoYCbCr;
                         end if;
 
                     when RGBtoYCbCr => 
-                        input_R <= R(7*(index+1) downto 7*index);
-                        input_G <= G(7*(index+1) downto 7*index);
-                        input_B <= B(7*(index+1) downto 7*index);
-                        if convertDone = '1' then
-                            Y(15*(index+1) downto 15*index) <= output_Y;
-                            Cb(15*(index+1) downto 15*index) <= output_Cb;
-                            Cr(15*(index+1) downto 15*index) <= output_Cr;
-                            index := index + 1;
-                        end if;
-                        if index = 64 then
-                            index := 0;
-                            currentState <= dct;
+                        if state = 0 then
+                            input_R <= R(8*(index+1)-1 downto 8*index);
+                            input_G <= G(8*(index+1)-1 downto 8*index);
+                            input_B <= B(8*(index+1)-1 downto 8*index);
+                            convertStart <= '1';
+                            state := 1;
+                        elsif state = 1 then
+                            convertStart <= '0';
+                            if convertDone = '1' then
+                                Y(16*(index+1)-1 downto 16*(index)) <= output_Y;
+                                Cb(16*(index+1)-1 downto 16*(index)) <= output_Cb;
+                                Cr(16*(index+1)-1 downto 16*(index)) <= output_Cr;     
+                                index := index + 1;
+                                state := 0;   
+                            end if;
+                            if index = 64 then
+                                index := 0;
+                                --currentState <= dct;
+                                currentState <= done; --By chaning to go here directly this output is printed. 
+                            end if;
                         end if;
 
                     when dct => 
                         case dct_state is
                             when Y_state_send =>
                                 in_data_dct <= Y;
-                                in_valid_dct <= '1';
+                                in_valid_dct <= '1';         
                                 if in_ready_dct = '1' then       
-                                   in_valid_dct <= '0';
-                                   dct_state := Y_state_wait;
+                                   dct_state <= Y_state_wait;
                                 end if;
 
                             when Y_state_wait =>
+                                in_valid_dct <= '0';
                                 out_ready_dct <= '1';
                                 if out_valid_dct = '1' then
                                     out_ready_dct <= '0';
                                     Y <= out_data_dct;
-                                    dct_state := Cb_state_send;
+                                    dct_state <= Cb_state_send;
                                 end if;
 
                             when Cb_state_send =>
                                 in_data_dct <= Cb;
                                 in_valid_dct <= '1';
                                 if in_ready_dct = '1' then       
-                                   in_valid_dct <= '0';
-                                   dct_state := Cb_state_wait;
+                                   dct_state <= Cb_state_wait;
                                 end if;
 
                             when Cb_state_wait =>
+                                in_valid_dct <= '0';
                                 out_ready_dct <= '1';
                                 if out_valid_dct = '1' then
                                     out_ready_dct <= '0';
                                     Cb <= out_data_dct;
-                                    dct_state := Cr_state_send;
+                                    dct_state <= Cr_state_send;
                                 end if;
 
                             when Cr_state_send =>
                                 in_data_dct <= Cr;
                                 in_valid_dct <= '1';
                                 if in_ready_dct = '1' then       
-                                   in_valid_dct <= '0';
-                                   dct_state := Cr_state_wait;
+                                   dct_state <= Cr_state_wait;
                                 end if;
 
                             when Cr_state_wait =>
+                                in_valid_dct <= '0';
                                 out_ready_dct <= '1';
                                 if out_valid_dct = '1' then
                                     out_ready_dct <= '0';
                                     Cr <= out_data_dct;
+                                    index := 0;
+                                    --currentState <= done;
                                     currentState <= quant_load;
                                 end if;
-
+                                
+                            when others =>
+                                currentState <= idle;
+                                
                         end case;
 
                     when quant_load =>
-                        for i in 0 to 63 loop
-                       Y_array(i) <= "00000000" & Y(15*(i+1) downto 15*i) & "00000000";
-                       Cb_array(i) <= "00000000" & Cb(15*(i+1) downto 15*i) & "00000000";
-                       Cr_array(i) <= "00000000" & Cr(15*(i+1) downto 15*i) & "00000000";
-                        end loop;
-
+                       Y_array(index) <= "00000000" & Y(16*(index+1)-1 downto 16*index) & "00000000";
+                       Cb_array(index) <= "00000000" & Cb(16*(index+1)-1 downto 16*index) & "00000000";
+                       Cr_array(index) <= "00000000" & Cr(16*(index+1)-1 downto 16*index) & "00000000";
+                       index := index + 1;
+                       if index = 64 then
+                        currentState <= quant_read;
+                        index := 0;
+                        end if;
+                        
                     when quant_read =>
-                        for i in 0 to 63 loop
-                        Y(15*(i+1) downto 15*i) <= Y_array_out(i);
-                        Cb(15*(i+1) downto 15*i) <= Cb_array_out(i);
-                        Cr(15*(i+1) downto 15*i) <= Cr_array_out(i);
-                        end loop;
-
+                        Y(16*(index+1)-1 downto 16*index) <= Y_array_out(index);
+                        Cb(16*(index+1)-1 downto 16*index) <= Cb_array_out(index);
+                        Cr(16*(index+1)-1 downto 16*index) <= Cr_array_out(index);
+                        index := index + 1;
+                       if index = 64 then
+                        currentState <= done;
+                        index := 0;
+                        end if;
+                        
+                    when done =>
+                        Y_out <= Y;
+                        finished <= '1';
+                        
                     when others => 
                 end case;
             end if;

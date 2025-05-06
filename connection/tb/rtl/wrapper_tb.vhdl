@@ -18,6 +18,7 @@ architecture arch of wrapper_tb is
         R : in std_logic_vector(511 downto 0);
         G : in std_logic_vector(511 downto 0);
         B : in std_logic_vector(511 downto 0);
+        Y_out : out std_logic_vector(1023 downto 0);
         finished : out std_logic
     );
     end component wrapper;
@@ -28,6 +29,7 @@ architecture arch of wrapper_tb is
     signal R : std_logic_vector(511 downto 0);
     signal G : std_logic_vector(511 downto 0);
     signal B : std_logic_vector(511 downto 0);
+    signal Y : std_logic_vector(1023 downto 0);
     signal finished : std_logic;
 
     type word_array is array (0 to 63) of std_logic_vector(7 downto 0);
@@ -62,12 +64,20 @@ begin
             R => R,
             G => G,
             B => B,
+            Y_out => Y,
             finished => finished
         );
-
+        
+    reset : process 
+    begin
+        rst_n <= '0';
+        wait for 20 ns;
+         rst_n <= '1';
+         wait;
+    end process;
+    
     clock : process
     begin
-        rst_n <= '1';
         clk <= '1';
         wait for 10 ns;
         clk <= '0';
@@ -86,14 +96,40 @@ begin
     load : process
         variable index : integer := 0;
     begin
-        wait for 200 ns;
-        R(7*(index+1) downto 7*index) <= Rvalues(index);
-        G(7*(index+1) downto 7*index) <= Gvalues(index);
-        B(7*(index+1) downto 7*index) <= Bvalues(index);
+        wait for 10 ns;
+        R((8*(index+1)-1) downto 8*index) <= Rvalues(index);
+        report "Value: " & integer'image(to_integer(unsigned(Rvalues(index))));
+        G((8*(index+1)-1) downto 8*index) <= Gvalues(index);
+        B((8*(index+1)-1) downto 8*index) <= Bvalues(index);
         index := index + 1;
         if(index = 64) then
             start <= '1';
             wait;
         end if;
     end process load;
+    
+    writeData : process 
+      file output_file : text open write_mode is "conversion_Y_out.txt";
+      variable output_line : line;
+      variable index : integer := 0;
+      --variable temp : std_logic_vector(15 downto 0);
+      variable temp : std_logic_vector(7 downto 0);
+    begin 
+        if finished = '1' then
+           --temp := Y(16*(index+1)-1 downto (16*index));
+           temp := Y(16*(index+1)-1 downto (16*index)+8); --Two different depeding on whihc value to check for 
+           write(output_line,to_integer(signed(temp)));
+           write(output_line,string'(" "));
+           writeline(output_file,output_line);
+           index := index + 1;
+           if index = 64 then
+           write(output_line,Y);
+           writeline(output_file,output_line);
+            wait;
+            end if;
+         end if;
+         wait for 10 ns;
+    end process writeData;
+    
+    
 end architecture;
