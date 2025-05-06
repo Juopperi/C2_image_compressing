@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity Quantization_Controller is
+entity Controller is
     Port (
         clk         : in  std_logic;
         rst         : in  std_logic;
@@ -11,9 +11,9 @@ entity Quantization_Controller is
         load_data_flag   : out std_logic := '0';
         execute_flag     : out std_logic := '0'
     );
-end Quantization_Controller;
+end Controller;
 
-architecture Behavioral of Quantization_Controller is
+architecture Behavioral of Controller is
 
     type state_type is (IDLE, LOAD, EXECUTE, DONE);
     signal current_state, next_state : state_type;
