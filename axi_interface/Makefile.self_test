@@ -1,7 +1,6 @@
 # Verilator configuration
 VERILATOR = verilator
-VERILATOR_FLAGS = --cc --trace --build -CFLAGS "-std=c++17" -LDFLAGS "-pthread" -Wno-fatal
-VERILATOR_FLAGS += --trace-max-array 512
+VERILATOR_FLAGS = --cc --trace --build -CFLAGS "-std=c++17" -LDFLAGS "-pthread"
 
 # 设置Verilator输出目录
 VERILATOR_OUTPUT = obj_dir
@@ -11,7 +10,7 @@ VERILATOR_INCLUDE = /usr/local/share/verilator/include
 
 # Source files
 VERILOG_SOURCES = axi_self_test.sv user_functional_module.sv
-CPP_SOURCES = sim_main.cpp
+CPP_SOURCES = sim_main.cpp axi_helper.cpp
 
 # Output directory
 OBJ_DIR = obj_dir

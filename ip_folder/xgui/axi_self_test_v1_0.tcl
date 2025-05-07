@@ -7,7 +7,6 @@ proc init_gui { IPINST } {
   ipgui::add_param $IPINST -name "C_S_AXI_ADDR_WIDTH" -parent ${Page_0}
   ipgui::add_param $IPINST -name "C_S_AXI_DATA_WIDTH" -parent ${Page_0}
   ipgui::add_param $IPINST -name "READ_AREA" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "REG_RW_DEPTH" -parent ${Page_0}
   ipgui::add_param $IPINST -name "WRITE_AREA" -parent ${Page_0}
 
 
@@ -49,15 +48,6 @@ proc validate_PARAM_VALUE.READ_AREA { PARAM_VALUE.READ_AREA } {
 	return true
 }
 
-proc update_PARAM_VALUE.REG_RW_DEPTH { PARAM_VALUE.REG_RW_DEPTH } {
-	# Procedure called to update REG_RW_DEPTH when any of the dependent parameters in the arguments change
-}
-
-proc validate_PARAM_VALUE.REG_RW_DEPTH { PARAM_VALUE.REG_RW_DEPTH } {
-	# Procedure called to validate REG_RW_DEPTH
-	return true
-}
-
 proc update_PARAM_VALUE.WRITE_AREA { PARAM_VALUE.WRITE_AREA } {
 	# Procedure called to update WRITE_AREA when any of the dependent parameters in the arguments change
 }
@@ -93,8 +83,9 @@ proc update_MODELPARAM_VALUE.READ_AREA { MODELPARAM_VALUE.READ_AREA PARAM_VALUE.
 	set_property value [get_property value ${PARAM_VALUE.READ_AREA}] ${MODELPARAM_VALUE.READ_AREA}
 }
 
-proc update_MODELPARAM_VALUE.REG_RW_DEPTH { MODELPARAM_VALUE.REG_RW_DEPTH PARAM_VALUE.REG_RW_DEPTH } {
+proc update_MODELPARAM_VALUE.REG_RW_DEPTH { MODELPARAM_VALUE.REG_RW_DEPTH } {
 	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
-	set_property value [get_property value ${PARAM_VALUE.REG_RW_DEPTH}] ${MODELPARAM_VALUE.REG_RW_DEPTH}
+	# WARNING: There is no corresponding user parameter named "REG_RW_DEPTH". Setting updated value from the model parameter.
+set_property value 128 ${MODELPARAM_VALUE.REG_RW_DEPTH}
 }
 

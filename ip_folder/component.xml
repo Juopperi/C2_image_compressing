@@ -220,7 +220,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>e0ff0f0a</spirit:value>
+            <spirit:value>1c09e090</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -236,7 +236,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>e0ff0f0a</spirit:value>
+            <spirit:value>1c09e090</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -250,7 +250,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>f8bd76e0</spirit:value>
+            <spirit:value>c39b6312</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -590,7 +590,7 @@
       <spirit:file>
         <spirit:name>src/axi_self_test.sv</spirit:name>
         <spirit:fileType>systemVerilogSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_24a60b60</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_b9cfcc8f</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -612,7 +612,7 @@
       <spirit:file>
         <spirit:name>xgui/axi_self_test_v1_0.tcl</spirit:name>
         <spirit:fileType>tclSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_f8bd76e0</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_c39b6312</spirit:userFileType>
         <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -643,11 +643,6 @@
       <spirit:name>READ_AREA</spirit:name>
       <spirit:displayName>Read Area</spirit:displayName>
       <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.READ_AREA">64</spirit:value>
-    </spirit:parameter>
-    <spirit:parameter>
-      <spirit:name>REG_RW_DEPTH</spirit:name>
-      <spirit:displayName>Reg Rw Depth</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.REG_RW_DEPTH">128</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>Component_Name</spirit:name>
@@ -689,17 +684,17 @@
       <xilinx:displayName>axi_self_test_v1_0</xilinx:displayName>
       <xilinx:autoFamilySupportLevel>level_1</xilinx:autoFamilySupportLevel>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>7</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2025-05-05T12:51:15Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>10</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2025-05-07T02:05:00Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2024.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="c3a6e573"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="0879c9e7"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="77b9bdc6"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="cc498403"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="b3e880f5"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="dff957d5"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="06c0f6f1"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="14f320ff"/>
       <xilinx:targetDRCs>
         <xilinx:targetDRC xilinx:tool="ipi">
           <xilinx:targetDRCOption xilinx:name="ignore_freq_hz" xilinx:value="false"/>
