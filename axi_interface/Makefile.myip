@@ -1,6 +1,8 @@
 # Verilator configuration
 VERILATOR = verilator
-VERILATOR_FLAGS = --cc --trace --build -CFLAGS "-std=c++17" -LDFLAGS "-pthread"
+VERILATOR_FLAGS = --cc --trace --build -CFLAGS "-std=c++17" -LDFLAGS "-pthread" 
+VERILATOR_FLAGS += -Wno-fatal
+VERILATOR_FLAGS += --trace-max-array 512
 
 # 设置Verilator输出目录
 VERILATOR_OUTPUT = obj_dir
@@ -9,7 +11,7 @@ VERILATOR_OUTPUT = obj_dir
 VERILATOR_INCLUDE = /opt/verilator/include
 
 # Source files
-VERILOG_SOURCES = myip_slave_lite_v1_0_S00_AXI.v myip.v
+VERILOG_SOURCES = myip_slave_lite_v1_0_S00_AXI.v myip.sv user_functional_module.sv
 CPP_SOURCES = myip_test.cpp
 
 # Output directory

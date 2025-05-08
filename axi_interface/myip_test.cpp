@@ -18,11 +18,11 @@
 // Memory Region Addresses
 #define WRITE_BASE_ADDR  0x00  // 0x00-0x3F
 #define READ_BASE_ADDR   0x40  // 0x40-0x7F
-#define CONFIG_BASE_ADDR 0x80  // 0x80-0x8F
+#define CONFIG_BASE_ADDR 128   // 0x80-0x8F
 
 // Configuration Register Bits
 #define CONFIG_PROCESS_BEGIN  0x01  // Bit 0 of config register
-#define CONFIG_PROCESS_DONE   0x09  // Bit 9 of config register
+#define CONFIG_PROCESS_DONE   0x01  // Bit 9 of config register
 
 // 初始化AXI总线接口
 void axi_init(Vmyip* top) {
@@ -90,7 +90,7 @@ bool axi_write(Vmyip* top, uint32_t addr, uint32_t data, VerilatedVcdC* tfp, vlu
     std::cout << "开始写入地址: 0x" << std::hex << addr << ", 数据: 0x" << data << std::dec << std::endl;
     
     // 第1步: 地址写通道握手 - 设置地址和控制信号
-    top->s00_axi_awaddr = addr;
+    top->s00_axi_awaddr = addr << 2;  // 左移2位实现地址对齐
     top->s00_axi_awprot = 0;
     top->s00_axi_awvalid = 1;
     
@@ -186,7 +186,7 @@ uint32_t axi_read(Vmyip* top, uint32_t addr, VerilatedVcdC* tfp, vluint64_t& sim
     std::cout << "开始读取地址: 0x" << std::hex << addr << std::dec << std::endl;
     
     // 第1步: 地址读通道握手 - 设置地址和控制信号
-    top->s00_axi_araddr = addr;
+    top->s00_axi_araddr = addr << 2;  // 左移2位实现地址对齐
     top->s00_axi_arprot = 0;
     top->s00_axi_arvalid = 1;
     
@@ -274,10 +274,11 @@ bool wait_for_processing_done(Vmyip* top, VerilatedVcdC* tfp, vluint64_t& sim_ti
     // 循环检查处理完成位
     while (timeout > 0) {
         // 读取配置寄存器
-        config_reg = axi_read(top, CONFIG_BASE_ADDR, tfp, sim_time);
+        config_reg = axi_read(top, CONFIG_BASE_ADDR+CONFIG_PROCESS_DONE, tfp, sim_time);
         
         // 检查处理完成位
-        if (config_reg & (1 << (CONFIG_PROCESS_DONE & 0xF))) {
+        // if (config_reg & (1 << (CONFIG_PROCESS_DONE & 0xF))) {
+        if (config_reg == 1) {
             std::cout << "处理完成位已设置!" << std::endl;
             return true;
         }

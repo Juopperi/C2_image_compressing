@@ -8,15 +8,17 @@
 module user_functional_module(
     input wire          clk,       // 时钟
     input wire          rst_n,     // 复位信号，低电平有效
+
     input wire          start,     // 启动信号
     
     // 输入数据接口
-    output reg [7:0]    data_in_addr, // 输入数据地址
+    input reg [7:0]    data_in_addr, // 输入数据地址
     input wire [31:0]   data_in,      // 输入数据
     
     // 输出数据接口
-    input wire [7:0]    data_out_addr, // 输出数据地址
-    output reg [31:0]   data_out,       // 输出数据
+    output reg [7:0]    data_out_addr, // 输出数据地址
+    output wire [31:0]   data_out,       // 输出数据
+    
     output wire [3:0]   state_out       // 输出状态
 );
 
@@ -61,6 +63,8 @@ always @(posedge clk) begin
         state <= next_state;
     end
 end
+
+assign load_done = data_in_addr == 63 && state == LOAD_DATA;
 
 always @(*) begin
     case (state)
@@ -126,19 +130,6 @@ always @(posedge clk) begin : load_data_process
     end
 end
 
-// Increase index
-always @(posedge clk) begin : increase_index_process
-    if (state == LOAD_DATA) begin
-        data_in_addr <= data_in_addr + 1;
-        if (data_in_addr == 63) begin
-            load_done <= 1;
-        end
-    end
-    else begin
-        data_in_addr <= 0;
-        load_done <= 0;
-    end
-end
 
 generate
     genvar i;
@@ -187,6 +178,17 @@ always @(posedge clk) begin
     end
 end
 
+always @(posedge clk) begin
+    if (!rst_n) begin
+        data_out_addr <= 0;
+    end
+    else if (state == SAVE_DATA) begin
+        data_out_addr <= data_out_addr + 1;
+    end
+    else begin
+        data_out_addr <= 0;
+    end
+end
 
 endmodule
 

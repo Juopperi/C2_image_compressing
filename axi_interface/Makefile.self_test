@@ -1,6 +1,7 @@
 # Verilator configuration
 VERILATOR = verilator
-VERILATOR_FLAGS = --cc --trace --build -CFLAGS "-std=c++17" -LDFLAGS "-pthread" -Wno-fatal
+VERILATOR_FLAGS = --cc --trace --build -CFLAGS "-std=c++17" -LDFLAGS "-pthread" 
+VERILATOR_FLAGS += -Wno-fatal
 VERILATOR_FLAGS += --trace-max-array 512
 
 # 设置Verilator输出目录

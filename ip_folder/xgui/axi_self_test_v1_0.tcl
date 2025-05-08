@@ -4,8 +4,6 @@ proc init_gui { IPINST } {
   #Adding Page
   set Page_0 [ipgui::add_page $IPINST -name "Page 0"]
   ipgui::add_param $IPINST -name "CONFIG_AREA" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_S_AXI_ADDR_WIDTH" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_S_AXI_DATA_WIDTH" -parent ${Page_0}
   ipgui::add_param $IPINST -name "READ_AREA" -parent ${Page_0}
   ipgui::add_param $IPINST -name "WRITE_AREA" -parent ${Page_0}
 
@@ -21,21 +19,21 @@ proc validate_PARAM_VALUE.CONFIG_AREA { PARAM_VALUE.CONFIG_AREA } {
 	return true
 }
 
-proc update_PARAM_VALUE.C_S_AXI_ADDR_WIDTH { PARAM_VALUE.C_S_AXI_ADDR_WIDTH } {
-	# Procedure called to update C_S_AXI_ADDR_WIDTH when any of the dependent parameters in the arguments change
+proc update_PARAM_VALUE.C_S00_AXI_ADDR_WIDTH { PARAM_VALUE.C_S00_AXI_ADDR_WIDTH } {
+	# Procedure called to update C_S00_AXI_ADDR_WIDTH when any of the dependent parameters in the arguments change
 }
 
-proc validate_PARAM_VALUE.C_S_AXI_ADDR_WIDTH { PARAM_VALUE.C_S_AXI_ADDR_WIDTH } {
-	# Procedure called to validate C_S_AXI_ADDR_WIDTH
+proc validate_PARAM_VALUE.C_S00_AXI_ADDR_WIDTH { PARAM_VALUE.C_S00_AXI_ADDR_WIDTH } {
+	# Procedure called to validate C_S00_AXI_ADDR_WIDTH
 	return true
 }
 
-proc update_PARAM_VALUE.C_S_AXI_DATA_WIDTH { PARAM_VALUE.C_S_AXI_DATA_WIDTH } {
-	# Procedure called to update C_S_AXI_DATA_WIDTH when any of the dependent parameters in the arguments change
+proc update_PARAM_VALUE.C_S00_AXI_DATA_WIDTH { PARAM_VALUE.C_S00_AXI_DATA_WIDTH } {
+	# Procedure called to update C_S00_AXI_DATA_WIDTH when any of the dependent parameters in the arguments change
 }
 
-proc validate_PARAM_VALUE.C_S_AXI_DATA_WIDTH { PARAM_VALUE.C_S_AXI_DATA_WIDTH } {
-	# Procedure called to validate C_S_AXI_DATA_WIDTH
+proc validate_PARAM_VALUE.C_S00_AXI_DATA_WIDTH { PARAM_VALUE.C_S00_AXI_DATA_WIDTH } {
+	# Procedure called to validate C_S00_AXI_DATA_WIDTH
 	return true
 }
 
@@ -58,16 +56,6 @@ proc validate_PARAM_VALUE.WRITE_AREA { PARAM_VALUE.WRITE_AREA } {
 }
 
 
-proc update_MODELPARAM_VALUE.C_S_AXI_DATA_WIDTH { MODELPARAM_VALUE.C_S_AXI_DATA_WIDTH PARAM_VALUE.C_S_AXI_DATA_WIDTH } {
-	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
-	set_property value [get_property value ${PARAM_VALUE.C_S_AXI_DATA_WIDTH}] ${MODELPARAM_VALUE.C_S_AXI_DATA_WIDTH}
-}
-
-proc update_MODELPARAM_VALUE.C_S_AXI_ADDR_WIDTH { MODELPARAM_VALUE.C_S_AXI_ADDR_WIDTH PARAM_VALUE.C_S_AXI_ADDR_WIDTH } {
-	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
-	set_property value [get_property value ${PARAM_VALUE.C_S_AXI_ADDR_WIDTH}] ${MODELPARAM_VALUE.C_S_AXI_ADDR_WIDTH}
-}
-
 proc update_MODELPARAM_VALUE.CONFIG_AREA { MODELPARAM_VALUE.CONFIG_AREA PARAM_VALUE.CONFIG_AREA } {
 	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
 	set_property value [get_property value ${PARAM_VALUE.CONFIG_AREA}] ${MODELPARAM_VALUE.CONFIG_AREA}
@@ -83,9 +71,13 @@ proc update_MODELPARAM_VALUE.READ_AREA { MODELPARAM_VALUE.READ_AREA PARAM_VALUE.
 	set_property value [get_property value ${PARAM_VALUE.READ_AREA}] ${MODELPARAM_VALUE.READ_AREA}
 }
 
-proc update_MODELPARAM_VALUE.REG_RW_DEPTH { MODELPARAM_VALUE.REG_RW_DEPTH } {
+proc update_MODELPARAM_VALUE.C_S00_AXI_DATA_WIDTH { MODELPARAM_VALUE.C_S00_AXI_DATA_WIDTH PARAM_VALUE.C_S00_AXI_DATA_WIDTH } {
 	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
-	# WARNING: There is no corresponding user parameter named "REG_RW_DEPTH". Setting updated value from the model parameter.
-set_property value 128 ${MODELPARAM_VALUE.REG_RW_DEPTH}
+	set_property value [get_property value ${PARAM_VALUE.C_S00_AXI_DATA_WIDTH}] ${MODELPARAM_VALUE.C_S00_AXI_DATA_WIDTH}
+}
+
+proc update_MODELPARAM_VALUE.C_S00_AXI_ADDR_WIDTH { MODELPARAM_VALUE.C_S00_AXI_ADDR_WIDTH PARAM_VALUE.C_S00_AXI_ADDR_WIDTH } {
+	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
+	set_property value [get_property value ${PARAM_VALUE.C_S00_AXI_ADDR_WIDTH}] ${MODELPARAM_VALUE.C_S00_AXI_ADDR_WIDTH}
 }
 
