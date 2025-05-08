@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import sys
 
-testbench_name = "tb_jpeg_compression_pipeline"
+testbench_name = "tb_rgb2ycbcr_dct_link"
 
 # -----------------------------
 # 解析参数
@@ -51,11 +51,13 @@ for folder in search_dirs:
                     vlog_lines.append(f'vcom "../../{rel_path}"')
 
 vsim_cmd = f'vsim {"-c" if not gui_mode else ""} '
+#    vsim -t ps +notimingchecks -novopt tb_jpeg_compression_pipeline
+vsim_cmd += f' -t ps +notimingchecks work.{testbench_name}'
 
 if gui_mode:
-    vsim_cmd += f' -voptargs=+acc work.{testbench_name} -do "view wave; view structure; view signals;"'
+    vsim_cmd += f' -do "view wave; view structure; view signals;"'
 else:
-    vsim_cmd += f' work.{testbench_name}  -do "run 200 us; quit -f"'
+    vsim_cmd += f' -do "run 50000000 us; quit -f"'
 
 do_script = [
     "vlib work",

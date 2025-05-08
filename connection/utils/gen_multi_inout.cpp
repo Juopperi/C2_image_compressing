@@ -8,6 +8,17 @@
 #include <algorithm>
 #include "FixedPoint.h"
 
+// Define M_PI if not already defined
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
+// Custom clamp function for older C++ standards
+template<typename T>
+T clamp(T value, T min, T max) {
+    return value < min ? min : (value > max ? max : value);
+}
+
 constexpr int N = 8;
 
 #include "QuantizationTable.h"
@@ -61,6 +72,71 @@ void dct_1d(const float in[N], float out[N], const double coeffs[N][N]) {
     }
 }
 
+// Pattern generation functions
+float sine_pattern(int x, int y, float freq_x, float freq_y, float amplitude) {
+    return amplitude * sin(freq_x * x + freq_y * y);
+}
+
+float gradient_pattern(int x, int y, float angle, float scale) {
+    float nx = cos(angle) * x + sin(angle) * y;
+    return scale * nx / N;
+}
+
+float checkerboard_pattern(int x, int y, int check_size) {
+    return ((x / check_size) % 2 == (y / check_size) % 2) ? 1.0f : -1.0f;
+}
+
+float edge_pattern(int x, int y, float angle, float sharpness) {
+    float nx = cos(angle) * x + sin(angle) * y;
+    return 128.0f * (1.0f + tanh(sharpness * (nx - N/2)));
+}
+
+float circle_pattern(int x, int y, float cx, float cy, float radius) {
+    float dx = x - cx;
+    float dy = y - cy;
+    float distance = std::sqrt(dx*dx + dy*dy);
+    return (distance < radius) ? 1.0f : -1.0f;
+}
+
+float frequency_specific_pattern(int x, int y, int freq_x, int freq_y) {
+    // Creates a pattern with specific frequency components
+    return std::cos(M_PI * freq_x * x / N) * std::cos(M_PI * freq_y * y / N);
+}
+
+float texture_pattern(int x, int y, unsigned int seed) {
+    // Simple Perlin-like noise
+    float nx = x / static_cast<float>(N);
+    float ny = y / static_cast<float>(N);
+    
+    // Hash function for pseudo-random values
+    auto hash = [](float x, float y, unsigned int seed) -> float {
+        unsigned int h = seed ^ 
+                        static_cast<unsigned int>(x * 374761393) ^ 
+                        static_cast<unsigned int>(y * 668265263);
+        h = (h ^ (h >> 13)) * 1274126177;
+        return (h & 0xFFFFFF) / static_cast<float>(0xFFFFFF) * 2.0f - 1.0f;
+    };
+    
+    // Bilinear interpolation
+    int ix = static_cast<int>(nx * 4);
+    int iy = static_cast<int>(ny * 4);
+    float fx = nx * 4 - ix;
+    float fy = ny * 4 - iy;
+    
+    float v00 = hash(ix, iy, seed);
+    float v10 = hash(ix+1, iy, seed);
+    float v01 = hash(ix, iy+1, seed);
+    float v11 = hash(ix+1, iy+1, seed);
+    
+    float wx = fx * fx * (3 - 2 * fx);
+    float wy = fy * fy * (3 - 2 * fy);
+    
+    float vx0 = v00 + wx * (v10 - v00);
+    float vx1 = v01 + wx * (v11 - v01);
+    
+    return vx0 + wy * (vx1 - vx0);
+}
+
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         std::cerr << "Usage: " << argv[0] << " <num_samples>" << std::endl;
@@ -87,14 +163,94 @@ int main(int argc, char* argv[]) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> dist(0, 255);
+    std::uniform_real_distribution<float> fdist(0.0f, 1.0f);
+    std::uniform_real_distribution<float> angle_dist(0.0f, 3.14159f);
+    std::uniform_int_distribution<int> pattern_dist(0, 7); // 8 pattern types + mixed
+    std::uniform_int_distribution<int> freq_dist(1, 7);    // For specific frequency testing
 
+    // Generate a distribution of different test patterns
     for (int s = 0; s < num_samples; ++s) {
         float Y[N][N], Cb[N][N], Cr[N][N];
-        for (int i = 0; i < N; ++i)
+        
+        // Force specific pattern types at regular intervals to ensure good coverage
+        int pattern_type;
+        if (s < 8) {
+            // First 8 samples: one of each pattern type
+            pattern_type = s;
+        } else if (s % 10 == 0) {
+            // Every 10th sample: random frequency-specific pattern
+            pattern_type = 6;
+        } else if (s % 5 == 0) {
+            // Every 5th sample: mixed patterns
+            pattern_type = 7;
+        } else {
+            // Otherwise random pattern
+            pattern_type = pattern_dist(gen);
+        }
+        
+        // Pattern parameters
+        float angle = angle_dist(gen);
+        float freq_x = fdist(gen) * 0.8f + 0.1f;
+        float freq_y = fdist(gen) * 0.8f + 0.1f;
+        int check_size = 1 + gen() % 4;
+        float sharpness = 0.5f + fdist(gen) * 2.0f;
+        float cx = fdist(gen) * N;
+        float cy = fdist(gen) * N;
+        float radius = 1.0f + fdist(gen) * (N/2 - 1.0f);
+        int specific_freq_x = freq_dist(gen);
+        int specific_freq_y = freq_dist(gen);
+        unsigned int texture_seed = gen();
+        
+        // Base/offset values for each channel to create color variation
+        float base_r = 128.0f;  // Centered around middle value
+        float base_g = 128.0f;
+        float base_b = 128.0f;
+        float scale_r = 50.0f + fdist(gen) * 100.0f;
+        float scale_g = 50.0f + fdist(gen) * 100.0f;
+        float scale_b = 50.0f + fdist(gen) * 100.0f;
+        
+        // For mixed patterns
+        int secondary_pattern = (pattern_type + 1 + gen() % 6) % 7;
+        float mix_ratio = 0.3f + fdist(gen) * 0.4f; // 0.3 to 0.7
+        
+        for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
-                uint8_t R = dist(gen);
-                uint8_t G = dist(gen);
-                uint8_t B = dist(gen);
+                // Generate a structured pattern
+                float pattern_val = 0.0f;
+                
+                auto apply_pattern = [&](int ptype) -> float {
+                    switch (ptype) {
+                        case 0: // Sine wave pattern
+                            return sine_pattern(i, j, freq_x, freq_y, 1.0f);
+                        case 1: // Gradient pattern
+                            return gradient_pattern(i, j, angle, 1.0f);
+                        case 2: // Checkerboard pattern
+                            return checkerboard_pattern(i, j, check_size);
+                        case 3: // Edge pattern
+                            return edge_pattern(i, j, angle, sharpness);
+                        case 4: // Circle pattern
+                            return circle_pattern(i, j, cx, cy, radius);
+                        case 5: // Texture pattern
+                            return texture_pattern(i, j, texture_seed);
+                        case 6: // Frequency specific pattern
+                            return frequency_specific_pattern(i, j, specific_freq_x, specific_freq_y);
+                        default:
+                            return 0.0f;
+                    }
+                };
+                
+                if (pattern_type == 7) {
+                    // Mixed pattern mode
+                    pattern_val = mix_ratio * apply_pattern(pattern_dist(gen)) + 
+                                  (1.0f - mix_ratio) * apply_pattern(secondary_pattern);
+                } else {
+                    pattern_val = apply_pattern(pattern_type);
+                }
+                
+                // Apply pattern to create RGB values with realistic variation
+                uint8_t R = clamp(static_cast<int>(base_r + scale_r * pattern_val), 0, 255);
+                uint8_t G = clamp(static_cast<int>(base_g + scale_g * pattern_val), 0, 255);
+                uint8_t B = clamp(static_cast<int>(base_b + scale_b * pattern_val), 0, 255);
 
                 fout_r << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << static_cast<int>(R) << std::endl;
                 fout_g << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << static_cast<int>(G) << std::endl;
@@ -102,6 +258,7 @@ int main(int argc, char* argv[]) {
 
                 rgb2ycbcr(R, G, B, Y[i][j], Cb[i][j], Cr[i][j]);
             }
+        }
 
         auto process_channel = [&](float mat[N][N], const uint8_t qtable[N][N], std::ofstream& fout) {
             float temp[N][N], dct_out[N][N], quant[N][N];
