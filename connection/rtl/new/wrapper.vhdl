@@ -67,7 +67,18 @@ architecture wrapper_arch of wrapper is
         );
     end component quantization;
 
-    type t_State is (idle,RGBtoYCbCr,dct,quant_load,quant_read,done);
+    component zigzag_reorder is
+        generic (
+            vector_length : integer := 16
+        );
+        port (
+            clk : in std_logic;
+            input_matrix : in  std_logic_vector(64*vector_length-1 downto 0); -- 64 x vector_length flattened input
+            zigzag_out   : out std_logic_vector(64*vector_length-1 downto 0)  -- 64 x vector_length flattened output
+        );
+    end component zigzag_reorder;
+    
+    type t_State is (idle,RGBtoYCbCr,dct,quant_load,quant_read,zigzag,done);
     signal currentState : t_State := idle;
 
     type dct_states is (Y_state_send,Y_state_middle,Y_state_wait,Cb_state_send,Cb_state_wait,Cr_state_send,Cr_state_wait);
@@ -98,6 +109,10 @@ architecture wrapper_arch of wrapper is
     signal Y_array_out : fixed_array_16;
     signal Cb_array_out : fixed_array_16;
     signal Cr_array_out : fixed_array_16;
+
+    signal zigzag_in : std_logic_vector(1023 downto 0);
+    signal zigzag_out : std_logic_vector(1023 downto 0);
+
     begin
 
         comp_conversion : component conversion
@@ -138,6 +153,14 @@ architecture wrapper_arch of wrapper is
                 Cr_out => Cr_array_out
             );
 
+        comp_zigzag : component zigzag_reorder
+            generic map(vector_length => 16)
+            port map(
+                clk => clk,
+                input_matrix => zigzag_in,
+                zigzag_out => zigzag_out
+            );
+        
         proc : process(clk)
             variable index : integer := 0;
             variable state : integer := 0;
@@ -249,10 +272,25 @@ architecture wrapper_arch of wrapper is
                         Cr(16*(index+1)-1 downto 16*index) <= Cr_array_out(index);
                         index := index + 1;
                        if index = 64 then
-                        currentState <= done;
+                        currentState <= zigzag;
                         index := 0;
                         end if;
-                        
+
+                    when zigzag =>
+                        if state = 1 then
+                            zigzag_in <= Y;
+                        elsif state = 2 then
+                            Y <= zigzag_out;
+                            zigzag_in <= Cb;
+                        elsif state = 3 then
+                            Cb <= zigzag_out;
+                            zigzag_in <= Cr;
+                        elsif state = 4 then
+                            Cr <= zigzag_out;
+                            currentState <= done;
+                        end if;
+                        state := state + 1;
+
                     when done =>
                         Y_out <= Y;
                         finished <= '1';
