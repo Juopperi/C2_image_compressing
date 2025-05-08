@@ -1,5 +1,6 @@
 module rgb2ycbcr_container #(
-    parameter fixed_point_length = 32
+    parameter fixed_point_length = 32,
+    parameter input_width = 8
 )(
     input wire clk,
     input wire [8*64-1:0] r_all, // 64个8位R
@@ -19,7 +20,11 @@ module rgb2ycbcr_container #(
             
             wire [fixed_point_length-1:0] y, cb, cr;
 
-            conversion  u_conversion (
+            ycbcr_conversion_csd #(
+                .SCALE(16),
+                .FIXED_POINT_LENGTH(fixed_point_length),
+                .INPUT_WIDTH(input_width)
+            ) u_conversion (
                 .clk(clk),
                 .input_R(r),
                 .input_G(g),
