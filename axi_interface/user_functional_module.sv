@@ -156,12 +156,6 @@ always @(posedge clk) begin
     end
 end
 
-// Save data
-always @(posedge clk) begin
-    if (state == SAVE_DATA) begin
-        data_out_array[data_out_addr] <= data_out;
-    end
-end
 
 // Increase index
 always @(posedge clk) begin
