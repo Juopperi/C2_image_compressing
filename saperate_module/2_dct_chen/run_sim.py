@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import sys
 
-testbench_name = "tb_dct8x8_chen_2d"
+testbench_name = "tb_dct8x8_chen_2d_parallel"
 
 # -----------------------------
 # 解析参数

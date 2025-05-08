@@ -26,6 +26,7 @@ OUTPUT_DIR="./tb/sim"
 # -------------------------------
 echo "📁 Ensuring simulation work directory exists: $SIM_WORK_DIR"
 mkdir -p "$SIM_WORK_DIR"
+mkdir -p "$BUILD_DIR"
 
 # -------------------------------
 # 进入构建目录并构建

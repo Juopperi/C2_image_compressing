@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Testbench : 2‑D 8×8 DCT core (Chen algorithm) – compare against golden vectors
+// Testbench : 2‑D 8×8 DCT core (Chen algorithm, 并行实现) – compare against golden vectors
 // -----------------------------------------------------------------------------
 //   * Reads   chen_2d_dct_input.mem   (row‑major 64 words / block)
 //   * Reads   expected_chen_2d_dct_output.mem  (row‑major 64 words / block)
@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 `timescale 1ns / 1ps
 
-module tb_dct8x8_chen_2d;
+module tb_dct8x8_chen_2d_parallel;
     // ---------- Parameters ---------------------------------------------------
     parameter DATA_WIDTH = 32;         // Q16.16 words
     parameter FRAC_BITS  = 8;          // Fraction bits
@@ -34,7 +34,7 @@ module tb_dct8x8_chen_2d;
     wire [64*DATA_WIDTH-1:0] out_data;
 
     // ---------- DUT instance -------------------------------------------------
-    dct8x8_chen_2d #(
+    dct8x8_chen_2d_parallel #(
         .IN_W   (DATA_WIDTH),
         .FRAC   (FRAC_BITS)
     ) dut (
@@ -111,8 +111,8 @@ module tb_dct8x8_chen_2d;
 
     // ---------- Stimulus -----------------------------------------------------
     initial begin
-        fout = $fopen("actual_chen_2d_output.mem", "w");
-        $display("==== TB 2‑D 8×8 DCT Chen (64-input/64-output version) ====");
+        fout = $fopen("actual_chen_2d_parallel_output.mem", "w");
+        $display("==== TB 2‑D 8×8 DCT Chen Parallel (64-input/64-output version) ====");
 
         // Load test vectors
         $readmemh("chen_2d_dct_input.mem",  input_mem);
@@ -167,12 +167,47 @@ module tb_dct8x8_chen_2d;
         end
 
         // Final results
-        if (err_cnt == 0) $display("==== PASS, %0d blocks ====", MAX_BLOCKS);
-        else              $display("==== FAIL, %0d mismatches ====", err_cnt);
+        if (err_cnt == 0) $display("==== PASS, %0d blocks, 并行实现 ====", MAX_BLOCKS);
+        else              $display("==== FAIL, %0d mismatches, 并行实现 ====", err_cnt);
 
         $fclose(fout);
         #(CLK_PERIOD*10); 
-        // $finish;
+        $finish;
     end
 
-endmodule
+    // ---------- Performance measurement --------------------------------------
+    time start_time, end_time, total_processing_time;
+    integer cycle_count;
+    
+    // Start counting when first block is processed
+    initial begin
+        cycle_count = 0;
+        start_time = 0;
+        
+        wait(in_valid && in_ready); // Wait for first handshake
+        start_time = $time;
+        
+        // Count cycles continuously
+        forever begin
+            @(posedge clk);
+            cycle_count = cycle_count + 1;
+        end
+    end
+    
+    // Finish counting after last block is processed
+    initial begin
+        wait(testing_block == MAX_BLOCKS-1 && out_valid); // Wait for last block
+        end_time = $time;
+        total_processing_time = end_time - start_time;
+        
+        // Display performance metrics
+        #(CLK_PERIOD*20); // Wait for a while to make sure all checks are done
+        $display("\n==== 性能报告 (并行实现) ====");
+        $display("总处理时间: %0d ns", total_processing_time);
+        $display("处理的块数: %0d", MAX_BLOCKS);
+        $display("时钟周期数: %0d", cycle_count);
+        $display("每块平均周期: %0.2f", cycle_count*1.0/MAX_BLOCKS);
+        $display("=============================\n");
+    end
+
+endmodule 
