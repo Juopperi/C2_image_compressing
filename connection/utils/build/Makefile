@@ -142,19 +142,6 @@ gen_multi_inout/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_multi_inout.dir/build.make CMakeFiles/gen_multi_inout.dir/build
 .PHONY : gen_multi_inout/fast
 
-#=============================================================================
-# Target rules for targets named gen_normal
-
-# Build rule for target.
-gen_normal: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gen_normal
-.PHONY : gen_normal
-
-# fast build rule for target.
-gen_normal/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_normal.dir/build.make CMakeFiles/gen_normal.dir/build
-.PHONY : gen_normal/fast
-
 compare_1000.o: compare_1000.cpp.o
 .PHONY : compare_1000.o
 
@@ -203,30 +190,6 @@ gen_multi_inout.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_multi_inout.dir/build.make CMakeFiles/gen_multi_inout.dir/gen_multi_inout.cpp.s
 .PHONY : gen_multi_inout.cpp.s
 
-gen_normal.o: gen_normal.cpp.o
-.PHONY : gen_normal.o
-
-# target to build an object file
-gen_normal.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_normal.dir/build.make CMakeFiles/gen_normal.dir/gen_normal.cpp.o
-.PHONY : gen_normal.cpp.o
-
-gen_normal.i: gen_normal.cpp.i
-.PHONY : gen_normal.i
-
-# target to preprocess a source file
-gen_normal.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_normal.dir/build.make CMakeFiles/gen_normal.dir/gen_normal.cpp.i
-.PHONY : gen_normal.cpp.i
-
-gen_normal.s: gen_normal.cpp.s
-.PHONY : gen_normal.s
-
-# target to generate assembly for a file
-gen_normal.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen_normal.dir/build.make CMakeFiles/gen_normal.dir/gen_normal.cpp.s
-.PHONY : gen_normal.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -237,16 +200,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... compare_1000"
 	@echo "... gen_multi_inout"
-	@echo "... gen_normal"
 	@echo "... compare_1000.o"
 	@echo "... compare_1000.i"
 	@echo "... compare_1000.s"
 	@echo "... gen_multi_inout.o"
 	@echo "... gen_multi_inout.i"
 	@echo "... gen_multi_inout.s"
-	@echo "... gen_normal.o"
-	@echo "... gen_normal.i"
-	@echo "... gen_normal.s"
 .PHONY : help
 
 

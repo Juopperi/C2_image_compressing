@@ -20,18 +20,13 @@ module rgb2ycbcr_container #(
             
             wire [fixed_point_length-1:0] y, cb, cr;
 
-            ycbcr_conversion_csd #(
-                .SCALE(16),
-                .FIXED_POINT_LENGTH(fixed_point_length),
-                .INPUT_WIDTH(input_width)
-            ) u_conversion (
-                .clk(clk),
-                .input_R(r),
-                .input_G(g),
-                .input_B(b),
-                .output_Y(y),
-                .output_Cb(cb),
-                .output_Cr(cr)
+            int_mul_fra_ycbcr u_conversion (
+                .r(r),
+                .g(g),
+                .b(b),
+                .y(y),
+                .cb(cb),
+                .cr(cr)
             );
 
             assign y_all[i*fixed_point_length +: fixed_point_length] = y;

@@ -21,10 +21,9 @@ T clamp(T value, T min, T max) {
 
 constexpr int N = 8;
 
-#include "QuantizationTable.h"
-
 using Fix = FixedPoint<int32_t, 16>;
 
+// 对应于硬件中使用的zigzag顺序
 const int zigzag_order[64] = {
      0,  1,  5,  6, 14, 15, 27, 28,
      2,  4,  7, 13, 16, 26, 29, 42,
@@ -36,33 +35,57 @@ const int zigzag_order[64] = {
     35, 36, 48, 49, 57, 58, 62, 63
 };
 
+// 测试模式类型
+enum TestMode {
+    FROM_FILE = 0,   // 从文件读取RGB数据
+    ALL_ONES,        // 所有RGB值为1
+    ALL_VALUE,       // 所有RGB值为指定值n
+    RAMP,            // 渐变模式(X方向递增)
+    CHECKERBOARD,    // 棋盘格模式
+    EDGE,            // 边缘模式(一半0，一半255)
+    X_GRADIENT,      // X方向渐变
+    Y_GRADIENT,      // Y方向渐变
+};
+
+TestMode mode = ALL_ONES;
+
+
+// RGB到YCbCr转换函数 - 与硬件中的公式保持一致
 void rgb2ycbcr(float R, float G, float B, float &Y, float &Cb, float &Cr) {
     Y  =  0.299f * R + 0.587f * G + 0.114f * B - 128.0f;
-    Cb = -0.168736f * R - 0.331264f * G + 0.5f * B ;
-    Cr =  0.5f * R - 0.418688f * G - 0.081312f * B ;
+    Cb = -0.168736f * R - 0.331264f * G + 0.5f * B;
+    Cr =  0.5f * R - 0.418688f * G - 0.081312f * B;
+}
+
+// 初始化标准DCT系数矩阵
+void init_dct_coeffs(double coeffs[N][N]) {
+    // 标准DCT系数计算: C(i,j) = α(i) * α(j) * cos((2*j+1)*i*π/16)
+    // 其中: α(0) = 1/√2, α(i) = 1 for i > 0
     
-    // Y  =  0.299f * R + 0.587f * G + 0.114f * B ;
-    // Cb = -0.168736f * R - 0.331264f * G + 0.5f * B + 128.0f;
-    // Cr =  0.5f * R - 0.418688f * G - 0.081312f * B + 128.0f;
-}
-
-void load_dct_coeff_matrix(const std::string& filename, double coeffs[N][N]) {
-    std::ifstream fin(filename);
-    if (!fin) {
-        std::cerr << "Error: Cannot open DCT coeff file: " << filename << std::endl;
-        exit(1);
+    double alpha[N];
+    alpha[0] = 1.0 / sqrt(2.0);
+    for (int i = 1; i < N; i++) {
+        alpha[i] = 1.0;
     }
-    std::string hex;
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < N; ++j) {
-            fin >> hex;
-            uint32_t raw = std::stoul(hex, nullptr, 16);
-            Fix f = Fix::fromRaw(static_cast<int32_t>(raw));
-            coeffs[i][j] = f.toFloat();
+    
+    // 构建系数矩阵
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            coeffs[i][j] = alpha[i] * alpha[j] * 
+                          cos((2.0 * j + 1.0) * i * M_PI / (2.0 * N));
         }
-    fin.close();
+    }
+    
+    // 归一化系数
+    double norm_factor = 0.25; // 归一化因子，可根据实际硬件实现调整
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            coeffs[i][j] *= norm_factor;
+        }
+    }
 }
 
+// 1D DCT变换
 void dct_1d(const float in[N], float out[N], const double coeffs[N][N]) {
     for (int k = 0; k < N; ++k) {
         float sum = 0.0f;
@@ -72,234 +95,308 @@ void dct_1d(const float in[N], float out[N], const double coeffs[N][N]) {
     }
 }
 
-// Pattern generation functions
-float sine_pattern(int x, int y, float freq_x, float freq_y, float amplitude) {
-    return amplitude * sin(freq_x * x + freq_y * y);
+// 生成测试块的RGB数据
+void generate_test_block(float R[N][N], float G[N][N], float B[N][N], 
+                         TestMode mode, int value = 0) {
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+            switch (mode) {
+                case ALL_ONES:
+                    R[i][j] = G[i][j] = B[i][j] = 1.0f;
+                    break;
+                
+                case ALL_VALUE:
+                    R[i][j] = G[i][j] = B[i][j] = static_cast<float>(value);
+                    break;
+                
+                case RAMP:
+                    R[i][j] = G[i][j] = B[i][j] = static_cast<float>(j * 32);
+                    break;
+                
+                case CHECKERBOARD:
+                    R[i][j] = G[i][j] = B[i][j] = ((i + j) % 2 == 0) ? 0.0f : 255.0f;
+                    break;
+                
+                case EDGE:
+                    R[i][j] = G[i][j] = B[i][j] = (j < N/2) ? 0.0f : 255.0f;
+                    break;
+                
+                case X_GRADIENT:
+                    R[i][j] = G[i][j] = B[i][j] = static_cast<float>(j * 255 / (N - 1));
+                    break;
+                
+                case Y_GRADIENT:
+                    R[i][j] = G[i][j] = B[i][j] = static_cast<float>(i * 255 / (N - 1));
+                    break;
+                
+                default:
+                    R[i][j] = G[i][j] = B[i][j] = 0.0f;
+                    break;
+            }
+        }
+    }
 }
 
-float gradient_pattern(int x, int y, float angle, float scale) {
-    float nx = cos(angle) * x + sin(angle) * y;
-    return scale * nx / N;
-}
-
-float checkerboard_pattern(int x, int y, int check_size) {
-    return ((x / check_size) % 2 == (y / check_size) % 2) ? 1.0f : -1.0f;
-}
-
-float edge_pattern(int x, int y, float angle, float sharpness) {
-    float nx = cos(angle) * x + sin(angle) * y;
-    return 128.0f * (1.0f + tanh(sharpness * (nx - N/2)));
-}
-
-float circle_pattern(int x, int y, float cx, float cy, float radius) {
-    float dx = x - cx;
-    float dy = y - cy;
-    float distance = std::sqrt(dx*dx + dy*dy);
-    return (distance < radius) ? 1.0f : -1.0f;
-}
-
-float frequency_specific_pattern(int x, int y, int freq_x, int freq_y) {
-    // Creates a pattern with specific frequency components
-    return std::cos(M_PI * freq_x * x / N) * std::cos(M_PI * freq_y * y / N);
-}
-
-float texture_pattern(int x, int y, unsigned int seed) {
-    // Simple Perlin-like noise
-    float nx = x / static_cast<float>(N);
-    float ny = y / static_cast<float>(N);
-    
-    // Hash function for pseudo-random values
-    auto hash = [](float x, float y, unsigned int seed) -> float {
-        unsigned int h = seed ^ 
-                        static_cast<unsigned int>(x * 374761393) ^ 
-                        static_cast<unsigned int>(y * 668265263);
-        h = (h ^ (h >> 13)) * 1274126177;
-        return (h & 0xFFFFFF) / static_cast<float>(0xFFFFFF) * 2.0f - 1.0f;
-    };
-    
-    // Bilinear interpolation
-    int ix = static_cast<int>(nx * 4);
-    int iy = static_cast<int>(ny * 4);
-    float fx = nx * 4 - ix;
-    float fy = ny * 4 - iy;
-    
-    float v00 = hash(ix, iy, seed);
-    float v10 = hash(ix+1, iy, seed);
-    float v01 = hash(ix, iy+1, seed);
-    float v11 = hash(ix+1, iy+1, seed);
-    
-    float wx = fx * fx * (3 - 2 * fx);
-    float wy = fy * fy * (3 - 2 * fy);
-    
-    float vx0 = v00 + wx * (v10 - v00);
-    float vx1 = v01 + wx * (v11 - v01);
-    
-    return vx0 + wy * (vx1 - vx0);
+// 打印帮助信息
+void print_help(const char* prog_name) {
+    std::cerr << "Usage: " << prog_name << " <num_samples> [options]" << std::endl;
+    std::cerr << "Options:" << std::endl;
+    std::cerr << "  --mode=<mode_num>   Specify test mode (default: 0)" << std::endl;
+    std::cerr << "                      0: Read from file (input_R/G/B.mem)" << std::endl;
+    std::cerr << "                      1: All ones" << std::endl;
+    std::cerr << "                      2: All same value (requires --value)" << std::endl;
+    std::cerr << "                      3: Ramp (each row increases by 32)" << std::endl;
+    std::cerr << "                      4: Checkerboard (0/255 pattern)" << std::endl;
+    std::cerr << "                      5: Edge (left half 0, right half 255)" << std::endl;
+    std::cerr << "                      6: X-gradient (0-255 horizontally)" << std::endl;
+    std::cerr << "                      7: Y-gradient (0-255 vertically)" << std::endl;
+    std::cerr << "  --value=<n>         Value to use for ALL_VALUE mode" << std::endl;
+    std::cerr << "  --write-rgb         Also write generated RGB data to files" << std::endl;
+    std::cerr << "  --help              Show this help message" << std::endl;
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <num_samples>" << std::endl;
+    if (argc < 2) {
+        print_help(argv[0]);
         return 1;
     }
 
+    // 解析参数
     int num_samples = std::stoi(argv[1]);
+    int value = 128;
+    bool write_rgb = true;
 
-    std::ofstream fout_r("input_R.mem");
-    std::ofstream fout_g("input_G.mem");
-    std::ofstream fout_b("input_B.mem");
-    std::ofstream fout_y("expected_Y_output.mem");
-    std::ofstream fout_cb("expected_Cb_output.mem");
-    std::ofstream fout_cr("expected_Cr_output.mem");
+    for (int i = 2; i < argc; ++i) {
+        std::string arg = argv[i];
+        if (arg.substr(0, 7) == "--mode=") {
+            int mode_num = std::stoi(arg.substr(7));
+            if (mode_num >= 0 && mode_num <= 7) {
+                mode = static_cast<TestMode>(mode_num);
+            } else {
+                std::cerr << "Error: Invalid mode number: " << mode_num << std::endl;
+                print_help(argv[0]);
+                return 1;
+            }
+        } else if (arg.substr(0, 8) == "--value=") {
+            value = std::stoi(arg.substr(8));
+            if (value < 0 || value > 255) {
+                std::cerr << "Error: Value must be 0-255, got: " << value << std::endl;
+                return 1;
+            }
+        } else if (arg == "--write-rgb") {
+            write_rgb = true;
+        } else if (arg == "--help") {
+            print_help(argv[0]);
+            return 0;
+        } else {
+            std::cerr << "Error: Unknown option: " << arg << std::endl;
+            print_help(argv[0]);
+            return 1;
+        }
+    }
 
-    if (!fout_r || !fout_g || !fout_b || !fout_y || !fout_cb || !fout_cr) {
+    // 打开输出文件
+    std::ofstream fout_y_raw("expected_Y_raw.mem");
+    std::ofstream fout_cb_raw("expected_Cb_raw.mem");
+    std::ofstream fout_cr_raw("expected_Cr_raw.mem");
+    
+    std::ofstream fout_y_dct("expected_Y_dct.mem");
+    std::ofstream fout_cb_dct("expected_Cb_dct.mem");
+    std::ofstream fout_cr_dct("expected_Cr_dct.mem");
+
+    std::ofstream fout_r, fout_g, fout_b;
+    if (write_rgb && mode != FROM_FILE) {
+        fout_r.open("input_R.mem");
+        fout_g.open("input_G.mem");
+        fout_b.open("input_B.mem");
+        
+        if (!fout_r || !fout_g || !fout_b) {
+            std::cerr << "Error opening RGB output files." << std::endl;
+            return 1;
+        }
+    }
+
+    if (!fout_y_raw || !fout_cb_raw || !fout_cr_raw || 
+        !fout_y_dct || !fout_cb_dct || !fout_cr_dct) {
         std::cerr << "Error opening output files." << std::endl;
         return 1;
     }
 
+    // 从文件读取或生成输入数据
+    std::ifstream fin_r, fin_g, fin_b;
+    if (mode == FROM_FILE) {
+        fin_r.open("input_R.mem");
+        fin_g.open("input_G.mem");
+        fin_b.open("input_B.mem");
+        
+        if (!fin_r || !fin_g || !fin_b) {
+            std::cerr << "Error opening input files." << std::endl;
+            return 1;
+        }
+    }
+    
+    // 初始化DCT系数矩阵
     double dct_coeffs[N][N];
-    load_dct_coeff_matrix("dct_coeff_matrix.mem", dct_coeffs);
+    init_dct_coeffs(dct_coeffs);
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(0, 255);
-    std::uniform_real_distribution<float> fdist(0.0f, 1.0f);
-    std::uniform_real_distribution<float> angle_dist(0.0f, 3.14159f);
-    std::uniform_int_distribution<int> pattern_dist(0, 7); // 8 pattern types + mixed
-    std::uniform_int_distribution<int> freq_dist(1, 7);    // For specific frequency testing
-
-    // Generate a distribution of different test patterns
+    // 处理每个样本
     for (int s = 0; s < num_samples; ++s) {
+        float pixel_R[N][N], pixel_G[N][N], pixel_B[N][N];
         float Y[N][N], Cb[N][N], Cr[N][N];
         
-        // Force specific pattern types at regular intervals to ensure good coverage
-        int pattern_type;
-        if (s < 8) {
-            // First 8 samples: one of each pattern type
-            pattern_type = s;
-        } else if (s % 10 == 0) {
-            // Every 10th sample: random frequency-specific pattern
-            pattern_type = 6;
-        } else if (s % 5 == 0) {
-            // Every 5th sample: mixed patterns
-            pattern_type = 7;
+        if (mode == FROM_FILE) {
+            // 从文件读取RGB数据
+            std::string hex;
+            for (int i = 0; i < N; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    fin_r >> hex;
+                    pixel_R[i][j] = std::stoul(hex, nullptr, 16);
+                    
+                    fin_g >> hex;
+                    pixel_G[i][j] = std::stoul(hex, nullptr, 16);
+                    
+                    fin_b >> hex;
+                    pixel_B[i][j] = std::stoul(hex, nullptr, 16);
+                }
+            }
         } else {
-            // Otherwise random pattern
-            pattern_type = pattern_dist(gen);
+            // 生成测试模式
+            generate_test_block(pixel_R, pixel_G, pixel_B, mode, value);
+            
+            // 如果需要，写入生成的RGB数据
+            if (write_rgb) {
+                for (int i = 0; i < N; ++i) {
+                    for (int j = 0; j < N; ++j) {
+                        uint8_t r = static_cast<uint8_t>(pixel_R[i][j]);
+                        uint8_t g = static_cast<uint8_t>(pixel_G[i][j]);
+                        uint8_t b = static_cast<uint8_t>(pixel_B[i][j]);
+                        
+                        fout_r << std::hex << std::uppercase << std::setw(2) << std::setfill('0')
+                              << static_cast<int>(r) << std::endl;
+                        fout_g << std::hex << std::uppercase << std::setw(2) << std::setfill('0')
+                              << static_cast<int>(g) << std::endl;
+                        fout_b << std::hex << std::uppercase << std::setw(2) << std::setfill('0')
+                              << static_cast<int>(b) << std::endl;
+                    }
+                }
+            }
         }
         
-        // Pattern parameters
-        float angle = angle_dist(gen);
-        float freq_x = fdist(gen) * 0.8f + 0.1f;
-        float freq_y = fdist(gen) * 0.8f + 0.1f;
-        int check_size = 1 + gen() % 4;
-        float sharpness = 0.5f + fdist(gen) * 2.0f;
-        float cx = fdist(gen) * N;
-        float cy = fdist(gen) * N;
-        float radius = 1.0f + fdist(gen) * (N/2 - 1.0f);
-        int specific_freq_x = freq_dist(gen);
-        int specific_freq_y = freq_dist(gen);
-        unsigned int texture_seed = gen();
-        
-        // Base/offset values for each channel to create color variation
-        float base_r = 128.0f;  // Centered around middle value
-        float base_g = 128.0f;
-        float base_b = 128.0f;
-        float scale_r = 50.0f + fdist(gen) * 100.0f;
-        float scale_g = 50.0f + fdist(gen) * 100.0f;
-        float scale_b = 50.0f + fdist(gen) * 100.0f;
-        
-        // For mixed patterns
-        int secondary_pattern = (pattern_type + 1 + gen() % 6) % 7;
-        float mix_ratio = 0.3f + fdist(gen) * 0.4f; // 0.3 to 0.7
-        
+        // RGB转YCbCr并输出原始结果
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
-                // Generate a structured pattern
-                float pattern_val = 0.0f;
+                // 进行RGB到YCbCr转换
+                rgb2ycbcr(pixel_R[i][j], pixel_G[i][j], pixel_B[i][j], 
+                          Y[i][j], Cb[i][j], Cr[i][j]);
                 
-                auto apply_pattern = [&](int ptype) -> float {
-                    switch (ptype) {
-                        case 0: // Sine wave pattern
-                            return sine_pattern(i, j, freq_x, freq_y, 1.0f);
-                        case 1: // Gradient pattern
-                            return gradient_pattern(i, j, angle, 1.0f);
-                        case 2: // Checkerboard pattern
-                            return checkerboard_pattern(i, j, check_size);
-                        case 3: // Edge pattern
-                            return edge_pattern(i, j, angle, sharpness);
-                        case 4: // Circle pattern
-                            return circle_pattern(i, j, cx, cy, radius);
-                        case 5: // Texture pattern
-                            return texture_pattern(i, j, texture_seed);
-                        case 6: // Frequency specific pattern
-                            return frequency_specific_pattern(i, j, specific_freq_x, specific_freq_y);
-                        default:
-                            return 0.0f;
-                    }
-                };
-                
-                if (pattern_type == 7) {
-                    // Mixed pattern mode
-                    pattern_val = mix_ratio * apply_pattern(pattern_dist(gen)) + 
-                                  (1.0f - mix_ratio) * apply_pattern(secondary_pattern);
-                } else {
-                    pattern_val = apply_pattern(pattern_type);
-                }
-                
-                // Apply pattern to create RGB values with realistic variation
-                uint8_t R = clamp(static_cast<int>(base_r + scale_r * pattern_val), 0, 255);
-                uint8_t G = clamp(static_cast<int>(base_g + scale_g * pattern_val), 0, 255);
-                uint8_t B = clamp(static_cast<int>(base_b + scale_b * pattern_val), 0, 255);
+                // 输出原始YCbCr结果
+                Fix y_fixed(Y[i][j]);
+                Fix cb_fixed(Cb[i][j]);
+                Fix cr_fixed(Cr[i][j]);
 
-                fout_r << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << static_cast<int>(R) << std::endl;
-                fout_g << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << static_cast<int>(G) << std::endl;
-                fout_b << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << static_cast<int>(B) << std::endl;
-
-                rgb2ycbcr(R, G, B, Y[i][j], Cb[i][j], Cr[i][j]);
+                
+                
+                fout_y_raw << std::hex << std::uppercase << std::setw(8) << std::setfill('0')
+                       << static_cast<uint32_t>(y_fixed.raw()) << std::endl;
+                fout_cb_raw << std::hex << std::uppercase << std::setw(8) << std::setfill('0')
+                        << static_cast<uint32_t>(cb_fixed.raw()) << std::endl;
+                fout_cr_raw << std::hex << std::uppercase << std::setw(8) << std::setfill('0')
+                        << static_cast<uint32_t>(cr_fixed.raw()) << std::endl;
             }
         }
-
-        auto process_channel = [&](float mat[N][N], const uint8_t qtable[N][N], std::ofstream& fout) {
-            float temp[N][N], dct_out[N][N], quant[N][N];
-            for (int i = 0; i < N; ++i)
-                dct_1d(mat[i], temp[i], dct_coeffs);
+        
+        // 计算DCT变换
+        float Y_temp[N][N], Cb_temp[N][N], Cr_temp[N][N];
+        float Y_dct[N][N], Cb_dct[N][N], Cr_dct[N][N];
+        
+        // 首先对行进行DCT
+        for (int i = 0; i < N; ++i) {
+            dct_1d(Y[i], Y_temp[i], dct_coeffs);
+            dct_1d(Cb[i], Cb_temp[i], dct_coeffs);
+            dct_1d(Cr[i], Cr_temp[i], dct_coeffs);
+        }
+        
+        // 然后对列进行DCT
+        for (int j = 0; j < N; ++j) {
+            float Y_col[N], Cb_col[N], Cr_col[N];
+            float Y_dct_col[N], Cb_dct_col[N], Cr_dct_col[N];
+            
+            for (int i = 0; i < N; ++i) {
+                Y_col[i] = Y_temp[i][j];
+                Cb_col[i] = Cb_temp[i][j];
+                Cr_col[i] = Cr_temp[i][j];
+            }
+            
+            dct_1d(Y_col, Y_dct_col, dct_coeffs);
+            dct_1d(Cb_col, Cb_dct_col, dct_coeffs);
+            dct_1d(Cr_col, Cr_dct_col, dct_coeffs);
+            
+            for (int i = 0; i < N; ++i) {
+                Y_dct[i][j] = Y_dct_col[i];
+                Cb_dct[i][j] = Cb_dct_col[i];
+                Cr_dct[i][j] = Cr_dct_col[i];
+            }
+        }
+        
+        // 输出DCT结果
+        for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
-                float col_in[N], col_out[N];
-                for (int i = 0; i < N; ++i)
-                    col_in[i] = temp[i][j];
-                dct_1d(col_in, col_out, dct_coeffs);
-                for (int i = 0; i < N; ++i)
-                    dct_out[i][j] = col_out[i];
+                Fix y_dct_fixed(Y_dct[i][j]);
+                Fix cb_dct_fixed(Cb_dct[i][j]);
+                Fix cr_dct_fixed(Cr_dct[i][j]);
+                
+                fout_y_dct << std::hex << std::uppercase << std::setw(8) << std::setfill('0')
+                       << static_cast<uint32_t>(y_dct_fixed.raw()) << std::endl;
+                fout_cb_dct << std::hex << std::uppercase << std::setw(8) << std::setfill('0')
+                        << static_cast<uint32_t>(cb_dct_fixed.raw()) << std::endl;
+                fout_cr_dct << std::hex << std::uppercase << std::setw(8) << std::setfill('0')
+                        << static_cast<uint32_t>(cr_dct_fixed.raw()) << std::endl;
             }
-            for (int i = 0; i < N; ++i)
-                for (int j = 0; j < N; ++j)
-                    quant[i][j] = dct_out[i][j] / static_cast<float>(qtable[i][j]);
-
-            float flat[64];
-            for (int i = 0; i < N; ++i)
-                for (int j = 0; j < N; ++j)
-                    flat[i * N + j] = quant[i][j];
-
-            for (int i = 0; i < 64; ++i) {
-                Fix f(flat[zigzag_order[i]]);
-                fout << std::hex << std::uppercase << std::setw(8) << std::setfill('0')
-                     << static_cast<uint32_t>(f.raw()) << std::endl;
-            }
-        };
-
-        process_channel(Y,  luma_table,   fout_y);
-        process_channel(Cb, chroma_table, fout_cb);
-        process_channel(Cr, chroma_table, fout_cr);
+        }
     }
 
-    fout_r.close();
-    fout_g.close();
-    fout_b.close();
-    fout_y.close();
-    fout_cb.close();
-    fout_cr.close();
+    // 关闭所有文件
+    if (mode == FROM_FILE) {
+        fin_r.close();
+        fin_g.close();
+        fin_b.close();
+    }
+    
+    if (write_rgb && mode != FROM_FILE) {
+        fout_r.close();
+        fout_g.close();
+        fout_b.close();
+    }
+    
+    fout_y_raw.close();
+    fout_cb_raw.close();
+    fout_cr_raw.close();
+    
+    fout_y_dct.close();
+    fout_cb_dct.close();
+    fout_cr_dct.close();
 
-    std::cout << "✅ Generated " << num_samples << " blocks from RGB → Zigzag (quantized) pipeline." << std::endl;
+    // 输出结果信息
+    std::cout << "✅ Generated expected results for " << num_samples << " blocks:" << std::endl;
+    if (mode != FROM_FILE) {
+        std::cout << "   Mode: ";
+        switch (mode) {
+            case ALL_ONES:      std::cout << "全1模式"; break;
+            case ALL_VALUE:     std::cout << "全" << value << "模式"; break;
+            case RAMP:          std::cout << "渐变模式"; break;
+            case CHECKERBOARD:  std::cout << "棋盘格模式"; break;
+            case EDGE:          std::cout << "边缘模式"; break;
+            case X_GRADIENT:    std::cout << "X渐变模式"; break;
+            case Y_GRADIENT:    std::cout << "Y渐变模式"; break;
+            default:            std::cout << "未知模式"; break;
+        }
+        std::cout << std::endl;
+        
+        if (write_rgb) {
+            std::cout << "   RGB数据: input_R/G/B.mem" << std::endl;
+        }
+    }
+    std::cout << "   YCbCr Raw: expected_Y/Cb/Cr_raw.mem" << std::endl;
+    std::cout << "   DCT: expected_Y/Cb/Cr_dct.mem" << std::endl;
     return 0;
-}
+} 

@@ -35,6 +35,18 @@ const int zigzag_order[64] = {
     35, 36, 48, 49, 57, 58, 62, 63
 };
 
+// 测试模式类型
+enum TestMode {
+    FROM_FILE = 0,   // 从文件读取RGB数据
+    ALL_ONES,        // 所有RGB值为1
+    ALL_VALUE,       // 所有RGB值为指定值n
+    RAMP,            // 渐变模式(X方向递增)
+    CHECKERBOARD,    // 棋盘格模式
+    EDGE,            // 边缘模式(一半0，一半255)
+    X_GRADIENT,      // X方向渐变
+    Y_GRADIENT,      // Y方向渐变
+};
+
 // RGB到YCbCr转换函数 - 与硬件中的公式保持一致
 void rgb2ycbcr(float R, float G, float B, float &Y, float &Cb, float &Cr) {
     Y  =  0.299f * R + 0.587f * G + 0.114f * B - 128.0f;
@@ -42,22 +54,32 @@ void rgb2ycbcr(float R, float G, float B, float &Y, float &Cb, float &Cr) {
     Cr =  0.5f * R - 0.418688f * G - 0.081312f * B;
 }
 
-// 加载DCT系数矩阵 - 从文件中读取硬件使用的固定点系数
-void load_dct_coeff_matrix(const std::string& filename, double coeffs[N][N]) {
-    std::ifstream fin(filename);
-    if (!fin) {
-        std::cerr << "Error: Cannot open DCT coeff file: " << filename << std::endl;
-        exit(1);
+// 初始化标准DCT系数矩阵
+void init_dct_coeffs(double coeffs[N][N]) {
+    // 标准DCT系数计算: C(i,j) = α(i) * α(j) * cos((2*j+1)*i*π/16)
+    // 其中: α(0) = 1/√2, α(i) = 1 for i > 0
+    
+    double alpha[N];
+    alpha[0] = 1.0 / sqrt(2.0);
+    for (int i = 1; i < N; i++) {
+        alpha[i] = 1.0;
     }
-    std::string hex;
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < N; ++j) {
-            fin >> hex;
-            uint32_t raw = std::stoul(hex, nullptr, 16);
-            Fix f = Fix::fromRaw(static_cast<int32_t>(raw));
-            coeffs[i][j] = f.toFloat();
+    
+    // 构建系数矩阵
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            coeffs[i][j] = alpha[i] * alpha[j] * 
+                          cos((2.0 * j + 1.0) * i * M_PI / (2.0 * N));
         }
-    fin.close();
+    }
+    
+    // 归一化系数
+    double norm_factor = 0.25; // 归一化因子，可根据实际硬件实现调整
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            coeffs[i][j] *= norm_factor;
+        }
+    }
 }
 
 // 1D DCT变换
@@ -70,14 +92,108 @@ void dct_1d(const float in[N], float out[N], const double coeffs[N][N]) {
     }
 }
 
+// 生成测试块的RGB数据
+void generate_test_block(float R[N][N], float G[N][N], float B[N][N], 
+                         TestMode mode, int value = 0) {
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+            switch (mode) {
+                case ALL_ONES:
+                    R[i][j] = G[i][j] = B[i][j] = 1.0f;
+                    break;
+                
+                case ALL_VALUE:
+                    R[i][j] = G[i][j] = B[i][j] = static_cast<float>(value);
+                    break;
+                
+                case RAMP:
+                    R[i][j] = G[i][j] = B[i][j] = static_cast<float>(j * 32);
+                    break;
+                
+                case CHECKERBOARD:
+                    R[i][j] = G[i][j] = B[i][j] = ((i + j) % 2 == 0) ? 0.0f : 255.0f;
+                    break;
+                
+                case EDGE:
+                    R[i][j] = G[i][j] = B[i][j] = (j < N/2) ? 0.0f : 255.0f;
+                    break;
+                
+                case X_GRADIENT:
+                    R[i][j] = G[i][j] = B[i][j] = static_cast<float>(j * 255 / (N - 1));
+                    break;
+                
+                case Y_GRADIENT:
+                    R[i][j] = G[i][j] = B[i][j] = static_cast<float>(i * 255 / (N - 1));
+                    break;
+                
+                default:
+                    R[i][j] = G[i][j] = B[i][j] = 0.0f;
+                    break;
+            }
+        }
+    }
+}
+
+// 打印帮助信息
+void print_help(const char* prog_name) {
+    std::cerr << "Usage: " << prog_name << " <num_samples> [options]" << std::endl;
+    std::cerr << "Options:" << std::endl;
+    std::cerr << "  --mode=<mode_num>   Specify test mode (default: 0)" << std::endl;
+    std::cerr << "                      0: Read from file (input_R/G/B.mem)" << std::endl;
+    std::cerr << "                      1: All ones" << std::endl;
+    std::cerr << "                      2: All same value (requires --value)" << std::endl;
+    std::cerr << "                      3: Ramp (each row increases by 32)" << std::endl;
+    std::cerr << "                      4: Checkerboard (0/255 pattern)" << std::endl;
+    std::cerr << "                      5: Edge (left half 0, right half 255)" << std::endl;
+    std::cerr << "                      6: X-gradient (0-255 horizontally)" << std::endl;
+    std::cerr << "                      7: Y-gradient (0-255 vertically)" << std::endl;
+    std::cerr << "  --value=<n>         Value to use for ALL_VALUE mode" << std::endl;
+    std::cerr << "  --write-rgb         Also write generated RGB data to files" << std::endl;
+    std::cerr << "  --help              Show this help message" << std::endl;
+}
+
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <num_samples>" << std::endl;
+    if (argc < 2) {
+        print_help(argv[0]);
         return 1;
     }
 
+    // 解析参数
     int num_samples = std::stoi(argv[1]);
+    TestMode mode = FROM_FILE;
+    int value = 128;
+    bool write_rgb = false;
 
+    for (int i = 2; i < argc; ++i) {
+        std::string arg = argv[i];
+        if (arg.substr(0, 7) == "--mode=") {
+            int mode_num = std::stoi(arg.substr(7));
+            if (mode_num >= 0 && mode_num <= 7) {
+                mode = static_cast<TestMode>(mode_num);
+            } else {
+                std::cerr << "Error: Invalid mode number: " << mode_num << std::endl;
+                print_help(argv[0]);
+                return 1;
+            }
+        } else if (arg.substr(0, 8) == "--value=") {
+            value = std::stoi(arg.substr(8));
+            if (value < 0 || value > 255) {
+                std::cerr << "Error: Value must be 0-255, got: " << value << std::endl;
+                return 1;
+            }
+        } else if (arg == "--write-rgb") {
+            write_rgb = true;
+        } else if (arg == "--help") {
+            print_help(argv[0]);
+            return 0;
+        } else {
+            std::cerr << "Error: Unknown option: " << arg << std::endl;
+            print_help(argv[0]);
+            return 1;
+        }
+    }
+
+    // 打开输出文件
     std::ofstream fout_y_raw("expected_Y_raw.mem");
     std::ofstream fout_cb_raw("expected_Cb_raw.mem");
     std::ofstream fout_cr_raw("expected_Cr_raw.mem");
@@ -86,43 +202,87 @@ int main(int argc, char* argv[]) {
     std::ofstream fout_cb_dct("expected_Cb_dct.mem");
     std::ofstream fout_cr_dct("expected_Cr_dct.mem");
 
+    std::ofstream fout_r, fout_g, fout_b;
+    if (write_rgb && mode != FROM_FILE) {
+        fout_r.open("input_R.mem");
+        fout_g.open("input_G.mem");
+        fout_b.open("input_B.mem");
+        
+        if (!fout_r || !fout_g || !fout_b) {
+            std::cerr << "Error opening RGB output files." << std::endl;
+            return 1;
+        }
+    }
+
     if (!fout_y_raw || !fout_cb_raw || !fout_cr_raw || 
         !fout_y_dct || !fout_cb_dct || !fout_cr_dct) {
         std::cerr << "Error opening output files." << std::endl;
         return 1;
     }
 
-    // 加载RGB输入数据
-    std::ifstream fin_r("input_R.mem");
-    std::ifstream fin_g("input_G.mem");
-    std::ifstream fin_b("input_B.mem");
-    
-    if (!fin_r || !fin_g || !fin_b) {
-        std::cerr << "Error opening input files." << std::endl;
-        return 1;
+    // 从文件读取或生成输入数据
+    std::ifstream fin_r, fin_g, fin_b;
+    if (mode == FROM_FILE) {
+        fin_r.open("input_R.mem");
+        fin_g.open("input_G.mem");
+        fin_b.open("input_B.mem");
+        
+        if (!fin_r || !fin_g || !fin_b) {
+            std::cerr << "Error opening input files." << std::endl;
+            return 1;
+        }
     }
     
+    // 初始化DCT系数矩阵
     double dct_coeffs[N][N];
-    load_dct_coeff_matrix("dct_coeff_matrix.mem", dct_coeffs);
+    init_dct_coeffs(dct_coeffs);
 
     // 处理每个样本
     for (int s = 0; s < num_samples; ++s) {
         float pixel_R[N][N], pixel_G[N][N], pixel_B[N][N];
         float Y[N][N], Cb[N][N], Cr[N][N];
         
-        // 读取RGB数据
-        std::string hex;
+        if (mode == FROM_FILE) {
+            // 从文件读取RGB数据
+            std::string hex;
+            for (int i = 0; i < N; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    fin_r >> hex;
+                    pixel_R[i][j] = std::stoul(hex, nullptr, 16);
+                    
+                    fin_g >> hex;
+                    pixel_G[i][j] = std::stoul(hex, nullptr, 16);
+                    
+                    fin_b >> hex;
+                    pixel_B[i][j] = std::stoul(hex, nullptr, 16);
+                }
+            }
+        } else {
+            // 生成测试模式
+            generate_test_block(pixel_R, pixel_G, pixel_B, mode, value);
+            
+            // 如果需要，写入生成的RGB数据
+            if (write_rgb) {
+                for (int i = 0; i < N; ++i) {
+                    for (int j = 0; j < N; ++j) {
+                        uint8_t r = static_cast<uint8_t>(pixel_R[i][j]);
+                        uint8_t g = static_cast<uint8_t>(pixel_G[i][j]);
+                        uint8_t b = static_cast<uint8_t>(pixel_B[i][j]);
+                        
+                        fout_r << std::hex << std::uppercase << std::setw(2) << std::setfill('0')
+                              << static_cast<int>(r) << std::endl;
+                        fout_g << std::hex << std::uppercase << std::setw(2) << std::setfill('0')
+                              << static_cast<int>(g) << std::endl;
+                        fout_b << std::hex << std::uppercase << std::setw(2) << std::setfill('0')
+                              << static_cast<int>(b) << std::endl;
+                    }
+                }
+            }
+        }
+        
+        // RGB转YCbCr并输出原始结果
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
-                fin_r >> hex;
-                pixel_R[i][j] = std::stoul(hex, nullptr, 16);
-                
-                fin_g >> hex;
-                pixel_G[i][j] = std::stoul(hex, nullptr, 16);
-                
-                fin_b >> hex;
-                pixel_B[i][j] = std::stoul(hex, nullptr, 16);
-                
                 // 进行RGB到YCbCr转换
                 rgb2ycbcr(pixel_R[i][j], pixel_G[i][j], pixel_B[i][j], 
                           Y[i][j], Cb[i][j], Cr[i][j]);
@@ -174,7 +334,7 @@ int main(int argc, char* argv[]) {
             }
         }
         
-        // 按照行序输出DCT结果
+        // 输出DCT结果
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
                 Fix y_dct_fixed(Y_dct[i][j]);
@@ -191,9 +351,18 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    fin_r.close();
-    fin_g.close();
-    fin_b.close();
+    // 关闭所有文件
+    if (mode == FROM_FILE) {
+        fin_r.close();
+        fin_g.close();
+        fin_b.close();
+    }
+    
+    if (write_rgb && mode != FROM_FILE) {
+        fout_r.close();
+        fout_g.close();
+        fout_b.close();
+    }
     
     fout_y_raw.close();
     fout_cb_raw.close();
@@ -203,7 +372,26 @@ int main(int argc, char* argv[]) {
     fout_cb_dct.close();
     fout_cr_dct.close();
 
+    // 输出结果信息
     std::cout << "✅ Generated expected results for " << num_samples << " blocks:" << std::endl;
+    if (mode != FROM_FILE) {
+        std::cout << "   Mode: ";
+        switch (mode) {
+            case ALL_ONES:      std::cout << "全1模式"; break;
+            case ALL_VALUE:     std::cout << "全" << value << "模式"; break;
+            case RAMP:          std::cout << "渐变模式"; break;
+            case CHECKERBOARD:  std::cout << "棋盘格模式"; break;
+            case EDGE:          std::cout << "边缘模式"; break;
+            case X_GRADIENT:    std::cout << "X渐变模式"; break;
+            case Y_GRADIENT:    std::cout << "Y渐变模式"; break;
+            default:            std::cout << "未知模式"; break;
+        }
+        std::cout << std::endl;
+        
+        if (write_rgb) {
+            std::cout << "   RGB数据: input_R/G/B.mem" << std::endl;
+        }
+    }
     std::cout << "   YCbCr Raw: expected_Y/Cb/Cr_raw.mem" << std::endl;
     std::cout << "   DCT: expected_Y/Cb/Cr_dct.mem" << std::endl;
     return 0;
