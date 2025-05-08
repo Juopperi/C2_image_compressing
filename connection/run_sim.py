@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import sys
 
-testbench_name = "tb_jpeg_compression_pipeline"
+testbench_name = "tb_wrapper"
 
 # -----------------------------
 # 解析参数
@@ -19,8 +19,8 @@ should_generate = len(sys.argv) > 2 and sys.argv[2].lower() == "gen"
 # 源码路径配置
 # -----------------------------
 search_dirs = [
-    "rtl",
-    "tb"
+    "rtl/new",
+    "tb/rtl"
 ]
 
 valid_extensions = {'.v', '.sv', '.vhd', '.vhdl'}

@@ -14,6 +14,7 @@ constexpr int N = 8;
 
 using Fix = FixedPoint<int32_t, 16>;
 
+// Zigzag order not needed for wrapper module test
 const int zigzag_order[64] = {
      0,  1,  5,  6, 14, 15, 27, 28,
      2,  4,  7, 13, 16, 26, 29, 42,
@@ -29,10 +30,6 @@ void rgb2ycbcr(float R, float G, float B, float &Y, float &Cb, float &Cr) {
     Y  =  0.299f * R + 0.587f * G + 0.114f * B - 128.0f;
     Cb = -0.168736f * R - 0.331264f * G + 0.5f * B ;
     Cr =  0.5f * R - 0.418688f * G - 0.081312f * B ;
-    
-    // Y  =  0.299f * R + 0.587f * G + 0.114f * B ;
-    // Cb = -0.168736f * R - 0.331264f * G + 0.5f * B + 128.0f;
-    // Cr =  0.5f * R - 0.418688f * G - 0.081312f * B + 128.0f;
 }
 
 void load_dct_coeff_matrix(const std::string& filename, double coeffs[N][N]) {
@@ -61,6 +58,106 @@ void dct_1d(const float in[N], float out[N], const double coeffs[N][N]) {
     }
 }
 
+// Generate structured test patterns instead of random data
+void generate_test_pattern(uint8_t pattern_type, uint8_t R_block[N*N], uint8_t G_block[N*N], uint8_t B_block[N*N]) {
+    // Initialize with base values
+    for (int i = 0; i < N*N; ++i) {
+        R_block[i] = 128;
+        G_block[i] = 128;
+        B_block[i] = 128;
+    }
+    
+    switch (pattern_type % 6) {
+        case 0: {
+            // Gradient pattern - horizontal
+            for (int i = 0; i < N; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    int idx = i*N + j;
+                    R_block[idx] = 50 + j * 20; 
+                    G_block[idx] = 50 + j * 20;
+                    B_block[idx] = 50 + j * 20;
+                }
+            }
+            break;
+        }
+        case 1: {
+            // Gradient pattern - vertical
+            for (int i = 0; i < N; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    int idx = i*N + j;
+                    R_block[idx] = 50 + i * 20;
+                    G_block[idx] = 50 + i * 20;
+                    B_block[idx] = 50 + i * 20;
+                }
+            }
+            break;
+        }
+        case 2: {
+            // Checker pattern
+            for (int i = 0; i < N; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    int idx = i*N + j;
+                    if ((i+j) % 2 == 0) {
+                        R_block[idx] = 220;
+                        G_block[idx] = 220;
+                        B_block[idx] = 220;
+                    } else {
+                        R_block[idx] = 50;
+                        G_block[idx] = 50;
+                        B_block[idx] = 50;
+                    }
+                }
+            }
+            break;
+        }
+        case 3: {
+            // Solid colors with different channels
+            for (int i = 0; i < N*N; ++i) {
+                R_block[i] = 220;
+                G_block[i] = 50;
+                B_block[i] = 50;
+            }
+            break;
+        }
+        case 4: {
+            // Center dot pattern
+            for (int i = 0; i < N; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    int idx = i*N + j;
+                    if (i >= 2 && i <= 5 && j >= 2 && j <= 5) {
+                        R_block[idx] = 250;
+                        G_block[idx] = 250;
+                        B_block[idx] = 250;
+                    } else {
+                        R_block[idx] = 50;
+                        G_block[idx] = 50;
+                        B_block[idx] = 50;
+                    }
+                }
+            }
+            break;
+        }
+        case 5: {
+            // Diagonal pattern
+            for (int i = 0; i < N; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    int idx = i*N + j;
+                    if (i == j || i == (N-1-j)) {
+                        R_block[idx] = 250;
+                        G_block[idx] = 250;
+                        B_block[idx] = 250;
+                    } else {
+                        R_block[idx] = 50;
+                        G_block[idx] = 50;
+                        B_block[idx] = 50;
+                    }
+                }
+            }
+            break;
+        }
+    }
+}
+
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         std::cerr << "Usage: " << argv[0] << " <num_samples>" << std::endl;
@@ -73,10 +170,8 @@ int main(int argc, char* argv[]) {
     std::ofstream fout_g("input_G.mem");
     std::ofstream fout_b("input_B.mem");
     std::ofstream fout_y("expected_Y_output.mem");
-    std::ofstream fout_cb("expected_Cb_output.mem");
-    std::ofstream fout_cr("expected_Cr_output.mem");
 
-    if (!fout_r || !fout_g || !fout_b || !fout_y || !fout_cb || !fout_cr) {
+    if (!fout_r || !fout_g || !fout_b || !fout_y) {
         std::cerr << "Error opening output files." << std::endl;
         return 1;
     }
@@ -84,65 +179,72 @@ int main(int argc, char* argv[]) {
     double dct_coeffs[N][N];
     load_dct_coeff_matrix("dct_coeff_matrix.mem", dct_coeffs);
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(0, 255);
-
     for (int s = 0; s < num_samples; ++s) {
+        uint8_t R_block[N*N], G_block[N*N], B_block[N*N];
         float Y[N][N], Cb[N][N], Cr[N][N];
+        
+        // Generate structured test pattern for this block
+        generate_test_pattern(s, R_block, G_block, B_block);
+        
+        // Write RGB values in 8-bit hex format
+        for (int idx = 0; idx < N*N; ++idx) {
+            fout_r << std::hex << std::uppercase << std::setw(2) << std::setfill('0') 
+                   << static_cast<int>(R_block[idx]) << std::endl;
+            fout_g << std::hex << std::uppercase << std::setw(2) << std::setfill('0') 
+                   << static_cast<int>(G_block[idx]) << std::endl;
+            fout_b << std::hex << std::uppercase << std::setw(2) << std::setfill('0') 
+                   << static_cast<int>(B_block[idx]) << std::endl;
+        }
+        
+        // Convert to YCbCr
+        for (int i = 0; i < N; ++i) {
+            for (int j = 0; j < N; ++j) {
+                int idx = i*N + j;
+                rgb2ycbcr(R_block[idx], G_block[idx], B_block[idx], 
+                          Y[i][j], Cb[i][j], Cr[i][j]);
+            }
+        }
+
+        // Process the Y channel only
+        float temp[N][N], dct_out[N][N], quant[N][N];
+        
+        // 2D DCT for Y channel
         for (int i = 0; i < N; ++i)
+            dct_1d(Y[i], temp[i], dct_coeffs);
+        
+        for (int j = 0; j < N; ++j) {
+            float col_in[N], col_out[N];
+            for (int i = 0; i < N; ++i)
+                col_in[i] = temp[i][j];
+            dct_1d(col_in, col_out, dct_coeffs);
+            for (int i = 0; i < N; ++i)
+                dct_out[i][j] = col_out[i];
+        }
+        
+        // Quantization for Y channel
+        for (int i = 0; i < N; ++i)
+            for (int j = 0; j < N; ++j)
+                quant[i][j] = dct_out[i][j] / static_cast<float>(luma_table[i][j]);
+
+        // Output Y values as 16-bit integers in original order
+        for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
-                uint8_t R = dist(gen);
-                uint8_t G = dist(gen);
-                uint8_t B = dist(gen);
-
-                fout_r << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << static_cast<int>(R) << std::endl;
-                fout_g << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << static_cast<int>(G) << std::endl;
-                fout_b << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << static_cast<int>(B) << std::endl;
-
-                rgb2ycbcr(R, G, B, Y[i][j], Cb[i][j], Cr[i][j]);
+                Fix f(quant[i][j]);
+                // Use only the lower 16 bits (integer part) like in the wrapper
+                uint16_t value = static_cast<uint16_t>(f.raw() & 0xFFFF);
+                fout_y << std::hex << std::uppercase << std::setw(4) << std::setfill('0')
+                       << value << std::endl;
             }
-
-        auto process_channel = [&](float mat[N][N], const uint8_t qtable[N][N], std::ofstream& fout) {
-            float temp[N][N], dct_out[N][N], quant[N][N];
-            for (int i = 0; i < N; ++i)
-                dct_1d(mat[i], temp[i], dct_coeffs);
-            for (int j = 0; j < N; ++j) {
-                float col_in[N], col_out[N];
-                for (int i = 0; i < N; ++i)
-                    col_in[i] = temp[i][j];
-                dct_1d(col_in, col_out, dct_coeffs);
-                for (int i = 0; i < N; ++i)
-                    dct_out[i][j] = col_out[i];
-            }
-            for (int i = 0; i < N; ++i)
-                for (int j = 0; j < N; ++j)
-                    quant[i][j] = dct_out[i][j] / static_cast<float>(qtable[i][j]);
-
-            float flat[64];
-            for (int i = 0; i < N; ++i)
-                for (int j = 0; j < N; ++j)
-                    flat[i * N + j] = quant[i][j];
-
-            for (int i = 0; i < 64; ++i) {
-                Fix f(flat[zigzag_order[i]]);
-                fout << std::hex << std::uppercase << std::setw(8) << std::setfill('0')
-                     << static_cast<uint32_t>(f.raw()) << std::endl;
-            }
-        };
-
-        process_channel(Y,  luma_table,   fout_y);
-        process_channel(Cb, chroma_table, fout_cb);
-        process_channel(Cr, chroma_table, fout_cr);
+        }
     }
 
     fout_r.close();
     fout_g.close();
     fout_b.close();
     fout_y.close();
-    fout_cb.close();
-    fout_cr.close();
 
-    std::cout << "✅ Generated " << num_samples << " blocks from RGB → Zigzag (quantized) pipeline." << std::endl;
+    std::cout << "✅ Generated " << num_samples << " structured test patterns for wrapper module." << std::endl;
+    std::cout << "RGB inputs stored in input_R.mem, input_G.mem, input_B.mem" << std::endl;
+    std::cout << "Expected Y output stored in expected_Y_output.mem (16-bit format, original order)" << std::endl;
     return 0;
 }
