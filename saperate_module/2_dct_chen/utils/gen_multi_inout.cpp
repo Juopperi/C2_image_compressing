@@ -10,7 +10,7 @@
 //   chen_2d_dct_input.mem   –  input pixels  (row‑major) 64 words / block
 //   expected_chen_2d_dct_output.mem  –  DCT coeffs using Chen algorithm
 //   expected_chen_2d_dct_output_direct.mem  –  DCT coeffs using direct definition
-//   expected_chen_2d_dct_output_fixed.mem  –  DCT coeffs using fixed-point implementation
+//   expected_direct_2d_dct_output_fixed.mem  –  DCT coeffs using direct fixed-point implementation
 //   Each word is 32‑bit hex of FixedPoint<int32_t,16>
 // -----------------------------------------------------------------------------
 #include <iostream>
@@ -203,6 +203,62 @@ void dct2d_fixed(const Fix in[N][N],
     }
 }
 
+/*--------------------------------------------------
+ * 六、基于 FixedPoint 类的标准 Direct DCT 实现
+ *-------------------------------------------------*/
+void dct1d_direct_fixed(const std::array<Fix, N>& in,
+                        std::array<Fix, N>& out)
+{
+    // 预计算 T 矩阵的定点数表示
+    static Fix T_fixed[N][N];
+    static bool initialized = false;
+    
+    // 初始化 T 矩阵，只需要计算一次
+    if (!initialized) {
+        for (int u = 0; u < N; ++u)
+            for (int x = 0; x < N; ++x)
+                T_fixed[u][x] = Fix(std::cos((2.0 * x + 1.0) * u * PI / (2.0 * N)));
+        initialized = true;
+    }
+    
+    // 计算归一化系数
+    static const Fix sqrt1_N = Fix(std::sqrt(1.0 / N));
+    static const Fix sqrt2_N = Fix(std::sqrt(2.0 / N));
+    
+    for (int u = 0; u < N; ++u) {
+        Fix sum = Fix(0.0);
+        for (int x = 0; x < N; ++x)
+            sum = sum + in[x] * T_fixed[u][x];
+        
+        // 归一化系数
+        if (u == 0)
+            out[u] = sum * sqrt1_N;
+        else
+            out[u] = sum * sqrt2_N;
+    }
+}
+
+// 使用标准直接算法的定点数实现进行二维DCT变换
+void dct2d_direct_fixed(const Fix in[N][N], 
+                        Fix out[N][N])
+{
+    Fix tmp[N][N];
+    std::array<Fix, N> buf_in, buf_out;
+
+    /* 行变换 */
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) buf_in[j] = in[i][j];
+        dct1d_direct_fixed(buf_in, buf_out);
+        for (int j = 0; j < N; ++j) tmp[i][j] = buf_out[j];
+    }
+    /* 列变换 */
+    for (int j = 0; j < N; ++j) {
+        for (int i = 0; i < N; ++i) buf_in[i] = tmp[i][j];
+        dct1d_direct_fixed(buf_in, buf_out);
+        for (int i = 0; i < N; ++i) out[i][j] = buf_out[i];
+    }
+}
+
 // ==============================  MAIN  =======================================
 int main(int argc, char* argv[]) {
     if (argc != 4) {
@@ -225,7 +281,7 @@ int main(int argc, char* argv[]) {
     std::ofstream fin("chen_2d_dct_input.mem");
     std::ofstream fout("expected_chen_2d_dct_output.mem");
     std::ofstream fout_direct("expected_chen_2d_dct_output_direct.mem");
-    std::ofstream fout_fixed("expected_chen_2d_dct_output_fixed.mem");
+    std::ofstream fout_fixed("expected_direct_2d_dct_output_fixed.mem");
 
     // Statistics for numerical consistency verification
     int mismatch_blocks = 0;
@@ -236,6 +292,11 @@ int main(int argc, char* argv[]) {
     int mismatch_float_fixed_blocks = 0;
     int mismatch_float_fixed_values = 0;
     int max_float_fixed_diff = 0;
+    
+    // Statistics for direct float vs direct fixed comparison
+    int mismatch_direct_float_fixed_blocks = 0;
+    int mismatch_direct_float_fixed_values = 0;
+    int max_direct_float_fixed_diff = 0;
 
     if (!fin || !fout || !fout_direct || !fout_fixed) {
         std::cerr << "Cannot open output files." << std::endl;
@@ -254,6 +315,7 @@ int main(int argc, char* argv[]) {
         double output_direct[N][N];
         Fix input_fixed[N][N];
         Fix output_fixed[N][N];
+        Fix output_direct_fixed[N][N];
         
         // Generate random block ------------------------------------------------
         for (int r = 0; r < N; ++r) {
@@ -266,7 +328,8 @@ int main(int argc, char* argv[]) {
         // Compute 2‑D DCT using both methods -----------------------------------
         dct2d(input, output_chen, dct1d_chen);
         dct2d(input, output_direct, dct1d_direct);
-        dct2d_fixed(input_fixed, output_fixed);
+        dct2d_fixed(input_fixed, output_fixed);       // 使用Chen算法的定点数实现
+        dct2d_direct_fixed(input_fixed, output_direct_fixed); // 使用标准算法的定点数实现
 
         // Write input block (row‑major) ---------------------------------------
         for (int r = 0; r < N; ++r)
@@ -292,11 +355,11 @@ int main(int argc, char* argv[]) {
                             << static_cast<uint32_t>(fy.raw()) << std::endl;
             }
             
-        // Write Chen DCT output (fixed point) ---------------------------------
+        // Write Direct DCT output (fixed point) ---------------------------------
         for (int r = 0; r < N; ++r)
             for (int c = 0; c < N; ++c) {
                 fout_fixed << std::hex << std::uppercase << std::setw(8) << std::setfill('0')
-                           << static_cast<uint32_t>(output_fixed[r][c].raw()) << std::endl;
+                           << static_cast<uint32_t>(output_direct_fixed[r][c].raw()) << std::endl;
             }
             
         // === Compare fixed-point results of Chen vs Direct ===
@@ -329,7 +392,7 @@ int main(int argc, char* argv[]) {
             }
         }
         
-        // === Compare floating-point vs fixed-point ===
+        // === Compare floating-point vs fixed-point (Chen) ===
         bool block_has_float_fixed_mismatch = false;
         for (int r = 0; r < N; ++r) {
             for (int c = 0; c < N; ++c) {
@@ -350,11 +413,37 @@ int main(int argc, char* argv[]) {
                     }
                     mismatch_float_fixed_values++;
                     
-                    // 请帮我把现在vs的输出改成下面的形式，8位对齐的十六进制输出
-                    // fout_fixed << std::hex << std::uppercase << std::setw(8) << std::setfill('0')
-                    //            << static_cast<uint32_t>(output_fixed[r][c].raw()) << std::endl;
+                    std::cerr << "Float vs Fixed (Chen) mismatch at block " << blk
+                            << " [" << r << "][" << c << "]: "
+                            << "Float = 0x" << std::hex << std::uppercase << std::setw(8) << std::setfill('0') << f1.raw()
+                            << ", Fixed = 0x" << std::hex << std::uppercase << std::setw(8) << std::setfill('0') << f2.raw()
+                            << ", Diff = 0x" << std::hex << std::uppercase << std::setw(8) << std::setfill('0') << diff << "\n";
+                }
+            }
+        }
+        
+        // === Compare floating-point vs fixed-point (Direct) ===
+        bool block_has_direct_float_fixed_mismatch = false;
+        for (int r = 0; r < N; ++r) {
+            for (int c = 0; c < N; ++c) {
+                Fix f1 = Fix(output_direct[r][c]);
+                Fix f2 = output_direct_fixed[r][c];
+                int32_t diff = std::abs(f1.raw() - f2.raw());
+                
+                // Track maximum difference seen
+                if (diff > max_direct_float_fixed_diff) {
+                    max_direct_float_fixed_diff = diff;
+                }
+
+                // Allow slightly larger error for float vs fixed comparison
+                if (diff > TOLERANCE) {
+                    if (!block_has_direct_float_fixed_mismatch) {
+                        mismatch_direct_float_fixed_blocks++;
+                        block_has_direct_float_fixed_mismatch = true;
+                    }
+                    mismatch_direct_float_fixed_values++;
                     
-                    std::cerr << "Float vs Fixed mismatch at block " << blk
+                    std::cerr << "Float vs Fixed (Direct) mismatch at block " << blk
                             << " [" << r << "][" << c << "]: "
                             << "Float = 0x" << std::hex << std::uppercase << std::setw(8) << std::setfill('0') << f1.raw()
                             << ", Fixed = 0x" << std::hex << std::uppercase << std::setw(8) << std::setfill('0') << f2.raw()
@@ -368,7 +457,7 @@ int main(int argc, char* argv[]) {
               << "   chen_2d_dct_input.mem   (" << WORDS_PER_BLOCK << " × blocks)\n"
               << "   expected_chen_2d_dct_output.mem  (" << WORDS_PER_BLOCK << " × blocks)\n"
               << "   expected_chen_2d_dct_output_direct.mem  (" << WORDS_PER_BLOCK << " × blocks)\n"
-              << "   expected_chen_2d_dct_output_fixed.mem  (" << WORDS_PER_BLOCK << " × blocks)\n";
+              << "   expected_direct_2d_dct_output_fixed.mem  (" << WORDS_PER_BLOCK << " × blocks)\n";
               
     // Print verification summary
     std::cout << "\nNumerical Consistency Verification (Chen vs Direct):\n"
@@ -376,10 +465,15 @@ int main(int argc, char* argv[]) {
               << "   Mismatching values: " << mismatch_values << " / " << (num_blocks * WORDS_PER_BLOCK) << "\n"
               << "   Maximum difference: " << max_diff << " (LSB units)\n";
               
-    std::cout << "\nNumerical Consistency Verification (Float vs Fixed):\n"
+    std::cout << "\nNumerical Consistency Verification (Float vs Fixed Chen):\n"
               << "   Mismatching blocks: " << mismatch_float_fixed_blocks << " / " << num_blocks << "\n"
               << "   Mismatching values: " << mismatch_float_fixed_values << " / " << (num_blocks * WORDS_PER_BLOCK) << "\n"
               << "   Maximum difference: " << max_float_fixed_diff << " (LSB units)\n";
+              
+    std::cout << "\nNumerical Consistency Verification (Float vs Fixed Direct):\n"
+              << "   Mismatching blocks: " << mismatch_direct_float_fixed_blocks << " / " << num_blocks << "\n"
+              << "   Mismatching values: " << mismatch_direct_float_fixed_values << " / " << (num_blocks * WORDS_PER_BLOCK) << "\n"
+              << "   Maximum difference: " << max_direct_float_fixed_diff << " (LSB units)\n";
 
     return 0;
 }
