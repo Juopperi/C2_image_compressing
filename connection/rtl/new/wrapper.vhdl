@@ -12,7 +12,7 @@ entity wrapper is
         R : in std_logic_vector(511 downto 0);
         G : in std_logic_vector(511 downto 0);
         B : in std_logic_vector(511 downto 0);
-        Y_out : out std_logic_vector(1023 downto 0);
+        stored_huffman : out std_logic_vector(1000 downto 0);
         finished : out std_logic
     );
 end wrapper;
@@ -78,7 +78,21 @@ architecture wrapper_arch of wrapper is
         );
     end component zigzag_reorder;
     
-    type t_State is (idle,RGBtoYCbCr,dct,quant_load,quant_read,zigzag,done);
+    component huff_container is 
+        port(
+            clk : in std_logic;
+            reset : in std_logic;
+            start_huffman : in std_logic;
+            Y : in std_logic_vector(1023 downto 0);
+            Cb : in std_logic_vector(1023 downto 0);
+            Cr : in std_logic_vector(1023 downto 0);
+            data : out std_logic;
+            data_valid : out std_logic;
+            finished : out std_logic	
+        );
+    end component huff_container;
+
+    type t_State is (idle,RGBtoYCbCr,dct,quant_load,quant_read,zigzag,huff_load,huff_read,done);
     signal currentState : t_State := idle;
 
     type dct_states is (Y_state_send,Y_state_middle,Y_state_wait,Cb_state_send,Cb_state_wait,Cr_state_send,Cr_state_wait);
@@ -112,6 +126,14 @@ architecture wrapper_arch of wrapper is
 
     signal zigzag_in : std_logic_vector(1023 downto 0);
     signal zigzag_out : std_logic_vector(1023 downto 0);
+
+    signal huff_data_out : std_logic;
+    signal huff_start : std_logic;
+    signal huff_data_valid : std_logic;
+    signal huff_finished : std_logic;
+    signal huff_Y : std_logic_vector(1023 downto 0);
+    signal huff_Cb : std_logic_vector(1023 downto 0);
+    signal huff_Cr : std_logic_vector(1023 downto 0);
 
     begin
 
@@ -161,6 +183,19 @@ architecture wrapper_arch of wrapper is
                 zigzag_out => zigzag_out
             );
         
+        comp_huff : component huff_container
+            port map(
+                clk => clk,
+                reset => rst_n,
+                start_huffman => huff_start,
+                Y => huff_Y,
+                Cb => huff_Cb, 
+                Cr => huff_Cr,
+                data => huff_data_out,
+                data_valid => huff_data_valid,
+                finished => huff_finished
+            );
+
         proc : process(clk)
             variable index : integer := 0;
             variable state : integer := 0;
@@ -287,12 +322,29 @@ architecture wrapper_arch of wrapper is
                             zigzag_in <= Cr;
                         elsif state = 4 then
                             Cr <= zigzag_out;
-                            currentState <= done;
+                            currentState <= huff_load;
                         end if;
                         state := state + 1;
+                    
+                    when huff_load =>
+                        huff_Y <= Y;                           
+                        huff_Cb <= Cb;
+                        huff_Cr <= Cr;
+                        index := 0;
+                        currentState <= huff_read;
 
+                    when huff_read => 
+                        huff_start <= '1';
+                        if huff_finished = '1' then
+                            currentState <= done;
+                        end if;
+
+                        if huff_data_valid = '1' then
+                            stored_huffman(index) <= huff_data_out;
+                            index := index +1;
+                        end if;
+            
                     when done =>
-                        Y_out <= Y;
                         finished <= '1';
                         
                     when others => 
