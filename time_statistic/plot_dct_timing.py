@@ -24,7 +24,7 @@ percentages = {step: [] for step in steps}
 total_times = []
 
 # 读取日志
-with open("PROFILE.TXT", "r") as f:
+with open("pc_log_home.txt", "r") as f:
     content = f.read()
 
 blocks = content.split("========================================")
@@ -108,7 +108,9 @@ plt.savefig("execution_time_loglog.png")
 plt.show()
 
 # === 图 2：百分比堆叠柱状图 + 总时间 ===
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(16, 10))  # Increased figure size
+# increase font size
+plt.rcParams.update({'font.size': 18})
 x = np.arange(len(sizes))
 bottom = np.zeros(len(sizes))
 
@@ -128,8 +130,8 @@ ax1.set_xlabel("Image width (pixels)")
 ax1.set_ylabel("Percentage of processing time (%)")
 plt.title("Execution time breakdown (excluding I/O) + Total time")
 ax1.set_ylim(0, 100)
-ax1.legend(loc='upper left', bbox_to_anchor=(1.0, 1.0))
-ax2.legend(loc='lower left', bbox_to_anchor=(1.0, 0.0))
-plt.tight_layout()
-plt.savefig("execution_time_percentage_stacked_with_total.png")
+ax1.legend(loc='upper left', bbox_to_anchor=(1.05, 1.0))
+ax2.legend(loc='lower left', bbox_to_anchor=(1.05, 0.0))
+plt.tight_layout(rect=[0, 0, 0.95, 1])  # Leave space on the right for the legend
+plt.savefig("execution_time_percentage_stacked_with_total.png", bbox_inches='tight')
 plt.show()
