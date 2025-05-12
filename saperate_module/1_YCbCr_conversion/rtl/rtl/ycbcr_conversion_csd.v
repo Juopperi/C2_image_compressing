@@ -1,5 +1,5 @@
-module ycbcr_conversion_csd #(
-    parameter SCALE = 16,
+module ycbcr_conversion #(
+    parameter SCALE = 20,                  // 增加定点精度从16到20
     parameter FIXED_POINT_LENGTH = 32,
     parameter INPUT_WIDTH = 8
 )(
@@ -12,7 +12,7 @@ module ycbcr_conversion_csd #(
     output wire [FIXED_POINT_LENGTH-1:0] output_Cr
 );
 
-    // Intermediate results
+    // 中间结果
     wire [FIXED_POINT_LENGTH-1:0] R_n299_result;
     wire [FIXED_POINT_LENGTH-1:0] G_n587_result;
     wire [FIXED_POINT_LENGTH-1:0] B_n144_result;
@@ -24,13 +24,16 @@ module ycbcr_conversion_csd #(
     wire [FIXED_POINT_LENGTH-1:0] B_n0813_result;
     wire [FIXED_POINT_LENGTH-1:0] n128_result;
     
-    // Registered outputs
+    // 用于额外精度的扩展中间结果 - 增加4位额外精度
+    wire [FIXED_POINT_LENGTH+4-1:0] Y_ext, Cb_ext, Cr_ext;
+    
+    // 寄存器输出
     reg [FIXED_POINT_LENGTH-1:0] Y_reg;
     reg [FIXED_POINT_LENGTH-1:0] Cb_reg;
     reg [FIXED_POINT_LENGTH-1:0] Cr_reg;
     
-    // Use CSD multipliers for each coefficient
-    csd_multiplier #(
+    // 使用优化的CSD乘法器
+    csd_multiplier_improved #(
         .INPUT_WIDTH(INPUT_WIDTH),
         .FIXED_POINT_LENGTH(FIXED_POINT_LENGTH),
         .SCALE(SCALE)
@@ -40,7 +43,7 @@ module ycbcr_conversion_csd #(
         .result(R_n299_result)
     );
     
-    csd_multiplier #(
+    csd_multiplier_improved #(
         .INPUT_WIDTH(INPUT_WIDTH),
         .FIXED_POINT_LENGTH(FIXED_POINT_LENGTH),
         .SCALE(SCALE)
@@ -50,7 +53,7 @@ module ycbcr_conversion_csd #(
         .result(G_n587_result)
     );
     
-    csd_multiplier #(
+    csd_multiplier_improved #(
         .INPUT_WIDTH(INPUT_WIDTH),
         .FIXED_POINT_LENGTH(FIXED_POINT_LENGTH),
         .SCALE(SCALE)
@@ -60,7 +63,7 @@ module ycbcr_conversion_csd #(
         .result(B_n144_result)
     );
     
-    csd_multiplier #(
+    csd_multiplier_improved #(
         .INPUT_WIDTH(INPUT_WIDTH),
         .FIXED_POINT_LENGTH(FIXED_POINT_LENGTH),
         .SCALE(SCALE)
@@ -70,7 +73,7 @@ module ycbcr_conversion_csd #(
         .result(R_n1687_result)
     );
     
-    csd_multiplier #(
+    csd_multiplier_improved #(
         .INPUT_WIDTH(INPUT_WIDTH),
         .FIXED_POINT_LENGTH(FIXED_POINT_LENGTH),
         .SCALE(SCALE)
@@ -80,7 +83,7 @@ module ycbcr_conversion_csd #(
         .result(G_n3313_result)
     );
     
-    csd_multiplier #(
+    csd_multiplier_improved #(
         .INPUT_WIDTH(INPUT_WIDTH),
         .FIXED_POINT_LENGTH(FIXED_POINT_LENGTH),
         .SCALE(SCALE)
@@ -90,7 +93,7 @@ module ycbcr_conversion_csd #(
         .result(B_n5_result)
     );
     
-    csd_multiplier #(
+    csd_multiplier_improved #(
         .INPUT_WIDTH(INPUT_WIDTH),
         .FIXED_POINT_LENGTH(FIXED_POINT_LENGTH),
         .SCALE(SCALE)
@@ -100,7 +103,7 @@ module ycbcr_conversion_csd #(
         .result(R_n5_result)
     );
     
-    csd_multiplier #(
+    csd_multiplier_improved #(
         .INPUT_WIDTH(INPUT_WIDTH),
         .FIXED_POINT_LENGTH(FIXED_POINT_LENGTH),
         .SCALE(SCALE)
@@ -110,7 +113,7 @@ module ycbcr_conversion_csd #(
         .result(G_n4187_result)
     );
     
-    csd_multiplier #(
+    csd_multiplier_improved #(
         .INPUT_WIDTH(INPUT_WIDTH),
         .FIXED_POINT_LENGTH(FIXED_POINT_LENGTH),
         .SCALE(SCALE)
@@ -120,31 +123,32 @@ module ycbcr_conversion_csd #(
         .result(B_n0813_result)
     );
     
-    csd_multiplier #(
+    csd_multiplier_improved #(
         .INPUT_WIDTH(INPUT_WIDTH),
         .FIXED_POINT_LENGTH(FIXED_POINT_LENGTH),
         .SCALE(SCALE)
     ) mult_n128 (
-        .data_in(8'd0),  // Not used for constant
+        .data_in(8'd0),  // 常数不使用输入
         .coef_select(4'd8),  // n128
         .result(n128_result)
     );
     
-    // Process RGB to YCbCr conversion
+    // 使用扩展精度计算中间结果
+    assign Y_ext = {R_n299_result, 4'b0000} + {G_n587_result, 4'b0000} + {B_n144_result, 4'b0000} - {n128_result, 4'b0000};
+    assign Cb_ext = {B_n5_result, 4'b0000} - {R_n1687_result, 4'b0000} - {G_n3313_result, 4'b0000};
+    assign Cr_ext = {R_n5_result, 4'b0000} - {G_n4187_result, 4'b0000} - {B_n0813_result, 4'b0000};
+    
+    // 处理RGB到YCbCr转换，包括适当的舍入
     always @(posedge clk) begin
-        // Y = 0.299*R + 0.587*G + 0.114*B
-        Y_reg <= R_n299_result + G_n587_result + B_n144_result;
-        
-        // Cb = 0.5*B - 0.1687*R - 0.3313*G + 128
-        Cb_reg <= B_n5_result - R_n1687_result - G_n3313_result + n128_result;
-        
-        // Cr = 0.5*R - 0.4187*G - 0.0813*B + 128
-        Cr_reg <= R_n5_result - G_n4187_result - B_n0813_result + n128_result;
+        // 先进行中间结果计算，然后添加舍入位，最后截取到原始位宽
+        Y_reg <= Y_ext[FIXED_POINT_LENGTH+4-1:4] + (Y_ext[3] ? 1'b1 : 1'b0);  // 四舍五入
+        Cb_reg <= Cb_ext[FIXED_POINT_LENGTH+4-1:4] + (Cb_ext[3] ? 1'b1 : 1'b0);
+        Cr_reg <= Cr_ext[FIXED_POINT_LENGTH+4-1:4] + (Cr_ext[3] ? 1'b1 : 1'b0);
     end
     
-    // Assign outputs
+    // 分配输出
     assign output_Y = Y_reg;
     assign output_Cb = Cb_reg;
     assign output_Cr = Cr_reg;
 
-endmodule 
+endmodule

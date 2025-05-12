@@ -62,6 +62,6 @@ echo "📤 Running generator: ./gen_multi_inout ${SET_COUNT}"
 cd - > /dev/null
 
 echo "📦 Copying generated *.mem files to: $OUTPUT_DIR"
-find "$BUILD_DIR" -maxdepth 1 -name "*.mem" -exec cp {} "$OUTPUT_DIR" \;
+find "$BUILD_DIR" -maxdepth 1 -name "*.mem" -exec cp {} -f "$OUTPUT_DIR" \;
 
 echo -e "\n✅ Test vector generation completed successfully."

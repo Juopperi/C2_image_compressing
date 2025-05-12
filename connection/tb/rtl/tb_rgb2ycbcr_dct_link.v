@@ -1,206 +1,292 @@
-`timescale 1ns / 1ns
+// -----------------------------------------------------------------------------
+// Testbench : RGB to YCbCr to DCT Link Module - compare against golden vectors
+// -----------------------------------------------------------------------------
+//   * Reads input_R.mem, input_G.mem, input_B.mem for RGB input data
+//   * Reads expected_y_dct_output.mem, expected_cb_dct_output.mem, expected_cr_dct_output.mem
+//   * Feeds DUT with RGB data using valid/ready handshaking
+//   * Collects DCT outputs and compares against expected results
+//   * Checks absolute error ≤ 0.5 LSB (Q16.16)
+// -----------------------------------------------------------------------------
+`timescale 1ns / 1ps
 
 module tb_rgb2ycbcr_dct_link;
+    // ---------- Parameters ---------------------------------------------------
+    parameter RGB_WIDTH = 8;           // 8-bit per RGB channel
+    parameter DATA_WIDTH = 32;         // Q16.16 words for YCbCr/DCT
+    parameter FRAC_BITS = 8;           // Fraction bits
+    parameter BLOCK_SIZE = 64;         // 8×8 = 64 words per block
+    parameter MAX_BLOCKS = 100;        // Maximum number of blocks to process
+    parameter ERR_THRESH = 32'h0000_8000; // ±0.5 LSB for comparison
+    parameter CLK_PERIOD = 10;         // 10ns = 100MHz
 
-    parameter DATA_WIDTH = 32;     // 固定点位宽 - 对应转换器和DCT
-    parameter INPUT_WIDTH = 8;     // 输入RGB位宽
-    parameter DATA_DEPTH = 8;      // 8x8块
-    parameter PIXEL_COUNT = DATA_DEPTH * DATA_DEPTH;  // 64 pixels
-    parameter MAX_SAMPLES = 100;
-    parameter WAIT_CYCLES = 300;   // DCT需要更多时钟周期
+    // ---------- Testbench signals --------------------------------------------
+    reg                      clk;
+    reg                      rst_n;
 
-    // 时钟与复位
-    reg clk;
-    reg reset_n;
+    // Input interface (RGB data)
+    reg                      in_valid;
+    wire                     in_ready;
+    reg  [BLOCK_SIZE*RGB_WIDTH-1:0] in_r;
+    reg  [BLOCK_SIZE*RGB_WIDTH-1:0] in_g;
+    reg  [BLOCK_SIZE*RGB_WIDTH-1:0] in_b;
 
-    // DUT 输入输出
-    reg [INPUT_WIDTH*PIXEL_COUNT-1:0] r_all;
-    reg [INPUT_WIDTH*PIXEL_COUNT-1:0] g_all;
-    reg [INPUT_WIDTH*PIXEL_COUNT-1:0] b_all;
+    // Output interface (DCT coefficients)
+    wire                     out_valid;
+    reg                      out_ready;
+    wire [BLOCK_SIZE*DATA_WIDTH-1:0] out_y_dct;
+    wire [BLOCK_SIZE*DATA_WIDTH-1:0] out_cb_dct;
+    wire [BLOCK_SIZE*DATA_WIDTH-1:0] out_cr_dct;
 
-    // YCbCr原始输出 - 连接器输出
-    wire [DATA_WIDTH*PIXEL_COUNT-1:0] y_raw;
-    wire [DATA_WIDTH*PIXEL_COUNT-1:0] cb_raw;
-    wire [DATA_WIDTH*PIXEL_COUNT-1:0] cr_raw;
-    
-    // DCT输出
-    wire [DATA_WIDTH*PIXEL_COUNT-1:0] y_dct;
-    wire [DATA_WIDTH*PIXEL_COUNT-1:0] cb_dct;
-    wire [DATA_WIDTH*PIXEL_COUNT-1:0] cr_dct;
-    
-    // DCT状态信号
-    wire y_out_valid;
-    wire cb_out_valid;
-    wire cr_out_valid;
-    
-    // DUT 实例化
+    // ---------- DUT instance -------------------------------------------------
     rgb2ycbcr_dct_link #(
         .DATA_WIDTH(DATA_WIDTH),
-        .INPUT_WIDTH(INPUT_WIDTH),
-        .DATA_DEPTH(DATA_DEPTH)
+        .FRAC_BITS(FRAC_BITS),
+        .RGB_WIDTH(RGB_WIDTH),
+        .BLOCK_SIZE(BLOCK_SIZE)
     ) dut (
-        .clk(clk),
-        .reset_n(reset_n),
-        .r_all(r_all),
-        .g_all(g_all),
-        .b_all(b_all),
-        .y_raw(y_raw),
-        .cb_raw(cb_raw),
-        .cr_raw(cr_raw),
-        .y_dct(y_dct),
-        .cb_dct(cb_dct),
-        .cr_dct(cr_dct),
-        .y_out_valid(y_out_valid),
-        .cb_out_valid(cb_out_valid),
-        .cr_out_valid(cr_out_valid)
+        .clk       (clk),
+        .rst_n     (rst_n),
+        .in_valid  (in_valid),
+        .in_ready  (in_ready),
+        .in_r      (in_r),
+        .in_g      (in_g),
+        .in_b      (in_b),
+        .out_valid (out_valid),
+        .out_ready (out_ready),
+        .out_y_dct (out_y_dct),
+        .out_cb_dct(out_cb_dct),
+        .out_cr_dct(out_cr_dct)
     );
 
-    // 时钟
-    initial clk = 0;
-    always #5 clk = ~clk;
-
-    // 多组内存（从文件加载）
-    reg [INPUT_WIDTH-1:0] r_mem [0:MAX_SAMPLES*PIXEL_COUNT-1];
-    reg [INPUT_WIDTH-1:0] g_mem [0:MAX_SAMPLES*PIXEL_COUNT-1];
-    reg [INPUT_WIDTH-1:0] b_mem [0:MAX_SAMPLES*PIXEL_COUNT-1];
-
-    // 期望输出数据 - YCbCr阶段
-    reg [DATA_WIDTH-1:0] y_raw_expected [0:MAX_SAMPLES*PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cb_raw_expected [0:MAX_SAMPLES*PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cr_raw_expected [0:MAX_SAMPLES*PIXEL_COUNT-1];
+    // ---------- Memories -----------------------------------------------------
+    // Input memories
+    reg [RGB_WIDTH-1:0] r_mem [0:MAX_BLOCKS*BLOCK_SIZE-1];
+    reg [RGB_WIDTH-1:0] g_mem [0:MAX_BLOCKS*BLOCK_SIZE-1];
+    reg [RGB_WIDTH-1:0] b_mem [0:MAX_BLOCKS*BLOCK_SIZE-1];
     
-    // 期望输出数据 - DCT阶段
-    reg [DATA_WIDTH-1:0] y_dct_expected [0:MAX_SAMPLES*PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cb_dct_expected [0:MAX_SAMPLES*PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cr_dct_expected [0:MAX_SAMPLES*PIXEL_COUNT-1];
-
-    // 当前组处理结果 - YCbCr阶段
-    reg [DATA_WIDTH-1:0] y_raw_out [0:PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cb_raw_out [0:PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cr_raw_out [0:PIXEL_COUNT-1];
+    // Expected output memories (golden references)
+    reg [DATA_WIDTH-1:0] y_golden_mem [0:MAX_BLOCKS*BLOCK_SIZE-1];
+    reg [DATA_WIDTH-1:0] cb_golden_mem [0:MAX_BLOCKS*BLOCK_SIZE-1];
+    reg [DATA_WIDTH-1:0] cr_golden_mem [0:MAX_BLOCKS*BLOCK_SIZE-1];
     
-    // 当前组处理结果 - DCT阶段
-    reg [DATA_WIDTH-1:0] y_dct_out [0:PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cb_dct_out [0:PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cr_dct_out [0:PIXEL_COUNT-1];
+    // Actual output memories (for comparison)
+    reg [DATA_WIDTH-1:0] y_output_mem [0:BLOCK_SIZE-1];
+    reg [DATA_WIDTH-1:0] cb_output_mem [0:BLOCK_SIZE-1];
+    reg [DATA_WIDTH-1:0] cr_output_mem [0:BLOCK_SIZE-1];
 
-    // 所有组处理结果 - YCbCr阶段
-    reg [DATA_WIDTH-1:0] y_raw_all [0:MAX_SAMPLES*PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cb_raw_all [0:MAX_SAMPLES*PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cr_raw_all [0:MAX_SAMPLES*PIXEL_COUNT-1];
-    
-    // 所有组处理结果 - DCT阶段
-    reg [DATA_WIDTH-1:0] y_dct_all [0:MAX_SAMPLES*PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cb_dct_all [0:MAX_SAMPLES*PIXEL_COUNT-1];
-    reg [DATA_WIDTH-1:0] cr_dct_all [0:MAX_SAMPLES*PIXEL_COUNT-1];
+    integer blk, i, diff;
+    integer fout_y, fout_cb, fout_cr;
+    integer y_err_cnt = 0, cb_err_cnt = 0, cr_err_cnt = 0;
+    integer testing_block = 0;
 
-    // 错误比较阈值
-    localparam signed [31:0] ERROR_THRESHOLD = 32'sh00008000;  // Q16.16 的 0.5
-    integer g, i, cycles, diff;
-    reg all_dct_valid;
-
-    // 初始化输入为 0，避免未定义值
+    // ---------- Clock generator ----------------------------------------------
     initial begin
-        r_all = {(INPUT_WIDTH*PIXEL_COUNT){1'b0}};
-        g_all = {(INPUT_WIDTH*PIXEL_COUNT){1'b0}};
-        b_all = {(INPUT_WIDTH*PIXEL_COUNT){1'b0}};
-        reset_n = 0;
+        clk = 0;
+        forever #(CLK_PERIOD/2) clk = ~clk;
     end
 
-    initial begin
-        $display("==== TB: RGB to YCbCr + DCT Link Test ====");
+    // ---------- Helper : set input block from memory --------------------------
+    task set_input_block(input integer block_num);
+        integer base_idx, i;
+        begin
+            base_idx = block_num * BLOCK_SIZE;
+            
+            // Populate the RGB input arrays
+            for (i = 0; i < BLOCK_SIZE; i = i + 1) begin
+                in_r[i*RGB_WIDTH +: RGB_WIDTH] = r_mem[base_idx + i];
+                in_g[i*RGB_WIDTH +: RGB_WIDTH] = g_mem[base_idx + i];
+                in_b[i*RGB_WIDTH +: RGB_WIDTH] = b_mem[base_idx + i];
+            end
+        end
+    endtask
 
-        // 读取输入文件
+    // ---------- Helper : save output values ---------------------------------
+    task save_output_block;
+        integer i;
+        begin
+            // Save all 64 output values for each component
+            for (i = 0; i < BLOCK_SIZE; i = i + 1) begin
+                y_output_mem[i] = out_y_dct[i*DATA_WIDTH +: DATA_WIDTH];
+                cb_output_mem[i] = out_cb_dct[i*DATA_WIDTH +: DATA_WIDTH];
+                cr_output_mem[i] = out_cr_dct[i*DATA_WIDTH +: DATA_WIDTH];
+                
+                $fdisplay(fout_y, "%08X", y_output_mem[i]);
+                $fdisplay(fout_cb, "%08X", cb_output_mem[i]);
+                $fdisplay(fout_cr, "%08X", cr_output_mem[i]);
+            end
+        end
+    endtask
+
+    // ---------- Helper : check output block against golden reference ---------
+    task check_output_block(input integer block_num);
+        integer i, d;
+        reg [DATA_WIDTH-1:0] exp_value, got_value;
+        begin
+            // Check Y component
+            for (i = 0; i < BLOCK_SIZE; i = i + 1) begin
+                got_value = y_output_mem[i];
+                exp_value = y_golden_mem[block_num*BLOCK_SIZE + i];
+                
+                d = $signed(got_value) - $signed(exp_value);
+                if (d < 0) d = -d;
+                
+                if (d > ERR_THRESH) begin
+                    $display("Y Mismatch blk %0d idx %0d: got %h exp %h diff %0d", 
+                              block_num, i, got_value, exp_value, d >> 16);
+                    y_err_cnt = y_err_cnt + 1;
+                end
+            end
+            
+            // Check Cb component
+            for (i = 0; i < BLOCK_SIZE; i = i + 1) begin
+                got_value = cb_output_mem[i];
+                exp_value = cb_golden_mem[block_num*BLOCK_SIZE + i];
+                
+                d = $signed(got_value) - $signed(exp_value);
+                if (d < 0) d = -d;
+                
+                if (d > ERR_THRESH) begin
+                    $display("Cb Mismatch blk %0d idx %0d: got %h exp %h diff %0d", 
+                              block_num, i, got_value, exp_value, d >> 16);
+                    cb_err_cnt = cb_err_cnt + 1;
+                end
+            end
+            
+            // Check Cr component
+            for (i = 0; i < BLOCK_SIZE; i = i + 1) begin
+                got_value = cr_output_mem[i];
+                exp_value = cr_golden_mem[block_num*BLOCK_SIZE + i];
+                
+                d = $signed(got_value) - $signed(exp_value);
+                if (d < 0) d = -d;
+                
+                if (d > ERR_THRESH) begin
+                    $display("Cr Mismatch blk %0d idx %0d: got %h exp %h diff %0d", 
+                              block_num, i, got_value, exp_value, d >> 16);
+                    cr_err_cnt = cr_err_cnt + 1;
+                end
+            end
+        end
+    endtask
+
+    // ---------- Stimulus -----------------------------------------------------
+    initial begin
+        // Open output files
+        fout_y = $fopen("actual_y_dct_output.mem", "w");
+        fout_cb = $fopen("actual_cb_dct_output.mem", "w");
+        fout_cr = $fopen("actual_cr_dct_output.mem", "w");
+        
+        $display("==== TB RGB to YCbCr to DCT Link ====");
+
+        // Load input data from memory files
         $readmemh("input_R.mem", r_mem);
         $readmemh("input_G.mem", g_mem);
         $readmemh("input_B.mem", b_mem);
-
-        // 尝试读取期望输出文件 - YCbCr阶段
-        $readmemh("expected_Y_raw.mem", y_raw_expected);
-        $readmemh("expected_Cb_raw.mem", cb_raw_expected);
-        $readmemh("expected_Cr_raw.mem", cr_raw_expected);
         
-        // 尝试读取期望输出文件 - DCT阶段
-        $readmemh("expected_Y_dct.mem", y_dct_expected);
-        $readmemh("expected_Cb_dct.mem", cb_dct_expected);
-        $readmemh("expected_Cr_dct.mem", cr_dct_expected);
+        // Load expected output data (golden references)
+        $readmemh("expected_y_dct_output.mem", y_golden_mem);
+        $readmemh("expected_cb_dct_output.mem", cb_golden_mem);
+        $readmemh("expected_cr_dct_output.mem", cr_golden_mem);
         
-        // 保持复位状态足够长时间
-        #100;
-        reset_n = 1;
-        #100;
-
-        for (g = 0; g < MAX_SAMPLES; g = g + 1) begin
-            $display("---- Processing Group %0d ----", g);
+        // Initialize signals
+        rst_n = 0;
+        in_valid = 0;
+        out_ready = 1;  // Always ready to accept output initially
+        
+        // Reset sequence
+        #(CLK_PERIOD*3);
+        rst_n = 1;
+        #(CLK_PERIOD*2);
+        
+        // Process each block one by one
+        for (blk = 0; blk < MAX_BLOCKS; blk = blk + 1) begin
+            testing_block = blk;
             
-            // 填入一组 8x8 数据
-            for (i = 0; i < PIXEL_COUNT; i = i + 1) begin
-                r_all[i*INPUT_WIDTH +: INPUT_WIDTH] = r_mem[g*PIXEL_COUNT + i];
-                g_all[i*INPUT_WIDTH +: INPUT_WIDTH] = g_mem[g*PIXEL_COUNT + i];
-                b_all[i*INPUT_WIDTH +: INPUT_WIDTH] = b_mem[g*PIXEL_COUNT + i];
-            end
-
-            // 延迟1个周期让YCbCr转换器处理数据
-            #10;
+            // Prepare RGB input block
+            set_input_block(blk);
             
-            // 采集YCbCr原始输出数据
-            for (i = 0; i < PIXEL_COUNT; i = i + 1) begin
-                y_raw_out[i]  = y_raw[i*DATA_WIDTH +: DATA_WIDTH];
-                cb_raw_out[i] = cb_raw[i*DATA_WIDTH +: DATA_WIDTH];
-                cr_raw_out[i] = cr_raw[i*DATA_WIDTH +: DATA_WIDTH];
-                
-                // 保存结果到全局数组
-                y_raw_all[g*PIXEL_COUNT + i]  = y_raw_out[i];
-                cb_raw_all[g*PIXEL_COUNT + i] = cb_raw_out[i];
-                cr_raw_all[g*PIXEL_COUNT + i] = cr_raw_out[i];
-            end
-            
-            // 等待DCT处理完成
-            all_dct_valid = 0;
-            cycles = 0;
-            
-            while (!all_dct_valid && cycles < WAIT_CYCLES) begin
-                all_dct_valid = y_out_valid & cb_out_valid & cr_out_valid;
-                cycles = cycles + 1;
-                #10;
-            end
-            
-            if (all_dct_valid) begin
-                $display("DCT processing completed after %0d cycles", cycles);
-                
-                // 采集DCT输出数据
-                for (i = 0; i < PIXEL_COUNT; i = i + 1) begin
-                    y_dct_out[i]  = y_dct[i*DATA_WIDTH +: DATA_WIDTH];
-                    cb_dct_out[i] = cb_dct[i*DATA_WIDTH +: DATA_WIDTH];
-                    cr_dct_out[i] = cr_dct[i*DATA_WIDTH +: DATA_WIDTH];
-                    
-                    // 保存结果到全局数组
-                    y_dct_all[g*PIXEL_COUNT + i]  = y_dct_out[i];
-                    cb_dct_all[g*PIXEL_COUNT + i] = cb_dct_out[i];
-                    cr_dct_all[g*PIXEL_COUNT + i] = cr_dct_out[i];
+            // Check if all values in this block are zero
+            // This is a simple check to see if we've reached the end of input data
+            if (blk > 0) begin
+                integer zero_count;
+                zero_count = 0;
+                for (i = 0; i < BLOCK_SIZE; i = i + 1) begin
+                    if (r_mem[blk*BLOCK_SIZE + i] == 0 &&
+                        g_mem[blk*BLOCK_SIZE + i] == 0 &&
+                        b_mem[blk*BLOCK_SIZE + i] == 0) begin
+                        zero_count = zero_count + 1;
+                    end
                 end
-            end else begin
-                $display("Warning: DCT processing timed out after %0d cycles", WAIT_CYCLES);
+                if (zero_count == BLOCK_SIZE) begin
+                    $display("Detected end of input data at block %0d", blk);
+                    break;
+                end
             end
             
-            $display("Group %0d complete", g);
-            #20;  // 组间间隔
+            // Wait for DUT to be ready
+            @(posedge clk);
+            while (!in_ready) @(posedge clk);
+            
+            // Apply input with valid signal
+            in_valid = 1;
+            
+            // Wait for handshake to complete
+            @(posedge clk);
+            while (in_valid && !in_ready) @(posedge clk);
+            in_valid = 0;
+            
+            // Wait for output valid
+            @(posedge clk);
+            while (!out_valid) @(posedge clk);
+            
+            // Save output values
+            save_output_block();
+            
+            // Acknowledge output
+            out_ready = 1;
+            @(posedge clk);
+            out_ready = 0;
+            
+            // Check output against expected values
+            check_output_block(blk);
+            
+            // Small delay between blocks for readability in waveform
+            #(CLK_PERIOD*2);
         end
 
-        // 写出所有组输出 - YCbCr原始输出
-        $writememh("actual_Y_raw.mem",  y_raw_all);
-        $writememh("actual_Cb_raw.mem", cb_raw_all);
-        $writememh("actual_Cr_raw.mem", cr_raw_all);
-        
-        // 写出所有组输出 - DCT输出
-        $writememh("actual_Y_dct.mem",  y_dct_all);
-        $writememh("actual_Cb_dct.mem", cb_dct_all);
-        $writememh("actual_Cr_dct.mem", cr_dct_all);
+        // Final results
+        $display("==== Test Results Summary ====");
+        if (y_err_cnt == 0) 
+            $display("Y component: PASS");
+        else              
+            $display("Y component: FAIL, %0d mismatches", y_err_cnt);
+            
+        if (cb_err_cnt == 0) 
+            $display("Cb component: PASS");
+        else              
+            $display("Cb component: FAIL, %0d mismatches", cb_err_cnt);
+            
+        if (cr_err_cnt == 0) 
+            $display("Cr component: PASS");
+        else              
+            $display("Cr component: FAIL, %0d mismatches", cr_err_cnt);
+            
+        if (y_err_cnt == 0 && cb_err_cnt == 0 && cr_err_cnt == 0)
+            $display("==== ALL TESTS PASSED, %0d blocks ====", testing_block);
+        else
+            $display("==== TEST FAILED ====");
 
-        $display("==== All %0d Groups Completed ====", MAX_SAMPLES);
-        $display("Results saved to actual_Y/Cb/Cr_raw.mem and actual_Y/Cb/Cr_dct.mem");
-        #100;
+        $fclose(fout_y);
+        $fclose(fout_cb);
+        $fclose(fout_cr);
+        #(CLK_PERIOD*10); 
         $finish;
     end
 
-endmodule 
+    // ---------- Monitor ------------------------------------------------------
+    initial begin
+        $monitor("Time=%0t, Block=%0d, State: in_valid=%0b, in_ready=%0b, out_valid=%0b, out_ready=%0b",
+                 $time, testing_block, in_valid, in_ready, out_valid, out_ready);
+    end
+
+endmodule

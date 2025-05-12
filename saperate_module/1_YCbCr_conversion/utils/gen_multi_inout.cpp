@@ -14,9 +14,9 @@ float clamp(float x, float lo = 0.0f, float hi = 255.0f) {
 
 // YCbCr conversion using standard BT.601
 void rgb2ycbcr(float R, float G, float B, float &Y, float &Cb, float &Cr) {
-    Y  =  0.299f * R + 0.587f * G + 0.114f * B;
-    Cb = -0.168736f * R - 0.331264f * G + 0.5f * B + 128.0f;
-    Cr =  0.5f * R - 0.418688f * G - 0.081312f * B + 128.0f;
+    Y  =  0.299f * R + 0.587f * G + 0.114f * B - 128.0f;
+    Cb = -0.168736f * R - 0.331264f * G + 0.5f * B;
+    Cr =  0.5f * R - 0.418688f * G - 0.081312f * B;
 }
 
 int main(int argc, char* argv[]) {

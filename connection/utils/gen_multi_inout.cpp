@@ -45,6 +45,7 @@ enum TestMode {
     EDGE,            // 边缘模式(一半0，一半255)
     X_GRADIENT,      // X方向渐变
     Y_GRADIENT,      // Y方向渐变
+    RANDOM,          // 随机模式
 };
 
 TestMode mode = ALL_ONES;
@@ -97,7 +98,7 @@ void dct_1d(const float in[N], float out[N], const double coeffs[N][N]) {
 
 // 生成测试块的RGB数据
 void generate_test_block(float R[N][N], float G[N][N], float B[N][N], 
-                         TestMode mode, int value = 0) {
+                         TestMode mode, int value = 128) {
     for (int i = 0; i < N; ++i) {
         for (int j = 0; j < N; ++j) {
             switch (mode) {
@@ -127,6 +128,10 @@ void generate_test_block(float R[N][N], float G[N][N], float B[N][N],
                 
                 case Y_GRADIENT:
                     R[i][j] = G[i][j] = B[i][j] = static_cast<float>(i * 255 / (N - 1));
+                    break;
+                
+                case RANDOM:
+                    R[i][j] = G[i][j] = B[i][j] = static_cast<float>(rand() % 256);
                     break;
                 
                 default:
@@ -200,9 +205,9 @@ int main(int argc, char* argv[]) {
     std::ofstream fout_cb_raw("expected_Cb_raw.mem");
     std::ofstream fout_cr_raw("expected_Cr_raw.mem");
     
-    std::ofstream fout_y_dct("expected_Y_dct.mem");
-    std::ofstream fout_cb_dct("expected_Cb_dct.mem");
-    std::ofstream fout_cr_dct("expected_Cr_dct.mem");
+    std::ofstream fout_y_dct("expected_Y.mem");
+    std::ofstream fout_cb_dct("expected_Cb.mem");
+    std::ofstream fout_cr_dct("expected_Cr.mem");
 
     std::ofstream fout_r, fout_g, fout_b;
     if (write_rgb && mode != FROM_FILE) {

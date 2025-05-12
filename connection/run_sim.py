@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import sys
 
-testbench_name = "tb_rgb2ycbcr_dct_link"
+testbench_name = "tb_rgb2ycbcr_dct_combined"
 
 # -----------------------------
 # 解析参数
@@ -57,7 +57,7 @@ vsim_cmd += f' -t ps +notimingchecks work.{testbench_name}'
 if gui_mode:
     vsim_cmd += f' -do "view wave; view structure; view signals;"'
 else:
-    vsim_cmd += f' -do "run 50000000 us; quit -f"'
+    vsim_cmd += f' -do "run 1045000 us; quit -f"'
 
 do_script = [
     "vlib work",

@@ -9,8 +9,8 @@
 module dct8_chen_ts #(
     parameter int IN_W     = 32,   // 数据位宽 (>= 像素 + FRAC)
     parameter int FRAC     = 8,    // 小数位
-    parameter int CONST_W  = 10,   // 常量位宽
-    parameter int NUM_MUL  = 8     // 并行乘法器数 (本例=8)
+    parameter int CONST_W  = 16,   // 常量位宽
+    parameter int NUM_MUL  = 15     // 并行乘法器数 (本例=8)
 )(
     input  logic                      clk,
     input  logic                      rst_n,
@@ -30,16 +30,17 @@ module dct8_chen_ts #(
     // --------------------------------------------------------------------
     // 常量 (×2^FRAC，FRAC = 8)
     // --------------------------------------------------------------------
-    localparam logic signed [CONST_W-1:0]
-        C1   = 10'sd251,
-        C2   = 10'sd237,
-        C3   = 10'sd213,
-        C4   = 10'sd181,
-        C6   = 10'sd98 ,
-        SIN1 = 10'sd50 ,
-        SIN3 = 10'sd142,
-        K0   = 10'sd91 ,
-        K    = 10'sd128;
+   
+    localparam logic signed [15:0]
+        C1    = 16'sd32138  // 0.980785 × 2^FRAC,
+        C2    = 16'sd30274  // 0.923880 × 2^FRAC,
+        C3    = 16'sd27246  // 0.831470 × 2^FRAC,
+        C4    = 16'sd23170  // 0.707107 × 2^FRAC,
+        C6    = 16'sd12540  // 0.382683 × 2^FRAC,
+        SIN1  = 16'sd6393  // 0.195090 × 2^FRAC,
+        SIN3  = 16'sd18205  // 0.555570 × 2^FRAC,
+        K0    = 16'sd11585  // 0.353553 × 2^FRAC;
+        K     = 16'sd16384;
 
     // --------------------------------------------------------------------
     // 乘法器 (组合 LUT 乘 + 右移)

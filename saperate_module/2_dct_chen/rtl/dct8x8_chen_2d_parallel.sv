@@ -7,7 +7,7 @@
 `timescale 1ns/1ps
 module dct8x8_chen_2d_parallel #(
     parameter int IN_W = 32,
-    parameter int FRAC = 8
+    parameter int FRAC = 15
 )(
     input  logic                      clk,
     input  logic                      rst_n,
