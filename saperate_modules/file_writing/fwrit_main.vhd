@@ -1,16 +1,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
-    --use IEEE.STD_LOGIC_UNSIGNED.ALL;
-    --use std.textio.all;
-    --use ieee.std_logic_textio.all;
-    -- Uncomment the following library declaration if using
-    -- arithmetic functions with Signed or Unsigned values
-    --use IEEE.NUMERIC_STD.ALL;
-    -- Uncomment the following library declaration if instantiating
-    -- any Xilinx leaf cells in this code.
-    --library UNISIM;
-    --use UNISIM.VComponents.all;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity fwrit_main is
     Port ( height, width: in std_logic_vector (15 downto 0);
@@ -157,7 +148,9 @@ begin
     writing_proc: process(clk)
     begin
         if rising_edge(clk) then
-            if current_state = header then
+            if current_state = idle then
+                datareg <= (others =>'0');
+            elsif current_state = header then
                 valid<='1';
                 if array_el = 620 then
                     datareg <= x"00" & img_info(array_el) & img_info(array_el+1) & img_info(array_el+2);
