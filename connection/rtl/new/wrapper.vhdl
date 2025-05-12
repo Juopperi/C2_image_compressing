@@ -12,7 +12,7 @@ entity wrapper is
         R : in std_logic_vector(511 downto 0);
         G : in std_logic_vector(511 downto 0);
         B : in std_logic_vector(511 downto 0);
-        Y_out : out std_logic_vector(1023 downto 0);
+        stored_huffman : out std_logic_vector(1000 downto 0);
         finished : out std_logic
     );
 end wrapper;
@@ -67,7 +67,32 @@ architecture wrapper_arch of wrapper is
         );
     end component quantization;
 
-    type t_State is (idle,RGBtoYCbCr,dct,quant_load,quant_read,done);
+    component zigzag_reorder is
+        generic (
+            vector_length : integer := 16
+        );
+        port (
+            clk : in std_logic;
+            input_matrix : in  std_logic_vector(64*vector_length-1 downto 0); -- 64 x vector_length flattened input
+            zigzag_out   : out std_logic_vector(64*vector_length-1 downto 0)  -- 64 x vector_length flattened output
+        );
+    end component zigzag_reorder;
+    
+    component huff_container is 
+        port(
+            clk : in std_logic;
+            reset : in std_logic;
+            start_huffman : in std_logic;
+            Y : in std_logic_vector(1023 downto 0);
+            Cb : in std_logic_vector(1023 downto 0);
+            Cr : in std_logic_vector(1023 downto 0);
+            data : out std_logic;
+            data_valid : out std_logic;
+            finished : out std_logic	
+        );
+    end component huff_container;
+
+    type t_State is (idle,RGBtoYCbCr,dct,quant_load,quant_read,zigzag,huff_load,huff_read,done);
     signal currentState : t_State := idle;
 
     type dct_states is (Y_state_send,Y_state_middle,Y_state_wait,Cb_state_send,Cb_state_wait,Cr_state_send,Cr_state_wait);
@@ -98,6 +123,18 @@ architecture wrapper_arch of wrapper is
     signal Y_array_out : fixed_array_16;
     signal Cb_array_out : fixed_array_16;
     signal Cr_array_out : fixed_array_16;
+
+    signal zigzag_in : std_logic_vector(1023 downto 0);
+    signal zigzag_out : std_logic_vector(1023 downto 0);
+
+    signal huff_data_out : std_logic;
+    signal huff_start : std_logic;
+    signal huff_data_valid : std_logic;
+    signal huff_finished : std_logic;
+    signal huff_Y : std_logic_vector(1023 downto 0);
+    signal huff_Cb : std_logic_vector(1023 downto 0);
+    signal huff_Cr : std_logic_vector(1023 downto 0);
+
     begin
 
         comp_conversion : component conversion
@@ -136,6 +173,27 @@ architecture wrapper_arch of wrapper is
                 Y_out => Y_array_out,
                 Cb_out => Cb_array_out,
                 Cr_out => Cr_array_out
+            );
+
+        comp_zigzag : component zigzag_reorder
+            generic map(vector_length => 16)
+            port map(
+                clk => clk,
+                input_matrix => zigzag_in,
+                zigzag_out => zigzag_out
+            );
+        
+        comp_huff : component huff_container
+            port map(
+                clk => clk,
+                reset => rst_n,
+                start_huffman => huff_start,
+                Y => huff_Y,
+                Cb => huff_Cb, 
+                Cr => huff_Cr,
+                data => huff_data_out,
+                data_valid => huff_data_valid,
+                finished => huff_finished
             );
 
         proc : process(clk)
@@ -249,12 +307,44 @@ architecture wrapper_arch of wrapper is
                         Cr(16*(index+1)-1 downto 16*index) <= Cr_array_out(index);
                         index := index + 1;
                        if index = 64 then
-                        currentState <= done;
+                        currentState <= zigzag;
                         index := 0;
                         end if;
-                        
+
+                    when zigzag =>
+                        if state = 1 then
+                            zigzag_in <= Y;
+                        elsif state = 2 then
+                            Y <= zigzag_out;
+                            zigzag_in <= Cb;
+                        elsif state = 3 then
+                            Cb <= zigzag_out;
+                            zigzag_in <= Cr;
+                        elsif state = 4 then
+                            Cr <= zigzag_out;
+                            currentState <= huff_load;
+                        end if;
+                        state := state + 1;
+                    
+                    when huff_load =>
+                        huff_Y <= Y;                           
+                        huff_Cb <= Cb;
+                        huff_Cr <= Cr;
+                        index := 0;
+                        currentState <= huff_read;
+
+                    when huff_read => 
+                        huff_start <= '1';
+                        if huff_finished = '1' then
+                            currentState <= done;
+                        end if;
+
+                        if huff_data_valid = '1' then
+                            stored_huffman(index) <= huff_data_out;
+                            index := index +1;
+                        end if;
+            
                     when done =>
-                        Y_out <= Y;
                         finished <= '1';
                         
                     when others => 

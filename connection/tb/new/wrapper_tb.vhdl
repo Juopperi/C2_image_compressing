@@ -18,7 +18,7 @@ architecture arch of wrapper_tb is
         R : in std_logic_vector(511 downto 0);
         G : in std_logic_vector(511 downto 0);
         B : in std_logic_vector(511 downto 0);
-        Y_out : out std_logic_vector(1023 downto 0);
+        stored_huffman : out std_logic_vector(1000 downto 0);
         finished : out std_logic
     );
     end component wrapper;
@@ -29,7 +29,7 @@ architecture arch of wrapper_tb is
     signal R : std_logic_vector(511 downto 0);
     signal G : std_logic_vector(511 downto 0);
     signal B : std_logic_vector(511 downto 0);
-    signal Y : std_logic_vector(1023 downto 0);
+    signal stored_huffman : std_logic_vector(1000 downto 0);
     signal finished : std_logic;
 
     type word_array is array (0 to 63) of std_logic_vector(7 downto 0);
@@ -64,7 +64,7 @@ begin
             R => R,
             G => G,
             B => B,
-            Y_out => Y,
+            stored_huffman => stored_huffman,
             finished => finished
         );
         
@@ -109,24 +109,29 @@ begin
     end process load;
     
     writeData : process 
-      file output_file : text open write_mode is "conversion_Y_out.txt";
+      file output_file : text open write_mode is "huffman_out.txt";
       variable output_line : line;
       variable index : integer := 0;
+      variable rowIndex : integer := 0;
       --variable temp : std_logic_vector(15 downto 0);
       variable temp : std_logic_vector(7 downto 0);
     begin 
         if finished = '1' then
            --temp := Y(16*(index+1)-1 downto (16*index));
-           temp := Y(16*(index+1)-1 downto (16*index)+8); --Two different depeding on whihc value to check for 
-           write(output_line,to_integer(signed(temp)));
-           write(output_line,string'(" "));
-           writeline(output_file,output_line);
-           index := index + 1;
-           if index = 64 then
-           write(output_line,Y);
-           writeline(output_file,output_line);
+           --temp := Y(16*(index+1)-1 downto (16*index)+8); --Two different depeding on whihc value to check for 
+           --write(output_line,to_integer(signed(temp)));
+           --write(output_line,string'(" "));
+           --rowIndex := rowIndex + 1;
+           --if rowIndex = 8 then
+             --   writeline(output_file,output_line);
+               -- rowIndex := 0;
+           --end if;
+           --index := index + 1;
+           --if index = 64 then
+            write(output_line,stored_huffman);
+            writeline(output_file,output_line);
             wait;
-            end if;
+            --end if;
          end if;
          wait for 10 ns;
     end process writeData;

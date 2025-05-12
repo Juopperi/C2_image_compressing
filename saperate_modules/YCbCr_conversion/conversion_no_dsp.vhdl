@@ -57,15 +57,15 @@ begin
                  index := index + 1;
                                  
             elsif index = 3 then
-                temp_Y := temp_Y + (G srl 7) + (G srl 6) + (G srl 4) + (G srl 1); --0.587
+                temp_Y := temp_Y + (G srl 10) + (G srl 7) + (G srl 6) + (G srl 4) + (G srl 1); --0.587
                temp_Cb := temp_Cb - (G srl 10) - (G srl 9) - (G srl 6) - (G srl 4) - (G srl 2); --0.3313
-                temp_Cr := temp_Cr - (G srl 7) - (G srl 5) - (G srl 3) - (G srl 2); -- 0.4187
+                temp_Cr := temp_Cr - (G srl 8) - (G srl 7) - (G srl 5) - (G srl 3) - (G srl 2); -- 0.4187
                 index := index + 1;
 
                 
             elsif index = 4 then
-                temp_Y := temp_Y + (B srl 13) + (B srl 11) + (B srl 8) + (B srl 6) + (B srl 5)+ (B srl 4); --0.144
-                 temp_Cb := temp_Cb  -(R srl 13) -(R srl 11)-(R srl 8) -(R srl 7) - (R srl 5) - (R srl 3) ;    -- 0.1687        
+                temp_Y := temp_Y + (B srl 8) + (B srl 6) + (B srl 5)+ (B srl 4); --0.114
+                 temp_Cb := temp_Cb - (R srl 8) -(R srl 7) - (R srl 5) - (R srl 3) ;    -- 0.1687        
                 temp_Cr := temp_Cr - (B srl 10) - (B srl 9) - (B srl 6) - (B srl 4); --0.0813
                  index := index + 1;
 

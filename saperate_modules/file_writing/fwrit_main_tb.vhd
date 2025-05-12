@@ -2,8 +2,6 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
---use std.textio.all;
---use ieee.std_logic_textio.all;
 
 entity fwrit_main_tb is
 end fwrit_main_tb;
@@ -54,7 +52,7 @@ begin
    in_bit_process: process
    begin
         in_bit <= '0';
-		wait for clk_period*2;
+		wait for clk_period*0.5;
 		in_bit <= '1';
 		wait for clk_period;
    end process;
@@ -77,7 +75,7 @@ begin
         start <='1';
         wait for 10 ns;
         start <='0';
-        wait for 2000 ns;
+        wait for 1995 ns;
 
         done <='1';
         wait for 10 ns;
