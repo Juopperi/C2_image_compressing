@@ -308,29 +308,29 @@ architecture wrapper_arch of wrapper is
                     when quant_read =>
                         for i in 0 to 63 loop
                             Y(16*(index+1)-1 downto 16*index) <= Y_array_out(index);
+                            quant_Y_out(16*(index+1)-1 downto 16*index) <= Y_array_out(index);
                             Cb(16*(index+1)-1 downto 16*index) <= Cb_array_out(index);
                             Cr(16*(index+1)-1 downto 16*index) <= Cr_array_out(index);
                         end loop;
                         currentState <= zigzag;
 
                     when zigzag =>
-                        quant_Y_out <= Y;
                         if state = 1 then
                             zigzag_in <= Y;
-                        elsif state = 2 then
+                        elsif state = 3 then
                             Y <= zigzag_out;
                             zigzag_in <= Cb;
-                        elsif state = 3 then
+                        elsif state = 5 then
                             Cb <= zigzag_out;
                             zigzag_in <= Cr;
-                        elsif state = 4 then
+                        elsif state = 7 then
                             Cr <= zigzag_out;
-                            zigzag_Y_out <= Y;
                             currentState <= huff_load;
                         end if;
                         state := state + 1;
                     
                     when huff_load =>
+                        zigzag_Y_out <= Y;
                         huff_Y <= Y;                           
                         huff_Cb <= Cb;
                         huff_Cr <= Cr;
