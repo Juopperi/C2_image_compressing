@@ -7,7 +7,7 @@ use work.FixedPoint_Types.ALL;  -- Import fixed_array type
 entity quantization is
     Port (
         clk    : in std_logic;
-        Y   : in  fixed_array; -- Input: 64-element array of Q16.16
+        Y   : in  fixed_array; 
         Cb  : in  fixed_array;
         Cr  : in  fixed_array;
         Y_out  : out fixed_array_16; -- Output: Quantized 64-element array
@@ -56,9 +56,8 @@ architecture Behavioral of quantization is
         x"00000296", x"00000296", x"00000296", x"00000296"
     );  -- chrominance table
            constant rounding_factor : signed(31 downto 0) := x"00008000"; -- 2^15 = 0.5
-
+           signal i : integer range 0 to 63;
 begin
- gen_quantize : for i in 0 to 63 generate
         process (clk)
             variable Y_temp : signed(63 downto 0);
             variable Cb_temp : signed(63 downto 0);
@@ -87,8 +86,12 @@ begin
                 Y_out(i) <= std_logic_vector(round_Y(31 downto 16));
                 Cb_out(i) <= std_logic_vector(round_Cb(31 downto 16));
                 Cr_out(i) <= std_logic_vector(round_Cr(31 downto 16));
+              
+                if i = 63 then
+		   i <= 0;
+                else 
+                   i <= i + 1;
+                end if;
             end if;
         end process;
-    end generate;
-
 end Behavioral;
