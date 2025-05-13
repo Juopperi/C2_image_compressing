@@ -12,7 +12,11 @@ entity wrapper is
         R : in std_logic_vector(511 downto 0);
         G : in std_logic_vector(511 downto 0);
         B : in std_logic_vector(511 downto 0);
-        stored_huffman : out std_logic_vector(1000 downto 0);
+        conversion_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        dct_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        quant_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        stored_huffman : out std_logic_vector(1100 downto 0);
         finished : out std_logic
     );
 end wrapper;
@@ -230,6 +234,7 @@ architecture wrapper_arch of wrapper is
                             if index = 64 then
                                 index := 0;
                                 currentState <= dct;
+                                conversion_Y_out <= Y;
                                 --currentState <= done; --By chaning to go here directly this output is printed. 
                             end if;
                         end if;
@@ -284,6 +289,7 @@ architecture wrapper_arch of wrapper is
                                     index := 0;
                                     --currentState <= done;
                                     currentState <= quant_load;
+                                    dct_Y_out <= Y;
                                 end if;
                                 
                             when others =>
@@ -292,26 +298,23 @@ architecture wrapper_arch of wrapper is
                         end case;
 
                     when quant_load =>
-                       Y_array(index) <= "00000000" & Y(16*(index+1)-1 downto 16*index) & "00000000";
-                       Cb_array(index) <= "00000000" & Cb(16*(index+1)-1 downto 16*index) & "00000000";
-                       Cr_array(index) <= "00000000" & Cr(16*(index+1)-1 downto 16*index) & "00000000";
-                       index := index + 1;
-                       if index = 64 then
+                        for i in 0 to 63 loop
+                            Y_array(index) <= "00000000" & Y(16*(index+1)-1 downto 16*index) & "00000000";
+                            Cb_array(index) <= "00000000" & Cb(16*(index+1)-1 downto 16*index) & "00000000";
+                            Cr_array(index) <= "00000000" & Cr(16*(index+1)-1 downto 16*index) & "00000000";
+                        end loop;
                         currentState <= quant_read;
-                        index := 0;
-                        end if;
                         
                     when quant_read =>
-                        Y(16*(index+1)-1 downto 16*index) <= Y_array_out(index);
-                        Cb(16*(index+1)-1 downto 16*index) <= Cb_array_out(index);
-                        Cr(16*(index+1)-1 downto 16*index) <= Cr_array_out(index);
-                        index := index + 1;
-                       if index = 64 then
+                        for i in 0 to 63 loop
+                            Y(16*(index+1)-1 downto 16*index) <= Y_array_out(index);
+                            Cb(16*(index+1)-1 downto 16*index) <= Cb_array_out(index);
+                            Cr(16*(index+1)-1 downto 16*index) <= Cr_array_out(index);
+                        end loop;
                         currentState <= zigzag;
-                        index := 0;
-                        end if;
 
                     when zigzag =>
+                        quant_Y_out <= Y;
                         if state = 1 then
                             zigzag_in <= Y;
                         elsif state = 2 then
@@ -322,6 +325,7 @@ architecture wrapper_arch of wrapper is
                             zigzag_in <= Cr;
                         elsif state = 4 then
                             Cr <= zigzag_out;
+                            zigzag_Y_out <= Y;
                             currentState <= huff_load;
                         end if;
                         state := state + 1;
