@@ -97,6 +97,17 @@ if should_generate:
         sys.exit(1)
 
     try:
+        # Convert line endings first
+        result = subprocess.run(
+            ["wsl", "dos2unix", "gen_put_vector.sh"],
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding='utf-8'
+        )
+        print("✅ dos2unix completed")
+        
+        # Then run the script
         result = subprocess.run(
             ["wsl", "bash", "gen_put_vector.sh", f"{set_count}"],
             check=True,

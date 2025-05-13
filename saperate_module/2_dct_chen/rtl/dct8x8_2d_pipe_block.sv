@@ -29,7 +29,7 @@
 
 module dct8x8_2d_pipe_block #(
     parameter int IN_W    = 32,
-    parameter int FRAC    = 8,
+    parameter int FRAC    = 15,
     parameter int CONST_W = 16
 )(
     input  logic                     clk,
@@ -89,7 +89,7 @@ module dct8x8_2d_pipe_block #(
     // ------------------------------------------------------------------
     //  1‑D DCT core instance (combinational)
     // ------------------------------------------------------------------
-    dct8_chen #(
+    dct8_chen_ts #(
         .IN_W   (IN_W),
         .FRAC   (FRAC),
         .CONST_W(CONST_W)

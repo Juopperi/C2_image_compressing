@@ -11,7 +11,7 @@
 module tb_dct8x8_chen_2d_parallel;
     // ---------- Parameters ---------------------------------------------------
     parameter DATA_WIDTH = 32;         // Q16.16 words
-    parameter FRAC_BITS  = 8;          // Fraction bits
+    parameter FRAC_BITS  = 15;          // Fraction bits
     parameter WORDS_PER_ROW = 8;       // 8 pixels per row
     parameter ROWS_PER_BLK = 8;        // 8 rows per block
     parameter WORDS_PER_BLK = 64;      // 8×8 = 64 words per block

@@ -1,14 +1,15 @@
+`timescale 1ns / 1ps
+
 // ============================================================================
-// 8‑point 1‑D DCT (Chen) – 8 共享乘法器 / 零 DSP 版本
-//   • 每行 8 样本用 4 clk 完成 (P0‑P3)；仅 8 个 LUT 乘法器
+// 8‑point 1‑D DCT (Chen) – 8 共享乘法器 / 零 DSP 版本
+//   • 每行 8 样本用 4 clk 完成 (P0‑P3)；仅 8 个 LUT 乘法器
 //   • 乘法器函数标注 (* use_dsp = "no" *) 强制综合到 LUT
 // ============================================================================
 
-`timescale 1ns / 1ps
 (* use_dsp="no", use_dsp48="no" *)
 module dct8_chen_ts #(
     parameter int IN_W     = 32,   // 数据位宽 (>= 像素 + FRAC)
-    parameter int FRAC     = 8,    // 小数位
+    parameter int FRAC     = 15,    // 小数位
     parameter int CONST_W  = 16,   // 常量位宽
     parameter int NUM_MUL  = 15     // 并行乘法器数 (本例=8)
 )(
@@ -23,8 +24,7 @@ module dct8_chen_ts #(
     // 输出握手：8 系数
     output logic                      out_valid,
     input  logic                      out_ready,
-    output logic signed [IN_W-1:0]    out0,out1,out2,out3,
-                                       out4,out5,out6,out7
+    output logic signed [IN_W-1:0]    out0,out1,out2,out3,out4,out5,out6,out7
 );
 
     // --------------------------------------------------------------------
@@ -32,28 +32,15 @@ module dct8_chen_ts #(
     // --------------------------------------------------------------------
    
     localparam logic signed [15:0]
-        C1    = 16'sd32138  // 0.980785 × 2^FRAC,
-        C2    = 16'sd30274  // 0.923880 × 2^FRAC,
-        C3    = 16'sd27246  // 0.831470 × 2^FRAC,
-        C4    = 16'sd23170  // 0.707107 × 2^FRAC,
-        C6    = 16'sd12540  // 0.382683 × 2^FRAC,
-        SIN1  = 16'sd6393  // 0.195090 × 2^FRAC,
-        SIN3  = 16'sd18205  // 0.555570 × 2^FRAC,
-        K0    = 16'sd11585  // 0.353553 × 2^FRAC;
+        C1    = 16'sd32138,  // 0.980785 × 2^FRAC
+        C2    = 16'sd30274,  // 0.923880 × 2^FRAC
+        C3    = 16'sd27246,  // 0.831470 × 2^FRAC
+        C4    = 16'sd23170,  // 0.707107 × 2^FRAC
+        C6    = 16'sd12540,  // 0.382683 × 2^FRAC
+        SIN1  = 16'sd6393,   // 0.195090 × 2^FRAC
+        SIN3  = 16'sd18205,  // 0.555570 × 2^FRAC
+        K0    = 16'sd11585,  // 0.353553 × 2^FRAC
         K     = 16'sd16384;
-
-    // --------------------------------------------------------------------
-    // 乘法器 (组合 LUT 乘 + 右移)
-    // --------------------------------------------------------------------
-    function automatic logic signed [IN_W-1:0] mul_c
-        (input logic signed [IN_W-1:0]    a,
-         input logic signed [CONST_W-1:0] b);
-        (* use_dsp="no", use_dsp48="no" *) logic signed [IN_W+CONST_W-1:0] p;
-    begin
-        p     = a * b;
-        mul_c = p >>> FRAC;           // 截断保持 IN_W
-    end
-    endfunction
 
     // --------------------------------------------------------------------
     // FSM
@@ -84,10 +71,19 @@ module dct8_chen_ts #(
     job_t                job   [NUM_MUL];
     logic signed [IN_W-1:0] mul_y [NUM_MUL];
 
+    // 实例化NUM_MUL个乘法器
     genvar g;
     generate
-        for(g=0; g<NUM_MUL; g++) begin
-            assign mul_y[g] = mul_c(job[g].a, job[g].b);
+        for(g=0; g<NUM_MUL; g++) begin : mult_inst
+            lut_multiplier #(
+                .IN_W(IN_W),
+                .CONST_W(CONST_W),
+                .FRAC(FRAC)
+            ) multiplier (
+                .a(job[g].a),
+                .b(job[g].b),
+                .result(mul_y[g])
+            );
         end
     endgenerate
 
