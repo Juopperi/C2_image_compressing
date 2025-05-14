@@ -2,7 +2,9 @@
 VERILATOR = verilator
 VERILATOR_FLAGS = --cc --trace --build -CFLAGS "-std=c++17" -LDFLAGS "-pthread" 
 VERILATOR_FLAGS += -Wno-fatal
-VERILATOR_FLAGS += --trace-max-array 512
+VERILATOR_FLAGS += --trace-max-array 64  # 限制数组大小
+VERILATOR_FLAGS += --trace-max-width 64  # 限制信号宽度
+# VERILATOR_FLAGS += --trace-max-array 512
 
 # 设置Verilator输出目录
 VERILATOR_OUTPUT = obj_dir
@@ -11,7 +13,7 @@ VERILATOR_OUTPUT = obj_dir
 VERILATOR_INCLUDE = /opt/verilator/include
 
 # Source files
-VERILOG_SOURCES = rtl/dct8x8_chen_2d.sv rtl/dct8_chen_ts.sv
+VERILOG_SOURCES = rtl/dct8x8_chen_2d.sv rtl/dct8_chen_ts_refined.sv rtl/lut_multiplier.sv
 CPP_SOURCES = dct_test.cpp
 
 # Output directory

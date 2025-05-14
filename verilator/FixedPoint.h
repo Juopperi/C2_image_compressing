@@ -43,6 +43,10 @@ public:
         return static_cast<float>(value) / scale;
     }
 
+    double toDouble() const {
+        return static_cast<double>(value) / scale;
+    }
+
     int toInt() const {
         return static_cast<int>(value / scale);
     }
