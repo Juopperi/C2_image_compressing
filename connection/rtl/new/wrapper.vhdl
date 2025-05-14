@@ -16,7 +16,7 @@ entity wrapper is
         dct_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
         quant_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
         zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        stored_huffman : out std_logic_vector(1100 downto 0);
+        stored_huffman : out std_logic_vector(600 downto 0);
         finished : out std_logic
     );
 end wrapper;
@@ -45,7 +45,7 @@ architecture wrapper_arch of wrapper is
     component dct8x8_chen_2d is
         generic(
             IN_W : integer := 32;
-            FRAC : integer := 8
+            CONST_W : integer := 5
         );
         port (
             clk : in std_logic;
@@ -62,12 +62,12 @@ architecture wrapper_arch of wrapper is
     component quantization is 
         port(
             clk : in std_logic;
-            Y : in fixed_array;
-            Cb : in fixed_array;
-            Cr : in fixed_array;
-            Y_out : out fixed_array_16;
-            Cb_out : out fixed_array_16;
-            Cr_out : out fixed_array_16
+            Y : in std_logic_vector(1023 downto 0);
+            Cb : in std_logic_vector(1023 downto 0);
+            Cr : in std_logic_vector(1023 downto 0);
+            Y_out : out  std_logic_vector(1023 downto 0);
+            Cb_out : out std_logic_vector(1023 downto 0);
+            Cr_out : out std_logic_vector(1023 downto 0)
         );
     end component quantization;
 
@@ -121,12 +121,12 @@ architecture wrapper_arch of wrapper is
     signal in_data_dct : std_logic_vector(1023 downto 0);
     signal out_data_dct : std_logic_vector(1023 downto 0);
 
-    signal Y_array : fixed_array;
-    signal Cb_array : fixed_array;
-    signal Cr_array : fixed_array;
-    signal Y_array_out : fixed_array_16;
-    signal Cb_array_out : fixed_array_16;
-    signal Cr_array_out : fixed_array_16;
+    signal quant_Y_in: std_logic_vector(1023 downto 0);
+    signal quant_Cb_in: std_logic_vector(1023 downto 0);
+    signal quant_Cr_in: std_logic_vector(1023 downto 0);
+    signal quant_out_Y: std_logic_vector(1023 downto 0);
+    signal quant_Cb_out: std_logic_vector(1023 downto 0);
+    signal quant_Cr_out: std_logic_vector(1023 downto 0);
 
     signal zigzag_in : std_logic_vector(1023 downto 0);
     signal zigzag_out : std_logic_vector(1023 downto 0);
@@ -156,7 +156,7 @@ architecture wrapper_arch of wrapper is
             );
 
         comp_dct : component dct8x8_chen_2d 
-            generic map(IN_W => 16, FRAC => 8)
+            generic map(IN_W => 16, CONST_W => 5)
             port map(
                 clk => clk,
                 rst_n => rst_n,
@@ -171,12 +171,12 @@ architecture wrapper_arch of wrapper is
         comp_quant : component quantization
             port map(
                 clk => clk,
-                Y => Y_array,
-                Cb => Cb_array,
-                Cr => Cr_array,
-                Y_out => Y_array_out,
-                Cb_out => Cb_array_out,
-                Cr_out => Cr_array_out
+                Y => quant_Y_in,
+                Cb => quant_Cb_in,
+                Cr => quant_Cr_in,
+                Y_out => quant_out_Y,
+                Cb_out => quant_Cb_out,
+                Cr_out => quant_Cr_out
             );
 
         comp_zigzag : component zigzag_reorder
@@ -234,7 +234,6 @@ architecture wrapper_arch of wrapper is
                             if index = 64 then
                                 index := 0;
                                 currentState <= dct;
-                                conversion_Y_out <= Y;
                                 --currentState <= done; --By chaning to go here directly this output is printed. 
                             end if;
                         end if;
@@ -242,6 +241,7 @@ architecture wrapper_arch of wrapper is
                     when dct => 
                         case dct_state is
                             when Y_state_send =>
+                                conversion_Y_out <= Y;
                                 in_data_dct <= Y;
                                 in_valid_dct <= '1';         
                                 if in_ready_dct = '1' then       
@@ -298,22 +298,28 @@ architecture wrapper_arch of wrapper is
                         end case;
 
                     when quant_load =>
-                        for i in 0 to 63 loop
-                            Y_array(index) <= "00000000" & Y(16*(index+1)-1 downto 16*index) & "00000000";
-                            Cb_array(index) <= "00000000" & Cb(16*(index+1)-1 downto 16*index) & "00000000";
-                            Cr_array(index) <= "00000000" & Cr(16*(index+1)-1 downto 16*index) & "00000000";
-                        end loop;
-                        currentState <= quant_read;
-                        
-                    when quant_read =>
-                        for i in 0 to 63 loop
-                            Y(16*(index+1)-1 downto 16*index) <= Y_array_out(index);
-                            quant_Y_out(16*(index+1)-1 downto 16*index) <= Y_array_out(index);
-                            Cb(16*(index+1)-1 downto 16*index) <= Cb_array_out(index);
-                            Cr(16*(index+1)-1 downto 16*index) <= Cr_array_out(index);
-                        end loop;
-                        currentState <= zigzag;
+                        quant_Y_in(16*(index+1)-1 downto 16*index) <= Y(16*(index+1)-1 downto 16*index);
+                        quant_Cb_in(16*(index+1)-1 downto 16*index) <= Cb(16*(index+1)-1 downto 16*index);
+                        quant_Cr_in(16*(index+1)-1 downto 16*index) <= Cr(16*(index+1)-1 downto 16*index);
+                        if index = 63 then
+                            currentState <= quant_read;
+                            index := 0;
+                        else 
+                            index := index + 1;
+                        end if;
 
+                    when quant_read =>
+                        Y(16*(index+1)-1 downto 16*index) <= quant_out_Y(16*(index+1)-1 downto 16*index);    
+                        Cb(16*(index+1)-1 downto 16*index) <= quant_Cb_out(16*(index+1)-1 downto 16*index);
+                        Cr(16*(index+1)-1 downto 16*index) <= quant_Cr_out(16*(index+1)-1 downto 16*index);
+                        if index = 63 then
+                            currentState <= zigzag;
+                            quant_Y_out <= Y;
+                            index := 0;
+                        else 
+                            index := index + 1;
+                        end if;
+                        
                     when zigzag =>
                         if state = 1 then
                             zigzag_in <= Y;
@@ -321,16 +327,16 @@ architecture wrapper_arch of wrapper is
                             Y <= zigzag_out;
                             zigzag_in <= Cb;
                         elsif state = 5 then
+                            zigzag_Y_out <= Y;
                             Cb <= zigzag_out;
                             zigzag_in <= Cr;
                         elsif state = 7 then
                             Cr <= zigzag_out;
-                            currentState <= huff_load;
+                            currentState <= huff_load;         
                         end if;
                         state := state + 1;
                     
                     when huff_load =>
-                        zigzag_Y_out <= Y;
                         huff_Y <= Y;                           
                         huff_Cb <= Cb;
                         huff_Cr <= Cr;

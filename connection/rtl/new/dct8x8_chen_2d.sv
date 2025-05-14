@@ -6,7 +6,7 @@
 `timescale 1ns/1ps
 module dct8x8_chen_2d #(
     parameter int IN_W = 32,
-    parameter int FRAC = 8
+    parameter int CONST_W = 5
 )(
     input  logic                     clk,
     input  logic                     rst_n,
@@ -86,7 +86,7 @@ module dct8x8_chen_2d #(
 
     dct8_chen_ts #(
         .IN_W   (IN_W),
-        .FRAC   (FRAC)
+        .CONST_W(CONST_W)
     ) u_dct (
         .clk      (clk),
         .rst_n    (rst_n),

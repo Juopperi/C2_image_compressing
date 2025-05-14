@@ -22,7 +22,7 @@ architecture arch of wrapper_tb is
         dct_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
         quant_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
         zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        stored_huffman : out std_logic_vector(1100 downto 0);
+        stored_huffman : out std_logic_vector(600 downto 0);
         finished : out std_logic
     );
     end component wrapper;
@@ -37,7 +37,7 @@ architecture arch of wrapper_tb is
     signal dct_Y_out : std_logic_vector(1023 downto 0); --Only for debugging
     signal quant_Y_out : std_logic_vector(1023 downto 0); --Only for debugging
     signal zigzag_Y_out : std_logic_vector(1023 downto 0); --Only for debugging
-    signal stored_huffman : std_logic_vector(1100 downto 0);
+    signal stored_huffman : std_logic_vector(600 downto 0);
     signal finished : std_logic;
 
     type word_array is array (0 to 63) of std_logic_vector(7 downto 0);
