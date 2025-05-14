@@ -67,9 +67,9 @@ begin
         begin
             if rising_edge(clk) then
                 -- Fixed-point multiplication
-                Y_temp := signed(Y(16*(i+1)-1 downto 16*i)) * signed(TY(16*(i+1)-1 downto 16*i));
-                Cb_temp := signed(Cb(16*(i+1)-1 downto 16*i)) * signed(TC(16*(i+1)-1 downto 16*i));
-                Cr_temp := signed(Cr(16*(i+1)-1 downto 16*i)) * signed(TC(16*(i+1)-1 downto 16*i));
+                Y_temp := signed(Y(16*(i+1)-1 downto (16*i))) * signed(TY(16*(i+1)-1 downto (16*i)));
+                Cb_temp := signed(Cb(16*(i+1)-1 downto (16*i))) * signed(TC(16*(i+1)-1 downto (16*i)));
+                Cr_temp := signed(Cr(16*(i+1)-1 downto (16*i))) * signed(TC(16*(i+1)-1 downto (16*i)));
 
                 -- Add rounding
                 round_Y := Y_temp(23 downto 8) + rounding_factor;
@@ -82,9 +82,9 @@ begin
                 round_Cr(7 downto 0) := (others => '0');
 
                 -- Assign output
-                Y_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Y(15 downto 0));
-                Cb_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Cb(15 downto 0));
-                Cr_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Cr(15 downto 0));
+                Y_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Y(15 downto 0));
+                Cb_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Cb(15 downto 0));
+                Cr_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Cr(15 downto 0));
               
                 if i = 63 then
 		   i <= 0;

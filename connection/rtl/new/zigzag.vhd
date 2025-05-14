@@ -36,8 +36,8 @@ begin
     begin
         if rising_edge(clk) then
             for i in 0 to 63 loop
-                internal_out(vector_length*i +  vector_length-1 downto vector_length*i) <=
-                    input_matrix(vector_length*zigzag_order(i) +  vector_length-1 downto vector_length*zigzag_order(i));
+                internal_out((vector_length*i) +  vector_length-1 downto vector_length*i) <=
+                    input_matrix((vector_length*zigzag_order(i)) +  vector_length-1 downto vector_length*zigzag_order(i));
             end loop;
         end if;
     end process;
