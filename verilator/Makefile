@@ -14,18 +14,23 @@ VERILATOR_INCLUDE = /opt/verilator/include
 
 # Source files
 VERILOG_SOURCES = rtl/dct8x8_chen_2d.sv rtl/dct8_chen_ts_refined.sv rtl/lut_multiplier.sv
-CPP_SOURCES = dct_test.cpp
+CPP_SOURCES = dct_test.cpp dct_sweep.cpp
 
 # Output directory
 OBJ_DIR = obj_dir
 SIM_BINARY = $(OBJ_DIR)/Vdct8x8_chen_2d
 
 # Target: full build (verilate + compile)
-all: dct_test
+all: dct_test dct_sweep
 
 # Run simulation
 run: dct_test
 	./dct_test
+
+# Run sweep
+sweep: dct_sweep
+	./dct_sweep
+	python3 plot_results.py
 
 # Run with waveform viewer
 wave: run
@@ -33,7 +38,7 @@ wave: run
 
 # Clean up
 clean:
-	rm -rf $(OBJ_DIR) *.vcd
+	rm -rf $(OBJ_DIR) *.vcd *.csv *.png
 
 # 使用Verilator编译Verilog模块
 $(VERILATOR_OUTPUT)/Vdct8x8_chen_2d.mk: $(VERILOG_SOURCES)
@@ -44,4 +49,8 @@ $(VERILATOR_OUTPUT)/Vdct8x8_chen_2d.mk: $(VERILOG_SOURCES)
 dct_test: $(VERILATOR_OUTPUT)/Vdct8x8_chen_2d.mk dct_test.cpp
 	g++ -std=c++17 -I$(VERILATOR_OUTPUT) -I$(VERILATOR_INCLUDE) -o dct_test dct_test.cpp $(VERILATOR_OUTPUT)/Vdct8x8_chen_2d__ALL.a $(VERILATOR_INCLUDE)/verilated.cpp $(VERILATOR_INCLUDE)/verilated_vcd_c.cpp $(VERILATOR_INCLUDE)/verilated_threads.cpp -pthread
 
-.PHONY: all run wave clean
+# 编译sweep程序
+dct_sweep: $(VERILATOR_OUTPUT)/Vdct8x8_chen_2d.mk dct_sweep.cpp
+	g++ -std=c++17 -I$(VERILATOR_OUTPUT) -I$(VERILATOR_INCLUDE) -o dct_sweep dct_sweep.cpp $(VERILATOR_OUTPUT)/Vdct8x8_chen_2d__ALL.a $(VERILATOR_INCLUDE)/verilated.cpp $(VERILATOR_INCLUDE)/verilated_vcd_c.cpp $(VERILATOR_INCLUDE)/verilated_threads.cpp -pthread
+
+.PHONY: all run sweep wave clean

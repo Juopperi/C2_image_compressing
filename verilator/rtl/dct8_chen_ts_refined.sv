@@ -9,7 +9,6 @@
 (* use_dsp="no", use_dsp48="no" *)
 module dct8_chen_ts #(
     parameter int IN_W     = 32,   // 数据位宽 (>= 像素 + FRAC)
-    parameter int FRAC     = 15,    // 小数位
     parameter int CONST_W  = 16,   // 常量位宽
     parameter int NUM_MUL  = 8     // 并行乘法器数 (本例=8)
 )(
@@ -30,6 +29,8 @@ module dct8_chen_ts #(
     // --------------------------------------------------------------------
     // 常量 (×2^FRAC，FRAC = 8)
     // --------------------------------------------------------------------
+    localparam int FRAC     = CONST_W - 1;    // 小数位
+
    
     localparam logic signed [15:0]
         C1    = 16'sd32138 >> 16 - CONST_W,  // 0.980785 × 2^FRAC
@@ -77,8 +78,7 @@ module dct8_chen_ts #(
         for(g=0; g<NUM_MUL; g++) begin : mult_inst
             lut_multiplier #(
                 .IN_W(IN_W),
-                .CONST_W(CONST_W),
-                .FRAC(FRAC)
+                .CONST_W(CONST_W)
             ) multiplier (
                 .a(job[g].a),
                 .b(job[g].b),

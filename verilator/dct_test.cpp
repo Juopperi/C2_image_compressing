@@ -8,6 +8,7 @@
 #include <random>
 #include "FixedPoint.h"
 #include "VerilatorUtils.h"
+#include <fstream>
 
 // 仿真时间单位
 #define RESET_PERIOD  50
@@ -163,105 +164,129 @@ void print_comparison(const Fix& actual, const Fix& expected, int index) {
               << std::endl;
 }
 
+struct TestStats {
+    double avg_error;
+    double max_error;
+    int mismatches;
+};
+
+TestStats run_test(Vdct8x8_chen_2d* top, VerilatedVcdC* tfp, vluint64_t& sim_time,
+                  const std::vector<Fix>& input_data, size_t block_start) {
+    // 计算参考DCT结果
+    auto expected_output = reference_dct_2d(input_data, block_start);
+    
+    // 使用工具函数设置输入数据
+    VerilatorUtils::fillPortWithFixedPoint<64, int32_t, 16>(top->in_data, input_data, block_start);
+    
+    // 发送输入数据
+    top->in_valid = 1;
+    clock_cycle(top, tfp, sim_time);
+    
+    // 等待设计准备好接收输入
+    int wait_count = 0;
+    while (!top->in_ready && wait_count < 100) {
+        clock_cycle(top, tfp, sim_time);
+        wait_count++;
+    }
+    
+    if (wait_count >= 100) {
+        std::cout << "Error: Timeout waiting for in_ready" << std::endl;
+        return {0.0, 0.0, 64};  // 返回最大错误
+    }
+    
+    // 输入被接受后，将in_valid置低
+    top->in_valid = 0;
+    
+    // 运行固定数量的时钟周期
+    const int DCT_CYCLES = PERIOD*10;
+    clock_cycles(top, tfp, sim_time, DCT_CYCLES);
+    
+    // 使用工具函数读取输出数据
+    auto actual_output = VerilatorUtils::readPortToFixedPoint<64, int32_t, 16>(top->out_data);
+    
+    // 比较结果
+    int mismatches = 0;
+    double total_error = 0.0;
+    double max_error = 0.0;
+    
+    for (int i = 0; i < 64; i++) {
+        double error = std::abs(actual_output[i].toDouble() - expected_output[i].toDouble());
+        total_error += error;
+        max_error = std::max(max_error, error);
+        
+        if (std::abs(actual_output[i].raw() - expected_output[i].raw()) > 0x00000001) {
+            mismatches++;
+            print_comparison(actual_output[i], expected_output[i], i);
+        }
+    }
+    
+    // 清除out_valid
+    top->out_ready = 0;
+    clock_cycle(top, tfp, sim_time);
+    top->out_ready = 1;
+    clock_cycle(top, tfp, sim_time);
+    
+    return {
+        total_error / 64.0,  // 平均误差
+        max_error,           // 最大误差
+        mismatches          // 不匹配数量
+    };
+}
+
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
     Verilated::traceEverOn(true);
     
     // 创建模块实例
     Vdct8x8_chen_2d* top = new Vdct8x8_chen_2d;
-    
-    // 创建波形文件
     VerilatedVcdC* tfp = new VerilatedVcdC;
-    top->trace(tfp, 99);  // 修改为只记录关键信号
-    tfp->set_time_unit("1ns");
-    tfp->set_time_resolution("1ps");
-    // tfp->open("dct_wave.vcd");
+    top->trace(tfp, 99);
+    tfp->open("dct_wave.vcd");
     
     vluint64_t sim_time = 0;
-    
-    // 初始化
     init_module(top);
-    
-    // 复位
     reset_module(top, tfp, sim_time);
     
-    // 生成输入数据
-    int num_blocks = NUM_BLOCKS;  // 测试2个8x8块
-    auto input_data = generate_test_data(num_blocks);
+    // 生成测试数据
+    auto input_data = generate_test_data(NUM_BLOCKS);
     
-    // 处理每个8x8块
+    // 运行测试并收集统计信息
+    double total_avg_error = 0.0;
+    double total_max_error = 0.0;
+    int total_mismatches = 0;
+    
     for (size_t block = 0; block < input_data.size(); block += 64) {
-        std::cout << "处理块 " << block/64 << std::endl;
+        auto stats = run_test(top, tfp, sim_time, input_data, block);
+        total_avg_error += stats.avg_error;
+        total_max_error = std::max(total_max_error, stats.max_error);
+        total_mismatches += stats.mismatches;
         
-        // 计算参考DCT结果
-        auto expected_output = reference_dct_2d(input_data, block);
-        
-        // 使用工具函数设置输入数据
-        VerilatorUtils::fillPortWithFixedPoint<64, int, 16>(top->in_data, input_data, block);
-        
-        // 发送输入数据
-        top->in_valid = 1;
-        clock_cycle(top, tfp, sim_time);
-        
-        // 等待设计准备好接收输入
-        int wait_count = 0;
-        while (!top->in_ready && wait_count < 100) {
-            std::cout << "等待in_ready, 当前状态: in_ready=" << top->in_ready 
-                      << ", in_valid=" << top->in_valid 
-                      << ", out_valid=" << top->out_valid << std::endl;
-            clock_cycle(top, tfp, sim_time);
-            wait_count++;
-        }
-        
-        if (wait_count >= 100) {
-            std::cout << "错误：等待in_ready超时" << std::endl;
-            break;
-        }
-        
-        // 输入被接受后，将in_valid置低
-        top->in_valid = 0;
-        
-        // 运行固定数量的时钟周期（根据DCT计算所需的时间）
-        const int DCT_CYCLES = PERIOD*10;  // 根据实际DCT计算所需的时间调整这个值
-        std::cout << "运行 " << DCT_CYCLES << " 个时钟周期..." << std::endl;
-        clock_cycles(top, tfp, sim_time, DCT_CYCLES);
-        
-        // 使用工具函数读取输出数据
-        auto actual_output = VerilatorUtils::readPortToFixedPoint<64, int32_t, 16>(top->out_data);
-        
-        // 比较结果
-        int mismatches = 0;
-        for (int i = 0; i < 64; i++) {
-            // 允许有小误差（由于定点数和浮点计算的差异）
-            if (std::abs(actual_output[i].raw() - expected_output[i].raw()) > 0x00000800) {
-                mismatches++;
-                print_comparison(actual_output[i], expected_output[i], i);
-            }
-        }
-        
-        std::cout << "块 " << block/64 << ": " 
-                  << mismatches << " 个不匹配，共64个值" << std::endl;
-        
-        // 清除out_valid
-        top->out_ready = 0;
-        clock_cycle(top, tfp, sim_time);
-        top->out_ready = 1;
-        clock_cycle(top, tfp, sim_time);
-        
-        // 每个块处理完后，关闭并重新打开波形文件以减小文件大小
-        if (block + 64 < input_data.size()) {
-            // tfp->close();
-            // tfp->open("dct_wave.vcd", true);  // 追加模式
+        // 每处理10个块打印一次进度
+        if ((block / 64) % 10 == 0) {
+            std::cout << "  Progress: " << (block / 64) << "/" << NUM_BLOCKS << " blocks" << std::endl;
         }
     }
+    
+    // 计算平均值
+    double avg_error = total_avg_error / NUM_BLOCKS;
+    
+    // 输出结果到控制台
+    std::cout << "Results:" << std::endl;
+    std::cout << "  Avg Error: " << avg_error << std::endl;
+    std::cout << "  Max Error: " << total_max_error << std::endl;
+    std::cout << "  Mismatches: " << total_mismatches << std::endl;
+    
+    // 输出结果到文件
+    std::ofstream out_file("sim_results.txt");
+    out_file << "Avg Error: " << avg_error << std::endl;
+    out_file << "Max Error: " << total_max_error << std::endl;
+    out_file << "Mismatches: " << total_mismatches << std::endl;
+    out_file.close();
     
     // 清理
-    if (tfp) {
-        tfp->close();
-        delete tfp;
-    }
+    tfp->close();
+    delete tfp;
     delete top;
     
-    std::cout << "仿真完成。" << std::endl;
     return 0;
 } 
