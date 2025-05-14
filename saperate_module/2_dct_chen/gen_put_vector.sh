@@ -52,6 +52,7 @@ make -j
 # 执行生成器
 # -------------------------------
 echo "📤 Running generator: ./gen_multi_inout ${SET_COUNT}"
+rm ./*.mem
 # ./gen_multi_inout -127 128 "${SET_COUNT}"
 ./gen_multi_inout -127 128 "${SET_COUNT}"
 # ./gen_2d_pipe_test_vectors -127 128 "${SET_COUNT}"

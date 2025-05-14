@@ -58,7 +58,7 @@ module tb_dct2d_8x8_pipe;
     // ------------------------------------------------------------------
     //  Device under test
     // ------------------------------------------------------------------
-    dct8x8_2d_pipe #(
+    dct8x8_chen_2d #(
         .IN_W    (DATA_WIDTH),
         .FRAC    (FRAC_BITS),
         .CONST_W (CONST_WIDTH)

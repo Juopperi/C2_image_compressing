@@ -11,11 +11,12 @@
 module tb_dct8x8_chen_2d;
     // ---------- Parameters ---------------------------------------------------
     parameter DATA_WIDTH = 32;         // Q16.16 words
-    parameter FRAC_BITS  = 8;          // Fraction bits
+    parameter FRAC_BITS  = 15;          // Fraction bits
+    parameter CONST_W    = 16;         // Constant width
     parameter WORDS_PER_ROW = 8;       // 8 pixels per row
     parameter ROWS_PER_BLK = 8;        // 8 rows per block
     parameter WORDS_PER_BLK = 64;      // 8×8 = 64 words per block
-    parameter MAX_BLOCKS = 100;        // must match generator
+    parameter MAX_BLOCKS = 1000;        // must match generator
     parameter ERR_THRESH = 32'h0000_8000; // ±0.5 LSB
     parameter CLK_PERIOD = 10;         // 10ns = 100MHz
 
@@ -36,7 +37,8 @@ module tb_dct8x8_chen_2d;
     // ---------- DUT instance -------------------------------------------------
     dct8x8_chen_2d #(
         .IN_W   (DATA_WIDTH),
-        .FRAC   (FRAC_BITS)
+        .FRAC   (FRAC_BITS),
+        .CONST_W(CONST_W)
     ) dut (
         .clk      (clk),
         .rst_n    (rst_n),
