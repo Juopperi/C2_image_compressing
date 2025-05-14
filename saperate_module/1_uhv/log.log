@@ -1,0 +1,299 @@
+﻿** Warning: (vlib-34) Library already exists at "work".
+Errors: 0, Warnings: 1
+QuestaSim-64 vmap 2021.1 Lib Mapping Utility 2021.01 Jan 19 2021
+vmap work work 
+Modifying modelsim.ini
+** Error: 聿撅⒕鞄缝珟陰∴◢
+       Unable to replace existing ini file (modelsim.ini).  File can not be renamed.
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+Start time: 17:43:24 on May 14,2025
+vlog ../../rtl\converter.v 
+-- Compiling module int_mul_fra_ycbcr
+
+Top level modules:
+	int_mul_fra_ycbcr
+End time: 17:43:24 on May 14,2025, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+Start time: 17:43:24 on May 14,2025
+vlog ../../rtl\int_mul_fra.v 
+-- Compiling module shift_add_multiplier_8x16_frac
+
+Top level modules:
+	shift_add_multiplier_8x16_frac
+End time: 17:43:24 on May 14,2025, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+Start time: 17:43:24 on May 14,2025
+vlog ../../rtl\rgb2ycbcr_container.v 
+-- Compiling module rgb2ycbcr_container
+
+Top level modules:
+	rgb2ycbcr_container
+End time: 17:43:24 on May 14,2025, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+Start time: 17:43:24 on May 14,2025
+vlog ../../tb\convertor\tb_rgb2ycbcr_container.v 
+-- Compiling module tb_rgb2ycbcr_container
+
+Top level modules:
+	tb_rgb2ycbcr_container
+End time: 17:43:24 on May 14,2025, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2021.1
+
+# vsim -c -voptargs="+acc" work.tb_rgb2ycbcr_container -do "run 200 us; quit -f" 
+# Start time: 17:43:28 on May 14,2025
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Note: (vopt-143) Recognized 1 FSM in module "rgb2ycbcr_container(fast)".
+# //  Questa Sim-64
+# //  Version 2021.1 win64 Jan 19 2021
+# //
+# //  Copyright 1991-2021 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading work.tb_rgb2ycbcr_container(fast)
+# Loading work.rgb2ycbcr_container(fast)
+# Loading work.int_mul_fra_ycbcr(fast)
+# Loading work.shift_add_multiplier_8x16_frac(fast)
+# run 200 us
+# ==== TB: RGB to YCbCr Container ====
+# ** Warning: (vsim-PLI-3407) Too many data words read on line 6401 of file "input_R.mem". (Current address [6400], address range [0:6399])    : ../../tb/convertor/tb_rgb2ycbcr_container.v(77)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_rgb2ycbcr_container
+# ** Warning: (vsim-PLI-3407) Too many data words read on line 6401 of file "input_G.mem". (Current address [6400], address range [0:6399])    : ../../tb/convertor/tb_rgb2ycbcr_container.v(78)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_rgb2ycbcr_container
+# ** Warning: (vsim-PLI-3407) Too many data words read on line 6401 of file "input_B.mem". (Current address [6400], address range [0:6399])    : ../../tb/convertor/tb_rgb2ycbcr_container.v(79)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_rgb2ycbcr_container
+# ** Warning: (vsim-PLI-3407) Too many data words read on line 6401 of file "expected_Y_output.mem". (Current address [6400], address range [0:6399])    : ../../tb/convertor/tb_rgb2ycbcr_container.v(80)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_rgb2ycbcr_container
+# ** Warning: (vsim-PLI-3407) Too many data words read on line 6401 of file "expected_Cb_output.mem". (Current address [6400], address range [0:6399])    : ../../tb/convertor/tb_rgb2ycbcr_container.v(81)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_rgb2ycbcr_container
+# ** Warning: (vsim-PLI-3407) Too many data words read on line 6401 of file "expected_Cr_output.mem". (Current address [6400], address range [0:6399])    : ../../tb/convertor/tb_rgb2ycbcr_container.v(82)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_rgb2ycbcr_container
+# ---- Group 0 ----
+# -----------------------------
+# ---- Group 1 ----
+# -----------------------------
+# ---- Group 2 ----
+# -----------------------------
+# ---- Group 3 ----
+# -----------------------------
+# ---- Group 4 ----
+# -----------------------------
+# ---- Group 5 ----
+# -----------------------------
+# ---- Group 6 ----
+# -----------------------------
+# ---- Group 7 ----
+# -----------------------------
+# ---- Group 8 ----
+# -----------------------------
+# ---- Group 9 ----
+# -----------------------------
+# ---- Group 10 ----
+# -----------------------------
+# ---- Group 11 ----
+# -----------------------------
+# ---- Group 12 ----
+# -----------------------------
+# ---- Group 13 ----
+# -----------------------------
+# ---- Group 14 ----
+# -----------------------------
+# ---- Group 15 ----
+# -----------------------------
+# ---- Group 16 ----
+# -----------------------------
+# ---- Group 17 ----
+# -----------------------------
+# ---- Group 18 ----
+# -----------------------------
+# ---- Group 19 ----
+# -----------------------------
+# ---- Group 20 ----
+# -----------------------------
+# ---- Group 21 ----
+# -----------------------------
+# ---- Group 22 ----
+# -----------------------------
+# ---- Group 23 ----
+# -----------------------------
+# ---- Group 24 ----
+# -----------------------------
+# ---- Group 25 ----
+# -----------------------------
+# ---- Group 26 ----
+# -----------------------------
+# ---- Group 27 ----
+# -----------------------------
+# ---- Group 28 ----
+# -----------------------------
+# ---- Group 29 ----
+# -----------------------------
+# ---- Group 30 ----
+# -----------------------------
+# ---- Group 31 ----
+# -----------------------------
+# ---- Group 32 ----
+# -----------------------------
+# ---- Group 33 ----
+# -----------------------------
+# ---- Group 34 ----
+# -----------------------------
+# ---- Group 35 ----
+# -----------------------------
+# ---- Group 36 ----
+# -----------------------------
+# ---- Group 37 ----
+# -----------------------------
+# ---- Group 38 ----
+# -----------------------------
+# ---- Group 39 ----
+# -----------------------------
+# ---- Group 40 ----
+# -----------------------------
+# ---- Group 41 ----
+# -----------------------------
+# ---- Group 42 ----
+# -----------------------------
+# ---- Group 43 ----
+# -----------------------------
+# ---- Group 44 ----
+# -----------------------------
+# ---- Group 45 ----
+# -----------------------------
+# ---- Group 46 ----
+# -----------------------------
+# ---- Group 47 ----
+# -----------------------------
+# ---- Group 48 ----
+# -----------------------------
+# ---- Group 49 ----
+# -----------------------------
+# ---- Group 50 ----
+# -----------------------------
+# ---- Group 51 ----
+# -----------------------------
+# ---- Group 52 ----
+# -----------------------------
+# ---- Group 53 ----
+# -----------------------------
+# ---- Group 54 ----
+# -----------------------------
+# ---- Group 55 ----
+# -----------------------------
+# ---- Group 56 ----
+# -----------------------------
+# ---- Group 57 ----
+# -----------------------------
+# ---- Group 58 ----
+# -----------------------------
+# ---- Group 59 ----
+# -----------------------------
+# ---- Group 60 ----
+# -----------------------------
+# ---- Group 61 ----
+# -----------------------------
+# ---- Group 62 ----
+# -----------------------------
+# ---- Group 63 ----
+# -----------------------------
+# ---- Group 64 ----
+# -----------------------------
+# ---- Group 65 ----
+# -----------------------------
+# ---- Group 66 ----
+# -----------------------------
+# ---- Group 67 ----
+# -----------------------------
+# ---- Group 68 ----
+# -----------------------------
+# ---- Group 69 ----
+# -----------------------------
+# ---- Group 70 ----
+# -----------------------------
+# ---- Group 71 ----
+# -----------------------------
+# ---- Group 72 ----
+# -----------------------------
+# ---- Group 73 ----
+# -----------------------------
+# ---- Group 74 ----
+# -----------------------------
+# ---- Group 75 ----
+# -----------------------------
+# ---- Group 76 ----
+# -----------------------------
+# ---- Group 77 ----
+# -----------------------------
+# ---- Group 78 ----
+# -----------------------------
+# ---- Group 79 ----
+# -----------------------------
+# ---- Group 80 ----
+# -----------------------------
+# ---- Group 81 ----
+# -----------------------------
+# ---- Group 82 ----
+# -----------------------------
+# ---- Group 83 ----
+# -----------------------------
+# ---- Group 84 ----
+# -----------------------------
+# ---- Group 85 ----
+# -----------------------------
+# ---- Group 86 ----
+# -----------------------------
+# ---- Group 87 ----
+# -----------------------------
+# ---- Group 88 ----
+# -----------------------------
+# ---- Group 89 ----
+# -----------------------------
+# ---- Group 90 ----
+# -----------------------------
+# ---- Group 91 ----
+# -----------------------------
+# ---- Group 92 ----
+# -----------------------------
+# ---- Group 93 ----
+# -----------------------------
+# ---- Group 94 ----
+# -----------------------------
+# ---- Group 95 ----
+# -----------------------------
+# ---- Group 96 ----
+# -----------------------------
+# ---- Group 97 ----
+# -----------------------------
+# ---- Group 98 ----
+# -----------------------------
+# ---- Group 99 ----
+# -----------------------------
+# ==== All Groups Completed ====
+# ** Note: $finish    : ../../tb/convertor/tb_rgb2ycbcr_container.v(147)
+#    Time: 12135 ns  Iteration: 0  Instance: /tb_rgb2ycbcr_container
+# End time: 17:43:32 on May 14,2025, Elapsed time: 0:00:04
+# Errors: 0, Warnings: 6
+
+馃摝 Generating simulation script...
+鉁?Created 'simulate.ps1' with 4 source files.
+馃棏锔?Removed old 'tb\sim\simulate.ps1'
+馃搨 Moved new script to 'tb\sim\simulate.ps1'
+
+馃З Skipping test vector generation (no 'gen' flag passed).
+
+馃搧 Changed working directory to: C:\Users\wuche\Desktop\CODE\dat096\C2_image_compressing\1_uhv\tb\sim
+鈻讹笍  Running: simulate.ps1
+鉁?Simulation completed.

@@ -37,7 +37,6 @@ module tb_dct8x8_chen_2d;
     // ---------- DUT instance -------------------------------------------------
     dct8x8_chen_2d #(
         .IN_W   (DATA_WIDTH),
-        .FRAC   (FRAC_BITS),
         .CONST_W(CONST_W)
     ) dut (
         .clk      (clk),

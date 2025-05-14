@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7z020clg484-1" LaunchTime="1747154206">
+<GenRun Id="synth_1" LaunchPart="xc7z020clg484-1" LaunchTime="1747244922">
   <File Type="PA-TCL" Name="dct8x8_chen_2d.tcl"/>
   <File Type="RDS-PROPCONSTRS" Name="dct8x8_chen_2d_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="dct8x8_chen_2d_reports.tcl"/>
@@ -18,6 +18,13 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
+    <File Path="$PPRDIR/../../rtl/lut_multiplier.sv">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
     <File Path="$PPRDIR/../../rtl/dct8x8_chen_2d.sv">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -25,7 +32,7 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PPRDIR/../../rtl/dct8x8_chen_2d_parallel.sv">
+    <File Path="$PPRDIR/../../rtl/int_mul_fra.v">
       <FileInfo>
         <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -33,7 +40,23 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PPRDIR/../../rtl/dct8x8_2d_pipe_block.sv">
+    <File Path="$PPRDIR/../../rtl/int_mul_fra_ycbcr.v">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../rtl/rgb2ycbcr_container.v">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../rtl/rgb2ycbcr_dct.sv">
       <FileInfo>
         <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>

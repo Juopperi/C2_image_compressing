@@ -25,7 +25,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/dct8_chen_ts_proj/dct8_chen_ts_proj.runs/synth_1'
+HD_PWD='C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/synthesis_tests/dct8_chen_ts_proj/dct8_chen_ts_proj.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log

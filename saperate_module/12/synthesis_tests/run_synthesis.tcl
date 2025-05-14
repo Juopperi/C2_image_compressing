@@ -16,7 +16,8 @@ set part_name "xc7z020clg484-1"
 set rtl_dir "../rtl"
 set nthreads 32
 set report_dir "./reports"
-set fast_mode 1  # Skip post-processing for faster operation
+set fast_mode 1  
+# Skip post-processing for faster operation
 
 # Parse command line arguments
 for {set i 0} {$i < $argc} {incr i} {

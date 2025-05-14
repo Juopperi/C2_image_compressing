@@ -6,7 +6,7 @@
 //   • 乘法器函数标注 (* use_dsp = "no" *) 强制综合到 LUT
 // ============================================================================
 
-(* use_dsp="no", use_dsp48="no" *)
+// (* use_dsp="no", use_dsp48="no" *)
 module dct8_chen_ts #(
     parameter int IN_W     = 32,   // 数据位宽 (>= 像素 + FRAC)
     parameter int CONST_W  = 16,   // 常量位宽

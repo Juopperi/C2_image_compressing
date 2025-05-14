@@ -3,7 +3,8 @@ import shutil
 import subprocess
 import sys
 
-testbench_name = "tb_dct8x8_chen_2d"
+# Change the testbench name to our new RGB2YCbCr + DCT testbench
+testbench_name = "tb_rgb2ycbcr_dct"
 
 # -----------------------------
 # 解析参数
@@ -99,7 +100,7 @@ if should_generate:
     try:
         # Convert line endings first
         result = subprocess.run(
-            ["wsl", "dos2unix", "gen_put_vector.sh"],
+            ["wsl", "dos2unix", "gen_rgb_vectors.sh"],
             check=True,
             capture_output=True,
             text=True,
@@ -109,15 +110,15 @@ if should_generate:
         
         # Then run the script
         result = subprocess.run(
-            ["wsl", "bash", "gen_put_vector.sh", f"{set_count}"],
+            ["wsl", "bash", "gen_rgb_vectors.sh", f"{set_count}"],
             check=True,
             capture_output=True,
             text=True,
             encoding='utf-8'
         )
-        print("✅ gen_put_vector.sh output:\n", result.stdout)
+        print("✅ gen_rgb_vectors.sh output:\n", result.stdout)
     except subprocess.CalledProcessError as e:
-        print("❌ Error running gen_put_vector.sh:")
+        print("❌ Error running gen_rgb_vectors.sh:")
         print(e.stderr)
         sys.exit(1)
 else:
@@ -157,6 +158,7 @@ import glob
 import shutil
 import os
 
+# Save all output files
 for filepath in glob.glob("*output*.mem"):
     shutil.copy(filepath, "../saved_output")
 
