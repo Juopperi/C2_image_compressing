@@ -138,7 +138,7 @@ begin
             end if;
             index := index + 1;
             if index = 64 then
-                write(output_line,stored_huffman);
+                write(output_line,conversion_Y_out);
                 writeline(output_file,output_line);
                 wait;
             end if;
@@ -164,7 +164,7 @@ begin
             end if;
             index := index + 1;
             if index = 64 then
-                write(output_line,stored_huffman);
+                write(output_line,dct_Y_out);
                 writeline(output_file,output_line);
                 wait;
             end if;
@@ -191,7 +191,7 @@ begin
             end if;
             index := index + 1;
             if index = 64 then
-                write(output_line,stored_huffman);
+                write(output_line,quant_Y_out);
                 writeline(output_file,output_line);
                 wait;
             end if;
@@ -217,7 +217,7 @@ begin
             end if;
             index := index + 1;
             if index = 64 then
-                write(output_line,stored_huffman);
+                write(output_line,zigzag_Y_out);
                 writeline(output_file,output_line);
                 wait;
             end if;
