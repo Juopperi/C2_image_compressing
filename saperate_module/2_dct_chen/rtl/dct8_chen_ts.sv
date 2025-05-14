@@ -9,9 +9,8 @@
 (* use_dsp="no", use_dsp48="no" *)
 module dct8_chen_ts #(
     parameter int IN_W     = 32,   // 数据位宽 (>= 像素 + FRAC)
-    parameter int FRAC     = 15,    // 小数位
     parameter int CONST_W  = 16,   // 常量位宽
-    parameter int NUM_MUL  = 15     // 并行乘法器数 (本例=8)
+    parameter int NUM_MUL  = 8     // 并行乘法器数 (本例=8)
 )(
     input  logic                      clk,
     input  logic                      rst_n,
@@ -30,17 +29,19 @@ module dct8_chen_ts #(
     // --------------------------------------------------------------------
     // 常量 (×2^FRAC，FRAC = 8)
     // --------------------------------------------------------------------
+    localparam int FRAC     = CONST_W - 1;    // 小数位
+
    
     localparam logic signed [15:0]
-        C1    = 16'sd32138,  // 0.980785 × 2^FRAC
-        C2    = 16'sd30274,  // 0.923880 × 2^FRAC
-        C3    = 16'sd27246,  // 0.831470 × 2^FRAC
-        C4    = 16'sd23170,  // 0.707107 × 2^FRAC
-        C6    = 16'sd12540,  // 0.382683 × 2^FRAC
-        SIN1  = 16'sd6393,   // 0.195090 × 2^FRAC
-        SIN3  = 16'sd18205,  // 0.555570 × 2^FRAC
-        K0    = 16'sd11585,  // 0.353553 × 2^FRAC
-        K     = 16'sd16384;
+        C1    = 16'sd32138 >> 16 - CONST_W,  // 0.980785 × 2^FRAC
+        C2    = 16'sd30274 >> 16 - CONST_W,  // 0.923880 × 2^FRAC
+        C3    = 16'sd27246 >> 16 - CONST_W,  // 0.831470 × 2^FRAC
+        C4    = 16'sd23170 >> 16 - CONST_W,  // 0.707107 × 2^FRAC
+        C6    = 16'sd12540 >> 16 - CONST_W,  // 0.382683 × 2^FRAC
+        SIN1  = 16'sd06393 >> 16 - CONST_W, // 0.195090 × 2^FRAC
+        SIN3  = 16'sd18205 >> 16 - CONST_W,  // 0.555570 × 2^FRAC
+        K0    = 16'sd11585 >> 16 - CONST_W,  // 0.353553 × 2^FRAC
+        K     = 16'sd16384 >> 16 - CONST_W;
 
     // --------------------------------------------------------------------
     // FSM
@@ -77,8 +78,7 @@ module dct8_chen_ts #(
         for(g=0; g<NUM_MUL; g++) begin : mult_inst
             lut_multiplier #(
                 .IN_W(IN_W),
-                .CONST_W(CONST_W),
-                .FRAC(FRAC)
+                .CONST_W(CONST_W)
             ) multiplier (
                 .a(job[g].a),
                 .b(job[g].b),
@@ -145,44 +145,44 @@ module dct8_chen_ts #(
         case(state)
             // ------------------------- Phase 0
             P0: begin
-                job[0] = '{a:(e0-e1), b:C4};
-                job[1] = '{a: e2   , b:C2};
-                job[2] = '{a: e3   , b:C6};
-                job[3] = '{a: e2   , b:C6};
-                job[4] = '{a: e3   , b:C2};
-                job[5] = '{a: d0   , b:C1};
-                job[6] = '{a: d1   , b:C3};
-                job[7] = '{a: d2   , b:SIN3};
+                job[0] = '{a:(e0-e1), b:C4[CONST_W-1:0]};
+                job[1] = '{a: e2   , b:C2[CONST_W-1:0]};
+                job[2] = '{a: e3   , b:C6[CONST_W-1:0]};
+                job[3] = '{a: e2   , b:C6[CONST_W-1:0]};
+                job[4] = '{a: e3   , b:C2[CONST_W-1:0]};
+                job[5] = '{a: d0   , b:C1[CONST_W-1:0]};
+                job[6] = '{a: d1   , b:C3[CONST_W-1:0]};
+                job[7] = '{a: d2   , b:SIN3[CONST_W-1:0]};
             end
             // ------------------------- Phase 1
             P1: begin
-                job[0] = '{a: d3   , b:SIN1};
-                job[1] = '{a: d0   , b:C3  };
-                job[2] = '{a: d1   , b:SIN1};
-                job[3] = '{a: d2   , b:C1  };
-                job[4] = '{a: d3   , b:SIN3};
-                job[5] = '{a: d0   , b:SIN3};
-                job[6] = '{a: d1   , b:C1  };
-                job[7] = '{a: d2   , b:SIN1};
+                job[0] = '{a: d3   , b:SIN1[CONST_W-1:0]};
+                job[1] = '{a: d0   , b:C3[CONST_W-1:0]};
+                job[2] = '{a: d1   , b:SIN1[CONST_W-1:0]};
+                job[3] = '{a: d2   , b:C1[CONST_W-1:0]};
+                job[4] = '{a: d3   , b:SIN3[CONST_W-1:0]};
+                job[5] = '{a: d0   , b:SIN3[CONST_W-1:0]};
+                job[6] = '{a: d1   , b:C1[CONST_W-1:0]};
+                job[7] = '{a: d2   , b:SIN1[CONST_W-1:0]};
             end
             // ------------------------- Phase 2
             P2: begin
-                job[0] = '{a: d3   , b:C3  };
-                job[1] = '{a: d0   , b:SIN1};
-                job[2] = '{a: d1   , b:SIN3};
-                job[3] = '{a: d2   , b:C3  };
-                job[4] = '{a: d3   , b:C1  };
-                job[5] = '{a: b0   , b:K0  };
-                job[6] = '{a: b1   , b:K   };
-                job[7] = '{a: b2   , b:K   };
+                job[0] = '{a: d3   , b:C3[CONST_W-1:0]};
+                job[1] = '{a: d0   , b:SIN1[CONST_W-1:0]};
+                job[2] = '{a: d1   , b:SIN3[CONST_W-1:0]};
+                job[3] = '{a: d2   , b:C3[CONST_W-1:0]};
+                job[4] = '{a: d3   , b:C1[CONST_W-1:0]};
+                job[5] = '{a: b0   , b:K0[CONST_W-1:0]};
+                job[6] = '{a: b1   , b:K[CONST_W-1:0]};
+                job[7] = '{a: b2   , b:K[CONST_W-1:0]};
             end
             // ------------------------- Phase 3
             P3: begin
-                job[0] = '{a: b3   , b:K   };
-                job[1] = '{a: b4   , b:K   };
-                job[2] = '{a: b5   , b:K   };
-                job[3] = '{a: b6   , b:K   };
-                job[4] = '{a: b7   , b:K   };
+                job[0] = '{a: b3   , b:K[CONST_W-1:0]};
+                job[1] = '{a: b4   , b:K[CONST_W-1:0]};
+                job[2] = '{a: b5   , b:K[CONST_W-1:0]};
+                job[3] = '{a: b6   , b:K[CONST_W-1:0]};
+                job[4] = '{a: b7   , b:K[CONST_W-1:0]};
             end
             default:;
         endcase
