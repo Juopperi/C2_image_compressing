@@ -15,6 +15,62 @@ def extract_param_value(directory_name):
         return int(match.group(1))
     return None
 
+
+"""
+| Slice LUTs*             | 2336 |     0 |          0 |     53200 |  4.39 |
+"""
+def extract_resources_from_rpt(rpt_file):
+    """Extract resource usage from Vivado rpt file"""
+    resources = {
+        'LUTs': 0,
+        'Registers': 0,
+        'DSPs': 0,
+        'BRAMs': 0
+    }   
+    
+    try:
+        with open(rpt_file, 'r', encoding='utf-8', errors='ignore') as f:
+            content = f.read()
+            
+            # Extract resources using direct regex patterns
+            # LUT usage
+            lut_match = re.search(r'\|\s*Slice LUTs\*\s+\|\s+(\d+)\s+\|', content)
+            if lut_match:
+                resources['LUTs'] = int(lut_match.group(1))
+            else:
+                lut_match = re.search(r'\|\s*CLB LUTs\*\s+\|\s+(\d+)\s+\|', content)
+                if lut_match:
+                    resources['LUTs'] = int(lut_match.group(1))
+            
+            # Register usage
+            reg_match = re.search(r'\|\s*Slice Registers\s+\|\s+(\d+)\s+\|', content)
+            if reg_match:
+                resources['Registers'] = int(reg_match.group(1))
+            else:
+                reg_match = re.search(r'\|\s*CLB Registers\s+\|\s+(\d+)\s+\|', content)
+                if reg_match:
+                    resources['Registers'] = int(reg_match.group(1))
+            
+            # DSP usage
+            dsp_match = re.search(r'\|\s*DSPs\s+\|\s+(\d+)\s+\|', content)
+            if dsp_match:
+                resources['DSPs'] = int(dsp_match.group(1))
+            
+            # BRAM usage
+            bram_match = re.search(r'\|\s*Block RAM Tile\s+\|\s+(\d+\.?\d*)\s+\|', content)
+            if bram_match:
+                resources['BRAMs'] = float(bram_match.group(1))
+    except Exception as e:
+        print(f"Error processing {rpt_file}: {e}")
+    
+    return resources
+                        
+                        
+                        
+    
+    
+
+
 def extract_resources_from_log(log_file):
     """Extract resource usage from Vivado runme.log file"""
     resources = {
@@ -94,7 +150,7 @@ def find_log_files(base_dir, module_type, specific_module=None):
     elif module_type == 'multiplier':
         pattern = f"{base_dir}/reports/param_sweep/*multiplier*_proj/*/synth_1/runme.log"
     elif module_type == 'dct':
-        pattern = f"{base_dir}/reports/dct_param_sweep/*dct*_proj/*/synth_1/runme.log"
+        pattern = f"{base_dir}/reports/dct_param_sweep/*_CONST_W_*/utilization_synth.rpt"
     else:
         # Generic pattern
         pattern = f"{base_dir}/reports/**/*_proj/*/synth_1/runme.log"
@@ -105,11 +161,23 @@ def find_log_files(base_dir, module_type, specific_module=None):
     for log_file in log_files:
         print(f"Processing: {log_file}")
         # Extract parameter value from directory name
-        dir_name = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(log_file))))
-        param_value = extract_param_value(dir_name)
+        if module_type == 'dct':
+            # Extract CONST_W parameter value from directory name
+            dir_name = os.path.basename(os.path.dirname(log_file))
+            match = re.search(r'CONST_W_(\d+)', dir_name)
+            if match:
+                param_value = int(match.group(1))
+            else:
+                continue
+        else:
+            dir_name = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(log_file))))
+            param_value = extract_param_value(dir_name)
         
         if param_value is not None:
-            resources = extract_resources_from_log(log_file)
+            if module_type == 'dct':
+                resources = extract_resources_from_rpt(log_file)
+            else:
+                resources = extract_resources_from_log(log_file)
             param_data[param_value] = resources
             print(f"Parameter {param_value}: {resources}")
     
@@ -134,7 +202,7 @@ def generate_plots(param_data, output_dir, module_type):
     df.to_csv(csv_file)
     print(f"Resource data saved to {csv_file}")
     
-    # Create plots
+    # Create LUT usage plot
     plt.figure(figsize=(10, 6))
     plt.plot(df.index, df['LUTs'], marker='o', label='LUTs')
     plt.title(f'{module_type.title()} Resource Usage: LUTs')

@@ -9,16 +9,32 @@ module dct8_chen_ts_CONST_W_20(
 
     // Instantiate the module with specific parameter
     dct8_chen_ts #(
-        .DATA_W(16),
+        .IN_W(32),
         .CONST_W(20),
         .FRAC(8)
     ) dut (
         .clk(clk),
         .rst_n(rst_n),
-        .valid_in(valid_in),
-        .x(data_in),
-        .valid_out(valid_out),
-        .y(data_out)
+        .in_valid(valid_in),
+        .in_ready(),  // Left unconnected as wrapper doesn't use it
+        .in0(data_in[0]),
+        .in1(data_in[1]),
+        .in2(data_in[2]),
+        .in3(data_in[3]),
+        .in4(data_in[4]),
+        .in5(data_in[5]),
+        .in6(data_in[6]),
+        .in7(data_in[7]),
+        .out_valid(valid_out),
+        .out_ready(1'b1),  // Always ready to receive output
+        .out0(data_out[0]),
+        .out1(data_out[1]),
+        .out2(data_out[2]),
+        .out3(data_out[3]),
+        .out4(data_out[4]),
+        .out5(data_out[5]),
+        .out6(data_out[6]),
+        .out7(data_out[7])
     );
 
     // Force usage of output to prevent optimization

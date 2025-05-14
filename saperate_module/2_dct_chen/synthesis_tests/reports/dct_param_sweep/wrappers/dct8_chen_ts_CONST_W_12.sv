@@ -1,4 +1,4 @@
-module dct8_chen_ts_CONST_W_18(
+module dct8_chen_ts_CONST_W_12(
     input  logic        clk,
     input  logic        rst_n,
     input  logic        valid_in,
@@ -10,7 +10,7 @@ module dct8_chen_ts_CONST_W_18(
     // Instantiate the module with specific parameter
     dct8_chen_ts #(
         .IN_W(32),
-        .CONST_W(18),
+        .CONST_W(12),
         .FRAC(8)
     ) dut (
         .clk(clk),
