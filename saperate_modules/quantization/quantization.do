@@ -9,4 +9,4 @@ add wave Y_out
 add wave Cr_out
 add wave Cb_out
 
-run 1000ns
+run 3000ns
