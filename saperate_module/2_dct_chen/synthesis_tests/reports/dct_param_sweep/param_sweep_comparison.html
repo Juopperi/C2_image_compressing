@@ -17,7 +17,7 @@
 </head>
 <body>
     <h1>DCT Parameter Sweep: CONST_W</h1>
-    <p>Generated: 2025-05-14 08:59:23</p>
+    <p>Generated: 2025-05-14 10:41:12</p>
     
     <table>
         <tr>
@@ -26,6 +26,97 @@
             <th>Registers</th>
             <th>DSP</th>
             <th>BRAM</th>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>1071</td>
+            <td>843</td>
+            <td>16</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>1069</td>
+            <td>841</td>
+            <td>16</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>1069</td>
+            <td>841</td>
+            <td>16</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>14</td>
+            <td>1069</td>
+            <td>841</td>
+            <td>16</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>16</td>
+            <td>1071</td>
+            <td>843</td>
+            <td>16</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>18</td>
+            <td>1071</td>
+            <td>843</td>
+            <td>16</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>20</td>
+            <td>1071</td>
+            <td>843</td>
+            <td>16</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>22</td>
+            <td>1071</td>
+            <td>843</td>
+            <td>16</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>24</td>
+            <td>1071</td>
+            <td>843</td>
+            <td>16</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>26</td>
+            <td>1255</td>
+            <td>843</td>
+            <td>24</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>28</td>
+            <td>1255</td>
+            <td>843</td>
+            <td>24</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>30</td>
+            <td>1255</td>
+            <td>843</td>
+            <td>24</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>32</td>
+            <td>1255</td>
+            <td>843</td>
+            <td>24</td>
+            <td>0</td>
         </tr>
     </table>
     
@@ -39,18 +130,18 @@
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: [],
+                labels: [8,10,12,14,16,18,20,22,24,26,28,30,32],
                 datasets: [
                     {
                         label: 'LUT Usage',
-                        data: [],
+                        data: [1071,1069,1069,1069,1071,1071,1071,1071,1071,1255,1255,1255,1255],
                         borderColor: 'rgb(75, 192, 192)',
                         tension: 0.1,
                         yAxisID: 'y'
                     },
                     {
                         label: 'DSP Usage',
-                        data: [],
+                        data: [16,16,16,16,16,16,16,16,16,24,24,24,24],
                         borderColor: 'rgb(255, 99, 132)',
                         tension: 0.1,
                         yAxisID: 'y1'

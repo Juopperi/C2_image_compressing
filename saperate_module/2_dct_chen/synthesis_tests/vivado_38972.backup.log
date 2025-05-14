@@ -1,0 +1,551 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:35:27 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Wed May 14 10:39:13 2025
+# Process ID         : 38972
+# Current directory  : C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests
+# Command line       : vivado.exe -mode batch -source C:\Users\wuche\Desktop\CODE\dat096\C2_image_compressing\saperate_module\2_dct_chen\synthesis_tests\reports\dct_param_sweep\dct8_chen_ts_CONST_W_30_synth.tcl
+# Log file           : C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/vivado.log
+# Journal file       : C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests\vivado.jou
+# Running On         : wenruoxu
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26100
+# Processor Detail   : AMD Ryzen 9 7950X 16-Core Processor            
+# CPU Frequency      : 4491 MHz
+# CPU Physical cores : 16
+# CPU Logical cores  : 32
+# Host memory        : 50621 MB
+# Swap memory        : 3221 MB
+# Total Virtual      : 53842 MB
+# Available Virtual  : 19728 MB
+#-----------------------------------------------------------
+source {C:\Users\wuche\Desktop\CODE\dat096\C2_image_compressing\saperate_module\2_dct_chen\synthesis_tests\reports\dct_param_sweep\dct8_chen_ts_CONST_W_30_synth.tcl}
+# set module_name "dct8_chen_ts_CONST_W_30"
+# set part_name "xc7z020clg484-1"
+# set rtl_dir "C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl"
+# set wrapper_file "C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/reports/dct_param_sweep/wrappers/dct8_chen_ts_CONST_W_30.sv"
+# set report_dir "C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/reports/dct_param_sweep"
+# set proj_dir "C:/vivado_temp/dct8_chen_ts_CONST_W_30_proj"
+# file mkdir $proj_dir
+# create_project ${module_name}_proj $proj_dir -part $part_name -force
+create_project: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 657.230 ; gain = 226.613
+# set_property target_language Verilog [current_project]
+# puts "Adding required RTL files..."
+Adding required RTL files...
+# if {[file exists "C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/lut_multiplier.sv"]} {
+#     puts "Adding file: C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/lut_multiplier.sv"
+#     add_files -norecurse "C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/lut_multiplier.sv"
+# } else {
+#     puts "ERROR: Required file not found: C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/lut_multiplier.sv"
+#     exit 1
+# }
+Adding file: C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/lut_multiplier.sv
+# if {[file exists "C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv"]} {
+#     puts "Adding file: C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv"
+#     add_files -norecurse "C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv"
+# } else {
+#     puts "ERROR: Required file not found: C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv"
+#     exit 1
+# }
+Adding file: C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv
+# puts "Adding wrapper file: $wrapper_file"
+Adding wrapper file: C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/reports/dct_param_sweep/wrappers/dct8_chen_ts_CONST_W_30.sv
+# add_files -norecurse $wrapper_file
+# update_compile_order -fileset sources_1
+# set_property top $module_name [current_fileset]
+# set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context -flatten_hierarchy none} -objects [get_runs synth_1]
+# puts "Synthesizing $module_name..."
+Synthesizing dct8_chen_ts_CONST_W_30...
+# reset_run synth_1
+# launch_runs synth_1 -jobs 32
+WARNING: [Vivado 12-7122] Auto Incremental Compile:: No reference checkpoint was found in run synth_1. Auto-incremental flow will not be run, the standard flow will be run instead.
+[Wed May 14 10:39:25 2025] Launched synth_1...
+Run output will be captured here: C:/vivado_temp/dct8_chen_ts_CONST_W_30_proj/dct8_chen_ts_CONST_W_30_proj.runs/synth_1/runme.log
+# wait_on_run synth_1
+[Wed May 14 10:39:25 2025] Waiting for synth_1 to finish...
+
+*** Running vivado
+    with args -log dct8_chen_ts_CONST_W_30.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source dct8_chen_ts_CONST_W_30.tcl
+
+
+
+****** Vivado v2024.2 (64-bit)
+  **** SW Build 5239630 on Fri Nov 08 22:35:27 MST 2024
+  **** IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+  **** SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+  **** Start of session at: Wed May 14 10:39:27 2025
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source dct8_chen_ts_CONST_W_30.tcl -notrace
+Command: synth_design -top dct8_chen_ts_CONST_W_30 -part xc7z020clg484-1 -mode out_of_context -flatten_hierarchy none
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 38160
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 1127.969 ; gain = 467.219
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'dct8_chen_ts_CONST_W_30' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/reports/dct_param_sweep/wrappers/dct8_chen_ts_CONST_W_30.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'dct8_chen_ts' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:9]
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+	Parameter IN_W bound to: 32'sb00000000000000000000000000100000 
+	Parameter FRAC bound to: 32'sb00000000000000000000000000001000 
+	Parameter CONST_W bound to: 32'sb00000000000000000000000000011110 
+INFO: [Synth 8-6157] synthesizing module 'lut_multiplier' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/lut_multiplier.sv:2]
+	Parameter IN_W bound to: 32'sb00000000000000000000000000100000 
+	Parameter CONST_W bound to: 32'sb00000000000000000000000000011110 
+	Parameter FRAC bound to: 32'sb00000000000000000000000000001000 
+INFO: [Synth 8-6155] done synthesizing module 'lut_multiplier' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/lut_multiplier.sv:2]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:108]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:195]
+INFO: [Synth 8-6155] done synthesizing module 'dct8_chen_ts' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:9]
+INFO: [Synth 8-6155] done synthesizing module 'dct8_chen_ts_CONST_W_30' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/reports/dct_param_sweep/wrappers/dct8_chen_ts_CONST_W_30.sv:1]
+WARNING: [Synth 8-6014] Unused sequential element s0_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:123]
+WARNING: [Synth 8-6014] Unused sequential element s1_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:124]
+WARNING: [Synth 8-6014] Unused sequential element s2_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:125]
+WARNING: [Synth 8-6014] Unused sequential element s3_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:126]
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1236.012 ; gain = 575.262
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1236.012 ; gain = 575.262
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg484-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1236.012 ; gain = 575.262
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'dct8_chen_ts'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  S_IDLE |                              000 |                              000
+                      P0 |                              001 |                              001
+                      P1 |                              010 |                              010
+                      P2 |                              011 |                              011
+                      P3 |                              100 |                              100
+                  S_WAIT |                              101 |                              101
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'dct8_chen_ts'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1236.012 ; gain = 575.262
+---------------------------------------------------------------------------------
+INFO: [Synth 8-223] decloning instance 'dut/mult_inst[8].multiplier' (lut_multiplier) to 'dut/mult_inst[9].multiplier'
+INFO: [Synth 8-223] decloning instance 'dut/mult_inst[8].multiplier' (lut_multiplier) to 'dut/mult_inst[10].multiplier'
+INFO: [Synth 8-223] decloning instance 'dut/mult_inst[8].multiplier' (lut_multiplier) to 'dut/mult_inst[11].multiplier'
+INFO: [Synth 8-223] decloning instance 'dut/mult_inst[8].multiplier' (lut_multiplier) to 'dut/mult_inst[12].multiplier'
+INFO: [Synth 8-223] decloning instance 'dut/mult_inst[8].multiplier' (lut_multiplier) to 'dut/mult_inst[13].multiplier'
+INFO: [Synth 8-223] decloning instance 'dut/mult_inst[8].multiplier' (lut_multiplier) to 'dut/mult_inst[14].multiplier'
+No constraint files found.
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   32 Bit       Adders := 7     
+	   3 Input   32 Bit       Adders := 10    
+	   5 Input   32 Bit       Adders := 2     
+	   4 Input   32 Bit       Adders := 2     
++---Registers : 
+	               32 Bit    Registers := 26    
++---Multipliers : 
+	              30x32  Multipliers := 9     
++---Muxes : 
+	   5 Input   32 Bit        Muxes := 8     
+	   5 Input   16 Bit        Muxes := 8     
+	   6 Input    3 Bit        Muxes := 1     
+	   6 Input    1 Bit        Muxes := 5     
+	   2 Input    1 Bit        Muxes := 2     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: Generating DSP result1, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result1 is absorbed into DSP result1.
+DSP Report: operator result1 is absorbed into DSP result1.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1479.121 ; gain = 818.371
+---------------------------------------------------------------------------------
+ Sort Area is  result1_0 : 0 0 : 3101 5403 : Used 1 time 0
+ Sort Area is  result1_0 : 0 1 : 2302 5403 : Used 1 time 0
+ Sort Area is  result1_11 : 0 0 : 3101 4816 : Used 1 time 0
+ Sort Area is  result1_11 : 0 1 : 1715 4816 : Used 1 time 0
+ Sort Area is  result1_13 : 0 0 : 3101 4816 : Used 1 time 0
+ Sort Area is  result1_13 : 0 1 : 1715 4816 : Used 1 time 0
+ Sort Area is  result1_15 : 0 0 : 3101 4816 : Used 1 time 0
+ Sort Area is  result1_15 : 0 1 : 1715 4816 : Used 1 time 0
+ Sort Area is  result1_6 : 0 0 : 3101 4816 : Used 1 time 0
+ Sort Area is  result1_6 : 0 1 : 1715 4816 : Used 1 time 0
+ Sort Area is  result1_9 : 0 0 : 3101 4816 : Used 1 time 0
+ Sort Area is  result1_9 : 0 1 : 1715 4816 : Used 1 time 0
+ Sort Area is  result1_b : 0 0 : 3101 4816 : Used 1 time 0
+ Sort Area is  result1_b : 0 1 : 1715 4816 : Used 1 time 0
+ Sort Area is  result1_d : 0 0 : 3101 4816 : Used 1 time 0
+ Sort Area is  result1_d : 0 1 : 1715 4816 : Used 1 time 0
+ Sort Area is  result1_f : 0 0 : 3101 4816 : Used 1 time 0
+ Sort Area is  result1_f : 0 1 : 1715 4816 : Used 1 time 0
+ Sort Area is  result1_3 : 0 0 : 2634 4798 : Used 1 time 0
+ Sort Area is  result1_3 : 0 1 : 2164 4798 : Used 1 time 0
+ Sort Area is  result1_10 : 0 0 : 2634 2634 : Used 1 time 0
+ Sort Area is  result1_12 : 0 0 : 2634 2634 : Used 1 time 0
+ Sort Area is  result1_14 : 0 0 : 2634 2634 : Used 1 time 0
+ Sort Area is  result1_16 : 0 0 : 2634 2634 : Used 1 time 0
+ Sort Area is  result1_8 : 0 0 : 2634 2634 : Used 1 time 0
+ Sort Area is  result1_a : 0 0 : 2634 2634 : Used 1 time 0
+ Sort Area is  result1_c : 0 0 : 2634 2634 : Used 1 time 0
+ Sort Area is  result1_e : 0 0 : 2634 2634 : Used 1 time 0
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding REG is set)
++---------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name    | DSP Mapping    | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++---------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|lut_multiplier | A*B            | 18     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | (PCIN>>17)+A*B | 15     | 13     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | (PCIN>>17)+A*B | 18     | 13     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | (PCIN>>17)+A*B | 18     | 13     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 15     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | (PCIN>>17)+A*B | 18     | 13     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 15     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | (PCIN>>17)+A*B | 18     | 13     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 15     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | (PCIN>>17)+A*B | 18     | 13     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 15     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | (PCIN>>17)+A*B | 18     | 13     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 15     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | (PCIN>>17)+A*B | 18     | 13     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 15     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | (PCIN>>17)+A*B | 18     | 13     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 15     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B            | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | (PCIN>>17)+A*B | 18     | 13     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
++---------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1483.105 ; gain = 822.355
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 1483.105 ; gain = 822.355
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 1658.895 ; gain = 998.145
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 1658.895 ; gain = 998.145
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 1658.895 ; gain = 998.145
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++---------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name    | DSP Mapping  | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++---------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|lut_multiplier | A*B          | 15     | 18     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 17     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | PCIN>>17+A*B | 0      | 0      | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 15     | 18     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 17     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | PCIN>>17+A*B | 0      | 0      | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 15     | 18     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 17     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | PCIN>>17+A*B | 0      | 0      | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 15     | 18     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 17     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | PCIN>>17+A*B | 0      | 0      | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 15     | 18     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 17     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | PCIN>>17+A*B | 0      | 0      | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 15     | 18     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 17     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | PCIN>>17+A*B | 0      | 0      | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 15     | 18     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 17     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | PCIN>>17+A*B | 0      | 0      | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 15     | 18     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | A*B          | 17     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|lut_multiplier | PCIN>>17+A*B | 0      | 0      | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
++---------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+--------+------+
+|      |Cell    |Count |
++------+--------+------+
+|1     |CARRY4  |   216|
+|2     |DSP48E1 |    24|
+|3     |LUT1    |     1|
+|4     |LUT2    |   638|
+|5     |LUT3    |   229|
+|6     |LUT4    |   185|
+|7     |LUT5    |   152|
+|8     |LUT6    |   256|
+|9     |FDCE    |    11|
+|10    |FDRE    |   832|
++------+--------+------+
+
+Report Instance Areas: 
++------+------------------------------+------------------+------+
+|      |Instance                      |Module            |Cells |
++------+------------------------------+------------------+------+
+|1     |top                           |                  |  2544|
+|2     |  dut                         |dct8_chen_ts      |  2544|
+|3     |    \mult_inst[0].multiplier  |lut_multiplier__1 |    32|
+|4     |    \mult_inst[1].multiplier  |lut_multiplier__2 |    32|
+|5     |    \mult_inst[2].multiplier  |lut_multiplier__3 |    32|
+|6     |    \mult_inst[3].multiplier  |lut_multiplier__4 |    32|
+|7     |    \mult_inst[4].multiplier  |lut_multiplier__5 |    32|
+|8     |    \mult_inst[5].multiplier  |lut_multiplier__6 |    32|
+|9     |    \mult_inst[6].multiplier  |lut_multiplier__7 |    32|
+|10    |    \mult_inst[7].multiplier  |lut_multiplier__8 |    32|
++------+------------------------------+------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 1658.895 ; gain = 998.145
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 6 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 1658.895 ; gain = 998.145
+Synthesis Optimization Complete : Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 1658.895 ; gain = 998.145
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.018 . Memory (MB): peak = 1714.172 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 240 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+WARNING: [Netlist 29-101] Netlist 'dct8_chen_ts_CONST_W_30' is not ideal for floorplanning, since the cellview 'dct8_chen_ts' contains a large number of primitives.  Please consider enabling hierarchy in synthesis if you want to do floorplanning.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1820.816 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: dff617f0
+INFO: [Common 17-83] Releasing license: Synthesis
+28 Infos, 7 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:16 ; elapsed = 00:00:20 . Memory (MB): peak = 1820.816 ; gain = 1163.004
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 2119.977 ; gain = 0.090
+INFO: [Common 17-1381] The checkpoint 'C:/vivado_temp/dct8_chen_ts_CONST_W_30_proj/dct8_chen_ts_CONST_W_30_proj.runs/synth_1/dct8_chen_ts_CONST_W_30.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file dct8_chen_ts_CONST_W_30_utilization_synth.rpt -pb dct8_chen_ts_CONST_W_30_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Wed May 14 10:39:59 2025...
+[Wed May 14 10:40:00 2025] synth_1 finished
+wait_on_runs: Time (s): cpu = 00:00:00 ; elapsed = 00:00:35 . Memory (MB): peak = 673.742 ; gain = 0.000
+# if {[get_property PROGRESS [get_runs synth_1]] != "100%"} {
+#     puts "Error: Synthesis failed for $module_name!"
+#     exit 1
+# }
+# set module_report_dir "$report_dir/$module_name"
+# file mkdir $module_report_dir
+# set utilization_rpt "$module_report_dir/utilization_synth.rpt"
+# open_run synth_1
+Design is defaulting to impl run constrset: constrs_1
+Design is defaulting to synth run part: xc7z020clg484-1
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.011 . Memory (MB): peak = 934.172 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 240 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+WARNING: [Netlist 29-101] Netlist 'dct8_chen_ts_CONST_W_30' is not ideal for floorplanning, since the cellview 'dct8_chen_ts' contains a large number of primitives.  Please consider enabling hierarchy in synthesis if you want to do floorplanning.
+INFO: [Project 1-479] Netlist was created with Vivado 2024.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1044.449 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+open_run: Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 1044.449 ; gain = 370.707
+# report_utilization -file $utilization_rpt
+# set lut_count 0
+# set reg_count 0
+# set dsp_count 0
+# set bram_count 0
+# if {[file exists $utilization_rpt]} {
+#     set fp [open $utilization_rpt r]
+#     set report_content [read $fp]
+#     close $fp
+#     
+#     # Extract LUT usage
+#     if {[regexp {Slice LUTs\*\s+\|\s+(\d+)} $report_content match lut_count]} {
+#         puts "LUTs: $lut_count"
+#     }
+#     
+#     # Extract register usage
+#     if {[regexp {Slice Registers\s+\|\s+(\d+)} $report_content match reg_count]} {
+#         puts "Registers: $reg_count"
+#     }
+#     
+#     # Extract DSP usage
+#     if {[regexp {DSPs\s+\|\s+(\d+)} $report_content match dsp_count]} {
+#         puts "DSPs: $dsp_count"
+#     }
+#     
+#     # Extract BRAM usage
+#     if {[regexp {Block RAM Tile\s+\|\s+(\d+\.?\d*)} $report_content match bram_count]} {
+#         puts "BRAMs: $bram_count"
+#     }
+# }
+LUTs: 1255
+Registers: 843
+DSPs: 24
+BRAMs: 0
+# set csv_file [open "$report_dir/param_sweep_summary.csv" "a"]
+# puts $csv_file "$module_name,30,$lut_count,$reg_count,$dsp_count,$bram_count"
+# close $csv_file
+# if {[catch {write_checkpoint -force "$module_report_dir/post_synth.dcp"} result]} {
+#     puts "Warning: Could not write checkpoint file. Continuing anyway."
+#     puts "Error was: $result"
+# }
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1605.812 ; gain = 0.191
+INFO: [Common 17-1381] The checkpoint 'C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/reports/dct_param_sweep/dct8_chen_ts_CONST_W_30/post_synth.dcp' has been generated.
+# close_project
+# file delete -force $proj_dir
+# puts "Synthesis completed for $module_name"
+Synthesis completed for dct8_chen_ts_CONST_W_30
+# exit 0
+INFO: [Common 17-206] Exiting Vivado at Wed May 14 10:40:11 2025...

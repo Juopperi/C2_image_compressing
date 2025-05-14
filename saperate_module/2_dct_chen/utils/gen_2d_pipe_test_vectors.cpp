@@ -117,13 +117,13 @@ void dct2d_chen(const double in[N][N],
     /* 行变换 */
     for (int i = 0; i < N; ++i) {
         for (int j = 0; j < N; ++j) buf_in[j] = in[i][j];
-        dct1d_chen(buf_in, buf_out);
+        dct1d_direct(buf_in, buf_out);
         for (int j = 0; j < N; ++j) tmp[i][j] = buf_out[j];
     }
     /* 列变换 */
     for (int j = 0; j < N; ++j) {
         for (int i = 0; i < N; ++i) buf_in[i] = tmp[i][j];
-        dct1d_chen(buf_in, buf_out);
+        dct1d_direct(buf_in, buf_out);
         for (int i = 0; i < N; ++i) out[i][j] = buf_out[i];
     }
 }

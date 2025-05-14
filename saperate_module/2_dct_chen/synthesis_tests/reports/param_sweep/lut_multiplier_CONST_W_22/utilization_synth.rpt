@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
-| Date         : Tue May 13 19:32:36 2025
+| Date         : Wed May 14 10:30:02 2025
 | Host         : wenruoxu running 64-bit major release  (build 9200)
 | Command      : report_utilization -file C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/reports/param_sweep/lut_multiplier_CONST_W_22/utilization_synth.rpt
 | Design       : lut_multiplier_CONST_W_22
@@ -31,8 +31,8 @@ Table of Contents
 +-------------------------+------+-------+------------+-----------+-------+
 |        Site Type        | Used | Fixed | Prohibited | Available | Util% |
 +-------------------------+------+-------+------------+-----------+-------+
-| Slice LUTs*             |  364 |     0 |          0 |     53200 |  0.68 |
-|   LUT as Logic          |  364 |     0 |          0 |     53200 |  0.68 |
+| Slice LUTs*             |    0 |     0 |          0 |     53200 |  0.00 |
+|   LUT as Logic          |    0 |     0 |          0 |     53200 |  0.00 |
 |   LUT as Memory         |    0 |     0 |          0 |     17400 |  0.00 |
 | Slice Registers         |    0 |     0 |          0 |    106400 |  0.00 |
 |   Register as Flip Flop |    0 |     0 |          0 |    106400 |  0.00 |
@@ -80,11 +80,12 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 3. DSP
 ------
 
-+-----------+------+-------+------------+-----------+-------+
-| Site Type | Used | Fixed | Prohibited | Available | Util% |
-+-----------+------+-------+------------+-----------+-------+
-| DSPs      |    0 |     0 |          0 |       220 |  0.00 |
-+-----------+------+-------+------------+-----------+-------+
++----------------+------+-------+------------+-----------+-------+
+|    Site Type   | Used | Fixed | Prohibited | Available | Util% |
++----------------+------+-------+------------+-----------+-------+
+| DSPs           |    2 |     0 |          0 |       220 |  0.91 |
+|   DSP48E1 only |    2 |       |            |           |       |
++----------------+------+-------+------------+-----------+-------+
 
 
 4. IO and GT Specific
@@ -149,13 +150,7 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| LUT4     |  317 |                 LUT |
-| LUT3     |  302 |                 LUT |
-| CARRY4   |   97 |          CarryLogic |
-| LUT2     |   48 |                 LUT |
-| LUT1     |   11 |                 LUT |
-| LUT5     |    4 |                 LUT |
-| LUT6     |    1 |                 LUT |
+| DSP48E1  |    2 |    Block Arithmetic |
 +----------+------+---------------------+
 
 

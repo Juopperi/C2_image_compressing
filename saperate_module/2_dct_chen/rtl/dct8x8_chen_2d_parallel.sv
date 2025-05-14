@@ -63,9 +63,10 @@ module dct8x8_chen_2d_parallel #(
     // 8个并行的行DCT处理器
     generate
         for (i = 0; i < 8; i++) begin : g_row_dct
-            dct8_chen_ts #(
+            dct8_chen_ts_refined #(
                 .IN_W  (IN_W),
-                .FRAC  (FRAC)
+                .FRAC  (FRAC),
+                .CONST_W  (FRAC + 1)
             ) u_row_dct (
                 .clk       (clk),
                 .rst_n     (rst_n),

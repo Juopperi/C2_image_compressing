@@ -22,12 +22,39 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
-echo Checking current directory structure...
-IF EXIST "%~dp0\rtl" (
-    echo Found RTL directory in current location.
+echo Checking directory structure...
+SET RTL_DIR=%~dp0..\rtl
+IF EXIST "%RTL_DIR%" (
+    echo Found RTL directory at: %RTL_DIR%
 ) ELSE (
-    echo Warning: RTL directory not found in current location.
-    echo Make sure to specify the correct RTL directory with -rtl_dir option.
+    echo Error: RTL directory not found at: %RTL_DIR%
+    echo Please specify the correct RTL directory with -rtl_dir option.
+    pause
+    exit /b 1
+)
+
+echo Checking for required RTL files...
+SET FOUND_DCT=0
+IF EXIST "%RTL_DIR%\dct8_chen_ts.sv" (
+    echo Found dct8_chen_ts.sv
+    SET FOUND_DCT=1
+)
+IF EXIST "%RTL_DIR%\dct8_chen_ts.v" (
+    echo Found dct8_chen_ts.v
+    SET FOUND_DCT=1
+)
+
+IF %FOUND_DCT% EQU 0 (
+    echo Error: Required DCT module file not found in RTL directory.
+    echo Expected to find dct8_chen_ts.sv or dct8_chen_ts.v
+    pause
+    exit /b 1
+)
+
+REM Create the reports/dct_param_sweep directory if it doesn't exist
+IF NOT EXIST "%~dp0reports\dct_param_sweep" (
+    echo Creating reports directory...
+    mkdir "%~dp0reports\dct_param_sweep"
 )
 
 REM Get command line arguments
@@ -57,6 +84,8 @@ python dct_param_sweep.py %ARGS%
 if %ERRORLEVEL% NEQ 0 (
     echo.
     echo Error: DCT parameter sweep process failed!
+    echo Check the console output above for details.
+    echo Make sure all required files exist in the RTL directory.
     pause
     exit /b 1
 )

@@ -81,6 +81,13 @@ def run_vivado_synthesis(wrapper_name, wrapper_file, rtl_dir, part_name, nthread
     wrapper_file_tcl = wrapper_file.replace('\\', '/')
     report_dir_tcl = report_dir.replace('\\', '/')
     
+    # Find required module files - create explicit list of needed files
+    dct_module_file = os.path.join(rtl_dir, f"{wrapper_name.split('_CONST_W_')[0]}.sv")
+    lut_multiplier_file = os.path.join(rtl_dir, "lut_multiplier.sv")
+    
+    dct_module_file_tcl = dct_module_file.replace('\\', '/')
+    lut_multiplier_file_tcl = lut_multiplier_file.replace('\\', '/')
+    
     with open(synth_script, 'w') as f:
         f.write(f"""# Synthesis script for {wrapper_name}
 set module_name "{wrapper_name}"
@@ -97,15 +104,29 @@ file mkdir $proj_dir
 create_project ${{module_name}}_proj $proj_dir -part $part_name -force
 set_property target_language Verilog [current_project]
 
-# Add RTL files one by one instead of using glob
-foreach vfile [glob -nocomplain "$rtl_dir/*.v"] {{
-    add_files -norecurse $vfile
+# Only add the specific files we need for synthesis
+puts "Adding required RTL files..."
+
+# Add lut_multiplier.sv
+if {{[file exists "{lut_multiplier_file_tcl}"]}} {{
+    puts "Adding file: {lut_multiplier_file_tcl}"
+    add_files -norecurse "{lut_multiplier_file_tcl}"
+}} else {{
+    puts "ERROR: Required file not found: {lut_multiplier_file_tcl}"
+    exit 1
 }}
-foreach svfile [glob -nocomplain "$rtl_dir/*.sv"] {{
-    add_files -norecurse $svfile
+
+# Add the DCT module
+if {{[file exists "{dct_module_file_tcl}"]}} {{
+    puts "Adding file: {dct_module_file_tcl}"
+    add_files -norecurse "{dct_module_file_tcl}"
+}} else {{
+    puts "ERROR: Required file not found: {dct_module_file_tcl}"
+    exit 1
 }}
 
 # Add wrapper file
+puts "Adding wrapper file: $wrapper_file"
 add_files -norecurse $wrapper_file
 update_compile_order -fileset sources_1
 
@@ -194,11 +215,17 @@ exit 0
     cmd = f'vivado -mode batch -source "{synth_script}"'
     
     try:
-        subprocess.run(cmd, shell=True, check=True)
-        print(f"Synthesis completed for {wrapper_name}")
-        return True
-    except subprocess.CalledProcessError:
+        result = subprocess.run(cmd, shell=True, check=False, capture_output=True, text=True)
+        if result.returncode == 0:
+            print(f"Synthesis completed for {wrapper_name}")
+            return True
+        else:
+            print(f"Error: Synthesis failed for {wrapper_name}")
+            print(f"Vivado output: {result.stderr}")
+            return False
+    except Exception as e:
         print(f"Error: Synthesis failed for {wrapper_name}")
+        print(f"Exception: {str(e)}")
         return False
 
 def extract_resource_usage(report_file):
@@ -367,6 +394,38 @@ def generate_html_report(csv_file, html_file, param_name):
     
     print(f"Generated HTML report: {html_file}")
 
+def create_lut_multiplier_file(output_dir):
+    """Create lut_multiplier.sv file if it doesn't exist"""
+    multiplier_file = os.path.join(output_dir, "lut_multiplier.sv")
+    
+    # Create file only if it doesn't exist
+    if not os.path.exists(multiplier_file):
+        with open(multiplier_file, 'w') as f:
+            f.write("""(* use_dsp="no", use_dsp48="no" *)
+module lut_multiplier #(
+    parameter int IN_W     = 32,   // 数据位宽 (>= 像素 + FRAC)
+    parameter int CONST_W  = 16,   // 常量位宽
+    parameter int FRAC     = 15     // 小数位
+)(
+    input  logic signed [IN_W-1:0]    a,      // 输入数据
+    input  logic signed [CONST_W-1:0] b,      // 常量系数
+    output logic signed [IN_W-1:0]    result  // 乘法结果
+);
+
+    // 内部更宽的乘法结果寄存器
+    (* use_dsp="no", use_dsp48="no" *) 
+    logic signed [IN_W+CONST_W-1:0] p;
+    
+    // 执行乘法并右移，实现定点数乘法
+    always_comb begin
+        p = a * b;         // 全精度乘法
+        result = p >>> FRAC; // 右移FRAC位，截断保持IN_W位宽
+    end
+
+endmodule
+""")
+        print(f"Created lut_multiplier.sv file in {output_dir}")
+
 def main():
     parser = argparse.ArgumentParser(description='DCT Parameter Sweep Tool')
     parser.add_argument('-module', default="dct8_chen_ts", help='Name of the DCT module to test')
@@ -392,25 +451,26 @@ def main():
     create_directory(report_dir)
     create_directory(wrapper_dir)
     
+    # Make sure lut_multiplier.sv exists in the RTL directory
+    if not os.path.exists(os.path.join(rtl_dir, "lut_multiplier.sv")):
+        create_lut_multiplier_file(rtl_dir)
+    
+    # Check if module file exists with .sv extension
+    module_file = os.path.join(rtl_dir, f"{args.module}.sv")
+    if not os.path.exists(module_file):
+        module_file = os.path.join(rtl_dir, f"{args.module}.v")
+        if not os.path.exists(module_file):
+            print(f"Error: Module file not found: {args.module}")
+            print(f"Checked in directory: {rtl_dir}")
+            print(f"Make sure the RTL directory path is correct and module file exists")
+            return
+    
+    print(f"Found module file: {module_file}")
+    
     # Create summary CSV file
     csv_file = os.path.join(report_dir, "param_sweep_summary.csv")
     with open(csv_file, 'w') as f:
         f.write(f"Module,{args.param_name},LUTs,Registers,DSPs,BRAMs\n")
-    
-    # Check if module file exists
-    module_found = False
-    for ext in ['.v', '.sv']:
-        module_file = os.path.join(rtl_dir, f"{args.module}{ext}")
-        if os.path.exists(module_file):
-            module_found = True
-            print(f"Found module file: {module_file}")
-            break
-    
-    if not module_found:
-        print(f"Error: Module file not found: {args.module}")
-        print(f"Checked in directory: {rtl_dir}")
-        print(f"Make sure the RTL directory path is correct")
-        return
     
     print(f"Performing parameter sweep for module: {args.module}")
     print(f"Parameter: {args.param_name} from {args.param_start} to {args.param_end} with step {args.param_step}")
@@ -435,6 +495,9 @@ def main():
             report_dir,
             param_value
         )
+        
+        if not success:
+            print(f"Error: Synthesis failed for {wrapper_name}")
     
     # Generate HTML report
     html_file = os.path.join(report_dir, "param_sweep_comparison.html")

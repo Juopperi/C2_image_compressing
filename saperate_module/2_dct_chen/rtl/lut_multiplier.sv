@@ -1,4 +1,4 @@
-(* use_dsp="no", use_dsp48="no" *)
+// (* use_dsp="no", use_dsp48="no" *)
 module lut_multiplier #(
     parameter int IN_W     = 32,   // 数据位宽 (>= 像素 + FRAC)
     parameter int CONST_W  = 16,   // 常量位宽
@@ -10,7 +10,7 @@ module lut_multiplier #(
 );
 
     // 内部更宽的乘法结果寄存器
-    (* use_dsp="no", use_dsp48="no" *) 
+    // (* use_dsp="no", use_dsp48="no" *) 
     logic signed [IN_W+CONST_W-1:0] p;
     
     // 执行乘法并右移，实现定点数乘法
