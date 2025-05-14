@@ -1,0 +1,277 @@
+
+*** Running vivado
+    with args -log dct8x8_chen_2d.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source dct8x8_chen_2d.tcl
+
+
+
+****** Vivado v2024.2 (64-bit)
+  **** SW Build 5239630 on Fri Nov 08 22:35:27 MST 2024
+  **** IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+  **** SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+  **** Start of session at: Tue May 13 18:36:50 2025
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source dct8x8_chen_2d.tcl -notrace
+Command: synth_design -top dct8x8_chen_2d -part xc7z020clg484-1 -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 42936
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1127.980 ; gain = 468.773
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'dct8x8_chen_2d' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8x8_chen_2d.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'dct8_chen_ts' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:31]
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+	Parameter IN_W bound to: 32'sb00000000000000000000000000100000 
+	Parameter FRAC bound to: 32'sb00000000000000000000000000001111 
+INFO: [Synth 8-6157] synthesizing module 'lut_multiplier' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:2]
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+	Parameter IN_W bound to: 32'sb00000000000000000000000000100000 
+	Parameter CONST_W bound to: 32'sb00000000000000000000000000010000 
+	Parameter FRAC bound to: 32'sb00000000000000000000000000001111 
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+INFO: [Synth 8-6155] done synthesizing module 'lut_multiplier' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:2]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:130]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:217]
+INFO: [Synth 8-6155] done synthesizing module 'dct8_chen_ts' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:31]
+INFO: [Synth 8-6155] done synthesizing module 'dct8x8_chen_2d' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8x8_chen_2d.sv:7]
+WARNING: [Synth 8-6014] Unused sequential element s0_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:145]
+WARNING: [Synth 8-6014] Unused sequential element s1_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:146]
+WARNING: [Synth 8-6014] Unused sequential element s2_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:147]
+WARNING: [Synth 8-6014] Unused sequential element s3_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:148]
+WARNING: [Synth 8-4767] Trying to implement RAM 'trans_buff_reg' in registers. Block RAM or DRAM implementation is not possible; see log for reasons.
+Reason is one or more of the following :
+	1: RAM has multiple writes via different ports in same process. If RAM inferencing intended, write to one port per process. 
+	2: Unable to determine number of words or word size in RAM. 
+	3: No valid read/write found for RAM. 
+RAM "trans_buff_reg" dissolved into registers
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1282.438 ; gain = 623.230
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:06 ; elapsed = 00:00:05 . Memory (MB): peak = 1282.438 ; gain = 623.230
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg484-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:06 ; elapsed = 00:00:05 . Memory (MB): peak = 1282.438 ; gain = 623.230
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'dct8_chen_ts'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'dct8x8_chen_2d'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  S_IDLE |                              000 |                              000
+                      P0 |                              001 |                              001
+                      P1 |                              010 |                              010
+                      P2 |                              011 |                              011
+                      P3 |                              100 |                              100
+                  S_WAIT |                              101 |                              101
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'dct8_chen_ts'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  S_IDLE |                           000010 |                              000
+              S_ROW_PROC |                           100000 |                              001
+              S_ROW_WAIT |                           010000 |                              010
+              S_COL_PROC |                           001000 |                              011
+              S_COL_WAIT |                           000100 |                              100
+                  S_DONE |                           000001 |                              101
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'dct8x8_chen_2d'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:10 ; elapsed = 00:00:09 . Memory (MB): peak = 1283.031 ; gain = 623.824
+---------------------------------------------------------------------------------
+INFO: [Synth 8-223] decloning instance 'u_dct/mult_inst[8].multiplier' (lut_multiplier) to 'u_dct/mult_inst[9].multiplier'
+INFO: [Synth 8-223] decloning instance 'u_dct/mult_inst[8].multiplier' (lut_multiplier) to 'u_dct/mult_inst[10].multiplier'
+INFO: [Synth 8-223] decloning instance 'u_dct/mult_inst[8].multiplier' (lut_multiplier) to 'u_dct/mult_inst[11].multiplier'
+INFO: [Synth 8-223] decloning instance 'u_dct/mult_inst[8].multiplier' (lut_multiplier) to 'u_dct/mult_inst[12].multiplier'
+INFO: [Synth 8-223] decloning instance 'u_dct/mult_inst[8].multiplier' (lut_multiplier) to 'u_dct/mult_inst[13].multiplier'
+INFO: [Synth 8-223] decloning instance 'u_dct/mult_inst[8].multiplier' (lut_multiplier) to 'u_dct/mult_inst[14].multiplier'
+No constraint files found.
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   32 Bit       Adders := 7     
+	   3 Input   32 Bit       Adders := 10    
+	   5 Input   32 Bit       Adders := 2     
+	   4 Input   32 Bit       Adders := 2     
+	   2 Input    3 Bit       Adders := 2     
++---Registers : 
+	               32 Bit    Registers := 218   
+	                3 Bit    Registers := 2     
++---Multipliers : 
+	              16x32  Multipliers := 9     
++---Muxes : 
+	   5 Input   32 Bit        Muxes := 8     
+	   2 Input   32 Bit        Muxes := 60    
+	   5 Input   16 Bit        Muxes := 8     
+	   6 Input    6 Bit        Muxes := 1     
+	   2 Input    6 Bit        Muxes := 2     
+	   6 Input    3 Bit        Muxes := 1     
+	   2 Input    3 Bit        Muxes := 2     
+	   6 Input    1 Bit        Muxes := 6     
+	   2 Input    1 Bit        Muxes := 54    
+	   9 Input    1 Bit        Muxes := 56    
+	   8 Input    1 Bit        Muxes := 8     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:21 ; elapsed = 00:00:19 . Memory (MB): peak = 1622.035 ; gain = 962.828
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:21 ; elapsed = 00:00:20 . Memory (MB): peak = 1622.035 ; gain = 962.828
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:22 ; elapsed = 00:00:21 . Memory (MB): peak = 1622.035 ; gain = 962.828
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:25 ; elapsed = 00:00:24 . Memory (MB): peak = 1708.215 ; gain = 1049.008
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:25 ; elapsed = 00:00:24 . Memory (MB): peak = 1708.215 ; gain = 1049.008
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:25 ; elapsed = 00:00:24 . Memory (MB): peak = 1708.215 ; gain = 1049.008
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:25 ; elapsed = 00:00:24 . Memory (MB): peak = 1708.215 ; gain = 1049.008
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:25 ; elapsed = 00:00:24 . Memory (MB): peak = 1708.215 ; gain = 1049.008
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:25 ; elapsed = 00:00:24 . Memory (MB): peak = 1708.215 ; gain = 1049.008
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-------+------+
+|      |Cell   |Count |
++------+-------+------+
+|1     |CARRY4 |   734|
+|2     |LUT1   |    17|
+|3     |LUT2   |  1081|
+|4     |LUT3   |   941|
+|5     |LUT4   |  1668|
+|6     |LUT5   |   998|
+|7     |LUT6   |  2719|
+|8     |MUXF7  |   480|
+|9     |MUXF8  |   224|
+|10    |FDCE   |    43|
+|11    |FDPE   |     1|
+|12    |FDRE   |  6816|
+|13    |FDSE   |   160|
++------+-------+------+
+
+Report Instance Areas: 
++------+------------------------------+-----------------+------+
+|      |Instance                      |Module           |Cells |
++------+------------------------------+-----------------+------+
+|1     |top                           |                 | 15882|
+|2     |  u_dct                       |dct8_chen_ts     |  7924|
+|3     |    \mult_inst[0].multiplier  |lut_multiplier   |   460|
+|4     |    \mult_inst[1].multiplier  |lut_multiplier_0 |   549|
+|5     |    \mult_inst[2].multiplier  |lut_multiplier_1 |   457|
+|6     |    \mult_inst[3].multiplier  |lut_multiplier_2 |   665|
+|7     |    \mult_inst[4].multiplier  |lut_multiplier_3 |   431|
+|8     |    \mult_inst[5].multiplier  |lut_multiplier_4 |   536|
+|9     |    \mult_inst[6].multiplier  |lut_multiplier_5 |   552|
+|10    |    \mult_inst[7].multiplier  |lut_multiplier_6 |   480|
++------+------------------------------+-----------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:25 ; elapsed = 00:00:24 . Memory (MB): peak = 1708.215 ; gain = 1049.008
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 9 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:25 ; elapsed = 00:00:24 . Memory (MB): peak = 1708.215 ; gain = 1049.008
+Synthesis Optimization Complete : Time (s): cpu = 00:00:25 ; elapsed = 00:00:24 . Memory (MB): peak = 1708.215 ; gain = 1049.008
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.100 . Memory (MB): peak = 1770.641 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 1438 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1897.621 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: 54fd1fa2
+INFO: [Common 17-83] Releasing license: Synthesis
+30 Infos, 9 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:32 ; elapsed = 00:00:32 . Memory (MB): peak = 1897.621 ; gain = 1240.387
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.028 . Memory (MB): peak = 2181.836 ; gain = 0.133
+INFO: [Common 17-1381] The checkpoint 'C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/dct8x8_chen_2d_proj/dct8x8_chen_2d_proj.runs/synth_1/dct8x8_chen_2d.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file dct8x8_chen_2d_utilization_synth.rpt -pb dct8x8_chen_2d_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Tue May 13 18:37:34 2025...

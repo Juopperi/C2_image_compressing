@@ -1,0 +1,16 @@
+# List of modules to synthesize
+# Each module name should be on a separate line
+
+# DCT Core Modules
+# dct8_chen_ts
+# dct8x8_2d_pipe_block
+
+int_mul_fra_ycbcr
+rgb2ycbcr_container
+shift_add_multiplier_8x16_frac
+
+# lut_multiplier
+
+# Other modules if needed
+# dct8x8_chen_2d
+# dct8x8_chen_2d_parallel 
