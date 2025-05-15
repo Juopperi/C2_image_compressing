@@ -4,13 +4,13 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity fwrit_main is
-    Port ( height, width: in std_logic_vector (15 downto 0);
+    Port( height, width: in std_logic_vector (15 downto 0);
            clk, rst, in_bit, start, datavalid, done: in std_logic;
            dataready: out std_logic; --signals Huffman block that we are ready to receive data
            axi_valid: out std_logic;
            axi_ready: in std_logic;
-           axi_data: out std_logic_vector(31 downto 0);
-           axi_keep: out std_logic_vector (3 downto 0));
+           axi_data: out std_logic_vector(31 downto 0)
+        )
 end fwrit_main;
 
 architecture Behavioral of fwrit_main is
@@ -98,16 +98,17 @@ architecture Behavioral of fwrit_main is
         x"FF", x"D9" --EOI
     );
     
-    type state_type is (idle,header,waiting,data,eoi);
+    type state_type is(idle,header,waiting,data,eoi);
     signal current_state, next_state : state_type;
     signal ent_buf: std_logic_vector(7 downto 0);
     signal array_el : integer range 0 to 1023;
-    signal entropy_el : integer range 0 to 7 := 7;
+    signal entropy_el : integer range 0 to 31 := 7;
 
-    signal ent_load: std_logic_vector(1 downto 0);
+    signal byte_count: integer range 0 to 3;
+    signal due_ones: std_logic;
     signal valid: std_logic;
+    signal ready: std_logic;
     signal datareg: std_logic_vector(31 downto 0);
-    signal keep: std_logic_vector(3 downto 0);
     
 begin
 
@@ -116,7 +117,7 @@ begin
         if rst='1' then
             current_state <= idle;
         elsif rising_edge(clk) then
-            current_state<=next_state;          
+            current_state <= next_state;          
         end if;
     end process;
     
@@ -150,65 +151,65 @@ begin
         if rising_edge(clk) then
             if current_state = idle then
                 datareg <= (others =>'0');
+                valid <= '0';
             elsif current_state = header then
-                valid<='1';
-                if array_el = 620 then
-                    datareg <= x"00" & img_info(array_el) & img_info(array_el+1) & img_info(array_el+2);
-                    keep <= "0111";
-                    array_el <= 0;
+                elsif array_el=160 then    
+                    datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & height(15 downto 8);
+                    valid<='1';
+                elsif array_el=164 then
+                    datareg <= height(7 downto 0) & width(15 downto 8) & width(7 downto 0) & img_info(171);
+                    valid<='1';
                 else
-                    if array_el=160 then    
-                        datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & height(15 downto 8);
-                    elsif array_el=164 then
-                        datareg <= height(7 downto 0) & width(15 downto 8) & width(7 downto 0) & img_info(171);
-                    else
-                        datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & img_info(array_el+3);
-                    end if;
-                    keep <= "1111";
-                    array_el <= array_el + 4;
+                    datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & img_info(array_el+3);
+                    valid<='1';
                 end if;
+                array_el <= array_el + 4;
+            elsif current_state = waiting then
+                entropy_el = 7;
+                byte_count = 0;
+                valid <= '0';
             elsif current_state = data then
                 if datavalid='1' then
                     ent_buf(entropy_el) <= in_bit;
                     if entropy_el = 0 then
-                        entropy_el <= 7;
-                        ent_load<="01";
-                        if ent_buf = "11111111" then
-                            ent_load<="11";
+                        if array_el=624 then
+                            datareg <= img_info(620) & img_info(621) & img_info(622) & ent_buf; 
+                            array_el <= 0;
+                        elsif due_ones='1' then
+                            datareg(8*byte_count+7 downto 8*byte count) <= x"00";
+                            datareg(8*byte_count-1 downto 8*byte count-8) <= ent_buf;
+                            due_ones<='0';
+                            byte_count<=byte_count-2;
+                        elsif byte_count=0 then
+                            datareg(8*byte_count+7 downto 8*byte count) <= ent_buf;
+                            if ent_buf=x"FF" then
+                                due_ones<='1';
+                            end if;
+                            byte_count=3;
+                        else
+                            datareg(8*byte_count+7 downto 8*byte count) <= ent_buf;
+                            byte_count<=byte_count-1;
                         end if;
                     else
                         entropy_el <= entropy_el - 1;
-                        if done='1' then
+                        if done='1' then --fix
                             for i in entropy_el downto 0 loop
                                 ent_buf(i) <= '1';
                             end loop;
                             ent_load<="01";
                             if ent_buf = "11111111" then
-                                ent_load<="11";
+
                             end if;
                             valid <= '1';
                         end if;  
                     end if;
-                end if;
-                if ent_load="01" then
-                    datareg <= x"000000" & ent_buf;
-                    keep <= "0001";
-                    valid<='1';
-                    ent_load<="00";
-                elsif ent_load="11" then
-                    datareg <= x"0000" & ent_buf & x"00";
-                    keep <= "0011";
-                    valid<='1';
-                    ent_load<="00";
-                elsif axi_ready = '1' then
-                    valid <= '0';
+                else
+                    valid<='0';
                 end if;
             elsif current_state = eoi then
                 datareg <= x"0000" & img_info(623) & img_info(624);
-                keep <= "0011";
             else
                 valid<='0';
-                keep<="0000";
             end if;
         end if;
     end process;
@@ -217,6 +218,5 @@ begin
 
     axi_data <= datareg;
     axi_valid <= valid;
-    axi_keep <= keep;
     
 end Behavioral;
