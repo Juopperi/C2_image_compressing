@@ -16,9 +16,9 @@ module tb_rgb2ycbcr_dct;
     parameter int CONST_W = 16;              // DCT constant width
     parameter int PIXEL_COUNT = 64;          // 8x8 block (64 pixels)
     parameter int CORE_COUNT = 8;            // RGB2YCbCr core count
-    parameter int MAX_BLOCKS = 1000;          // Number of test blocks
+    parameter int MAX_BLOCKS = 1000;         // Number of test blocks
     parameter int CLK_PERIOD = 10;           // 10ns = 100MHz
-    parameter int ERR_THRESH = 32'h0000_8000; // ±0.5 LSB tolerance
+    parameter int ERR_THRESH = 0; // ±0.5 LSB tolerance
 
     // ---------- Testbench signals --------------------------------------------
     logic                                     clk;
@@ -37,16 +37,16 @@ module tb_rgb2ycbcr_dct;
     // DCT output interface
     logic                                     out_valid;
     logic                                     out_ready;
-    logic signed [64*FIXED_POINT_LENGTH-1:0]  out_data;
+    logic signed [64*FIXED_POINT_LENGTH/2-1:0]  out_data;
     
     // Test vectors
     logic [INPUT_WIDTH-1:0]                   r_mem[0:MAX_BLOCKS*PIXEL_COUNT-1];
     logic [INPUT_WIDTH-1:0]                   g_mem[0:MAX_BLOCKS*PIXEL_COUNT-1];
     logic [INPUT_WIDTH-1:0]                   b_mem[0:MAX_BLOCKS*PIXEL_COUNT-1];
-    logic [FIXED_POINT_LENGTH-1:0]            expected_y_dct[0:MAX_BLOCKS*PIXEL_COUNT-1];
-    logic [FIXED_POINT_LENGTH-1:0]            expected_cb_dct[0:MAX_BLOCKS*PIXEL_COUNT-1];
-    logic [FIXED_POINT_LENGTH-1:0]            expected_cr_dct[0:MAX_BLOCKS*PIXEL_COUNT-1];
-    logic [FIXED_POINT_LENGTH-1:0]            output_mem[0:PIXEL_COUNT-1];
+    logic [FIXED_POINT_LENGTH/2-1:0]            expected_y_dct[0:MAX_BLOCKS*PIXEL_COUNT-1];
+    logic [FIXED_POINT_LENGTH/2-1:0]            expected_cb_dct[0:MAX_BLOCKS*PIXEL_COUNT-1];
+    logic [FIXED_POINT_LENGTH/2-1:0]            expected_cr_dct[0:MAX_BLOCKS*PIXEL_COUNT-1];
+    logic [FIXED_POINT_LENGTH/2-1:0]            output_mem[0:PIXEL_COUNT-1];
 
     integer blk, i, j, diff, fout_y, fout_cb, fout_cr, err_cnt;
     string component_name;
@@ -113,8 +113,8 @@ module tb_rgb2ycbcr_dct;
     // ---------- Helper : check output block against reference ---------------
     task check_output_block(input integer block_num);
         integer i, d;
-        logic [FIXED_POINT_LENGTH-1:0] exp_value;
-        logic [FIXED_POINT_LENGTH-1:0] got_value;
+        logic [FIXED_POINT_LENGTH/2-1:0] exp_value;
+        logic [FIXED_POINT_LENGTH/2-1:0] got_value;
         begin
             for (i = 0; i < PIXEL_COUNT; i = i + 1) begin
                 got_value = output_mem[i];
@@ -131,7 +131,7 @@ module tb_rgb2ycbcr_dct;
                 
                 if (d > ERR_THRESH) begin
                     $display("Mismatch blk %0d idx %0d %s: got %h exp %h diff %0d", 
-                              block_num, i, component_name, got_value, exp_value, d >> 16);
+                              block_num, i, component_name, got_value, exp_value, d);
                     err_cnt = err_cnt + 1;
                 end
             end
@@ -146,13 +146,13 @@ module tb_rgb2ycbcr_dct;
         
         $display("==== TB RGB to YCbCr + DCT ====");
 
-        // Load test vectors
-        $readmemh("rgb_input_r.mem", r_mem);
-        $readmemh("rgb_input_g.mem", g_mem);
-        $readmemh("rgb_input_b.mem", b_mem);
-        $readmemh("expected_y_dct_output.mem", expected_y_dct);
-        $readmemh("expected_cb_dct_output.mem", expected_cb_dct);
-        $readmemh("expected_cr_dct_output.mem", expected_cr_dct);
+        // Load test vectors - 修改为使用我们生成的文件名
+        $readmemh("r_input.mem", r_mem);       // 修改
+        $readmemh("g_input.mem", g_mem);       // 修改
+        $readmemh("b_input.mem", b_mem);       // 修改
+        $readmemh("expected_y_quant_output.mem", expected_y_dct);   // 修改
+        $readmemh("expected_cb_quant_output.mem", expected_cb_dct); // 修改
+        $readmemh("expected_cr_quant_output.mem", expected_cr_dct); // 修改
 
         // Initialize signals
         rst_n = 0;
@@ -229,4 +229,4 @@ module tb_rgb2ycbcr_dct;
         $finish;
     end
 
-endmodule 
+endmodule
