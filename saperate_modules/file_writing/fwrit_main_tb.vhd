@@ -13,15 +13,13 @@ architecture Behavioral of fwrit_main_tb is
            dataready: out std_logic;
            axi_valid: out std_logic;
            axi_ready: in std_logic;
-           axi_data: out std_logic_vector(31 downto 0);
-           axi_keep: out std_logic_vector (3 downto 0));
+           axi_data: out std_logic_vector(31 downto 0));
     end component;
     
     signal height: STD_LOGIC_VECTOR(15 downto 0):= x"123f";
     signal width: STD_LOGIC_VECTOR(15 downto 0):= x"456e";
     signal clk, rst, in_bit, start, datavalid, done, dataready, axi_valid, axi_ready: std_logic;
     signal axi_data : STD_LOGIC_VECTOR(31 downto 0);
-    signal axi_keep : STD_LOGIC_VECTOR(3 downto 0);
     
     constant clk_period : time := 10 ns;
 begin
@@ -37,8 +35,7 @@ begin
                         dataready    => dataready,
                         axi_data     => axi_data,
                         axi_valid    => axi_valid,
-                        axi_ready    => axi_ready,
-                        axi_keep     => axi_keep                                         
+                        axi_ready    => axi_ready                                        
     );
 
    clk_process: process
@@ -60,9 +57,9 @@ begin
    datavalid_process: process
    begin
         datavalid <='1';
-        wait for 50 ns;
+        wait for 30 ns;
         datavalid <='0';
-        wait for 40 ns;       
+        wait for 20 ns;       
    end process;
   
   stim_process: process

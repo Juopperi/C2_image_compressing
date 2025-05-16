@@ -10,7 +10,7 @@ entity fwrit_main is
            axi_valid: out std_logic;
            axi_ready: in std_logic;
            axi_data: out std_logic_vector(31 downto 0)
-        )
+        );
 end fwrit_main;
 
 architecture Behavioral of fwrit_main is
@@ -105,6 +105,7 @@ architecture Behavioral of fwrit_main is
 
     signal due_ones: std_logic;
     signal eoi_bytes: integer range 0 to 3;
+    signal eoi_done: std_logic;
     signal valid: std_logic;
     signal ready: std_logic;
     signal datareg: std_logic_vector(31 downto 0);
@@ -140,7 +141,7 @@ begin
                     next_state <= eoi;
                 end if;
             when eoi=>
-                if eoi_done = '1'
+                if eoi_done = '1' then
                     next_state <= idle;
                 end if;
             when others => null;
@@ -157,7 +158,7 @@ begin
                 valid <= '0';
                 eoi_done <= '0';
             elsif current_state = header then
-                elsif array_el=160 then    
+                if array_el=160 then    
                     datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & height(15 downto 8);
                     valid<='1';
                 elsif array_el=164 then
@@ -165,7 +166,11 @@ begin
                     valid<='1';
                 else
                     datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & img_info(array_el+3);
-                    valid<='1';
+                    if array_el=620 then
+                        valid <= '0';
+                    else
+                        valid <= '1';
+                    end if;
                 end if;
                 array_el <= array_el + 4;
             elsif current_state = waiting then
@@ -203,7 +208,7 @@ begin
                         entropy_el := 7;                            
                     else 
                         if done='1' then
-                            if entropy el < 7 then
+                            if entropy_el < 7 then
                                 for i in entropy_el downto 0 loop
                                     ent_buf(i) <= '1';
                                 end loop;
@@ -233,9 +238,9 @@ begin
                                     end if;
                                 when others =>
                                     null; --due ones                       
-                            end case ;
-                            entropy_el := entropy_el - 1;
-                        end if;  
+                            end case ;  
+                        end if;
+                        entropy_el := entropy_el - 1;  
                     end if;
                     valid <= '1';
                 else
