@@ -357,10 +357,11 @@ architecture wrapper_arch of wrapper is
                         huff_Cb <= Cb_short;
                         huff_Cr <= Cr_short;
                         index := 0;
+                        huff_start <= '1';
                         currentState <= huff_read;
 
                     when huff_read => 
-                        huff_start <= '1';
+                        huff_start <= '0';
                         if huff_finished = '1' then
                             currentState <= done;
                         end if;
