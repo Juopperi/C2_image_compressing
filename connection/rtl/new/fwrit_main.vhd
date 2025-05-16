@@ -102,10 +102,9 @@ architecture Behavioral of fwrit_main is
     signal current_state, next_state : state_type;
     signal ent_buf: std_logic_vector(7 downto 0);
     signal array_el : integer range 0 to 1023;
-    signal entropy_el : integer range 0 to 31 := 7;
 
-    signal byte_count: integer range 0 to 3;
     signal due_ones: std_logic;
+    signal eoi_bytes: integer range 0 to 3;
     signal valid: std_logic;
     signal ready: std_logic;
     signal datareg: std_logic_vector(31 downto 0);
@@ -140,18 +139,23 @@ begin
                 if done='1' then
                     next_state <= eoi;
                 end if;
-            when eoi=>       
-                next_state <= idle;
+            when eoi=>
+                if eoi_done = '1'
+                    next_state <= idle;
+                end if;
             when others => null;
         end case;
     end process;
     
     writing_proc: process(clk)
+        variable byte_count : integer range 0 to 3;
+        variable entropy_el : integer range 0 to 31 := 7;
     begin
         if rising_edge(clk) then
             if current_state = idle then
                 datareg <= (others =>'0');
                 valid <= '0';
+                eoi_done <= '0';
             elsif current_state = header then
                 elsif array_el=160 then    
                     datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & height(15 downto 8);
@@ -165,8 +169,8 @@ begin
                 end if;
                 array_el <= array_el + 4;
             elsif current_state = waiting then
-                entropy_el = 7;
-                byte_count = 0;
+                entropy_el := 7;
+                byte_count := 0;
                 valid <= '0';
             elsif current_state = data then
                 if datavalid='1' then
@@ -175,39 +179,92 @@ begin
                         if array_el=624 then
                             datareg <= img_info(620) & img_info(621) & img_info(622) & ent_buf; 
                             array_el <= 0;
-                        elsif due_ones='1' then
-                            datareg(8*byte_count+7 downto 8*byte count) <= x"00";
-                            datareg(8*byte_count-1 downto 8*byte count-8) <= ent_buf;
-                            due_ones<='0';
-                            byte_count<=byte_count-2;
-                        elsif byte_count=0 then
-                            datareg(8*byte_count+7 downto 8*byte count) <= ent_buf;
+                        else 
+                            if due_ones='1' then
+                                datareg(8*byte_count+7 downto 8*byte_count) <= x"00";
+                                due_ones <= '0';
+                                byte_count := byte_count-1;    
+                            end if;
+                            datareg(8*byte_count+7 downto 8*byte_count) <= ent_buf;
                             if ent_buf=x"FF" then
-                                due_ones<='1';
+                                if byte_count=0 then
+                                    due_ones <= '1';
+                                else
+                                    byte_count := byte_count - 1;
+                                    datareg(8*byte_count+7 downto 8*byte_count) <= x"00";               
+                                end if;
                             end if;
-                            byte_count=3;
-                        else
-                            datareg(8*byte_count+7 downto 8*byte count) <= ent_buf;
-                            byte_count<=byte_count-1;
+                            if byte_count=0 then
+                                byte_count := 3;
+                            else
+                                byte_count := byte_count - 1;
+                            end if;
                         end if;
-                    else
-                        entropy_el <= entropy_el - 1;
-                        if done='1' then --fix
-                            for i in entropy_el downto 0 loop
-                                ent_buf(i) <= '1';
-                            end loop;
-                            ent_load<="01";
-                            if ent_buf = "11111111" then
-
+                        entropy_el := 7;                            
+                    else 
+                        if done='1' then
+                            if entropy el < 7 then
+                                for i in entropy_el downto 0 loop
+                                    ent_buf(i) <= '1';
+                                end loop;
+                                datareg(8*byte_count+7 downto 8*byte_count) <= ent_buf;
                             end if;
-                            valid <= '1';
+                            case byte_count is
+                                when 0 =>
+                                    if ent_buf = x"FF" then
+                                        eoi_bytes <= 3;
+                                        due_ones <= '1';
+                                    else
+                                        eoi_bytes <= 0;
+                                    end if;
+                                when 1 =>    
+                                    if ent_buf = x"FF" then
+                                        datareg(8*byte_count-1 downto 8*byte_count-8) <= x"00";
+                                        eoi_bytes <= 0;
+                                    else
+                                        eoi_bytes <= 1;
+                                    end if;
+                                when 2 =>
+                                    if ent_buf = x"FF" then
+                                        datareg(8*byte_count-1 downto 8*byte_count-8) <= x"00";
+                                        eoi_bytes <= 1;
+                                    else
+                                        eoi_bytes <= 2;
+                                    end if;
+                                when others =>
+                                    null; --due ones                       
+                            end case ;
+                            entropy_el := entropy_el - 1;
                         end if;  
                     end if;
+                    valid <= '1';
                 else
-                    valid<='0';
+                    valid <= '0';
                 end if;
             elsif current_state = eoi then
-                datareg <= x"0000" & img_info(623) & img_info(624);
+                case eoi_bytes is
+                    when 0 =>
+                        datareg(7 downto 0) <= img_info(623);
+                        eoi_bytes <= 4;
+                    when 1 =>
+                        datareg (15 downto 0) <= img_info(623) & img_info(624);
+                        eoi_done <= '1';
+                    when 2 =>
+                        datareg (23 downto 0) <= img_info(623) & img_info(624) & x"00";
+                        eoi_done <= '1';
+                    when 3 =>
+                        if due_ones = '1' then
+                            due_ones <= '0';
+                            datareg <= x"00" & img_info(623) & img_info(624) & x"00";
+                        else
+                            datareg <= img_info(623) & img_info(624) & x"0000";
+                        end if;
+                        eoi_done <= '1';
+                    when others =>
+                        datareg <= img_info(624) & x"000000";
+                        eoi_done <= '1';
+                end case;
+                valid <= '1';
             else
                 valid<='0';
             end if;
