@@ -45,7 +45,7 @@ architecture wrapper_arch of wrapper is
     component dct8x8_chen_2d is
         generic(
             IN_W : integer := 32;
-            CONST_W : integer := 5
+            CONST_W : integer := 16
         );
         port (
             clk : in std_logic;
