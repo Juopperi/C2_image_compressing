@@ -57,7 +57,7 @@ architecture arch of wrapper_tb is
         begin
             while not endfile(object_file) loop
                 readline(object_file,L);
-                for i in 63 downto 0 loop
+                for i in 0 to 63 loop
                     read(L,int_val);
                     memory(i) := std_logic_vector(to_signed(int_val,8));
                 end loop;
@@ -126,7 +126,7 @@ begin
     writeData_conv : process 
       file output_file : text open write_mode is "conversion_out.txt";
       variable output_line : line;
-      variable index : integer := 63;
+      variable index : integer := 0;
       variable rowIndex : integer := 0;
       variable temp : std_logic_vector(15 downto 0);
     begin 
@@ -139,8 +139,8 @@ begin
                 writeline(output_file,output_line);
                 rowIndex := 0;
             end if;
-            index := index - 1;
-            if index = -1 then
+            index := index + 1;
+            if index = 63 then
                 write(output_line,conversion_Y_out);
                 writeline(output_file,output_line);
                 wait;
@@ -152,7 +152,7 @@ begin
     writeData_dct : process 
       file output_file : text open write_mode is "dct_out.txt";
       variable output_line : line;
-      variable index : integer := 63;
+      variable index : integer := 0;
       variable rowIndex : integer := 0;
       variable temp : std_logic_vector(15 downto 0);
     begin 
@@ -165,8 +165,8 @@ begin
                 writeline(output_file,output_line);
                 rowIndex := 0;
             end if;
-            index := index - 1;
-            if index = -1 then
+            index := index + 1;
+            if index = 64 then
                 write(output_line,dct_Y_out);
                 writeline(output_file,output_line);
                 wait;
@@ -179,7 +179,7 @@ begin
     writeData_quant : process 
       file output_file : text open write_mode is "quant_out.txt";
       variable output_line : line;
-      variable index : integer := 63;
+      variable index : integer := 0;
       variable rowIndex : integer := 0;
       variable temp : std_logic_vector(7 downto 0);
     begin 
@@ -192,8 +192,8 @@ begin
                 writeline(output_file,output_line);
                 rowIndex := 0;
             end if;
-            index := index - 1;
-            if index = -1 then
+            index := index + 1;
+            if index = 64 then
                 write(output_line,quant_Y_out);
                 writeline(output_file,output_line);
                 wait;
@@ -205,7 +205,7 @@ begin
     writeData_zigzag : process 
       file output_file : text open write_mode is "zigzag_out.txt";
       variable output_line : line;
-      variable index : integer := 63;
+      variable index : integer := 0;
       variable rowIndex : integer := 0;
       variable temp : std_logic_vector(7 downto 0);
     begin 
@@ -218,8 +218,8 @@ begin
                 writeline(output_file,output_line);
                 rowIndex := 0;
             end if;
-            index := index - 1;
-            if index = -1 then
+            index := index + 1;
+            if index = 64 then
                 write(output_line,zigzag_Y_out);
                 writeline(output_file,output_line);
                 wait;

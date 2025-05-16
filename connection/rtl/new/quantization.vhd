@@ -82,9 +82,9 @@ begin
 
                     when quant =>
                         -- Fixed-point multiplication
-                        Y_temp := signed(Y(32*(i+1)-1 downto (32*i))) * signed(ZEROS & TY(16*(i+1)-1 downto (16*i)) & ZEROS);
-                        Cb_temp := signed(Cb(32*(i+1)-1 downto (32*i))) * signed(ZEROS & TC(16*(i+1)-1 downto (16*i)) & ZEROS);
-                        Cr_temp := signed(Cr(32*(i+1)-1 downto (32*i))) * signed(ZEROS & TC(16*(i+1)-1 downto (16*i)) & ZEROS);
+                        Y_temp := signed(Y(32*(i+1)-1 downto (32*i))) * signed(ZEROS & TY(16*(63-i+1)-1 downto (16*(63-i))) & ZEROS);
+                        Cb_temp := signed(Cb(32*(i+1)-1 downto (32*i))) * signed(ZEROS & TC(16*(63-i+1)-1 downto (16*(63-i))) & ZEROS);
+                        Cr_temp := signed(Cr(32*(i+1)-1 downto (32*i))) * signed(ZEROS & TC(16*(63-i+1)-1 downto (16*(63-i))) & ZEROS);
 
                         -- Add rounding
                         round_Y := Y_temp(39 downto 24) + rounding_factor;
