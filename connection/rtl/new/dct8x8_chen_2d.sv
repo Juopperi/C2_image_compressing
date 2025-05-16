@@ -6,7 +6,7 @@
 `timescale 1ns/1ps
 module dct8x8_chen_2d #(
     parameter int IN_W = 32,
-    parameter int CONST_W = 5
+    parameter int CONST_W = 16
 )(
     input  logic                     clk,
     input  logic                     rst_n,

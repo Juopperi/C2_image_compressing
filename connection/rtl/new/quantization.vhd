@@ -6,12 +6,14 @@ use IEEE.MATH_REAL.ALL;
 entity quantization is
     Port (
         clk    : in std_logic;
+        start : in std_logic;
         Y   : in  std_logic_vector (1023 downto 0); 
         Cb  : in  std_logic_vector (1023 downto 0);
         Cr  : in  std_logic_vector (1023 downto 0);
         Y_out  : out std_logic_vector (1023 downto 0); 
         Cb_out : out std_logic_vector (1023 downto 0);
-        Cr_out : out std_logic_vector (1023 downto 0)
+        Cr_out : out std_logic_vector (1023 downto 0);
+        finished : out std_logic
     );
 end quantization;
 
@@ -56,6 +58,10 @@ architecture Behavioral of quantization is
      -- chrominance table
            constant rounding_factor : signed(15 downto 0) := x"0080"; -- 2^15 = 0.5
            signal i : integer range 0 to 63;
+
+    type t_State is (idle,quant,done);
+    signal currentState : t_State := idle;
+
 begin
         process (clk)
             variable Y_temp : signed(31 downto 0);
@@ -66,31 +72,50 @@ begin
             variable round_Cr : signed(15 downto 0);
         begin
             if rising_edge(clk) then
-                -- Fixed-point multiplication
-                Y_temp := signed(Y(16*(i+1)-1 downto (16*i))) * signed(TY(16*(i+1)-1 downto (16*i)));
-                Cb_temp := signed(Cb(16*(i+1)-1 downto (16*i))) * signed(TC(16*(i+1)-1 downto (16*i)));
-                Cr_temp := signed(Cr(16*(i+1)-1 downto (16*i))) * signed(TC(16*(i+1)-1 downto (16*i)));
+                case currentState is
+                    when idle =>
+                        finished <= '0';
+                        i <= 0;
+                        if start = '1' then
+                            currentState <= quant;
+                        end if;
 
-                -- Add rounding
-                round_Y := Y_temp(23 downto 8) + rounding_factor;
-                round_Cb := Cb_temp(23 downto 8) + rounding_factor;
-                round_Cr := Cr_temp(23 downto 8) + rounding_factor;
+                    when quant =>
+                        -- Fixed-point multiplication
+                        Y_temp := signed(Y(16*(i+1)-1 downto (16*i))) * signed(TY(16*(i+1)-1 downto (16*i)));
+                        Cb_temp := signed(Cb(16*(i+1)-1 downto (16*i))) * signed(TC(16*(i+1)-1 downto (16*i)));
+                        Cr_temp := signed(Cr(16*(i+1)-1 downto (16*i))) * signed(TC(16*(i+1)-1 downto (16*i)));
 
-                -- Truncate the fractional bits
-                round_Y(7 downto 0) := (others => '0');
-                round_Cb(7 downto 0) := (others => '0');
-                round_Cr(7 downto 0) := (others => '0');
+                        -- Add rounding
+                        round_Y := Y_temp(23 downto 8) + rounding_factor;
+                        round_Cb := Cb_temp(23 downto 8) + rounding_factor;
+                        round_Cr := Cr_temp(23 downto 8) + rounding_factor;
 
-                -- Assign output
-                Y_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Y(15 downto 0));
-                Cb_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Cb(15 downto 0));
-                Cr_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Cr(15 downto 0));
-              
-                if i = 63 then
-		   i <= 0;
-                else 
-                   i <= i + 1;
-                end if;
+                        -- Truncate the fractional bits
+                        round_Y(7 downto 0) := (others => '0');
+                        round_Cb(7 downto 0) := (others => '0');
+                        round_Cr(7 downto 0) := (others => '0');
+
+                        -- Assign output
+                        Y_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Y(15 downto 0));
+                        Cb_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Cb(15 downto 0));
+                        Cr_out(16*(i+1)-1 downto 16*i) <= std_logic_vector(round_Cr(15 downto 0));
+                    
+                        if i = 63 then
+                            i <= 0;
+                            currentState <= done;
+                        else 
+                            i <= i + 1;
+                        end if;
+                    
+                    when done =>
+                        finished <= '1';
+                        currentState <= idle;
+                        
+                    when others =>
+                        currentState <= idle;
+
+                end case;
             end if;
         end process;
 end Behavioral;

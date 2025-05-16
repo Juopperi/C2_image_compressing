@@ -110,7 +110,7 @@ begin
     begin
         wait for 10 ns;
         R((8*(index+1)-1) downto 8*index) <= Rvalues(index);
-        report "Value: " & integer'image(to_integer(unsigned(Rvalues(index))));
+        --report "Value: " & integer'image(to_integer(unsigned(Rvalues(index))));
         G((8*(index+1)-1) downto 8*index) <= Gvalues(index);
         B((8*(index+1)-1) downto 8*index) <= Bvalues(index);
         index := index + 1;
