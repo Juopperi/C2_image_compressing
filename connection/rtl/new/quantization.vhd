@@ -7,9 +7,9 @@ entity quantization is
     Port (
         clk    : in std_logic;
         start : in std_logic;
-        Y   : in  std_logic_vector (1023 downto 0); 
-        Cb  : in  std_logic_vector (1023 downto 0);
-        Cr  : in  std_logic_vector (1023 downto 0);
+        Y   : in  std_logic_vector (2047 downto 0); 
+        Cb  : in  std_logic_vector (2047 downto 0);
+        Cr  : in  std_logic_vector (2047 downto 0);
         Y_out  : out std_logic_vector (1023 downto 0); 
         Cb_out : out std_logic_vector (1023 downto 0);
         Cr_out : out std_logic_vector (1023 downto 0);
@@ -56,17 +56,17 @@ architecture Behavioral of quantization is
     "0000000000000011" & "0000000000000011" & "0000000000000011" & "0000000000000011" &
     "0000000000000011" & "0000000000000011" & "0000000000000011" & "0000000000000011";
      -- chrominance table
-           constant rounding_factor : signed(15 downto 0) := x"0080"; -- 2^15 = 0.5
-           signal i : integer range 0 to 63;
-
     type t_State is (idle,quant,done);
     signal currentState : t_State := idle;
 
+    constant rounding_factor : signed(15 downto 0) := x"0080"; -- 2^15 = 0.5
+    signal i : integer range 0 to 63;
+    constant ZEROS : std_logic_vector(7 downto 0) := "00000000";
 begin
         process (clk)
-            variable Y_temp : signed(31 downto 0);
-            variable Cb_temp : signed(31 downto 0);
-            variable Cr_temp : signed(31 downto 0);
+            variable Y_temp : signed(63 downto 0);
+            variable Cb_temp : signed(63 downto 0);
+            variable Cr_temp : signed(63 downto 0);
             variable round_Y : signed(15 downto 0);
             variable round_Cb : signed(15 downto 0);
             variable round_Cr : signed(15 downto 0);
@@ -82,14 +82,14 @@ begin
 
                     when quant =>
                         -- Fixed-point multiplication
-                        Y_temp := signed(Y(16*(i+1)-1 downto (16*i))) * signed(TY(16*(i+1)-1 downto (16*i)));
-                        Cb_temp := signed(Cb(16*(i+1)-1 downto (16*i))) * signed(TC(16*(i+1)-1 downto (16*i)));
-                        Cr_temp := signed(Cr(16*(i+1)-1 downto (16*i))) * signed(TC(16*(i+1)-1 downto (16*i)));
+                        Y_temp := signed(Y(32*(i+1)-1 downto (32*i))) * signed(ZEROS & TY(16*(i+1)-1 downto (16*i)) & ZEROS);
+                        Cb_temp := signed(Cb(32*(i+1)-1 downto (32*i))) * signed(ZEROS & TC(16*(i+1)-1 downto (16*i)) & ZEROS);
+                        Cr_temp := signed(Cr(32*(i+1)-1 downto (32*i))) * signed(ZEROS & TC(16*(i+1)-1 downto (16*i)) & ZEROS);
 
                         -- Add rounding
-                        round_Y := Y_temp(23 downto 8) + rounding_factor;
-                        round_Cb := Cb_temp(23 downto 8) + rounding_factor;
-                        round_Cr := Cr_temp(23 downto 8) + rounding_factor;
+                        round_Y := Y_temp(39 downto 24) + rounding_factor;
+                        round_Cb := Cb_temp(39 downto 24) + rounding_factor;
+                        round_Cr := Cr_temp(39 downto 24) + rounding_factor;
 
                         -- Truncate the fractional bits
                         round_Y(7 downto 0) := (others => '0');

@@ -18,11 +18,12 @@ architecture arch of wrapper_tb is
         R : in std_logic_vector(511 downto 0);
         G : in std_logic_vector(511 downto 0);
         B : in std_logic_vector(511 downto 0);
-        conversion_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        dct_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        temp_Y_in : in std_logic_vector(2047 downto 0); --Only for debugging
+        conversion_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
+        dct_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
         quant_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
         zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        stored_huffman : out std_logic_vector(600 downto 0);
+        stored_huffman : out std_logic_vector(1100 downto 0);
         finished : out std_logic
     );
     end component wrapper;
@@ -33,11 +34,12 @@ architecture arch of wrapper_tb is
     signal R : std_logic_vector(511 downto 0);
     signal G : std_logic_vector(511 downto 0);
     signal B : std_logic_vector(511 downto 0);
-    signal conversion_Y_out : std_logic_vector(1023 downto 0); --Only for debugging
-    signal dct_Y_out : std_logic_vector(1023 downto 0); --Only for debugging
+    signal temp_Y_in : std_logic_vector(2047 downto 0); --Only for debugging
+    signal conversion_Y_out : std_logic_vector(2047 downto 0); --Only for debugging
+    signal dct_Y_out : std_logic_vector(2047 downto 0); --Only for debugging
     signal quant_Y_out : std_logic_vector(1023 downto 0); --Only for debugging
     signal zigzag_Y_out : std_logic_vector(1023 downto 0); --Only for debugging
-    signal stored_huffman : std_logic_vector(600 downto 0);
+    signal stored_huffman : std_logic_vector(1100 downto 0);
     signal finished : std_logic;
 
     type word_array is array (0 to 63) of std_logic_vector(7 downto 0);
@@ -55,7 +57,7 @@ architecture arch of wrapper_tb is
         begin
             while not endfile(object_file) loop
                 readline(object_file,L);
-                for i in 0 to 63 loop
+                for i in 63 downto 0 loop
                     read(L,int_val);
                     memory(i) := std_logic_vector(to_signed(int_val,8));
                 end loop;
@@ -71,7 +73,8 @@ begin
             start => start,
             R => R,
             G => G,
-            B => B,
+            B => B, 
+            temp_Y_in => temp_Y_in,
             conversion_Y_out => conversion_Y_out,
             dct_Y_out => dct_Y_out,
             quant_Y_out => quant_Y_out,
@@ -123,12 +126,12 @@ begin
     writeData_conv : process 
       file output_file : text open write_mode is "conversion_out.txt";
       variable output_line : line;
-      variable index : integer := 0;
+      variable index : integer := 63;
       variable rowIndex : integer := 0;
-      variable temp : std_logic_vector(7 downto 0);
+      variable temp : std_logic_vector(15 downto 0);
     begin 
         if finished = '1' then
-            temp := conversion_Y_out(16*(index+1)-1 downto (16*index)+8); 
+            temp := conversion_Y_out(32*(index+1)-1 downto (32*index)+16); 
             write(output_line,to_integer(signed(temp)));
             write(output_line,string'(" "));
             rowIndex := rowIndex + 1;
@@ -136,8 +139,8 @@ begin
                 writeline(output_file,output_line);
                 rowIndex := 0;
             end if;
-            index := index + 1;
-            if index = 64 then
+            index := index - 1;
+            if index = -1 then
                 write(output_line,conversion_Y_out);
                 writeline(output_file,output_line);
                 wait;
@@ -149,12 +152,12 @@ begin
     writeData_dct : process 
       file output_file : text open write_mode is "dct_out.txt";
       variable output_line : line;
-      variable index : integer := 0;
+      variable index : integer := 63;
       variable rowIndex : integer := 0;
-      variable temp : std_logic_vector(7 downto 0);
+      variable temp : std_logic_vector(15 downto 0);
     begin 
         if finished = '1' then
-            temp := dct_Y_out(16*(index+1)-1 downto (16*index)+8); 
+            temp := dct_Y_out(32*(index+1)-1 downto (32*index)+16); 
             write(output_line,to_integer(signed(temp)));
             write(output_line,string'(" "));
             rowIndex := rowIndex + 1;
@@ -162,8 +165,8 @@ begin
                 writeline(output_file,output_line);
                 rowIndex := 0;
             end if;
-            index := index + 1;
-            if index = 64 then
+            index := index - 1;
+            if index = -1 then
                 write(output_line,dct_Y_out);
                 writeline(output_file,output_line);
                 wait;
@@ -176,7 +179,7 @@ begin
     writeData_quant : process 
       file output_file : text open write_mode is "quant_out.txt";
       variable output_line : line;
-      variable index : integer := 0;
+      variable index : integer := 63;
       variable rowIndex : integer := 0;
       variable temp : std_logic_vector(7 downto 0);
     begin 
@@ -189,8 +192,8 @@ begin
                 writeline(output_file,output_line);
                 rowIndex := 0;
             end if;
-            index := index + 1;
-            if index = 64 then
+            index := index - 1;
+            if index = -1 then
                 write(output_line,quant_Y_out);
                 writeline(output_file,output_line);
                 wait;
@@ -202,7 +205,7 @@ begin
     writeData_zigzag : process 
       file output_file : text open write_mode is "zigzag_out.txt";
       variable output_line : line;
-      variable index : integer := 0;
+      variable index : integer := 63;
       variable rowIndex : integer := 0;
       variable temp : std_logic_vector(7 downto 0);
     begin 
@@ -215,8 +218,8 @@ begin
                 writeline(output_file,output_line);
                 rowIndex := 0;
             end if;
-            index := index + 1;
-            if index = 64 then
+            index := index - 1;
+            if index = -1 then
                 write(output_line,zigzag_Y_out);
                 writeline(output_file,output_line);
                 wait;

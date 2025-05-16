@@ -23,19 +23,20 @@ entity conversion is
 end conversion;
 
 architecture conversion_arch of conversion is
-    constant ZERO : std_logic_vector(7 downto 0) := (others => '0');
-    signal R : signed(15 downto 0);
-    signal G : signed(15 downto 0);
-    signal B : signed(15 downto 0);
+    constant ZEROS_after : std_logic_vector(scale-1 downto 0) := (others => '0');
+    constant ZEROS_before : std_logic_vector(scale-input_width-1 downto 0) := (others => '0');
+    signal R : signed(fixed_point_length-1 downto 0);
+    signal G : signed(fixed_point_length-1 downto 0);
+    signal B : signed(fixed_point_length-1 downto 0);
+    constant CONST_128 : integer := 128 * 2**scale;
 
 begin
 
     proc : process(clk)
         variable index : integer := 0;
-        variable temp_Y : signed(15 downto 0) := (others => '0');
-        variable temp_Cb: signed(15 downto 0) := (others => '0');
-        variable temp_Cr: signed(15 downto 0) := (others => '0');
- 
+        variable temp_Y : signed(fixed_point_length-1 downto 0) := (others => '0');
+        variable temp_Cb: signed(fixed_point_length-1 downto 0) := (others => '0');
+        variable temp_Cr: signed(fixed_point_length-1 downto 0) := (others => '0');
     begin
         if rising_edge(clk) then
             if index = 0 then
@@ -45,9 +46,9 @@ begin
                 end if;
                 
             elsif index = 1 then 
-                     R <= signed(input_R & ZERO);
-                    G <= signed(input_G & ZERO);
-                    B <= signed(input_B & ZERO);
+                    R <= signed(ZEROS_before & input_R & ZEROS_after);
+                    G <= signed(ZEROS_before & input_G & ZEROS_after);
+                    B <= signed(ZEROS_before & input_B & ZEROS_after);
                     index := index +1 ;
                     
             elsif index = 2 then
@@ -70,7 +71,7 @@ begin
                  index := index + 1;
 
             elsif index = 5 then
-                output_Y <= std_logic_vector(temp_Y) -"1000000000000000"; --128*2**8
+                output_Y <= std_logic_vector(temp_Y) -std_logic_vector(to_signed(CONST_128,temp_Y'length)); --128*2**8
                 output_Cb <= std_logic_vector(temp_Cb);
                 output_Cr <= std_logic_vector(temp_Cr);
                 index := index + 1;

@@ -12,11 +12,12 @@ entity wrapper is
         R : in std_logic_vector(511 downto 0);
         G : in std_logic_vector(511 downto 0);
         B : in std_logic_vector(511 downto 0);
-        conversion_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        dct_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        temp_Y_in : in std_logic_vector(2047 downto 0); --Only for debugging
+        conversion_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
+        dct_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
         quant_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
         zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        stored_huffman : out std_logic_vector(600 downto 0);
+        stored_huffman : out std_logic_vector(1100 downto 0);
         finished : out std_logic
     );
 end wrapper;
@@ -25,8 +26,8 @@ architecture wrapper_arch of wrapper is
     
     component conversion is
         generic (
-            scale : integer := 8;
-            fixed_point_length : integer := 16;
+            scale : integer := 16;
+            fixed_point_length : integer := 32;
             input_width : integer := 8
         );
         port (
@@ -63,9 +64,9 @@ architecture wrapper_arch of wrapper is
         port(
             clk : in std_logic;
             start : in std_logic;
-            Y : in std_logic_vector(1023 downto 0);
-            Cb : in std_logic_vector(1023 downto 0);
-            Cr : in std_logic_vector(1023 downto 0);
+            Y : in std_logic_vector(2047 downto 0);
+            Cb : in std_logic_vector(2047 downto 0);
+            Cr : in std_logic_vector(2047 downto 0);
             Y_out : out  std_logic_vector(1023 downto 0);
             Cb_out : out std_logic_vector(1023 downto 0);
             Cr_out : out std_logic_vector(1023 downto 0);
@@ -108,29 +109,33 @@ architecture wrapper_arch of wrapper is
     signal input_R : std_logic_vector(7 downto 0);
     signal input_G : std_logic_vector(7 downto 0);
     signal input_B : std_logic_vector(7 downto 0);
-    signal output_Y : std_logic_vector(15 downto 0);
-    signal output_Cb : std_logic_vector(15 downto 0);
-    signal output_Cr : std_logic_vector(15 downto 0);
+    signal output_Y : std_logic_vector(31 downto 0);
+    signal output_Cb : std_logic_vector(31 downto 0);
+    signal output_Cr : std_logic_vector(31 downto 0);
     signal convertDone : std_logic;
 
-    signal Y : std_logic_vector(1023 downto 0);
-    signal Cb : std_logic_vector(1023 downto 0);
-    signal Cr : std_logic_vector(1023 downto 0);
+    signal Y_long : std_logic_vector(2047 downto 0);
+    signal Cb_long : std_logic_vector(2047 downto 0);
+    signal Cr_long : std_logic_vector(2047 downto 0);
     signal in_valid_dct : std_logic := '0';
     signal in_ready_dct : std_logic;
     signal out_valid_dct: std_logic;
     signal out_ready_dct : std_logic := '0';
-    signal in_data_dct : std_logic_vector(1023 downto 0);
-    signal out_data_dct : std_logic_vector(1023 downto 0);
+    signal in_data_dct : std_logic_vector(2047 downto 0);
+    signal out_data_dct : std_logic_vector(2047 downto 0);
 
     signal quant_start : std_logic;
-    signal quant_Y_in: std_logic_vector(1023 downto 0);
-    signal quant_Cb_in: std_logic_vector(1023 downto 0);
-    signal quant_Cr_in: std_logic_vector(1023 downto 0);
+    signal quant_Y_in: std_logic_vector(2047 downto 0);
+    signal quant_Cb_in: std_logic_vector(2047 downto 0);
+    signal quant_Cr_in: std_logic_vector(2047 downto 0);
     signal quant_out_Y: std_logic_vector(1023 downto 0);
     signal quant_Cb_out: std_logic_vector(1023 downto 0);
     signal quant_Cr_out: std_logic_vector(1023 downto 0);
     signal quant_finished: std_logic;
+
+    signal Y_short : std_logic_vector(1023 downto 0);
+    signal Cb_short : std_logic_vector(1023 downto 0);
+    signal Cr_short : std_logic_vector(1023 downto 0);
 
     signal zigzag_in : std_logic_vector(1023 downto 0);
     signal zigzag_out : std_logic_vector(1023 downto 0);
@@ -146,7 +151,7 @@ architecture wrapper_arch of wrapper is
     begin
 
         comp_conversion : component conversion
-            generic map(scale => 8, fixed_point_length => 16, input_width => 8 )
+            generic map(scale => 16, fixed_point_length => 32, input_width => 8 )
             port map(
                 clk => clk,
                 start => convertStart,
@@ -160,7 +165,7 @@ architecture wrapper_arch of wrapper is
             );
 
         comp_dct : component dct8x8_chen_2d 
-            generic map(IN_W => 16, CONST_W => 5)
+            generic map(IN_W => 32, CONST_W => 16)
             port map(
                 clk => clk,
                 rst_n => rst_n,
@@ -214,11 +219,13 @@ architecture wrapper_arch of wrapper is
                 case currentState is    
                     when idle =>
                         index := 0;
+                        --Y <= temp_Y_in;--DEBUGGING
                         dct_state <= Y_state_send;
                         finished <= '0';
                         state := 0;
                         if start = '1' then
                             currentState <= RGBtoYCbCr;
+                            --currentState <= dct;--Togheter with temp_Y_in for debugging.
                         end if;
 
                     when RGBtoYCbCr => 
@@ -231,9 +238,9 @@ architecture wrapper_arch of wrapper is
                         elsif state = 1 then
                             convertStart <= '0';
                             if convertDone = '1' then
-                                Y(16*(index+1)-1 downto 16*(index)) <= output_Y;
-                                Cb(16*(index+1)-1 downto 16*(index)) <= output_Cb;
-                                Cr(16*(index+1)-1 downto 16*(index)) <= output_Cr;     
+                                Y_long(32*(index+1)-1 downto 32*(index)) <= output_Y;
+                                Cb_long(32*(index+1)-1 downto 32*(index)) <= output_Cb;
+                                Cr_long(32*(index+1)-1 downto 32*(index)) <= output_Cr;     
                                 index := index + 1;
                                 state := 0;   
                             end if;
@@ -247,8 +254,8 @@ architecture wrapper_arch of wrapper is
                     when dct => 
                         case dct_state is
                             when Y_state_send =>
-                                conversion_Y_out <= Y; -- DEBUGGING
-                                in_data_dct <= Y;
+                                conversion_Y_out <= Y_long; -- DEBUGGING
+                                in_data_dct <= Y_long;
                                 in_valid_dct <= '1';         
                                 if in_ready_dct = '1' then       
                                    dct_state <= Y_state_wait;
@@ -259,12 +266,12 @@ architecture wrapper_arch of wrapper is
                                 out_ready_dct <= '1';
                                 if out_valid_dct = '1' then
                                     out_ready_dct <= '0';
-                                    Y <= out_data_dct;
+                                    Y_long <= out_data_dct;
                                     dct_state <= Cb_state_send;
                                 end if;
 
                             when Cb_state_send =>
-                                in_data_dct <= Cb;
+                                in_data_dct <= Cb_long;
                                 in_valid_dct <= '1';
                                 if in_ready_dct = '1' then       
                                    dct_state <= Cb_state_wait;
@@ -275,12 +282,12 @@ architecture wrapper_arch of wrapper is
                                 out_ready_dct <= '1';
                                 if out_valid_dct = '1' then
                                     out_ready_dct <= '0';
-                                    Cb <= out_data_dct;
+                                    Cb_long <= out_data_dct;
                                     dct_state <= Cr_state_send;
                                 end if;
 
                             when Cr_state_send =>
-                                in_data_dct <= Cr;
+                                in_data_dct <= Cr_long;
                                 in_valid_dct <= '1';
                                 if in_ready_dct = '1' then       
                                    dct_state <= Cr_state_wait;
@@ -291,10 +298,10 @@ architecture wrapper_arch of wrapper is
                                 out_ready_dct <= '1';
                                 if out_valid_dct = '1' then
                                     out_ready_dct <= '0';
-                                    Cr <= out_data_dct;
+                                    Cr_long <= out_data_dct;
                                     index := 0;
                                     currentState <= quant_load;
-                                    dct_Y_out <= Y; -- DEBUGGING
+                                    dct_Y_out <= Y_long; -- DEBUGGING
                                 end if;
                                 
                             when others =>
@@ -303,42 +310,52 @@ architecture wrapper_arch of wrapper is
                         end case;
 
                     when quant_load =>
-                        quant_Y_in <= Y;
-                        quant_Cb_in <= Cb;
-                        quant_Cr_in <= Cr;
+                        quant_Y_in <= Y_long;
+                        quant_Cb_in <= Cb_long;
+                        quant_Cr_in <= Cr_long;
                         quant_start <= '1';
                         currentState <= quant_read;
                             
                     when quant_read =>
                         quant_start <= '0';
                         if quant_finished = '1' then    
-                            Y <= quant_out_Y;    
-                            Cb <= quant_Cb_out;
-                            Cr <= quant_Cr_out;
+                            Y_short <= quant_out_Y;    
+                            Cb_short <= quant_Cb_out;
+                            Cr_short <= quant_Cr_out;
                             currentState <= zigzag;
                             quant_Y_out <= quant_out_Y; -- DEBUGGING
                         end if;
                         
                     when zigzag =>
                         if state = 1 then
-                            zigzag_in <= Y;
+                            zigzag_in <= Y_short;
+
                         elsif state = 3 then
-                            Y <= zigzag_out;
-                            zigzag_in <= Cb;
-                        elsif state = 5 then
-                            zigzag_Y_out <= Y; -- DEBUGGING
-                            Cb <= zigzag_out;
-                            zigzag_in <= Cr;
+                            Y_short <= zigzag_out;
+                            zigzag_Y_out <= zigzag_out; -- DEBUGGING
+
+                        elsif state = 4 then
+                            zigzag_in <= Cb_short;
+
+                        elsif state = 6 then
+                            Cb_short <= zigzag_out;
+
                         elsif state = 7 then
-                            Cr <= zigzag_out;
+                            zigzag_in <= Cr_short;
+
+                        elsif state = 9 then
+                            Cr_Short <= zigzag_out;
+
+                        elsif state = 10 then
                             currentState <= huff_load;         
+
                         end if;
                         state := state + 1;
                     
                     when huff_load =>
-                        huff_Y <= Y;                           
-                        huff_Cb <= Cb;
-                        huff_Cr <= Cr;
+                        huff_Y <= Y_short;                           
+                        huff_Cb <= Cb_short;
+                        huff_Cr <= Cr_short;
                         index := 0;
                         currentState <= huff_read;
 
