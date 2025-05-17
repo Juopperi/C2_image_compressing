@@ -4,7 +4,8 @@ Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 Running: C:/Xilinx/Vivado/2024.2/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot fwrit_main_tb_behav xil_defaultlib.fwrit_main_tb -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
-WARNING: [VRFC 10-1537] value 4 is out of target constraint range 0 to 3 [C:/Users/vmeli/Documents/GitHub/C2_image_compressing/saperate_modules/file_writing/fwrit_main.vhd:259]
+WARNING: [VRFC 10-1537] value 4 is out of target constraint range 0 to 3 [C:/Users/vmeli/Documents/GitHub/C2_image_compressing/saperate_modules/file_writing/fwrit_main.vhd:242]
+WARNING: [VRFC 10-1537] value 4 is out of target constraint range 0 to 3 [C:/Users/vmeli/Documents/GitHub/C2_image_compressing/saperate_modules/file_writing/fwrit_main.vhd:249]
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis

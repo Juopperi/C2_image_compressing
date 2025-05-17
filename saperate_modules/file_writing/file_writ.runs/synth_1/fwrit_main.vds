@@ -1,0 +1,48 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:35:27 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Sat May 17 20:55:19 2025
+# Process ID         : 1388
+# Current directory  : C:/Users/vmeli/Documents/GitHub/C2_image_compressing/saperate_modules/file_writing/file_writ.runs/synth_1
+# Command line       : vivado.exe -log fwrit_main.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source fwrit_main.tcl
+# Log file           : C:/Users/vmeli/Documents/GitHub/C2_image_compressing/saperate_modules/file_writing/file_writ.runs/synth_1/fwrit_main.vds
+# Journal file       : C:/Users/vmeli/Documents/GitHub/C2_image_compressing/saperate_modules/file_writing/file_writ.runs/synth_1\vivado.jou
+# Running On         : DESKTOP-BMP3654
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 19045
+# Processor Detail   : Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
+# CPU Frequency      : 2592 MHz
+# CPU Physical cores : 6
+# CPU Logical cores  : 12
+# Host memory        : 17012 MB
+# Swap memory        : 7213 MB
+# Total Virtual      : 24226 MB
+# Available Virtual  : 4449 MB
+#-----------------------------------------------------------
+source fwrit_main.tcl -notrace
+create_project: Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 416.824 ; gain = 99.098
+Command: synth_design -top fwrit_main -part xc7z020clg400-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 17288
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 897.301 ; gain = 477.535
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'fwrit_main' [C:/Users/vmeli/Documents/GitHub/C2_image_compressing/saperate_modules/file_writing/fwrit_main.vhd:16]
+WARNING: [Synth 8-614] signal 'eoi_done' is read in the process but is not in the sensitivity list [C:/Users/vmeli/Documents/GitHub/C2_image_compressing/saperate_modules/file_writing/fwrit_main.vhd:121]
+ERROR: [Synth 8-403] loop limit (65536) exceeded [C:/Users/vmeli/Documents/GitHub/C2_image_compressing/saperate_modules/file_writing/fwrit_main.vhd:184]
+ERROR: [Synth 8-285] failed synthesizing module 'fwrit_main' [C:/Users/vmeli/Documents/GitHub/C2_image_compressing/saperate_modules/file_writing/fwrit_main.vhd:16]
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:13 ; elapsed = 00:00:14 . Memory (MB): peak = 1111.012 ; gain = 691.246
+---------------------------------------------------------------------------------
+synthesize failed
+INFO: [Common 17-83] Releasing license: Synthesis
+6 Infos, 1 Warnings, 0 Critical Warnings and 3 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Vivado Synthesis failed
+INFO: [Common 17-206] Exiting Vivado at Sat May 17 20:55:57 2025...

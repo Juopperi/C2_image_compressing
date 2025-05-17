@@ -18,7 +18,6 @@ entity wrapper is
         zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
         stored_huffman : out std_logic_vector(1100 downto 0);
         fw_data: out std_logic_vector(31 downto 0);
-        fw_keep: out std_logic_vector (3 downto 0))
         finished : out std_logic
     );
 end wrapper;
@@ -104,8 +103,8 @@ architecture wrapper_arch of wrapper is
            dataready: out std_logic; --signals Huffman block that we are ready to receive data
            axi_valid: out std_logic;
            axi_ready: in std_logic;
-           axi_data: out std_logic_vector(31 downto 0);
-           axi_keep: out std_logic_vector (3 downto 0));
+           axi_data: out std_logic_vector(31 downto 0)
+        );
     end component fwrit_main;
 
     type t_State is (idle,RGBtoYCbCr,dct,quant_load,quant_read,zigzag,huff_load,huff_read,done);
@@ -223,8 +222,7 @@ architecture wrapper_arch of wrapper is
                 dataready => huff_start,
                 axi_valid => null,
                 axi_ready => null,
-                axi_data => fw_data,
-                axi_keep => fw_keep
+                axi_data => fw_data
             )
 
         proc : process(clk)

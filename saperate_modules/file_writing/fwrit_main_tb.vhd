@@ -64,6 +64,7 @@ begin
   
   stim_process: process
   begin
+        done <='0';
         wait for 50 ns;
         rst <='1';
         wait for 10 ns;
@@ -72,7 +73,7 @@ begin
         start <='1';
         wait for 10 ns;
         start <='0';
-        wait for 1995 ns;
+        wait for 2995 ns;
 
         done <='1';
         wait for 10 ns;
