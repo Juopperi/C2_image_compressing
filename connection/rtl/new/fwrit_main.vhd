@@ -134,7 +134,7 @@ begin
                 end if;
             when waiting =>  
                 if datavalid='1' then
-                    next_state <= data;
+                    next_state <= fistdata;
                 end if;
             when data =>    
                 if done='1' then
@@ -153,126 +153,126 @@ begin
         variable entropy_el : integer range 0 to 31 := 7;
     begin
         if rising_edge(clk) then
-            if current_state = idle then
-                datareg <= (others =>'0');
-                valid <= '0';
-                eoi_done <= '0';
-            elsif current_state = header then
-                if array_el=160 then    
-                    datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & height(15 downto 8);
-                    valid<='1';
-                elsif array_el=164 then
-                    datareg <= height(7 downto 0) & width(15 downto 8) & width(7 downto 0) & img_info(171);
-                    valid<='1';
-                else
-                    datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & img_info(array_el+3);
-                    if array_el=620 then
-                        valid <= '0';
+            case current state is
+                when idle =>
+                    datareg <= (others =>'0');
+                    valid <= '0';
+                    eoi_done <= '0';
+                when header =>
+                    if array_el=160 then    
+                        datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & height(15 downto 8);
+                        valid<='1';
+                    elsif array_el=164 then
+                        datareg <= height(7 downto 0) & width(15 downto 8) & width(7 downto 0) & img_info(171);
+                        valid<='1';
                     else
-                        valid <= '1';
-                    end if;
-                end if;
-                array_el <= array_el + 4;
-            elsif current_state = waiting then
-                entropy_el := 7;
-                byte_count := 0;
-                valid <= '0';
-            elsif current_state = data then
-                if datavalid='1' then
-                    ent_buf(entropy_el) <= in_bit;
-                    if entropy_el = 0 then
-                        if array_el=624 then
-                            datareg <= img_info(620) & img_info(621) & img_info(622) & ent_buf; 
-                            array_el <= 0;
-                        else 
-                            if due_ones='1' then
-                                datareg(8*byte_count+7 downto 8*byte_count) <= x"00";
-                                due_ones <= '0';
-                                byte_count := byte_count-1;    
-                            end if;
-                            datareg(8*byte_count+7 downto 8*byte_count) <= ent_buf;
-                            if ent_buf=x"FF" then
-                                if byte_count=0 then
-                                    due_ones <= '1';
-                                else
-                                    byte_count := byte_count - 1;
-                                    datareg(8*byte_count+7 downto 8*byte_count) <= x"00";               
-                                end if;
-                            end if;
-                            if byte_count=0 then
-                                byte_count := 3;
-                            else
-                                byte_count := byte_count - 1;
-                            end if;
+                        datareg <= img_info(array_el) & img_info(array_el+1) & img_info(array_el+2) & img_info(array_el+3);
+                        if array_el=620 then
+                            valid <= '0';
+                        else
+                            valid <= '1';
                         end if;
-                        entropy_el := 7;                            
-                    else 
-                        if done='1' then
-                            if entropy_el < 7 then
-                                for i in entropy_el downto 0 loop
-                                    ent_buf(i) <= '1';
-                                end loop;
+                    end if;
+                    array_el <= array_el + 4;
+                when waiting =>
+                    entropy_el := 7;
+                    byte_count := 0;
+                    valid <= '0';   
+                when data =>
+                    if datavalid='1' then
+                        ent_buf(entropy_el) <= in_bit;
+                        if entropy_el = 0 then
+                            if array_el=624 then
+                                array_el <= array_el+4;
+                            elsif array_el=628 then
+                                datareg <= img_info(620) & img_info(621) & img_info(622) & ent_buf; 
+                                array_el <= '0';
+                            else
+                                if due_ones='1' then
+                                    datareg(8*byte_count+7 downto 8*byte_count) <= x"00";
+                                    due_ones <= '0';
+                                    byte_count := byte_count-1;    
+                                end if;
                                 datareg(8*byte_count+7 downto 8*byte_count) <= ent_buf;
-                            end if;
-                            case byte_count is
-                                when 0 =>
-                                    if ent_buf = x"FF" then
-                                        eoi_bytes <= 3;
+                                if ent_buf=x"FF" then
+                                    if byte_count=0 then
                                         due_ones <= '1';
                                     else
-                                        eoi_bytes <= 0;
+                                        byte_count := byte_count - 1;
+                                        datareg(8*byte_count+7 downto 8*byte_count) <= x"00";               
                                     end if;
-                                when 1 =>    
-                                    if ent_buf = x"FF" then
-                                        datareg(8*byte_count-1 downto 8*byte_count-8) <= x"00";
-                                        eoi_bytes <= 0;
-                                    else
-                                        eoi_bytes <= 1;
-                                    end if;
-                                when 2 =>
-                                    if ent_buf = x"FF" then
-                                        datareg(8*byte_count-1 downto 8*byte_count-8) <= x"00";
-                                        eoi_bytes <= 1;
-                                    else
-                                        eoi_bytes <= 2;
-                                    end if;
-                                when others =>
-                                    null; --due ones                       
-                            end case ;  
-                        end if;
-                        entropy_el := entropy_el - 1;  
-                    end if;
-                    valid <= '1';
-                else
-                    valid <= '0';
-                end if;
-            elsif current_state = eoi then
-                case eoi_bytes is
-                    when 0 =>
-                        datareg(7 downto 0) <= img_info(623);
-                        eoi_bytes <= 4;
-                    when 1 =>
-                        datareg (15 downto 0) <= img_info(623) & img_info(624);
-                        eoi_done <= '1';
-                    when 2 =>
-                        datareg (23 downto 0) <= img_info(623) & img_info(624) & x"00";
-                        eoi_done <= '1';
-                    when 3 =>
-                        if due_ones = '1' then
-                            due_ones <= '0';
-                            datareg <= x"00" & img_info(623) & img_info(624) & x"00";
+                                end if;
+                                if byte_count=0 then
+                                    byte_count := 3;
+                                else
+                                    byte_count := byte_count - 1;
+                                end if;
+                            end if;
+                            entropy_el := 7;                            
                         else
-                            datareg <= img_info(623) & img_info(624) & x"0000";
+                            if done='1' then
+                                if entropy_el < 7 then
+                                    for i in entropy_el downto 0 loop
+                                        ent_buf(i) <= '1';
+                                    end loop;
+                                    datareg(8*byte_count+7 downto 8*byte_count) <= ent_buf;
+                                end if;
+                                case byte_count is
+                                    when 0 =>
+                                        if ent_buf = x"FF" then
+                                            eoi_bytes <= 3;
+                                            due_ones <= '1';
+                                        else
+                                            eoi_bytes <= 0;
+                                        end if;
+                                    when 1 =>    
+                                        if ent_buf = x"FF" then
+                                            datareg(8*byte_count-1 downto 8*byte_count-8) <= x"00";
+                                            eoi_bytes <= 0;
+                                        else
+                                            eoi_bytes <= 1;
+                                        end if;
+                                    when 2 =>
+                                        if ent_buf = x"FF" then
+                                            datareg(8*byte_count-1 downto 8*byte_count-8) <= x"00";
+                                            eoi_bytes <= 1;
+                                        else
+                                            eoi_bytes <= 2;
+                                        end if;
+                                    when others =>
+                                        null; --due ones                       
+                                end case ;  
+                            end if;
+                            entropy_el := entropy_el - 1;  
                         end if;
-                        eoi_done <= '1';
-                    when others =>
-                        datareg <= img_info(624) & x"000000";
-                        eoi_done <= '1';
-                end case;
-                valid <= '1';
-            else
-                valid<='0';
-            end if;
+                        valid <= '1';
+                when eoi =>
+                    case eoi_bytes is
+                        when 0 =>
+                            datareg(7 downto 0) <= img_info(623);
+                            eoi_bytes <= 4;
+                        when 1 =>
+                            datareg (15 downto 0) <= img_info(623) & img_info(624);
+                            eoi_done <= '1';
+                        when 2 =>
+                            datareg (23 downto 0) <= img_info(623) & img_info(624) & x"00";
+                            eoi_done <= '1';
+                        when 3 =>
+                            if due_ones = '1' then
+                                due_ones <= '0';
+                                datareg <= x"00" & img_info(623) & img_info(624) & x"00";
+                            else
+                                datareg <= img_info(623) & img_info(624) & x"0000";
+                            end if;
+                            eoi_done <= '1';
+                        when others =>
+                            datareg <= img_info(624) & x"000000";
+                            eoi_done <= '1';
+                    end case;
+                    valid <= '1';
+                when others =>
+                    valid = '0';
+            end case;
         end if;
     end process;
     
