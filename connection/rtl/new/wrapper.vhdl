@@ -17,7 +17,9 @@ entity wrapper is
         dct_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
         quant_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
         zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        stored_huffman : out std_logic_vector(1100 downto 0);
+        zigzag_Cb_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        zigzag_Cr_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        stored_huffman : out std_logic_vector(300 downto 0);
         finished : out std_logic
     );
 end wrapper;
@@ -322,7 +324,7 @@ architecture wrapper_arch of wrapper is
                             Y_short <= quant_out_Y;    
                             Cb_short <= quant_Cb_out;
                             Cr_short <= quant_Cr_out;
-                            currentState <= zigzag;
+                            currentState <=zigzag;
                             quant_Y_out <= quant_out_Y; -- DEBUGGING
                         end if;
                         
@@ -339,12 +341,14 @@ architecture wrapper_arch of wrapper is
 
                         elsif state = 6 then
                             Cb_short <= zigzag_out;
+                            zigzag_Cb_out <= zigzag_out; -- DEBUGGING
 
                         elsif state = 7 then
                             zigzag_in <= Cr_short;
 
                         elsif state = 9 then
                             Cr_Short <= zigzag_out;
+                            zigzag_Cr_out <= zigzag_out; -- DEBUGGING
 
                         elsif state = 10 then
                             currentState <= huff_load;         
@@ -356,7 +360,7 @@ architecture wrapper_arch of wrapper is
                         huff_Y <= Y_short;                           
                         huff_Cb <= Cb_short;
                         huff_Cr <= Cr_short;
-                        index := 0;
+                        index := 300;
                         huff_start <= '1';
                         currentState <= huff_read;
 
@@ -368,7 +372,7 @@ architecture wrapper_arch of wrapper is
 
                         if huff_data_valid = '1' then
                             stored_huffman(index) <= huff_data_out;
-                            index := index +1;
+                            index := index-1;
                         end if;
             
                     when done =>
