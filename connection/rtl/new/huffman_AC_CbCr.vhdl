@@ -6,7 +6,7 @@ entity huffman_AC_CbCr is
     port(   
         clk : in std_logic;
         start : in std_logic;
-        input_integer : in std_logic_vector(9 downto 0);
+        input_integer : in std_logic_vector(7 downto 0);
         zeros : in integer;
         output_bit: out std_logic;
         done: out std_logic
@@ -20,7 +20,7 @@ begin
 
 code_proc : process (clk)    
     variable output_reg : std_logic_vector(15 downto 0);
-    variable input_reg : std_logic_vector(9 downto 0);
+    variable input_reg : std_logic_vector(7 downto 0);
     variable size : integer range 0 to 10 := 0;
     variable length : integer range -1 to 16 := 0; 
 begin                 
@@ -34,7 +34,7 @@ if rising_edge(clk) then
             end if;
             
         when count_req_bits =>
-            if input_integer(9) = '1' then
+            if input_integer(7) = '1' then
               input_reg := std_logic_vector(-signed(input_integer));
             else 
                 input_reg := input_integer; 
@@ -625,7 +625,7 @@ if rising_edge(clk) then
                 output_bit <= output_reg(length-1);
                 length := length - 1;
             elsif size > 0 then
-                if input_integer(9) = '1' then
+                if input_integer(7) = '1' then
                     output_bit <= not(input_reg(size-1));
                     size := size - 1;
                 else
