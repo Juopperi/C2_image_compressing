@@ -383,7 +383,7 @@ architecture wrapper_arch of wrapper is
                         huff_Y <= Y_short;                           
                         huff_Cb <= Cb_short;
                         huff_Cr <= Cr_short;
-                        index := 300; --DEBUGGING
+                        --index := 300; --DEBUGGING
                         if fwrite_dataready = '1' then
                             huff_start <= '1';
                             currentState <= huff_read;
