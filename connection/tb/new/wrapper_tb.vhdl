@@ -21,10 +21,11 @@ architecture arch of wrapper_tb is
         --conversion_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
         --dct_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
         --quant_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        zigzag_Cb_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        zigzag_Cr_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        stored_huffman : out std_logic_vector(300 downto 0);
+        --zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        --zigzag_Cb_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        --zigzag_Cr_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        --stored_huffman : out std_logic_vector(300 downto 0);
+        fw_data : out std_logic_vector(31 downto 0);
         finished : out std_logic
     );
     end component wrapper;
@@ -43,6 +44,7 @@ architecture arch of wrapper_tb is
     signal zigzag_Cb_out : std_logic_vector(1023 downto 0); --Only for debugging
     signal zigzag_Cr_out : std_logic_vector(1023 downto 0); --Only for debugging
     signal stored_huffman : std_logic_vector(300 downto 0);
+    signal fw_data: std_logic_vector(31 downto 0);
     signal finished : std_logic;
 
     type word_array is array (0 to 63) of std_logic_vector(7 downto 0);
@@ -80,10 +82,11 @@ begin
             --conversion_Y_out => conversion_Y_out,
             --dct_Y_out => dct_Y_out,
             --quant_Y_out => quant_Y_out,
-            zigzag_Y_out => zigzag_Y_out,
-            zigzag_Cb_out => zigzag_Cb_out,
-            zigzag_Cr_out => zigzag_Cr_out,
-            stored_huffman => stored_huffman,
+            --zigzag_Y_out => zigzag_Y_out,
+            --zigzag_Cb_out => zigzag_Cb_out,
+            --zigzag_Cr_out => zigzag_Cr_out,
+            --stored_huffman => stored_huffman,
+            fw_data => fw_data,
             finished => finished
         );
         
@@ -122,6 +125,8 @@ begin
         index := index + 1;
         if(index = 64) then
             start <= '1';
+            wait for 10 ns;
+            start <= '0';
             wait;
         end if;
     end process load;
@@ -205,55 +210,55 @@ begin
         --wait for 10 ns;
     --end process writeData_quant;
 
-    writeData_zigzag : process 
-      file output_file : text open write_mode is "zigzag_out.txt";
-      variable output_line : line;
-      variable index : integer := 0;
-      variable state : integer := 0;
-      variable rowIndex : integer := 0;
-      variable temp : std_logic_vector(7 downto 0);
-    begin 
-        if finished = '1' then
-            if state = 1 then
-                temp := zigzag_Y_out(16*(index+1)-1 downto (16*index)+8); 
-            elsif state = 2 then 
-                temp := zigzag_Cb_out(16*(index+1)-1 downto (16*index)+8); 
-            elsif state = 3 then 
-                temp := zigzag_Cr_out(16*(index+1)-1 downto (16*index)+8); 
-            end if;
+--    writeData_zigzag : process 
+      --file output_file : text open write_mode is "zigzag_out.txt";
+      --variable output_line : line;
+      --variable index : integer := 0;
+      --variable state : integer := 0;
+      --variable rowIndex : integer := 0;
+      --variable temp : std_logic_vector(7 downto 0);
+    --begin 
+        --if finished = '1' then
+            --if state = 1 then
+                --temp := zigzag_Y_out(16*(index+1)-1 downto (16*index)+8); 
+            --elsif state = 2 then 
+                --temp := zigzag_Cb_out(16*(index+1)-1 downto (16*index)+8); 
+            --elsif state = 3 then 
+                --temp := zigzag_Cr_out(16*(index+1)-1 downto (16*index)+8); 
+            --end if;
 
-            write(output_line,to_integer(signed(temp)));
-            write(output_line,string'(" "));
-            rowIndex := rowIndex + 1;
-            if rowIndex = 8 then
-                writeline(output_file,output_line);
-                rowIndex := 0;
-            end if;
-            index := index + 1;
-            if index = 64 then
-                write(output_line,string'(" "));
-                writeline(output_file,output_line);
-                state := state + 1;
-                index := 0;
-                if state = 4 then
-                    wait;
-                end if;
-            end if;
-        end if;
-        wait for 10 ns;
-    end process writeData_zigzag;
+            --write(output_line,to_integer(signed(temp)));
+            --write(output_line,string'(" "));
+            --rowIndex := rowIndex + 1;
+            --if rowIndex = 8 then
+                --writeline(output_file,output_line);
+                --rowIndex := 0;
+            --end if;
+            --index := index + 1;
+            --if index = 64 then
+                --write(output_line,string'(" "));
+                --writeline(output_file,output_line);
+                --state := state + 1;
+                --index := 0;
+                --if state = 4 then
+                    --wait;
+                --end if;
+            --end if;
+        --end if;
+        --wait for 10 ns;
+    --end process writeData_zigzag;
 
-    writeData_huff : process 
-      file output_file : text open write_mode is "huffman_out.txt";
-      variable output_line : line;
-    begin 
-        if finished = '1' then
-            write(output_line,stored_huffman);
-            writeline(output_file,output_line);
-            wait;
-         end if;
-         wait for 10 ns;
-    end process writeData_huff;
+    --writeData_huff : process 
+      --file output_file : text open write_mode is "huffman_out.txt";
+      --variable output_line : line;
+    --begin 
+        --if finished = '1' then
+            --write(output_line,stored_huffman);
+            --writeline(output_file,output_line);
+            --wait;
+         --end if;
+         --wait for 10 ns;
+    --end process writeData_huff;
     
     
 end architecture;

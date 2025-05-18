@@ -15,10 +15,10 @@ entity wrapper is
         --conversion_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
         --dct_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
         --quant_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        zigzag_Cb_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        zigzag_Cr_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        stored_huffman : out std_logic_vector(300 downto 0); --Onlt for debugging
+        --zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        --zigzag_Cb_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        --zigzag_Cr_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        --stored_huffman : out std_logic_vector(300 downto 0); --Onlt for debugging
         fw_data : out std_logic_vector(31 downto 0);
         finished : out std_logic
     );
@@ -160,8 +160,7 @@ architecture wrapper_arch of wrapper is
     signal huff_Cb : std_logic_vector(1023 downto 0);
     signal huff_Cr : std_logic_vector(1023 downto 0);
 
-    signal fwrite_done : std_logic;
-    signal fwrite_dataready : std_logic;
+    signal fwrite_dataready: std_logic;
     signal axi_valid : std_logic;
     signal axi_ready : std_logic;
 
@@ -233,11 +232,11 @@ architecture wrapper_arch of wrapper is
                 height => "0000000000001000", --8
                 width => "0000000000001000", --8
                 clk => clk,
-                rst => rst_n,
-                start => convertStart,
+                rst => not(rst_n),
+                start => start,
                 in_bit => huff_data_out,
                 datavalid => huff_data_valid,
-                done => fwrite_done,
+                done => huff_finished,
                 dataready => fwrite_dataready,
                 axi_valid => axi_valid,
                 axi_ready => axi_ready,
@@ -384,9 +383,11 @@ architecture wrapper_arch of wrapper is
                         huff_Y <= Y_short;                           
                         huff_Cb <= Cb_short;
                         huff_Cr <= Cr_short;
-                        index := 300;
-                        huff_start <= '1';
-                        currentState <= huff_read;
+                        index := 300; --DEBUGGING
+                        if fwrite_dataready = '1' then
+                            huff_start <= '1';
+                            currentState <= huff_read;
+                        end if;
 
                     when huff_read => 
                         huff_start <= '0';
@@ -394,13 +395,14 @@ architecture wrapper_arch of wrapper is
                             currentState <= done;
                         end if;
 
-                        if huff_data_valid = '1' then
-                            stored_huffman(index) <= huff_data_out;
-                            index := index-1;
-                        end if;
+                        --if huff_data_valid = '1' then
+                            --stored_huffman(index) <= huff_data_out;
+                            --index := index-1;
+                        --end if;
             
                     when done =>
                         finished <= '1';
+                        currentState <= idle;
                         
                     when others => 
                 end case;
