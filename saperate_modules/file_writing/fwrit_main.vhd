@@ -148,7 +148,7 @@ begin
     writing_proc: process(clk)
         variable datareg: std_logic_vector(31 downto 0);
         variable entropy_el : integer range 0 to 7 := 7;
-        variable byte_count : integer range 0 to 3;
+        variable byte_count : integer range 0 to 4;
     begin
         if rising_edge(clk) then
             case current_state is
@@ -184,8 +184,6 @@ begin
                         for i in 0 to 7 loop
                             if i <= entropy_el then
                                 ent_buf(i) <= '1';
-                            else
-                                exit;
                             end if;
                         end loop;
                         datareg(8*byte_count+7 downto 8*byte_count) := ent_buf;

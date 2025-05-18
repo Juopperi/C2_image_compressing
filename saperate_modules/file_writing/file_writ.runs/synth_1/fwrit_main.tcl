@@ -56,7 +56,7 @@ if {$::dispatch::connected} {
 }
 
 OPTRACE "synth_1" START { ROLLUP_AUTO }
-set_param synth.incrementalSynthesisCache C:/Users/vmeli/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-9044-DESKTOP-BMP3654/incrSyn
+set_param synth.incrementalSynthesisCache C:/Users/vmeli/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-2068-DESKTOP-BMP3654/incrSyn
 set_param checkpoint.writeSynthRtdsInDcp 1
 set_msg_config -id {Synth 8-256} -limit 10000
 set_msg_config -id {Synth 8-638} -limit 10000
