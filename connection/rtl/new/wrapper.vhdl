@@ -12,14 +12,14 @@ entity wrapper is
         R : in std_logic_vector(511 downto 0);
         G : in std_logic_vector(511 downto 0);
         B : in std_logic_vector(511 downto 0);
-        temp_Y_in : in std_logic_vector(2047 downto 0); --Only for debugging
-        conversion_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
-        dct_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
-        quant_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
+        --conversion_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
+        --dct_Y_out : out std_logic_vector(2047 downto 0); --Only for debugging
+        --quant_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
         zigzag_Y_out : out std_logic_vector(1023 downto 0); --Only for debugging
         zigzag_Cb_out : out std_logic_vector(1023 downto 0); --Only for debugging
         zigzag_Cr_out : out std_logic_vector(1023 downto 0); --Only for debugging
-        stored_huffman : out std_logic_vector(300 downto 0);
+        stored_huffman : out std_logic_vector(300 downto 0); --Onlt for debugging
+        fw_data : out std_logic_vector(31 downto 0);
         finished : out std_logic
     );
 end wrapper;
@@ -101,6 +101,16 @@ architecture wrapper_arch of wrapper is
         );
     end component huff_container;
 
+    component fwrit_main is
+    Port ( height, width: in std_logic_vector (15 downto 0);
+           clk, rst, in_bit, start, datavalid, done: in std_logic;
+           dataready: out std_logic; --signals Huffman block that we are ready to receive data
+           axi_valid: out std_logic;
+           axi_ready: in std_logic;
+           axi_data: out std_logic_vector(31 downto 0)
+        );
+    end component fwrit_main;
+
     type t_State is (idle,RGBtoYCbCr,dct,quant_load,quant_read,zigzag,huff_load,huff_read,done);
     signal currentState : t_State := idle;
 
@@ -149,6 +159,11 @@ architecture wrapper_arch of wrapper is
     signal huff_Y : std_logic_vector(1023 downto 0);
     signal huff_Cb : std_logic_vector(1023 downto 0);
     signal huff_Cr : std_logic_vector(1023 downto 0);
+
+    signal fwrite_done : std_logic;
+    signal fwrite_dataready : std_logic;
+    signal axi_valid : std_logic;
+    signal axi_ready : std_logic;
 
     begin
 
@@ -213,6 +228,22 @@ architecture wrapper_arch of wrapper is
                 finished => huff_finished
             );
 
+        comp_file_writ: component fwrit_main
+            port map(
+                height => "0000000000001000", --8
+                width => "0000000000001000", --8
+                clk => clk,
+                rst => rst_n,
+                start => convertStart,
+                in_bit => huff_data_out,
+                datavalid => huff_data_valid,
+                done => fwrite_done,
+                dataready => fwrite_dataready,
+                axi_valid => axi_valid,
+                axi_ready => axi_ready,
+                axi_data => fw_data
+            );
+
         proc : process(clk)
             variable index : integer := 0;
             variable state : integer := 0;
@@ -256,7 +287,7 @@ architecture wrapper_arch of wrapper is
                     when dct => 
                         case dct_state is
                             when Y_state_send =>
-                                conversion_Y_out <= Y_long; -- DEBUGGING
+                                --conversion_Y_out <= Y_long; -- DEBUGGING
                                 in_data_dct <= Y_long;
                                 in_valid_dct <= '1';         
                                 if in_ready_dct = '1' then       
@@ -284,7 +315,7 @@ architecture wrapper_arch of wrapper is
                                 out_ready_dct <= '1';
                                 if out_valid_dct = '1' then
                                     out_ready_dct <= '0';
-                                    Cb_long <= out_data_dct;
+                                    Cb_long <= out_data_dct; 
                                     dct_state <= Cr_state_send;
                                 end if;
 
@@ -303,7 +334,7 @@ architecture wrapper_arch of wrapper is
                                     Cr_long <= out_data_dct;
                                     index := 0;
                                     currentState <= quant_load;
-                                    dct_Y_out <= Y_long; -- DEBUGGING
+                                    --dct_Y_out <= Y_long; -- DEBUGGING
                                 end if;
                                 
                             when others =>
@@ -325,7 +356,7 @@ architecture wrapper_arch of wrapper is
                             Cb_short <= quant_Cb_out;
                             Cr_short <= quant_Cr_out;
                             currentState <=zigzag;
-                            quant_Y_out <= quant_out_Y; -- DEBUGGING
+                            --quant_Y_out <= quant_out_Y; -- DEBUGGING
                         end if;
                         
                     when zigzag =>
@@ -334,25 +365,18 @@ architecture wrapper_arch of wrapper is
 
                         elsif state = 3 then
                             Y_short <= zigzag_out;
-                            zigzag_Y_out <= zigzag_out; -- DEBUGGING
-
-                        elsif state = 4 then
                             zigzag_in <= Cb_short;
+                            --zigzag_Y_out <= zigzag_out; -- DEBUGGING
 
-                        elsif state = 6 then
+                        elsif state = 5 then
                             Cb_short <= zigzag_out;
-                            zigzag_Cb_out <= zigzag_out; -- DEBUGGING
+                            zigzag_in <= Cr_short;
+                            --zigzag_Cb_out <= zigzag_out; -- DEBUGGING
 
                         elsif state = 7 then
-                            zigzag_in <= Cr_short;
-
-                        elsif state = 9 then
                             Cr_Short <= zigzag_out;
-                            zigzag_Cr_out <= zigzag_out; -- DEBUGGING
-
-                        elsif state = 10 then
                             currentState <= huff_load;         
-
+                            --zigzag_Cr_out <= zigzag_out; -- DEBUGGING
                         end if;
                         state := state + 1;
                     
