@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/synthesis_tests/int_mul_fra_proj/int_mul_fra_proj.runs/synth_1/rgb2ycbcr_dct.tcl"
+  variable script "C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/synthesis_tests/int_mul_fra_proj/int_mul_fra_proj.runs/synth_1/rgb2ycbcr_dct.tcl"
   variable category "vivado_synth"
 }
 
@@ -62,23 +62,25 @@ create_project -in_memory -part xc7z020clg484-1
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/synthesis_tests/int_mul_fra_proj/int_mul_fra_proj.cache/wt [current_project]
-set_property parent.project_path C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/synthesis_tests/int_mul_fra_proj/int_mul_fra_proj.xpr [current_project]
+set_property webtalk.parent_dir C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/synthesis_tests/int_mul_fra_proj/int_mul_fra_proj.cache/wt [current_project]
+set_property parent.project_path C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/synthesis_tests/int_mul_fra_proj/int_mul_fra_proj.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_verilog -library xil_defaultlib -sv {
-  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/dct8_chen_ts.sv
-  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/dct8x8_chen_2d.sv
-  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/lut_multiplier.sv
-  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/rgb2ycbcr_dct.sv
+  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/dct8_chen_ts.sv
+  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/dct8x8_chen_2d.sv
+  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/lut_multiplier.sv
+  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/lut_multiplier_no_dsp_quantization.sv
+  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/quantize_array.sv
+  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/rgb2ycbcr_dct.sv
 }
 read_verilog -library xil_defaultlib {
-  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/int_mul_fra.v
-  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/int_mul_fra_ycbcr.v
-  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/rgb2ycbcr_container.v
+  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/int_mul_fra.v
+  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/int_mul_fra_ycbcr.v
+  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/rgb2ycbcr_container.v
 }
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being

@@ -5,7 +5,7 @@ module quantize_array #(
     input  wire                   rst_n,        // 复位信号，用于状态控制
     input  wire                   start,        // 开始处理信号
     input  wire [32*64-1:0]       pixels,       // 输入像素数组 (64 x 32-bit Q16.16)
-    output reg  [16*64-1:0]       q_result,     // 输出量化结果数组（仅保留高16位）
+    output reg  [8*64-1:0]        q_result,     // 输出量化结果数组（仅保留高16位中的低8位）
     output reg                    done          // 处理完成信号
 );
 
@@ -102,7 +102,7 @@ initial begin
     
     
     // 临时结果存储
-    reg [15:0] result_buffer [0:63];
+    reg [7:0] result_buffer [0:63];
     
     // 创建8个乘法器输入和输出
     reg [31:0] pixel_in [0:7];
@@ -129,7 +129,7 @@ initial begin
     integer j;
     always @(*) begin
         for (j = 0; j < 64; j = j + 1) begin
-            q_result[16*j +: 16] = result_buffer[j];
+            q_result[8*j +: 8] = result_buffer[j];
         end
     end
     
@@ -161,7 +161,7 @@ initial begin
             
             // 初始化结果缓冲区
             for (j = 0; j < 64; j = j + 1) begin
-                result_buffer[j] <= 16'd0;
+                result_buffer[j] <= 8'd0;
             end
         end else begin
             case (state)
@@ -185,8 +185,8 @@ initial begin
                     // 保存上一个周期的乘法结果（如果不是第一个周期）
                     if (cycle_cnt > 0) begin
                         for (j = 0; j < 8; j = j + 1) begin
-                            // 仅保存乘法结果的高16位
-                            result_buffer[addr-8+j] <= mul_out[j][31:16];
+                            // 仅保存乘法结果的高16位中的低8位
+                            result_buffer[addr-8+j] <= mul_out[j][23:16]; 
                         end
                     end
                     
@@ -197,7 +197,7 @@ initial begin
                 DONE: begin
                     // 保存最后一批乘法结果
                     for (j = 0; j < 8; j = j + 1) begin
-                        result_buffer[addr-8+j] <= mul_out[j][31:16];
+                        result_buffer[addr-8+j] <= mul_out[j][23:16];
                     end
                     done <= 1'b1;
                 end

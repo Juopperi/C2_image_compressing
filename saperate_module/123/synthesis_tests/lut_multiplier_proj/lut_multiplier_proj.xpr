@@ -4,10 +4,10 @@
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.                   -->
 <!-- Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.   -->
 
-<Project Product="Vivado" Version="7" Minor="68" Path="C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/synthesis_tests/lut_multiplier_proj/lut_multiplier_proj.xpr">
+<Project Product="Vivado" Version="7" Minor="68" Path="C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/synthesis_tests/lut_multiplier_proj/lut_multiplier_proj.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="aeae2ec3d0a34e87ba6b896c1aa62d0b"/>
+    <Option Name="Id" Val="16943e7d1683446794f5670c579992d3"/>
     <Option Name="Part" Val="xc7z020clg484-1"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="CompiledLibDirXSim" Val=""/>
@@ -128,6 +128,22 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../../rtl/dct8x8_chen_2d.sv">
+        <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../rtl/lut_multiplier_no_dsp_quantization.sv">
+        <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../rtl/quantize_array.sv">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
-| Date         : Wed May 14 19:46:34 2025
+| Date         : Thu May 22 16:02:26 2025
 | Host         : wenruoxu running 64-bit major release  (build 9200)
 | Command      : report_utilization -file rgb2ycbcr_dct_utilization_synth.rpt -pb rgb2ycbcr_dct_utilization_synth.pb
 | Design       : rgb2ycbcr_dct
@@ -31,13 +31,13 @@ Table of Contents
 +-------------------------+-------+-------+------------+-----------+-------+
 |        Site Type        |  Used | Fixed | Prohibited | Available | Util% |
 +-------------------------+-------+-------+------------+-----------+-------+
-| Slice LUTs*             |  9239 |     0 |          0 |     53200 | 17.37 |
-|   LUT as Logic          |  9239 |     0 |          0 |     53200 | 17.37 |
+| Slice LUTs*             | 10156 |     0 |          0 |     53200 | 19.09 |
+|   LUT as Logic          | 10156 |     0 |          0 |     53200 | 19.09 |
 |   LUT as Memory         |     0 |     0 |          0 |     17400 |  0.00 |
-| Slice Registers         | 11777 |     0 |          0 |    106400 | 11.07 |
-|   Register as Flip Flop | 11777 |     0 |          0 |    106400 | 11.07 |
+| Slice Registers         | 10183 |     0 |          0 |    106400 |  9.57 |
+|   Register as Flip Flop | 10183 |     0 |          0 |    106400 |  9.57 |
 |   Register as Latch     |     0 |     0 |          0 |    106400 |  0.00 |
-| F7 Muxes                |   216 |     0 |          0 |     26600 |  0.81 |
+| F7 Muxes                |   280 |     0 |          0 |     26600 |  1.05 |
 | F8 Muxes                |     0 |     0 |          0 |     13300 |  0.00 |
 +-------------------------+-------+-------+------------+-----------+-------+
 * Warning! The Final LUT count, after physical optimizations and full implementation, is typically lower. Run opt_design after synthesis, if not already completed, for a more realistic count.
@@ -57,10 +57,10 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 | 0     |            _ |         Set |            - |
 | 0     |            _ |       Reset |            - |
 | 0     |          Yes |           - |            - |
-| 2     |          Yes |           - |          Set |
-| 5119  |          Yes |           - |        Reset |
-| 256   |          Yes |         Set |            - |
-| 6400  |          Yes |       Reset |            - |
+| 4     |          Yes |           - |          Set |
+| 5241  |          Yes |           - |        Reset |
+| 0     |          Yes |         Set |            - |
+| 4938  |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -150,19 +150,18 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| FDRE     | 6400 |        Flop & Latch |
-| FDCE     | 5119 |        Flop & Latch |
-| LUT6     | 4943 |                 LUT |
-| LUT3     | 1806 |                 LUT |
-| LUT4     | 1516 |                 LUT |
-| LUT2     | 1388 |                 LUT |
-| LUT5     | 1206 |                 LUT |
-| CARRY4   | 1080 |          CarryLogic |
-| FDSE     |  256 |        Flop & Latch |
-| MUXF7    |  216 |               MuxFx |
-| LUT1     |   73 |                 LUT |
+| LUT6     | 5389 |                 LUT |
+| FDCE     | 5241 |        Flop & Latch |
+| FDRE     | 4938 |        Flop & Latch |
+| LUT3     | 1815 |                 LUT |
+| LUT5     | 1576 |                 LUT |
+| LUT4     | 1562 |                 LUT |
+| LUT2     | 1546 |                 LUT |
+| CARRY4   | 1166 |          CarryLogic |
+| MUXF7    |  280 |               MuxFx |
+| LUT1     |   74 |                 LUT |
 | DSP48E1  |   16 |    Block Arithmetic |
-| FDPE     |    2 |        Flop & Latch |
+| FDPE     |    4 |        Flop & Latch |
 +----------+------+---------------------+
 
 

@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/synthesis_tests/int_mul_fra_ycbcr_proj/int_mul_fra_ycbcr_proj.runs/synth_1/int_mul_fra_ycbcr.tcl"
+  variable script "C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/synthesis_tests/int_mul_fra_ycbcr_proj/int_mul_fra_ycbcr_proj.runs/synth_1/int_mul_fra_ycbcr.tcl"
   variable category "vivado_synth"
 }
 
@@ -62,16 +62,16 @@ create_project -in_memory -part xc7z020clg484-1
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/synthesis_tests/int_mul_fra_ycbcr_proj/int_mul_fra_ycbcr_proj.cache/wt [current_project]
-set_property parent.project_path C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/synthesis_tests/int_mul_fra_ycbcr_proj/int_mul_fra_ycbcr_proj.xpr [current_project]
+set_property webtalk.parent_dir C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/synthesis_tests/int_mul_fra_ycbcr_proj/int_mul_fra_ycbcr_proj.cache/wt [current_project]
+set_property parent.project_path C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/synthesis_tests/int_mul_fra_ycbcr_proj/int_mul_fra_ycbcr_proj.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_verilog -library xil_defaultlib {
-  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/int_mul_fra.v
-  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/int_mul_fra_ycbcr.v
+  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/int_mul_fra.v
+  C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/int_mul_fra_ycbcr.v
 }
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being

@@ -1,0 +1,3 @@
+Vrgb2ycbcr_quant___024root__DepSet_h75b240c1__0.o: \
+ Vrgb2ycbcr_quant___024root__DepSet_h75b240c1__0.cpp \
+ Vrgb2ycbcr_quant__pch.h Vrgb2ycbcr_quant___024root.h

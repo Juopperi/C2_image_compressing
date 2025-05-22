@@ -8,45 +8,46 @@
   **** SW Build 5239630 on Fri Nov 08 22:35:27 MST 2024
   **** IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
   **** SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
-  **** Start of session at: Wed May 14 19:49:39 2025
+  **** Start of session at: Thu May 22 16:05:32 2025
     ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
     ** Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 
 source dct8_chen_ts.tcl -notrace
+create_project: Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 657.910 ; gain = 228.180
 Command: synth_design -top dct8_chen_ts -part xc7z020clg484-1 -mode out_of_context
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 36188
+INFO: [Synth 8-7075] Helper process launched with PID 24820
 ---------------------------------------------------------------------------------
-Starting Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 1128.191 ; gain = 467.578
+Starting Synthesize : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1127.949 ; gain = 467.066
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-6157] synthesizing module 'dct8_chen_ts' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/dct8_chen_ts.sv:10]
-INFO: [Synth 8-6157] synthesizing module 'lut_multiplier' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/lut_multiplier.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'dct8_chen_ts' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/dct8_chen_ts.sv:10]
+INFO: [Synth 8-6157] synthesizing module 'lut_multiplier' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/lut_multiplier.sv:2]
 	Parameter IN_W bound to: 32'sb00000000000000000000000000100000 
 	Parameter CONST_W bound to: 32'sb00000000000000000000000000010000 
-INFO: [Synth 8-6155] done synthesizing module 'lut_multiplier' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/lut_multiplier.sv:2]
-INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/dct8_chen_ts.sv:108]
-INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/dct8_chen_ts.sv:195]
-INFO: [Synth 8-6155] done synthesizing module 'dct8_chen_ts' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/dct8_chen_ts.sv:10]
-WARNING: [Synth 8-6014] Unused sequential element s0_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/dct8_chen_ts.sv:123]
-WARNING: [Synth 8-6014] Unused sequential element s1_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/dct8_chen_ts.sv:124]
-WARNING: [Synth 8-6014] Unused sequential element s2_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/dct8_chen_ts.sv:125]
-WARNING: [Synth 8-6014] Unused sequential element s3_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/rtl/dct8_chen_ts.sv:126]
+INFO: [Synth 8-6155] done synthesizing module 'lut_multiplier' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/lut_multiplier.sv:2]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/dct8_chen_ts.sv:108]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/dct8_chen_ts.sv:195]
+INFO: [Synth 8-6155] done synthesizing module 'dct8_chen_ts' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/dct8_chen_ts.sv:10]
+WARNING: [Synth 8-6014] Unused sequential element s0_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/dct8_chen_ts.sv:123]
+WARNING: [Synth 8-6014] Unused sequential element s1_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/dct8_chen_ts.sv:124]
+WARNING: [Synth 8-6014] Unused sequential element s2_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/dct8_chen_ts.sv:125]
+WARNING: [Synth 8-6014] Unused sequential element s3_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/rtl/dct8_chen_ts.sv:126]
 ---------------------------------------------------------------------------------
-Finished Synthesize : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1235.793 ; gain = 575.180
+Finished Synthesize : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1235.953 ; gain = 575.070
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1235.793 ; gain = 575.180
+Finished Constraint Validation : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 1235.953 ; gain = 575.070
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7z020clg484-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1235.793 ; gain = 575.180
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 1235.953 ; gain = 575.070
 ---------------------------------------------------------------------------------
 INFO: [Device 21-403] Loading part xc7z020clg484-1
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'dct8_chen_ts'
@@ -62,7 +63,7 @@ INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'dct8_
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'dct8_chen_ts'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1235.793 ; gain = 575.180
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1235.953 ; gain = 575.070
 ---------------------------------------------------------------------------------
 No constraint files found.
 ---------------------------------------------------------------------------------
@@ -150,7 +151,7 @@ DSP Report: Generating DSP mult_inst[6].multiplier/result1, operation Mode is: (
 DSP Report: operator mult_inst[6].multiplier/result1 is absorbed into DSP mult_inst[6].multiplier/result1.
 DSP Report: operator mult_inst[6].multiplier/result1 is absorbed into DSP mult_inst[6].multiplier/result1.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1481.516 ; gain = 820.902
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 1482.227 ; gain = 821.344
 ---------------------------------------------------------------------------------
  Sort Area is  mult_inst[0].multiplier/result1_6 : 0 0 : 2759 5302 : Used 1 time 0
  Sort Area is  mult_inst[0].multiplier/result1_6 : 0 1 : 2543 5302 : Used 1 time 0
@@ -203,13 +204,13 @@ No constraint files found.
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1485.492 ; gain = 824.879
+Finished Timing Optimization : Time (s): cpu = 00:00:09 ; elapsed = 00:00:11 . Memory (MB): peak = 1485.297 ; gain = 824.414
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1485.492 ; gain = 824.879
+Finished Technology Mapping : Time (s): cpu = 00:00:09 ; elapsed = 00:00:11 . Memory (MB): peak = 1485.297 ; gain = 824.414
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -227,37 +228,37 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1662.328 ; gain = 1001.715
+Finished IO Insertion : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1663.055 ; gain = 1002.172
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1662.328 ; gain = 1001.715
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1663.055 ; gain = 1002.172
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1662.328 ; gain = 1001.715
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1663.055 ; gain = 1002.172
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1662.328 ; gain = 1001.715
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1663.055 ; gain = 1002.172
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1662.328 ; gain = 1001.715
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1663.055 ; gain = 1002.172
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1662.328 ; gain = 1001.715
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1663.055 ; gain = 1002.172
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -323,18 +324,18 @@ Report Instance Areas:
 |9     |  \mult_inst[7].multiplier  |lut_multiplier_6 |    38|
 +------+----------------------------+-----------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1662.328 ; gain = 1001.715
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1663.055 ; gain = 1002.172
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 5 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1662.328 ; gain = 1001.715
-Synthesis Optimization Complete : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1662.328 ; gain = 1001.715
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1663.055 ; gain = 1002.172
+Synthesis Optimization Complete : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1663.055 ; gain = 1002.172
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.015 . Memory (MB): peak = 1718.742 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.017 . Memory (MB): peak = 1719.098 ; gain = 0.000
 INFO: [Netlist 29-17] Analyzing 184 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1822.492 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1823.281 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
@@ -342,9 +343,9 @@ Synth Design complete | Checksum: 252e6fe4
 INFO: [Common 17-83] Releasing license: Synthesis
 20 Infos, 5 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:16 ; elapsed = 00:00:18 . Memory (MB): peak = 1822.492 ; gain = 1164.879
+synth_design: Time (s): cpu = 00:00:18 ; elapsed = 00:00:21 . Memory (MB): peak = 1823.281 ; gain = 1165.371
 INFO: [Timing 38-35] Done setting XDC timing constraints.
-Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 2110.125 ; gain = 0.109
-INFO: [Common 17-1381] The checkpoint 'C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/12/synthesis_tests/dct8_chen_ts_proj/dct8_chen_ts_proj.runs/synth_1/dct8_chen_ts.dcp' has been generated.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.009 . Memory (MB): peak = 2107.137 ; gain = 0.180
+INFO: [Common 17-1381] The checkpoint 'C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/synthesis_tests/dct8_chen_ts_proj/dct8_chen_ts_proj.runs/synth_1/dct8_chen_ts.dcp' has been generated.
 INFO: [Vivado 12-24828] Executing command : report_utilization -file dct8_chen_ts_utilization_synth.rpt -pb dct8_chen_ts_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Wed May 14 19:50:10 2025...
+INFO: [Common 17-206] Exiting Vivado at Thu May 22 16:06:06 2025...
