@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command=".planAhead." Owner="vmeli" Host="DESKTOP-BMP3654" Pid="6800">
-    </Process>
-</ProcessHandle>

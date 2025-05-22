@@ -55,4 +55,7 @@ verification/
 ├── optimization/        # Optimized RTL and synthesis comparison
 └── all_gen_multi_inout.cpp  # Shared utility
 
+<<<<<<< HEAD
 The onboard_unit_test folder is used to store functional tests for individual components before they are officially integrated into the system. For example, we perform basic validation for AXI-Lite, AXI4, AXI-Stream, FIFO, DMA, and interrupt functionalities. Some features were tested but ultimately omitted after evaluation and trade-offs.
+=======
+>>>>>>> verify

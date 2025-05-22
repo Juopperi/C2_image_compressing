@@ -1,3 +1,0 @@
-Avg Error: 6.2166
-Max Error: 57.1484
-Mismatches: 12798

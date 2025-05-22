@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:verification/saperate_module/123/utils/build/cmake_install.cmake
 # Install script for directory: /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/utils
+========
+# Install script for directory: /mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/4_zigzag/utils
+>>>>>>>> verify:verification/saperate_module/4_zigzag/utils/build/cmake_install.cmake
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +54,9 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
+<<<<<<<< HEAD:verification/saperate_module/123/utils/build/cmake_install.cmake
 file(WRITE "/mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/123/utils/build/${CMAKE_INSTALL_MANIFEST}"
+========
+file(WRITE "/mnt/c/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/4_zigzag/utils/build/${CMAKE_INSTALL_MANIFEST}"
+>>>>>>>> verify:verification/saperate_module/4_zigzag/utils/build/cmake_install.cmake
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
