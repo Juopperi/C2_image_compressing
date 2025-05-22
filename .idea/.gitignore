@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 默认忽略的文件
 /shelf/
 /workspace.xml
@@ -6,3 +7,48 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+=======
+# ========== PyCharm 相关 ========== #
+.idea/                         # PyCharm 项目设置目录
+.idea/**                       # PyCharm 项目设置目录
+.idea/*                        # PyCharm 项目设置目录
+.idea/*.xml                    # PyCharm 项目设置目录
+*.iml                          # PyCharm 模块文件
+*.ipr                          # PyCharm 项目文件
+*.iws                          # PyCharm 工作空间文件
+
+# ========== Python 相关 ========== #
+__pycache__/                    # Python 运行缓存
+*.pyc                            # 编译后的 Python 文件
+*.pyo                            # 编译后的 Python 文件（优化版）
+
+# ========== 虚拟环境 ========== #
+venv/                            # 虚拟环境（Windows & Mac）
+.env/                            # 通用虚拟环境文件夹
+*.venv/                          # 可能的虚拟环境目录
+
+# ========== 运行 & 日志文件 ========== #
+*.log                            # 日志文件
+*.out                            # 输出文件
+*.pid                            # 进程 ID 文件
+*.swp                            # Vim 临时文件
+*.swo                            # Vim 临时文件
+
+# ========== Jupyter Notebook ========== #
+.ipynb_checkpoints/              # Jupyter Notebook 检查点文件
+
+# ========== OS 系统文件 ========== #
+.DS_Store                        # macOS 生成的隐藏文件
+Thumbs.db                        # Windows 缩略图缓存
+desktop.ini                      # Windows 桌面配置文件
+
+# ========== 其他编译 & 缓存文件 ========== #
+*.bak                            # 备份文件
+*.tmp                            # 临时文件
+*.swp                            # Vim 编辑时生成的文件
+
+# ========== Pytest & Coverage ========== #
+.coverage                        # 测试覆盖率文件
+htmlcov/                         # 覆盖率 HTML 报告
+.cache/                          # pytest 缓存目录
+>>>>>>> profiling

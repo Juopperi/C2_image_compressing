@@ -42,6 +42,11 @@ desktop.ini                      # Windows 桌面配置文件
 htmlcov/                         # 覆盖率 HTML 报告
 .cache/                          # pytest 缓存目录
 
+.DS_Store
+
+# 或者只忽略某一目录下的
+generate_images/output_images/*
+
 
 huffman/huffman.exe
 huffman/*.exe
@@ -55,6 +60,7 @@ huffman/*.exe
 /YCbCr_conversion/workContainer
 /.vscode
 
+<<<<<<< HEAD
 template_file-read/
 
 
@@ -65,3 +71,8 @@ template_file-read/
 **/sim/
 
 **/obj_dir/
+=======
+**/CMakeFiles/
+
+**/sim/
+>>>>>>> profiling

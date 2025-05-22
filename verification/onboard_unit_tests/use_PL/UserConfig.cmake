@@ -25,12 +25,17 @@ set(USER_UNDEFINED_SYMBOLS
 # Example 3: Adding ${CMAKE_SOURCE_DIR}/data/include to add data/include from this project.
 
 set(USER_INCLUDE_DIRECTORIES
-"../../platform/zynq_fsbl/zynq_fsbl_bsp/include"
+"../../platform/zynq_fsbl/zynq_fsbl_bsp/libsrc/xilffs/src/include"
 "../../platform/zynq_fsbl/zynq_fsbl_bsp/libsrc/standalone/src/common"
+"../../platform/zynq_fsbl/zynq_fsbl_bsp/include"
+"../../platform/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/standalone/src/arm/cortexa9"
 )
+
 set(USER_COMPILE_SOURCES
-"main.c"
+"main.cpp"
+"profiler.cpp"
 )
+
 
 # -----------------------------------------
 
@@ -110,12 +115,14 @@ set(USER_LINK_OMIT_ALL_SYMBOL_INFO "")
 # Add any libraries to be linked below, they will be added as extra libraries.
 # User needs to update USER_LINK_DIRECTORIES below with these library search paths.
 set(USER_LINK_LIBRARIES
+"xilffs"
 )
 
 # Add any directories to look for the libraries to be linked.
 # Example 1: Adding /proj/compression/lib will pass -L/proj/compression/lib to the linker.
 # Example 2: Adding ../../common/lib will consider the path as relative to this directory and will pass the path to -L option.
 set(USER_LINK_DIRECTORIES
+"../../platform/zynq_fsbl/zynq_fsbl_bsp/lib"
 )
 
 # -----------------------------------------
@@ -158,4 +165,8 @@ set(USER_LINK_OPTIONS
     " ${USER_LINKER_NO_STDLIB}"
     " ${USER_LINKER_OMIT_ALL_SYMBOL_INFO}"
     " ${USER_LINK_OTHER_FLAGS}"
+)
+
+set(USER_COMPILE_DEFINITIONS
+"PLATFORM_ZYNQ"
 )

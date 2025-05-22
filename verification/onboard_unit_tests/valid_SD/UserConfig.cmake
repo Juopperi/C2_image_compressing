@@ -28,9 +28,10 @@ set(USER_INCLUDE_DIRECTORIES
 "../../platform/zynq_fsbl/zynq_fsbl_bsp/libsrc/xilffs/src/include"
 "../../platform/zynq_fsbl/zynq_fsbl_bsp/libsrc/standalone/src/common"
 "../../platform/zynq_fsbl/zynq_fsbl_bsp/include"
+"../../platform/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/standalone/src/arm/cortexa9"
 )
 set(USER_COMPILE_SOURCES
-"main.c"
+"main.cpp"
 )
 
 # -----------------------------------------
