@@ -1,0 +1,14 @@
+Module,CONST_W,LUTs,Registers,DSPs,BRAMs
+dct8_chen_ts_CONST_W_8,8,2558,843,0,0
+dct8_chen_ts_CONST_W_10,10,3037,841,0,0
+dct8_chen_ts_CONST_W_12,12,3859,841,0,0
+dct8_chen_ts_CONST_W_14,14,4211,841,0,0
+dct8_chen_ts_CONST_W_16,16,4845,843,0,0
+dct8_chen_ts_CONST_W_18,18,4735,843,0,0
+dct8_chen_ts_CONST_W_20,20,4725,843,0,0
+dct8_chen_ts_CONST_W_22,22,4822,843,0,0
+dct8_chen_ts_CONST_W_24,24,4758,843,0,0
+dct8_chen_ts_CONST_W_26,26,4748,843,0,0
+dct8_chen_ts_CONST_W_28,28,4781,843,0,0
+dct8_chen_ts_CONST_W_30,30,4830,843,0,0
+dct8_chen_ts_CONST_W_32,32,4756,843,0,0

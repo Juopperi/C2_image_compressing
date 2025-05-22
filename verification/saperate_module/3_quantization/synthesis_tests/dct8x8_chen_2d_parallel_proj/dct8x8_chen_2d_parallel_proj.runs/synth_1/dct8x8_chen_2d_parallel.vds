@@ -1,0 +1,392 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:35:27 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Tue May 13 18:37:48 2025
+# Process ID         : 37048
+# Current directory  : C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/dct8x8_chen_2d_parallel_proj/dct8x8_chen_2d_parallel_proj.runs/synth_1
+# Command line       : vivado.exe -log dct8x8_chen_2d_parallel.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source dct8x8_chen_2d_parallel.tcl
+# Log file           : C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/dct8x8_chen_2d_parallel_proj/dct8x8_chen_2d_parallel_proj.runs/synth_1/dct8x8_chen_2d_parallel.vds
+# Journal file       : C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/dct8x8_chen_2d_parallel_proj/dct8x8_chen_2d_parallel_proj.runs/synth_1\vivado.jou
+# Running On         : wenruoxu
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26100
+# Processor Detail   : AMD Ryzen 9 7950X 16-Core Processor            
+# CPU Frequency      : 4491 MHz
+# CPU Physical cores : 16
+# CPU Logical cores  : 32
+# Host memory        : 50621 MB
+# Swap memory        : 3221 MB
+# Total Virtual      : 53842 MB
+# Available Virtual  : 19460 MB
+#-----------------------------------------------------------
+source dct8x8_chen_2d_parallel.tcl -notrace
+Command: synth_design -top dct8x8_chen_2d_parallel -part xc7z020clg484-1 -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 38080
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 1128.309 ; gain = 470.176
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'dct8x8_chen_2d_parallel' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8x8_chen_2d_parallel.sv:8]
+INFO: [Synth 8-6157] synthesizing module 'dct8_chen_ts' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:31]
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+	Parameter IN_W bound to: 32'sb00000000000000000000000000100000 
+	Parameter FRAC bound to: 32'sb00000000000000000000000000001111 
+INFO: [Synth 8-6157] synthesizing module 'lut_multiplier' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:2]
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+	Parameter IN_W bound to: 32'sb00000000000000000000000000100000 
+	Parameter CONST_W bound to: 32'sb00000000000000000000000000010000 
+	Parameter FRAC bound to: 32'sb00000000000000000000000000001111 
+WARNING: [Synth 8-5974] attribute "use_dsp48" has been deprecated, please use "use_dsp" instead 
+INFO: [Synth 8-6155] done synthesizing module 'lut_multiplier' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:2]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:130]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:217]
+INFO: [Synth 8-6155] done synthesizing module 'dct8_chen_ts' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:31]
+INFO: [Synth 8-6155] done synthesizing module 'dct8x8_chen_2d_parallel' (0#1) [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8x8_chen_2d_parallel.sv:8]
+WARNING: [Synth 8-6014] Unused sequential element s0_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:145]
+WARNING: [Synth 8-6014] Unused sequential element s1_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:146]
+WARNING: [Synth 8-6014] Unused sequential element s2_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:147]
+WARNING: [Synth 8-6014] Unused sequential element s3_reg was removed.  [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/rtl/dct8_chen_ts.sv:148]
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1237.797 ; gain = 579.664
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1237.797 ; gain = 579.664
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg484-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1237.797 ; gain = 579.664
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'dct8_chen_ts'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  S_IDLE |                              000 |                              000
+                      P0 |                              001 |                              001
+                      P1 |                              010 |                              010
+                      P2 |                              011 |                              011
+                      P3 |                              100 |                              100
+                  S_WAIT |                              101 |                              101
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'dct8_chen_ts'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1237.797 ; gain = 579.664
+---------------------------------------------------------------------------------
+INFO: [Synth 8-223] decloning instance 'dct8_chen_ts:/mult_inst[8].multiplier' (lut_multiplier) to 'dct8_chen_ts:/mult_inst[9].multiplier'
+INFO: [Synth 8-223] decloning instance 'dct8_chen_ts:/mult_inst[8].multiplier' (lut_multiplier) to 'dct8_chen_ts:/mult_inst[10].multiplier'
+INFO: [Synth 8-223] decloning instance 'dct8_chen_ts:/mult_inst[8].multiplier' (lut_multiplier) to 'dct8_chen_ts:/mult_inst[11].multiplier'
+INFO: [Synth 8-223] decloning instance 'dct8_chen_ts:/mult_inst[8].multiplier' (lut_multiplier) to 'dct8_chen_ts:/mult_inst[12].multiplier'
+INFO: [Synth 8-223] decloning instance 'dct8_chen_ts:/mult_inst[8].multiplier' (lut_multiplier) to 'dct8_chen_ts:/mult_inst[13].multiplier'
+INFO: [Synth 8-223] decloning instance 'dct8_chen_ts:/mult_inst[8].multiplier' (lut_multiplier) to 'dct8_chen_ts:/mult_inst[14].multiplier'
+No constraint files found.
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   32 Bit       Adders := 112   
+	   3 Input   32 Bit       Adders := 160   
+	   5 Input   32 Bit       Adders := 32    
+	   4 Input   32 Bit       Adders := 32    
++---Registers : 
+	               32 Bit    Registers := 416   
++---Multipliers : 
+	              16x32  Multipliers := 144   
++---Muxes : 
+	   5 Input   32 Bit        Muxes := 128   
+	   5 Input   16 Bit        Muxes := 128   
+	   6 Input    3 Bit        Muxes := 16    
+	   6 Input    1 Bit        Muxes := 80    
+	   2 Input    1 Bit        Muxes := 32    
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1516.301 ; gain = 858.168
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:10 ; elapsed = 00:00:12 . Memory (MB): peak = 1516.301 ; gain = 858.168
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:15 ; elapsed = 00:00:16 . Memory (MB): peak = 1673.090 ; gain = 1014.957
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1776.441 ; gain = 1118.309
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:21 ; elapsed = 00:00:23 . Memory (MB): peak = 1782.062 ; gain = 1123.930
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:23 ; elapsed = 00:00:25 . Memory (MB): peak = 1851.500 ; gain = 1193.367
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:24 ; elapsed = 00:00:26 . Memory (MB): peak = 1851.500 ; gain = 1193.367
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 1851.500 ; gain = 1193.367
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 1851.500 ; gain = 1193.367
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-------+------+
+|      |Cell   |Count |
++------+-------+------+
+|1     |CARRY4 | 11744|
+|2     |LUT1   |   257|
+|3     |LUT2   | 17296|
+|4     |LUT3   | 15307|
+|5     |LUT4   | 19832|
+|6     |LUT5   | 14363|
+|7     |LUT6   | 26931|
+|8     |FDCE   |   272|
+|9     |FDRE   | 13312|
++------+-------+------+
+
+Report Instance Areas: 
++------+------------------------------+-------------------+-------+
+|      |Instance                      |Module             |Cells  |
++------+------------------------------+-------------------+-------+
+|1     |top                           |                   | 119314|
+|2     |  \g_col_dct[0].u_col_dct     |dct8_chen_ts       |   5114|
+|3     |    \mult_inst[0].multiplier  |lut_multiplier_134 |    461|
+|4     |    \mult_inst[1].multiplier  |lut_multiplier_135 |    549|
+|5     |    \mult_inst[2].multiplier  |lut_multiplier_136 |    458|
+|6     |    \mult_inst[3].multiplier  |lut_multiplier_137 |    667|
+|7     |    \mult_inst[4].multiplier  |lut_multiplier_138 |    432|
+|8     |    \mult_inst[5].multiplier  |lut_multiplier_139 |    539|
+|9     |    \mult_inst[6].multiplier  |lut_multiplier_140 |    553|
+|10    |    \mult_inst[7].multiplier  |lut_multiplier_141 |    480|
+|11    |  \g_col_dct[1].u_col_dct     |dct8_chen_ts_0     |   5114|
+|12    |    \mult_inst[0].multiplier  |lut_multiplier_126 |    461|
+|13    |    \mult_inst[1].multiplier  |lut_multiplier_127 |    549|
+|14    |    \mult_inst[2].multiplier  |lut_multiplier_128 |    458|
+|15    |    \mult_inst[3].multiplier  |lut_multiplier_129 |    667|
+|16    |    \mult_inst[4].multiplier  |lut_multiplier_130 |    432|
+|17    |    \mult_inst[5].multiplier  |lut_multiplier_131 |    539|
+|18    |    \mult_inst[6].multiplier  |lut_multiplier_132 |    553|
+|19    |    \mult_inst[7].multiplier  |lut_multiplier_133 |    480|
+|20    |  \g_col_dct[2].u_col_dct     |dct8_chen_ts_1     |   5115|
+|21    |    \mult_inst[0].multiplier  |lut_multiplier_118 |    461|
+|22    |    \mult_inst[1].multiplier  |lut_multiplier_119 |    549|
+|23    |    \mult_inst[2].multiplier  |lut_multiplier_120 |    459|
+|24    |    \mult_inst[3].multiplier  |lut_multiplier_121 |    667|
+|25    |    \mult_inst[4].multiplier  |lut_multiplier_122 |    432|
+|26    |    \mult_inst[5].multiplier  |lut_multiplier_123 |    538|
+|27    |    \mult_inst[6].multiplier  |lut_multiplier_124 |    553|
+|28    |    \mult_inst[7].multiplier  |lut_multiplier_125 |    480|
+|29    |  \g_col_dct[3].u_col_dct     |dct8_chen_ts_2     |   5114|
+|30    |    \mult_inst[0].multiplier  |lut_multiplier_110 |    461|
+|31    |    \mult_inst[1].multiplier  |lut_multiplier_111 |    549|
+|32    |    \mult_inst[2].multiplier  |lut_multiplier_112 |    458|
+|33    |    \mult_inst[3].multiplier  |lut_multiplier_113 |    667|
+|34    |    \mult_inst[4].multiplier  |lut_multiplier_114 |    432|
+|35    |    \mult_inst[5].multiplier  |lut_multiplier_115 |    539|
+|36    |    \mult_inst[6].multiplier  |lut_multiplier_116 |    553|
+|37    |    \mult_inst[7].multiplier  |lut_multiplier_117 |    480|
+|38    |  \g_col_dct[4].u_col_dct     |dct8_chen_ts_3     |   5114|
+|39    |    \mult_inst[0].multiplier  |lut_multiplier_102 |    461|
+|40    |    \mult_inst[1].multiplier  |lut_multiplier_103 |    549|
+|41    |    \mult_inst[2].multiplier  |lut_multiplier_104 |    458|
+|42    |    \mult_inst[3].multiplier  |lut_multiplier_105 |    667|
+|43    |    \mult_inst[4].multiplier  |lut_multiplier_106 |    432|
+|44    |    \mult_inst[5].multiplier  |lut_multiplier_107 |    539|
+|45    |    \mult_inst[6].multiplier  |lut_multiplier_108 |    553|
+|46    |    \mult_inst[7].multiplier  |lut_multiplier_109 |    480|
+|47    |  \g_col_dct[5].u_col_dct     |dct8_chen_ts_4     |   5114|
+|48    |    \mult_inst[0].multiplier  |lut_multiplier_94  |    461|
+|49    |    \mult_inst[1].multiplier  |lut_multiplier_95  |    549|
+|50    |    \mult_inst[2].multiplier  |lut_multiplier_96  |    459|
+|51    |    \mult_inst[3].multiplier  |lut_multiplier_97  |    667|
+|52    |    \mult_inst[4].multiplier  |lut_multiplier_98  |    432|
+|53    |    \mult_inst[5].multiplier  |lut_multiplier_99  |    538|
+|54    |    \mult_inst[6].multiplier  |lut_multiplier_100 |    553|
+|55    |    \mult_inst[7].multiplier  |lut_multiplier_101 |    480|
+|56    |  \g_col_dct[6].u_col_dct     |dct8_chen_ts_5     |   5114|
+|57    |    \mult_inst[0].multiplier  |lut_multiplier_86  |    461|
+|58    |    \mult_inst[1].multiplier  |lut_multiplier_87  |    549|
+|59    |    \mult_inst[2].multiplier  |lut_multiplier_88  |    459|
+|60    |    \mult_inst[3].multiplier  |lut_multiplier_89  |    667|
+|61    |    \mult_inst[4].multiplier  |lut_multiplier_90  |    432|
+|62    |    \mult_inst[5].multiplier  |lut_multiplier_91  |    538|
+|63    |    \mult_inst[6].multiplier  |lut_multiplier_92  |    553|
+|64    |    \mult_inst[7].multiplier  |lut_multiplier_93  |    480|
+|65    |  \g_col_dct[7].u_col_dct     |dct8_chen_ts_6     |   5114|
+|66    |    \mult_inst[0].multiplier  |lut_multiplier_78  |    461|
+|67    |    \mult_inst[1].multiplier  |lut_multiplier_79  |    549|
+|68    |    \mult_inst[2].multiplier  |lut_multiplier_80  |    459|
+|69    |    \mult_inst[3].multiplier  |lut_multiplier_81  |    667|
+|70    |    \mult_inst[4].multiplier  |lut_multiplier_82  |    432|
+|71    |    \mult_inst[5].multiplier  |lut_multiplier_83  |    538|
+|72    |    \mult_inst[6].multiplier  |lut_multiplier_84  |    553|
+|73    |    \mult_inst[7].multiplier  |lut_multiplier_85  |    480|
+|74    |  \g_row_dct[0].u_row_dct     |dct8_chen_ts_7     |   6021|
+|75    |    \mult_inst[0].multiplier  |lut_multiplier_70  |    461|
+|76    |    \mult_inst[1].multiplier  |lut_multiplier_71  |    549|
+|77    |    \mult_inst[2].multiplier  |lut_multiplier_72  |    458|
+|78    |    \mult_inst[3].multiplier  |lut_multiplier_73  |    667|
+|79    |    \mult_inst[4].multiplier  |lut_multiplier_74  |    432|
+|80    |    \mult_inst[5].multiplier  |lut_multiplier_75  |    539|
+|81    |    \mult_inst[6].multiplier  |lut_multiplier_76  |    553|
+|82    |    \mult_inst[7].multiplier  |lut_multiplier_77  |    480|
+|83    |  \g_row_dct[1].u_row_dct     |dct8_chen_ts_8     |   7509|
+|84    |    \mult_inst[0].multiplier  |lut_multiplier_62  |    460|
+|85    |    \mult_inst[1].multiplier  |lut_multiplier_63  |    549|
+|86    |    \mult_inst[2].multiplier  |lut_multiplier_64  |    457|
+|87    |    \mult_inst[3].multiplier  |lut_multiplier_65  |    665|
+|88    |    \mult_inst[4].multiplier  |lut_multiplier_66  |    431|
+|89    |    \mult_inst[5].multiplier  |lut_multiplier_67  |    537|
+|90    |    \mult_inst[6].multiplier  |lut_multiplier_68  |    552|
+|91    |    \mult_inst[7].multiplier  |lut_multiplier_69  |    480|
+|92    |  \g_row_dct[2].u_row_dct     |dct8_chen_ts_9     |   6326|
+|93    |    \mult_inst[0].multiplier  |lut_multiplier_54  |    461|
+|94    |    \mult_inst[1].multiplier  |lut_multiplier_55  |    549|
+|95    |    \mult_inst[2].multiplier  |lut_multiplier_56  |    458|
+|96    |    \mult_inst[3].multiplier  |lut_multiplier_57  |    667|
+|97    |    \mult_inst[4].multiplier  |lut_multiplier_58  |    432|
+|98    |    \mult_inst[5].multiplier  |lut_multiplier_59  |    538|
+|99    |    \mult_inst[6].multiplier  |lut_multiplier_60  |    553|
+|100   |    \mult_inst[7].multiplier  |lut_multiplier_61  |    480|
+|101   |  \g_row_dct[3].u_row_dct     |dct8_chen_ts_10    |   6853|
+|102   |    \mult_inst[0].multiplier  |lut_multiplier_46  |    461|
+|103   |    \mult_inst[1].multiplier  |lut_multiplier_47  |    549|
+|104   |    \mult_inst[2].multiplier  |lut_multiplier_48  |    458|
+|105   |    \mult_inst[3].multiplier  |lut_multiplier_49  |    667|
+|106   |    \mult_inst[4].multiplier  |lut_multiplier_50  |    432|
+|107   |    \mult_inst[5].multiplier  |lut_multiplier_51  |    539|
+|108   |    \mult_inst[6].multiplier  |lut_multiplier_52  |    553|
+|109   |    \mult_inst[7].multiplier  |lut_multiplier_53  |    480|
+|110   |  \g_row_dct[4].u_row_dct     |dct8_chen_ts_11    |   5685|
+|111   |    \mult_inst[0].multiplier  |lut_multiplier_38  |    461|
+|112   |    \mult_inst[1].multiplier  |lut_multiplier_39  |    549|
+|113   |    \mult_inst[2].multiplier  |lut_multiplier_40  |    458|
+|114   |    \mult_inst[3].multiplier  |lut_multiplier_41  |    667|
+|115   |    \mult_inst[4].multiplier  |lut_multiplier_42  |    432|
+|116   |    \mult_inst[5].multiplier  |lut_multiplier_43  |    539|
+|117   |    \mult_inst[6].multiplier  |lut_multiplier_44  |    553|
+|118   |    \mult_inst[7].multiplier  |lut_multiplier_45  |    480|
+|119   |  \g_row_dct[5].u_row_dct     |dct8_chen_ts_12    |   5685|
+|120   |    \mult_inst[0].multiplier  |lut_multiplier_30  |    461|
+|121   |    \mult_inst[1].multiplier  |lut_multiplier_31  |    549|
+|122   |    \mult_inst[2].multiplier  |lut_multiplier_32  |    458|
+|123   |    \mult_inst[3].multiplier  |lut_multiplier_33  |    667|
+|124   |    \mult_inst[4].multiplier  |lut_multiplier_34  |    432|
+|125   |    \mult_inst[5].multiplier  |lut_multiplier_35  |    539|
+|126   |    \mult_inst[6].multiplier  |lut_multiplier_36  |    553|
+|127   |    \mult_inst[7].multiplier  |lut_multiplier_37  |    480|
+|128   |  \g_row_dct[6].u_row_dct     |dct8_chen_ts_13    |   5686|
+|129   |    \mult_inst[0].multiplier  |lut_multiplier_22  |    461|
+|130   |    \mult_inst[1].multiplier  |lut_multiplier_23  |    549|
+|131   |    \mult_inst[2].multiplier  |lut_multiplier_24  |    458|
+|132   |    \mult_inst[3].multiplier  |lut_multiplier_25  |    667|
+|133   |    \mult_inst[4].multiplier  |lut_multiplier_26  |    432|
+|134   |    \mult_inst[5].multiplier  |lut_multiplier_27  |    539|
+|135   |    \mult_inst[6].multiplier  |lut_multiplier_28  |    553|
+|136   |    \mult_inst[7].multiplier  |lut_multiplier_29  |    480|
+|137   |  \g_row_dct[7].u_row_dct     |dct8_chen_ts_14    |   6268|
+|138   |    \mult_inst[0].multiplier  |lut_multiplier     |    461|
+|139   |    \mult_inst[1].multiplier  |lut_multiplier_15  |    549|
+|140   |    \mult_inst[2].multiplier  |lut_multiplier_16  |    458|
+|141   |    \mult_inst[3].multiplier  |lut_multiplier_17  |    667|
+|142   |    \mult_inst[4].multiplier  |lut_multiplier_18  |    432|
+|143   |    \mult_inst[5].multiplier  |lut_multiplier_19  |    538|
+|144   |    \mult_inst[6].multiplier  |lut_multiplier_20  |    553|
+|145   |    \mult_inst[7].multiplier  |lut_multiplier_21  |    480|
++------+------------------------------+-------------------+-------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 1851.500 ; gain = 1193.367
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 8 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 1851.500 ; gain = 1193.367
+Synthesis Optimization Complete : Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 1851.500 ; gain = 1193.367
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:01 . Memory (MB): peak = 2080.797 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 11744 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.017 . Memory (MB): peak = 2290.188 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: 7d33564
+INFO: [Common 17-83] Releasing license: Synthesis
+28 Infos, 8 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:48 ; elapsed = 00:00:52 . Memory (MB): peak = 2290.188 ; gain = 1634.031
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Write ShapeDB Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.386 . Memory (MB): peak = 2608.375 ; gain = 50.340
+INFO: [Common 17-1381] The checkpoint 'C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/saperate_module/2_dct_chen/synthesis_tests/dct8x8_chen_2d_parallel_proj/dct8x8_chen_2d_parallel_proj.runs/synth_1/dct8x8_chen_2d_parallel.dcp' has been generated.
+write_checkpoint: Time (s): cpu = 00:00:12 ; elapsed = 00:00:10 . Memory (MB): peak = 2612.531 ; gain = 322.344
+INFO: [Vivado 12-24828] Executing command : report_utilization -file dct8x8_chen_2d_parallel_utilization_synth.rpt -pb dct8x8_chen_2d_parallel_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Tue May 13 18:38:59 2025...

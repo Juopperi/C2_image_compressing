@@ -1,0 +1,293 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+-------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version     : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
+| Date             : Tue May 13 18:20:00 2025
+| Host             : wenruoxu running 64-bit major release  (build 9200)
+| Command          : report_power -file ./reports/chen_2d_pipe/power_synth.rpt
+| Design           : dct8x8_chen_2d_parallel
+| Device           : xc7z020clg484-1
+| Design State     : synthesized
+| Grade            : commercial
+| Process          : typical
+| Characterization : Production
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+Power Report
+
+Table of Contents
+-----------------
+1. Summary
+1.1 On-Chip Components
+1.2 Power Supply Summary
+1.3 Confidence Level
+2. Settings
+2.1 Environment
+2.2 Clock Constraints
+3. Detailed Reports
+3.1 By Hierarchy
+
+1. Summary
+----------
+
++--------------------------+------------------------------------+
+| Total On-Chip Power (W)  | 1570.917 (Junction temp exceeded!) |
+| Design Power Budget (W)  | Unspecified*                       |
+| Power Budget Margin (W)  | NA                                 |
+| Dynamic (W)              | 1569.879                           |
+| Device Static (W)        | 1.038                              |
+| Effective TJA (C/W)      | 11.5                               |
+| Max Ambient (C)          | 0.0                                |
+| Junction Temperature (C) | 125.0                              |
+| Confidence Level         | Low                                |
+| Setting File             | ---                                |
+| Simulation Activity File | ---                                |
+| Design Nets Matched      | NA                                 |
++--------------------------+------------------------------------+
+* Specify Design Power Budget using, set_operating_conditions -design_power_budget <value in Watts>
+
+
+1.1 On-Chip Components
+----------------------
+
++----------------+-----------+----------+-----------+-----------------+
+| On-Chip        | Power (W) | Used     | Available | Utilization (%) |
++----------------+-----------+----------+-----------+-----------------+
+| Slice Logic    |   847.056 |   114663 |       --- |             --- |
+|   LUT as Logic |   772.902 |    79036 |     53200 |          148.56 |
+|   CARRY4       |    72.256 |    10976 |     13300 |           82.53 |
+|   Register     |     1.897 |    13534 |    106400 |           12.72 |
+|   Others       |     0.000 |      282 |       --- |             --- |
+| Signals        |   722.823 |    91422 |       --- |             --- |
+| Static Power   |     1.038 |          |           |                 |
+| Total          |  1570.917 |          |           |                 |
++----------------+-----------+----------+-----------+-----------------+
+
+
+1.2 Power Supply Summary
+------------------------
+
++-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
+| Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
++-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
+| Vccint    |       1.000 |  1570.178 |    1569.879 |      0.299 |       NA    | Unspecified | NA         |
+| Vccaux    |       1.800 |     0.100 |       0.000 |      0.100 |       NA    | Unspecified | NA         |
+| Vcco33    |       3.300 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco18    |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco15    |       1.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco135   |       1.350 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco12    |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vccaux_io |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vccbram   |       1.000 |     0.026 |       0.000 |      0.026 |       NA    | Unspecified | NA         |
+| MGTAVcc   |       1.000 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| MGTAVtt   |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| MGTVccaux |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vccpint   |       1.000 |     0.473 |       0.000 |      0.473 |       NA    | Unspecified | NA         |
+| Vccpaux   |       1.800 |     0.010 |       0.000 |      0.010 |       NA    | Unspecified | NA         |
+| Vccpll    |       1.800 |     0.003 |       0.000 |      0.003 |       NA    | Unspecified | NA         |
+| Vcco_ddr  |       1.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco_mio0 |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco_mio1 |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vccadc    |       1.800 |     0.020 |       0.000 |      0.020 |       NA    | Unspecified | NA         |
++-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
+
+
+1.3 Confidence Level
+--------------------
+
++-----------------------------+------------+------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| User Input Data             | Confidence | Details                                        | Action                                                                                                             |
++-----------------------------+------------+------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| Design implementation state | Low        | Design is synthesized                          | Accuracy of the tool is not optimal until design is fully placed and routed                                        |
+| Clock nodes activity        | Low        | User specified less than 75% of clocks         | Provide missing clock activity with a constraint file, simulation results or by editing the "By Clock Domain" view |
+| I/O nodes activity          | High       | User specified more than 95% of inputs         |                                                                                                                    |
+| Internal nodes activity     | Medium     | User specified less than 25% of internal nodes | Provide missing internal nodes activity with simulation results or by editing the "By Resource Type" views         |
+| Device models               | High       | Device models are Production                   |                                                                                                                    |
+|                             |            |                                                |                                                                                                                    |
+| Overall confidence level    | Low        |                                                |                                                                                                                    |
++-----------------------------+------------+------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+
+
+2. Settings
+-----------
+
+2.1 Environment
+---------------
+
++-----------------------+------------------------+
+| Ambient Temp (C)      | 25.0                   |
+| ThetaJA (C/W)         | 11.5                   |
+| Airflow (LFM)         | 250                    |
+| Heat Sink             | none                   |
+| ThetaSA (C/W)         | 0.0                    |
+| Board Selection       | medium (10"x10")       |
+| # of Board Layers     | 8to11 (8 to 11 Layers) |
+| Board Temperature (C) | 25.0                   |
++-----------------------+------------------------+
+
+
+2.2 Clock Constraints
+---------------------
+
++-------+--------+-----------------+
+| Clock | Domain | Constraint (ns) |
++-------+--------+-----------------+
+
+
+3. Detailed Reports
+-------------------
+
+3.1 By Hierarchy
+----------------
+
++-----------------------------+-----------+
+| Name                        | Power (W) |
++-----------------------------+-----------+
+| dct8x8_chen_2d_parallel     |  1569.879 |
+|   g_col_dct[0].u_col_dct    |    64.333 |
+|     mult_inst[0].multiplier |     5.760 |
+|     mult_inst[1].multiplier |     9.194 |
+|     mult_inst[2].multiplier |     5.972 |
+|     mult_inst[3].multiplier |    10.438 |
+|     mult_inst[4].multiplier |     6.610 |
+|     mult_inst[5].multiplier |     7.100 |
+|     mult_inst[6].multiplier |     8.398 |
+|     mult_inst[7].multiplier |     3.390 |
+|   g_col_dct[1].u_col_dct    |    64.314 |
+|     mult_inst[0].multiplier |     5.758 |
+|     mult_inst[1].multiplier |     9.198 |
+|     mult_inst[2].multiplier |     5.972 |
+|     mult_inst[3].multiplier |    10.429 |
+|     mult_inst[4].multiplier |     6.608 |
+|     mult_inst[5].multiplier |     7.098 |
+|     mult_inst[6].multiplier |     8.397 |
+|     mult_inst[7].multiplier |     3.388 |
+|   g_col_dct[2].u_col_dct    |    59.078 |
+|     mult_inst[0].multiplier |     5.397 |
+|     mult_inst[1].multiplier |     8.593 |
+|     mult_inst[2].multiplier |     5.568 |
+|     mult_inst[3].multiplier |     9.684 |
+|     mult_inst[4].multiplier |     5.887 |
+|     mult_inst[5].multiplier |     6.501 |
+|     mult_inst[6].multiplier |     7.399 |
+|     mult_inst[7].multiplier |     3.064 |
+|   g_col_dct[3].u_col_dct    |    61.211 |
+|     mult_inst[0].multiplier |     5.508 |
+|     mult_inst[1].multiplier |     8.887 |
+|     mult_inst[2].multiplier |     5.614 |
+|     mult_inst[3].multiplier |    10.063 |
+|     mult_inst[4].multiplier |     6.209 |
+|     mult_inst[5].multiplier |     6.559 |
+|     mult_inst[6].multiplier |     7.968 |
+|     mult_inst[7].multiplier |     3.228 |
+|   g_col_dct[4].u_col_dct    |    61.854 |
+|     mult_inst[0].multiplier |     5.637 |
+|     mult_inst[1].multiplier |     8.891 |
+|     mult_inst[2].multiplier |     5.803 |
+|     mult_inst[3].multiplier |    10.053 |
+|     mult_inst[4].multiplier |     6.286 |
+|     mult_inst[5].multiplier |     6.757 |
+|     mult_inst[6].multiplier |     7.968 |
+|     mult_inst[7].multiplier |     3.229 |
+|   g_col_dct[5].u_col_dct    |    59.086 |
+|     mult_inst[0].multiplier |     5.398 |
+|     mult_inst[1].multiplier |     8.594 |
+|     mult_inst[2].multiplier |     5.569 |
+|     mult_inst[3].multiplier |     9.685 |
+|     mult_inst[4].multiplier |     5.888 |
+|     mult_inst[5].multiplier |     6.503 |
+|     mult_inst[6].multiplier |     7.400 |
+|     mult_inst[7].multiplier |     3.066 |
+|   g_col_dct[6].u_col_dct    |    59.087 |
+|     mult_inst[0].multiplier |     5.398 |
+|     mult_inst[1].multiplier |     8.594 |
+|     mult_inst[2].multiplier |     5.569 |
+|     mult_inst[3].multiplier |     9.685 |
+|     mult_inst[4].multiplier |     5.889 |
+|     mult_inst[5].multiplier |     6.503 |
+|     mult_inst[6].multiplier |     7.401 |
+|     mult_inst[7].multiplier |     3.066 |
+|   g_col_dct[7].u_col_dct    |    59.075 |
+|     mult_inst[0].multiplier |     5.397 |
+|     mult_inst[1].multiplier |     8.593 |
+|     mult_inst[2].multiplier |     5.568 |
+|     mult_inst[3].multiplier |     9.683 |
+|     mult_inst[4].multiplier |     5.887 |
+|     mult_inst[5].multiplier |     6.501 |
+|     mult_inst[6].multiplier |     7.398 |
+|     mult_inst[7].multiplier |     3.064 |
+|   g_row_dct[0].u_row_dct    |    76.924 |
+|     mult_inst[0].multiplier |     7.072 |
+|     mult_inst[1].multiplier |     9.888 |
+|     mult_inst[2].multiplier |     6.581 |
+|     mult_inst[3].multiplier |    11.207 |
+|     mult_inst[4].multiplier |     7.308 |
+|     mult_inst[5].multiplier |     7.968 |
+|     mult_inst[6].multiplier |     9.096 |
+|     mult_inst[7].multiplier |     3.819 |
+|   g_row_dct[1].u_row_dct    |    86.199 |
+|     mult_inst[0].multiplier |     7.074 |
+|     mult_inst[1].multiplier |     9.868 |
+|     mult_inst[2].multiplier |     6.591 |
+|     mult_inst[3].multiplier |    11.218 |
+|     mult_inst[4].multiplier |     7.320 |
+|     mult_inst[5].multiplier |     7.980 |
+|     mult_inst[6].multiplier |     9.113 |
+|     mult_inst[7].multiplier |     3.826 |
+|   g_row_dct[2].u_row_dct    |    77.120 |
+|     mult_inst[0].multiplier |     7.082 |
+|     mult_inst[1].multiplier |     9.832 |
+|     mult_inst[2].multiplier |     6.578 |
+|     mult_inst[3].multiplier |    11.194 |
+|     mult_inst[4].multiplier |     7.300 |
+|     mult_inst[5].multiplier |     7.925 |
+|     mult_inst[6].multiplier |     9.082 |
+|     mult_inst[7].multiplier |     3.795 |
+|   g_row_dct[3].u_row_dct    |    80.812 |
+|     mult_inst[0].multiplier |     7.072 |
+|     mult_inst[1].multiplier |     9.860 |
+|     mult_inst[2].multiplier |     6.581 |
+|     mult_inst[3].multiplier |    11.207 |
+|     mult_inst[4].multiplier |     7.308 |
+|     mult_inst[5].multiplier |     7.972 |
+|     mult_inst[6].multiplier |     9.096 |
+|     mult_inst[7].multiplier |     3.818 |
+|   g_row_dct[4].u_row_dct    |    76.009 |
+|     mult_inst[0].multiplier |     7.072 |
+|     mult_inst[1].multiplier |     9.860 |
+|     mult_inst[2].multiplier |     6.581 |
+|     mult_inst[3].multiplier |    11.207 |
+|     mult_inst[4].multiplier |     7.308 |
+|     mult_inst[5].multiplier |     7.972 |
+|     mult_inst[6].multiplier |     9.096 |
+|     mult_inst[7].multiplier |     3.818 |
+|   g_row_dct[5].u_row_dct    |    76.008 |
+|     mult_inst[0].multiplier |     7.072 |
+|     mult_inst[1].multiplier |     9.860 |
+|     mult_inst[2].multiplier |     6.581 |
+|     mult_inst[3].multiplier |    11.207 |
+|     mult_inst[4].multiplier |     7.308 |
+|     mult_inst[5].multiplier |     7.972 |
+|     mult_inst[6].multiplier |     9.096 |
+|     mult_inst[7].multiplier |     3.818 |
+|   g_row_dct[6].u_row_dct    |    76.005 |
+|     mult_inst[0].multiplier |     7.072 |
+|     mult_inst[1].multiplier |     9.860 |
+|     mult_inst[2].multiplier |     6.581 |
+|     mult_inst[3].multiplier |    11.207 |
+|     mult_inst[4].multiplier |     7.308 |
+|     mult_inst[5].multiplier |     7.972 |
+|     mult_inst[6].multiplier |     9.096 |
+|     mult_inst[7].multiplier |     3.818 |
+|   g_row_dct[7].u_row_dct    |    78.860 |
+|     mult_inst[0].multiplier |     7.072 |
+|     mult_inst[1].multiplier |     9.888 |
+|     mult_inst[2].multiplier |     6.581 |
+|     mult_inst[3].multiplier |    11.207 |
+|     mult_inst[4].multiplier |     7.308 |
+|     mult_inst[5].multiplier |     7.968 |
+|     mult_inst[6].multiplier |     9.096 |
+|     mult_inst[7].multiplier |     3.819 |
++-----------------------------+-----------+
+
+
