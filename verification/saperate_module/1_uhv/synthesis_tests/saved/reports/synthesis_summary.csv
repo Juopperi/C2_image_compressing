@@ -1,0 +1,5 @@
+Module,LUTs,Registers,DSPs,BRAMs
+dct8x8_2d_pipe_block,,,,
+dct8x8_chen_2d,,,,
+dct8x8_chen_2d_parallel,,,,
+dct8_chen_ts,,,,

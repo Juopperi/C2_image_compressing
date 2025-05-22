@@ -1,0 +1,66 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:35:27 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Thu Apr 17 16:47:16 2025
+# Process ID         : 43692
+# Current directory  : C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/connection/rtl
+# Command line       : vivado.exe -mode batch -source synth_multipliers.tcl -tclargs shift_add_multiplier shift_add_multiplier.v 12
+# Log file           : C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/connection/rtl/vivado.log
+# Journal file       : C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/connection/rtl\vivado.jou
+# Running On         : wenruoxu
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26100
+# Processor Detail   : AMD Ryzen 9 7950X 16-Core Processor            
+# CPU Frequency      : 4491 MHz
+# CPU Physical cores : 16
+# CPU Logical cores  : 32
+# Host memory        : 50621 MB
+# Swap memory        : 12092 MB
+# Total Virtual      : 62713 MB
+# Available Virtual  : 12707 MB
+#-----------------------------------------------------------
+source synth_multipliers.tcl
+# if {$argc < 2} {
+#     puts "Usage: vivado -mode batch -source synth_multipliers.tcl -tclargs <top_module> <src_file> \[width\]"
+#     exit 1
+# }
+# set TOP_MODULE [lindex $argv 0]
+# set SRC_FILE [lindex $argv 1]
+# set WIDTH 16
+# if {$argc >= 3} {
+#     set WIDTH [lindex $argv 2]
+# }
+# set OUT_DIR "./synth_results/${TOP_MODULE}_w${WIDTH}"
+# create_project -force $TOP_MODULE $OUT_DIR -part xc7z020clg484-1
+INFO: [ProjectBase 1-489] The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters. If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter.
+Current project path is 'C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/connection/rtl/synth_results/shift_add_multiplier_w12'
+# add_files $SRC_FILE
+# set_property top $TOP_MODULE [current_fileset]
+# synth_design -top $TOP_MODULE -mode out_of_context -generic WIDTH=$WIDTH
+Command: synth_design -top shift_add_multiplier -mode out_of_context -generic WIDTH=12
+Starting synth_design
+Using part: xc7z020clg484-1
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 13144
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 1132.484 ; gain = 472.344
+---------------------------------------------------------------------------------
+ERROR: [Synth 8-2716] syntax error near ''b' [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/connection/rtl/shift_add_multiplier.v:26]
+WARNING: [Synth 8-9400] empty statement in sequential block [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/connection/rtl/shift_add_multiplier.v:26]
+INFO: [Synth 8-10285] module 'shift_add_multiplier' is ignored due to previous errors [C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/connection/rtl/shift_add_multiplier.v:39]
+INFO: [Synth 8-9084] Verilog file 'C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/connection/rtl/shift_add_multiplier.v' ignored due to errors
+ERROR: [Synth 8-12188] Failed to read verilog 'C:/Users/wuche/Desktop/CODE/dat096/C2_image_compressing/connection/rtl/shift_add_multiplier.v'
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1230.125 ; gain = 569.984
+---------------------------------------------------------------------------------
+synthesize failed
+INFO: [Common 17-83] Releasing license: Synthesis
+7 Infos, 1 Warnings, 0 Critical Warnings and 3 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Vivado Synthesis failed
+INFO: [Common 17-206] Exiting Vivado at Thu Apr 17 16:47:29 2025...

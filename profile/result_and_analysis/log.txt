@@ -1,0 +1,304 @@
+========================================================================
+Processing: image_1024x1024.bmp
+Width: 1024 Height: 1024 Channels: 3
+---- Profiling Report ----
+subsample_encoding : 0.036452 seconds
+      encode_dc : 0.001642 seconds
+      write_eoi : 0.000000 seconds
+    dct_columns : 0.001481 seconds
+  bit_alignment : 0.000000 seconds
+       quantize : 0.007526 seconds
+       dct_rows : 0.001473 seconds
+  write_headers : 0.000109 seconds
+     encode_acs : 0.017902 seconds
+     load_image : 0.090721 seconds
+--------------------------
+========================================
+Current time: 05-Apr-2025 12:32:42
+Image name: bmp/image_1024x1024.bmp
+Image loading time: 0.0907 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.0365 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0015 seconds
+Quantization time: 0.0075 seconds
+Encoding time: 0.0179 seconds
+File writing time: 0.0396 seconds
+Total execution time: 0.1936 seconds
+
+Execution time breakdown:
+Image loading: 46.85%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 18.82%
+Level shift: 0.00%
+DCT transform: 0.76%
+Quantization: 3.89%
+Encoding: 9.24%
+File writing: 20.44%
+========================================
+========================================================================
+Processing: image_128x128.bmp
+Width: 128 Height: 128 Channels: 3
+---- Profiling Report ----
+subsample_encoding : 0.000756 seconds
+      encode_dc : 0.000018 seconds
+      write_eoi : 0.000000 seconds
+    dct_columns : 0.000023 seconds
+  bit_alignment : 0.000000 seconds
+       quantize : 0.000122 seconds
+       dct_rows : 0.000023 seconds
+  write_headers : 0.000111 seconds
+     encode_acs : 0.000470 seconds
+     load_image : 0.002588 seconds
+--------------------------
+========================================
+Current time: 05-Apr-2025 12:32:42
+Image name: bmp/image_128x128.bmp
+Image loading time: 0.0026 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.0008 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0000 seconds
+Quantization time: 0.0001 seconds
+Encoding time: 0.0005 seconds
+File writing time: 0.0026 seconds
+Total execution time: 0.0066 seconds
+
+Execution time breakdown:
+Image loading: 39.44%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 11.52%
+Level shift: 0.00%
+DCT transform: 0.35%
+Quantization: 1.86%
+Encoding: 7.16%
+File writing: 39.66%
+========================================
+========================================================================
+Processing: image_16384x16384.bmp
+Width: 16384 Height: 16384 Channels: 3
+---- Profiling Report ----
+subsample_encoding : 5.666555 seconds
+      encode_dc : 0.426975 seconds
+      write_eoi : 0.000000 seconds
+    dct_columns : 0.381373 seconds
+  bit_alignment : 0.000000 seconds
+       quantize : 1.802249 seconds
+       dct_rows : 0.383421 seconds
+  write_headers : 0.000144 seconds
+     encode_acs : 1.032234 seconds
+     load_image : 19.340451 seconds
+--------------------------
+========================================
+Current time: 05-Apr-2025 12:33:07
+Image name: bmp/image_16384x16384.bmp
+Image loading time: 19.3405 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 5.6666 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.3834 seconds
+Quantization time: 1.8022 seconds
+Encoding time: 1.0322 seconds
+File writing time: 5.6700 seconds
+Total execution time: 33.8949 seconds
+
+Execution time breakdown:
+Image loading: 57.06%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 16.72%
+Level shift: 0.00%
+DCT transform: 1.13%
+Quantization: 5.32%
+Encoding: 3.05%
+File writing: 16.73%
+========================================
+========================================================================
+Processing: image_2048x2048.bmp
+Width: 2048 Height: 2048 Channels: 3
+---- Profiling Report ----
+subsample_encoding : 0.122707 seconds
+      encode_dc : 0.007333 seconds
+      write_eoi : 0.000000 seconds
+    dct_columns : 0.006081 seconds
+  bit_alignment : 0.000000 seconds
+       quantize : 0.029429 seconds
+       dct_rows : 0.006003 seconds
+  write_headers : 0.000110 seconds
+     encode_acs : 0.047678 seconds
+     load_image : 0.350997 seconds
+--------------------------
+========================================
+Current time: 05-Apr-2025 12:33:08
+Image name: bmp/image_2048x2048.bmp
+Image loading time: 0.3510 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.1227 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0060 seconds
+Quantization time: 0.0294 seconds
+Encoding time: 0.0477 seconds
+File writing time: 0.1250 seconds
+Total execution time: 0.6818 seconds
+
+Execution time breakdown:
+Image loading: 51.48%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 18.00%
+Level shift: 0.00%
+DCT transform: 0.88%
+Quantization: 4.32%
+Encoding: 6.99%
+File writing: 18.33%
+========================================
+========================================================================
+Processing: image_256x256.bmp
+Width: 256 Height: 256 Channels: 3
+---- Profiling Report ----
+subsample_encoding : 0.002845 seconds
+      encode_dc : 0.000070 seconds
+      write_eoi : 0.000000 seconds
+    dct_columns : 0.000092 seconds
+  bit_alignment : 0.000000 seconds
+       quantize : 0.000497 seconds
+       dct_rows : 0.000092 seconds
+  write_headers : 0.000108 seconds
+     encode_acs : 0.001695 seconds
+     load_image : 0.006691 seconds
+--------------------------
+========================================
+Current time: 05-Apr-2025 12:33:08
+Image name: bmp/image_256x256.bmp
+Image loading time: 0.0067 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.0028 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0001 seconds
+Quantization time: 0.0005 seconds
+Encoding time: 0.0017 seconds
+File writing time: 0.0049 seconds
+Total execution time: 0.0167 seconds
+
+Execution time breakdown:
+Image loading: 40.07%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 17.04%
+Level shift: 0.00%
+DCT transform: 0.55%
+Quantization: 2.98%
+Encoding: 10.15%
+File writing: 29.22%
+========================================
+========================================================================
+Processing: image_4096x4096.bmp
+Width: 4096 Height: 4096 Channels: 3
+---- Profiling Report ----
+subsample_encoding : 0.430164 seconds
+      encode_dc : 0.029147 seconds
+      write_eoi : 0.000000 seconds
+    dct_columns : 0.024026 seconds
+  bit_alignment : 0.000000 seconds
+       quantize : 0.119309 seconds
+       dct_rows : 0.024199 seconds
+  write_headers : 0.000123 seconds
+     encode_acs : 0.129925 seconds
+     load_image : 1.388424 seconds
+--------------------------
+========================================
+Current time: 05-Apr-2025 12:33:10
+Image name: bmp/image_4096x4096.bmp
+Image loading time: 1.3884 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.4302 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0242 seconds
+Quantization time: 0.1193 seconds
+Encoding time: 0.1299 seconds
+File writing time: 0.4326 seconds
+Total execution time: 2.5246 seconds
+
+Execution time breakdown:
+Image loading: 55.00%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 17.04%
+Level shift: 0.00%
+DCT transform: 0.96%
+Quantization: 4.73%
+Encoding: 5.15%
+File writing: 17.13%
+========================================
+========================================================================
+Processing: image_512x512.bmp
+Width: 512 Height: 512 Channels: 3
+---- Profiling Report ----
+subsample_encoding : 0.012674 seconds
+      encode_dc : 0.000834 seconds
+      write_eoi : 0.000000 seconds
+    dct_columns : 0.000383 seconds
+  bit_alignment : 0.000001 seconds
+       quantize : 0.002095 seconds
+       dct_rows : 0.000412 seconds
+  write_headers : 0.000125 seconds
+     encode_acs : 0.007247 seconds
+     load_image : 0.024389 seconds
+--------------------------
+========================================
+Current time: 05-Apr-2025 12:33:10
+Image name: bmp/image_512x512.bmp
+Image loading time: 0.0244 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: 0.0127 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0004 seconds
+Quantization time: 0.0021 seconds
+Encoding time: 0.0072 seconds
+File writing time: 0.0149 seconds
+Total execution time: 0.0617 seconds
+
+Execution time breakdown:
+Image loading: 39.53%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: 20.54%
+Level shift: 0.00%
+DCT transform: 0.67%
+Quantization: 3.40%
+Encoding: 11.75%
+File writing: 24.11%
+========================================
+========================================================================
+Processing: image_8192x8192.bmp
+Width: 8192 Height: 8192 Channels: 3
+---- Profiling Report ----
+subsample_encoding : -1.417030 seconds
+      encode_dc : 0.110283 seconds
+      write_eoi : 0.000000 seconds
+    dct_columns : 0.094427 seconds
+  bit_alignment : 0.000001 seconds
+       quantize : -2.461142 seconds
+       dct_rows : 0.094959 seconds
+  write_headers : 0.000146 seconds
+     encode_acs : 0.338493 seconds
+     load_image : 5.512856 seconds
+--------------------------
+========================================
+Current time: 05-Apr-2025 12:33:14
+Image name: bmp/image_8192x8192.bmp
+Image loading time: 5.5129 seconds
+RGB to YCbCr conversion time: 0.0000 seconds
+Chroma subsampling time: -1.4170 seconds
+Level shift time: 0.0000 seconds
+DCT transform time: 0.0950 seconds
+Quantization time: -2.4611 seconds
+Encoding time: 0.3385 seconds
+File writing time: -1.4143 seconds
+Total execution time: 0.6539 seconds
+
+Execution time breakdown:
+Image loading: 843.12%
+RGB to YCbCr conversion: 0.00%
+Chroma subsampling: -216.72%
+Level shift: 0.00%
+DCT transform: 14.52%
+Quantization: -376.40%
+Encoding: 51.77%
+File writing: -216.30%
+========================================
