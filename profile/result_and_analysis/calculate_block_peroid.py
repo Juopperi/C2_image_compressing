@@ -101,7 +101,8 @@ plt.xticks(x, sorted_image_sizes)
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.legend()
 plt.tight_layout()
-plt.savefig('per_block_processing_time.png')
+plt.ylim(bottom=0)
+plt.savefig('per_block_processing_period.png')
 plt.show()
 
 # Calculate average for each step
