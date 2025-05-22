@@ -2,7 +2,9 @@
 
 # Variables
 VERILATOR = verilator
-VERILATOR_FLAGS = -Wall --trace -cc --exe -LDFLAGS "-pthread" -Wno-fatal --trace-max-array 512 --top-module $(TOP_MODULE) -Irtl
+VERILATOR_FLAGS = -Wall --trace -cc --exe -LDFLAGS "-pthread"  
+VERILATOR_FLAGS+= -Wno-fatal 
+VERILATOR_FLAGS+= --trace-max-array 512 --top-module $(TOP_MODULE) -Irtl
 # Use -CFLAGS to pass C++ compiler flags to Verilator
 CPP_FLAGS = -CFLAGS "-std=c++17 -Wall"
 
@@ -10,7 +12,7 @@ CPP_FLAGS = -CFLAGS "-std=c++17 -Wall"
 TOP_MODULE = rgb2ycbcr_quant
 
 # Testbench filename
-TB = tb_rgb2ycbcr_quant.cpp
+TB = ./src/tb_rgb2ycbcr_quant.cpp
 
 # RTL files
 RTL_FILES = rtl/rgb2ycbcr_quant.sv 
