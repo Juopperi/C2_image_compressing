@@ -68,6 +68,12 @@ sorted_image_sizes = [image_sizes[i] for i in sorted_indices]
 sorted_block_counts = [block_counts[i] for i in sorted_indices]
 sorted_per_block_times = {step: [per_block_times[step][i] for i in sorted_indices] for step in steps}
 
+# Calculate total processing time per block for each image
+total_block_times = []
+for i in range(len(sorted_image_sizes)):
+    total_time = sum(sorted_per_block_times[step][i] for step in steps)
+    total_block_times.append(total_time)
+
 # Print results
 print("Average processing time per 8x8 pixel block (nanoseconds):")
 print("-" * 80)
@@ -93,6 +99,9 @@ x = np.arange(len(sorted_image_sizes))
 for step in steps:
     plt.plot(x, sorted_per_block_times[step], marker='o', linewidth=2, label=step)
 
+# Plot total processing time
+plt.plot(x, total_block_times, marker='*', linewidth=3, linestyle='--', color='black', label='Total processing time')
+
 plt.xlabel('Image Size')
 plt.ylabel('Average Processing Time per Block (ns)')
 plt.title('Average Processing Time per 8x8 Pixel Block')
@@ -108,4 +117,8 @@ plt.show()
 print("\nAverage processing time per step across all images (per 8x8 block):")
 for step in steps:
     avg_time = np.mean([t for t in sorted_per_block_times[step] if t > 0])
-    print(f"{step}: {avg_time:.2f} nanoseconds/block") 
+    print(f"{step}: {avg_time:.2f} nanoseconds/block")
+
+# Calculate average total processing time
+avg_total_time = np.mean([t for t in total_block_times if t > 0])
+print(f"Total processing time: {avg_total_time:.2f} nanoseconds/block") 

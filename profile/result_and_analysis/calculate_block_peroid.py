@@ -110,3 +110,5 @@ print("\nAverage processing time per step across all images (per 8x8 block):")
 for step in steps:
     avg_time = np.mean([t for t in sorted_per_block_times[step] if t > 0])
     print(f"{step}: {avg_time:.2f} nanoseconds/block") 
+
+    
