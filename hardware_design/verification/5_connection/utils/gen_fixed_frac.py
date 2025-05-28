@@ -16,29 +16,29 @@ def float_to_fixed_point(float_val, bits=16):
         整数: 定点数表示（整数形式）
         十六进制字符串: 定点数的十六进制表示
     """
-    # 确保输入的浮点数在-1到1之间(纯小数部分)
+    # Make sure the input floating point number is-1arrive1between(Pure decimal part)
     if abs(float_val) >= 1:
-        print(f"警告: {float_val} 的绝对值大于或等于1，将只保留小数部分")
-        float_val = float_val - int(float_val)  # 只保留小数部分
+        print(f"warn: {float_val} The absolute value of1，Only the fractional part will be retained")
+        float_val = float_val - int(float_val)  # Only the decimal part is retained
     
-    # 将浮点数转换为定点数
+    # Convert floating point numbers to fixed point numbers
     fixed_point_val = int(float_val * (2 ** bits))
     
-    # 处理负数情况
+    # Handle negative numbers
     if float_val < 0:
-        # 对于负数，使用二的补码表示
+        # For negative numbers，Use two's complement code to represent
         fixed_point_val = fixed_point_val & ((1 << bits) - 1)
     
-    # 转换为十六进制表示
+    # Convert to hexadecimal representation
     hex_val = format(fixed_point_val, f'0{(bits+3)//4}x')
     
     return fixed_point_val, hex_val
 
 def batch_convert():
-    """批量转换小数为16位定点数并显示结果"""
-    print("小数到16位定点数转换器")
+    """Batch conversion of decimals to16Locate the number of fixed points and display the results"""
+    print("Decimals to16Bit fixed-point converter")
     print("======================")
-    print("请输入小数（每行一个，输入空行结束）：")
+    print("Please enter a decimal（One per line，Enter blank line to end）：")
     
     inputs = []
     while True:
@@ -47,20 +47,20 @@ def batch_convert():
             break
         
         try:
-            # 尝试将输入解析为浮点数
+            # Try to parse the input into a floating point number
             value = float(line)
             inputs.append(value)
         except ValueError:
-            print(f"错误: '{line}' 不是有效的小数，已跳过")
+            print(f"mistake: '{line}' Not a valid decimal，Skipped")
     
     if not inputs:
-        print("未输入任何有效的小数。")
+        print("No valid decimals were entered。")
         return
     
-    # 显示结果表格
-    print("\n转换结果:")
+    # Show result table
+    print("\nConvert result:")
     print("-" * 60)
-    print(f"{'原始小数':^15} | {'定点数(十进制)':^15} | {'定点数(十六进制)':^15}")
+    print(f"{'Original decimal':^15} | {'Fixed point number(Decimal)':^15} | {'Fixed point number(hexadecimal)':^15}")
     print("-" * 60)
     
     for value in inputs:

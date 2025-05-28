@@ -6,7 +6,7 @@ import sys
 testbench_name = "tb_dct8x8_chen_2d"
 
 # -----------------------------
-# 解析参数
+# Analyze parameters
 # -----------------------------
 if len(sys.argv) < 2:
     print("Usage: python main.py <set count> [gen] [gui]")
@@ -16,7 +16,7 @@ set_count = sys.argv[1]
 should_generate = len(sys.argv) > 2 and sys.argv[2].lower() == "gen"
 
 # -----------------------------
-# 源码路径配置
+# Source code path configuration
 # -----------------------------
 search_dirs = [
     "rtl",
@@ -29,12 +29,12 @@ output_file = "simulate.ps1"
 
 
 # -----------------------------
-# 检查是否启用 GUI 模式
+# Check if it is enabled GUI model
 # -----------------------------
 gui_mode = any(arg.lower() in {"gui", "-g", "--gui"} for arg in sys.argv)
 
 # -----------------------------
-# 生成 simulate.ps1 内容（含 +acc / gui 控制）
+# generate simulate.ps1 content（Include +acc / gui control）
 # -----------------------------
 print("\n📦 Generating simulation script...")
 
@@ -73,7 +73,7 @@ with open(output_file, 'w') as f:
     f.write('\n'.join(do_script))
 print(f"✅ Created '{output_file}' with {len(vlog_lines)} source files.")
 
-# 移动脚本文件
+# Move script files
 target_path = os.path.join("tb", "sim", output_file)
 os.makedirs(os.path.dirname(target_path), exist_ok=True)
 if os.path.exists(target_path):
@@ -83,7 +83,7 @@ shutil.move(output_file, target_path)
 print(f"📂 Moved new script to '{target_path}'")
 
 # -----------------------------
-# 是否重新生成测试向量
+# Whether to regenerate the test vector
 # -----------------------------
 if should_generate:
     print("\n⚙️  Running: wsl bash gen_put_vector.sh ...")
@@ -125,12 +125,12 @@ else:
 
 
 # -----------------------------
-# 仿真前暂停确认
+# Pause confirmation before simulation
 # -----------------------------
 # input("\n⏸ Press Enter to start simulation...")
 
 # -----------------------------
-# 执行仿真脚本
+# Execute simulation scripts
 # -----------------------------
 sim_dir = os.path.join("tb", "sim")
 script_path = os.path.join(sim_dir, output_file)

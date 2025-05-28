@@ -5,14 +5,14 @@ import sys
 
 import seaborn as sns
 
-# 替代风格
+# Alternative style
 
 
 def analyze_and_plot(csv_file):
-    # 读取 CSV
+    # Read CSV
     df = pd.read_csv(csv_file)
 
-    # 检查字段
+    # Check fields
     if not {'index', 'expected', 'actual', 'diff'}.issubset(df.columns):
         print("CSV file must contain 'index', 'expected', 'actual', 'diff' columns.")
         return
@@ -25,9 +25,9 @@ def analyze_and_plot(csv_file):
     print("Total Samples  :", len(df))
     print()
 
-    # 绘图风格
+    # Drawing style
 
-    # 误差分布直方图
+    # Error distribution histogram
     plt.figure(figsize=(8, 4))
     plt.hist(df['diff'], bins=50, color='skyblue', edgecolor='black')
     plt.title('Distribution of Absolute DCT Error')
@@ -38,7 +38,7 @@ def analyze_and_plot(csv_file):
     plt.savefig('hist_diff_distribution.png')
     print("Saved: hist_diff_distribution.png")
 
-    # 误差趋势图（index vs diff）
+    # Error trend chart（index vs diff）
     plt.figure(figsize=(10, 4))
     plt.plot(df['index'], df['diff'], label='|expected - actual|', linewidth=0.8)
     plt.title('DCT Error Over All Samples')

@@ -13,7 +13,7 @@ def analyze_position_distribution(csv_path, title="Luma", block_size=64, thresho
     num_blocks = len(diffs) // block_size
     diffs = diffs[:num_blocks * block_size].reshape((-1, block_size))
 
-    # 计算每个位置的误差统计
+    # Calculate the error statistics for each position
     avg_error = np.mean(np.abs(diffs), axis=0)
     max_error = np.max(np.abs(diffs), axis=0)
     large_error_count = np.sum(np.abs(diffs) > threshold, axis=0)
@@ -23,7 +23,7 @@ def analyze_position_distribution(csv_path, title="Luma", block_size=64, thresho
 def plot_position_stats(avg, maxv, count, title_prefix):
     x = np.arange(64)
 
-    # 条形图：平均误差
+    # Bar chart：Average error
     plt.figure(figsize=(10, 4))
     plt.bar(x, avg)
     plt.title(f"{title_prefix} - Avg Abs Error per Position")
@@ -33,7 +33,7 @@ def plot_position_stats(avg, maxv, count, title_prefix):
     plt.tight_layout()
     plt.savefig(f"result/{title_prefix.lower()}_avg_error.png")
 
-    # 条形图：最大误差
+    # Bar chart：Maximum error
     plt.figure(figsize=(10, 4))
     plt.bar(x, maxv)
     plt.title(f"{title_prefix} - Max Abs Error per Position")
@@ -43,7 +43,7 @@ def plot_position_stats(avg, maxv, count, title_prefix):
     plt.tight_layout()
     plt.savefig(f"result/{title_prefix.lower()}_max_error.png")
 
-    # 条形图：超阈值次数
+    # Bar chart：Threshold number
     plt.figure(figsize=(10, 4))
     plt.bar(x, count)
     plt.title(f"{title_prefix} - Error > Threshold Count")
@@ -53,8 +53,8 @@ def plot_position_stats(avg, maxv, count, title_prefix):
     plt.tight_layout()
     plt.savefig(f"result/{title_prefix.lower()}_error_count.png")
 
-    # 热力图：平均误差 reshape 为 8x8
-    heatmap_data = avg.reshape((8, 8))  # 默认行优先排列
+    # Thermal map：Average error reshape for 8x8
+    heatmap_data = avg.reshape((8, 8))  # Default row priority
 
     plt.figure(figsize=(6, 5))
     plt.imshow(heatmap_data, cmap='hot', interpolation='nearest')
@@ -78,7 +78,7 @@ def run_all():
         "result/diff_chroma.csv", title="Chroma", block_size=64, threshold=10)
     plot_position_stats(avg_chroma, max_chroma, count_chroma, "Chroma")
 
-    print("✅ 分析完成，热力图和柱状图已生成在 result/")
+    print("✅ Analysis completed，Thermal graph and bar graph have been generated in result/")
 
 if __name__ == "__main__":
     run_all()

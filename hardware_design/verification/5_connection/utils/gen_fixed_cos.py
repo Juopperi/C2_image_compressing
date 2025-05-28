@@ -18,7 +18,7 @@ def calc_fixed_point_trig(frac_bits=8, const_width=10):
     返回:
         包含所有转换后值的字典
     """
-    # 定义需要计算的角度 (以π为单位)
+    # Define the angle to be calculated (byπFor units)
     angles = {
         'C1': 1/16,    # cos(π/16)
         'C2': 2/16,    # cos(2π/16)
@@ -35,49 +35,49 @@ def calc_fixed_point_trig(frac_bits=8, const_width=10):
         'SIN7': 7/16,  # sin(7π/16)
     }
     
-    # 计算DCT系数的缩放因子
+    # calculateDCTScaling factor of coefficients
     scaling_factors = {
         'K0': 1/math.sqrt(8),  # 1/√8
         'K': 0.5,              # 0.5
     }
     
     results = {}
-    max_val = (1 << (const_width - 1)) - 1  # 有符号数的最大值
+    max_val = (1 << (const_width - 1)) - 1  # Maximum value of signed number
     
-    # 计算余弦值
+    # Calculate the cosine value
     for name, angle in angles.items():
         if name.startswith('C'):
-            # 计算余弦值
+            # Calculate the cosine value
             float_val = math.cos(angle * math.pi)
             fixed_val = int(round(float_val * (2 ** frac_bits)))
             
-            # 确保不超过位宽限制
+            # Ensure that the bit width limit is not exceeded
             if abs(fixed_val) > max_val:
-                print(f"警告: {name} = {fixed_val} 超出 {const_width} 位有符号数范围")
+                print(f"warn: {name} = {fixed_val} More than {const_width} Bit signed number range")
                 fixed_val = max_val if fixed_val > 0 else -max_val
                 
             results[name] = (float_val, fixed_val)
             
         elif name.startswith('SIN'):
-            # 计算正弦值
+            # Calculate the sine value
             float_val = math.sin(angle * math.pi)
             fixed_val = int(round(float_val * (2 ** frac_bits)))
             
-            # 确保不超过位宽限制
+            # Ensure that the bit width limit is not exceeded
             if abs(fixed_val) > max_val:
-                print(f"警告: {name} = {fixed_val} 超出 {const_width} 位有符号数范围")
+                print(f"warn: {name} = {fixed_val} More than {const_width} Bit signed number range")
                 fixed_val = max_val if fixed_val > 0 else -max_val
                 
             results[name] = (float_val, fixed_val)
     
-    # 计算缩放因子
+    # Calculate the scaling factor
     for name, factor in scaling_factors.items():
         float_val = factor
         fixed_val = int(round(float_val * (2 ** frac_bits)))
         
-        # 确保不超过位宽限制
+        # Ensure that the bit width limit is not exceeded
         if abs(fixed_val) > max_val:
-            print(f"警告: {name} = {fixed_val} 超出 {const_width} 位有符号数范围")
+            print(f"warn: {name} = {fixed_val} More than {const_width} Bit signed number range")
             fixed_val = max_val if fixed_val > 0 else -max_val
             
         results[name] = (float_val, fixed_val)
@@ -85,13 +85,13 @@ def calc_fixed_point_trig(frac_bits=8, const_width=10):
     return results
 
 def format_verilog_constants(results, const_width=10):
-    """将结果格式化为Verilog局部参数定义"""
+    """Format the result asVerilogLocal parameter definition"""
     verilog_code = f"// --------------------------------------------------------------------\n"
-    verilog_code += f"// 常量 (×2^FRAC)\n"
+    verilog_code += f"// constant (×2^FRAC)\n"
     verilog_code += f"// --------------------------------------------------------------------\n"
     verilog_code += f"localparam logic signed [{const_width-1}:0]\n"
     
-    # 按照特定顺序排列常量
+    # Arrange constants in a specific order
     ordered_constants = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 
                          'SIN1', 'SIN2', 'SIN3', 'SIN5', 'SIN6', 'SIN7', 
                          'K0', 'K']
@@ -106,33 +106,33 @@ def format_verilog_constants(results, const_width=10):
     return verilog_code
 
 def main():
-    """主函数"""
-    parser = argparse.ArgumentParser(description='DCT三角函数定点数计算器')
-    parser.add_argument('--frac', type=int, default=15, help='小数位数 (默认: 15)')
-    parser.add_argument('--width', type=int, default=16, help='常量位宽 (默认: 16)')
+    """Main function"""
+    parser = argparse.ArgumentParser(description='DCTTrigonometric function fixed-point number calculator')
+    parser.add_argument('--frac', type=int, default=15, help='Number of decimal places (default: 15)')
+    parser.add_argument('--width', type=int, default=16, help='Constant bit width (default: 16)')
     args = parser.parse_args()
     
-    print(f"DCT三角函数定点数计算器 (小数位: {args.frac}, 常量位宽: {args.width})")
+    print(f"DCTTrigonometric function fixed-point number calculator (Decimal places: {args.frac}, Constant bit width: {args.width})")
     print("=" * 60)
     
-    # 计算所有值
+    # Calculate all values
     results = calc_fixed_point_trig(args.frac, args.width)
     
-    # 显示结果表格
-    print("\n计算结果:")
+    # Show result table
+    print("\nCalculation results:")
     print("-" * 60)
-    print(f"{'常量名':^8} | {'浮点值':^12} | {'定点值(十进制)':^15} | {'二进制表示':^{args.width+2}}")
+    print(f"{'Constant name':^8} | {'Floating point value':^12} | {'Fixed-point value(Decimal)':^15} | {'Binary representation':^{args.width+2}}")
     print("-" * 60)
     
-    # 按照特定顺序显示结果
-    for category, prefix in [("余弦值", "C"), ("正弦值", "SIN"), ("缩放因子", "K")]:
+    # Show results in a specific order
+    for category, prefix in [("Cosine value", "C"), ("Sine value", "SIN"), ("Scaling factor", "K")]:
         print(f"\n{category}:")
         for name, (float_val, fixed_val) in sorted(results.items()):
             if name.startswith(prefix) or (prefix == "K" and (name == "K" or name == "K0")):
                 bin_repr = format(fixed_val & ((1 << args.width) - 1), f'0{args.width}b') if fixed_val < 0 else format(fixed_val, f'0{args.width}b')
                 print(f"{name:^8} | {float_val:^12.8f} | {fixed_val:^15d} | {bin_repr:^{args.width+2}}")
     
-    print("\nVerilog代码:")
+    print("\nVerilogCode:")
     print("-" * 60)
     print(format_verilog_constants(results, args.width))
 

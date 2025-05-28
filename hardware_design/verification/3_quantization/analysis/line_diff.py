@@ -22,7 +22,7 @@ for file in file_list:
         df = pd.read_csv(path)
         df.columns = [col.strip() for col in df.columns]
         if 'diff' not in df.columns:
-            print(f"[跳过] {file} — 没有 'diff' 列，实际列名：{df.columns.tolist()}")
+            print(f"[jump over] {file} — No 'diff' List，实际List名：{df.columns.tolist()}")
             continue
 
         diffs = df['diff'].astype(float)
@@ -32,22 +32,22 @@ for file in file_list:
         stats['mean'].append(diffs.mean())
         stats['std'].append(diffs.std())
         stats['max'].append(diffs.max())
-        print(f"[读取成功] {file} ({len(diffs)} 项)")
+        print(f"[Read successfully] {file} ({len(diffs)} item)")
     except Exception as e:
-        print(f"[出错] 读取 {file} 时发生错误：{e}")
+        print(f"[An error occurred] Read {file} An error occurred while：{e}")
 
-# 转为 DataFrame
+# Turn to DataFrame
 stats_df = pd.DataFrame(stats)
 stats_df.sort_values(by='group', inplace=True)
 
-# 画图
+# Draw pictures
 plt.figure(figsize=(10, 6))
 plt.plot(stats_df['group'], stats_df['mean'], marker='o', label='Mean')
 plt.plot(stats_df['group'], stats_df['std'], marker='s', label='Std')
 plt.plot(stats_df['group'], stats_df['max'], marker='^', label='Max')
 
-plt.xscale('log')  # 横轴对数坐标（按样本量）
-plt.yscale('log')  # 纵轴对数坐标（误差范围广）
+plt.xscale('log')  # Logarithmic coordinates of horizontal axis（By sample size）
+plt.yscale('log')  # Logarithmic coordinates of vertical axis（Wide error range）
 
 plt.xlabel('Sample Size (log scale)')
 plt.ylabel('Diff Error (log scale)')
@@ -58,7 +58,7 @@ plt.tight_layout()
 plt.savefig('line_diff_log_stats.png', dpi=300)
 plt.show()
 
-# 保存为文本表格
+# Save as a text table
 output_txt = 'diff_stats.txt'
 with open(output_txt, 'w') as f:
     f.write(f"{'Sample Size':>12} | {'Mean':>12} | {'Std Dev':>12} | {'Max':>12}\n")
@@ -66,5 +66,5 @@ with open(output_txt, 'w') as f:
     for _, row in stats_df.iterrows():
         f.write(f"{int(row['group']):>12} | {row['mean']:<12.6e} | {row['std']:<12.6e} | {row['max']:<12.6e}\n")
 
-print(f"已将误差统计数据保存到 {output_txt}")
+print(f"Error statistics have been saved to {output_txt}")
 

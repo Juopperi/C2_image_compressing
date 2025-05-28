@@ -10,7 +10,7 @@ pattern_suffix = '.csv'
 file_list = [f for f in os.listdir(folder) if f.startswith(pattern_prefix) and f.endswith(pattern_suffix)]
 file_list.sort(key=lambda x: int(x.replace(pattern_prefix, '').replace(pattern_suffix, '')))
 
-# 长格式存储所有 diff 值和其对应组名
+# Store all in long format diff Value and its corresponding group name
 long_data = []
 
 for file in file_list:
@@ -19,20 +19,20 @@ for file in file_list:
         df = pd.read_csv(path)
         df.columns = [col.strip() for col in df.columns]
         if 'diff' not in df.columns:
-            print(f"[跳过] {file} — 没有 'diff' 列，实际列名：{df.columns.tolist()}")
+            print(f"[jump over] {file} — No 'diff' List，实际List名：{df.columns.tolist()}")
             continue
 
         diffs = df['diff'].astype(float)
         label = file.replace(pattern_prefix, '').replace(pattern_suffix, '')
         long_data.append(pd.DataFrame({'diff': diffs, 'group': label}))
-        print(f"[读取成功] {file} ({len(diffs)} 项)")
+        print(f"[Read successfully] {file} ({len(diffs)} item)")
     except Exception as e:
-        print(f"[出错] 读取 {file} 时发生错误：{e}")
+        print(f"[An error occurred] Read {file} An error occurred while：{e}")
 
-# 合并为一个 DataFrame
+# Merge into one DataFrame
 plot_df = pd.concat(long_data, ignore_index=True)
 
-# 画图
+# Draw pictures
 plt.figure(figsize=(12, 6))
 sns.boxplot(x='group', y='diff', data=plot_df)
 plt.xlabel('Sample Size')
