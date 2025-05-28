@@ -1,26 +1,26 @@
 ### Introduction
 - Why we do it
-	- Satellites are increassing
+	- Satellites are increasing
 	- Hardware is better
 - Related work
 - Goal of the project
-	- Decreasse resource 
-- OUtline of report 
+	- Decrease resource 
+- Outline of report 
 
 ### JPEG Compression
 - Reader know everyrhing else 
 ### Method
-- Implementation Stragies
+- Implementation Strategies
 	- Design flow
 		- Software implementation
 		- Individual hardware parts
 	- Verification
-		- The process of verifing 
+		- The process of verifying 
 
 ### Design
 - General design.
 	- Divide the design into modules
-		- These are tested sepratly 
+		- These are tested separately 
 	- We use generics to increasses adjusatlinlites 
 	- Control the resource usage.
 
@@ -36,7 +36,7 @@
 		- Tells why the hardware is faster 
 - Deviation from expected results: (Shuhang)
 	- Explain that we compress a file on a SD-card
-		- BUt the files is not exactly the same as the matlab version
+		- But the files is not exactly the same as the matlab version
 		- This is becuase the huffman is "Wrong"
 	- Show the Huffman expected and the one we get.
 		- Explain that this is because the 16.16 fixed point operations and rounding in YCbCr DCT and Quant

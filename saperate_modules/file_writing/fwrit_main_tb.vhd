@@ -52,6 +52,14 @@ begin
 		wait for clk_period*0.5;
 		in_bit <= '1';
 		wait for clk_period;
+		in_bit <= '0';
+		wait for clk_period*2;
+		in_bit <= '1';
+		wait for clk_period*3;
+		in_bit <= '0';
+		wait for clk_period*0.5;
+		in_bit <= '1';
+		wait for clk_period*1.5;
    end process;
  
    datavalid_process: process
