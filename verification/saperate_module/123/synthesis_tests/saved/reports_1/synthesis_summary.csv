@@ -1,8 +1,0 @@
-Module,LUTs,Registers,DSPs,BRAMs
-int_mul_fra,0,0,0,0
-int_mul_fra_ycbcr,0,0,0,0
-rgb2ycbcr_container,0,0,0,0
-dct8x8_chen_2d,0,0,0,0
-dct8_chen_ts,0,0,16,0
-lut_multiplier,0,0,2,0
-rgb2ycbcr_dct,0,0,0,0
