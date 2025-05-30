@@ -222,7 +222,3 @@ For questions or issues, refer to:
 - Main project README for overall context
 
 ---
-
-**Last Updated**: [Current Date]
-**Version**: 1.0
-**Maintainer**: [Your Name/Team] 
