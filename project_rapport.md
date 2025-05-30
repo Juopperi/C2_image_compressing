@@ -42,6 +42,6 @@
 		- Explain that this is because the 16.16 fixed point operations and rounding in YCbCr DCT and Quant
 - Hardware utilixation (Albin)
 	- Show the syntheies/implemnation hardware utilization
-		- Discuess these results
+		- Discuss these results
 
 - Future work
