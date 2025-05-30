@@ -1,7 +1,7 @@
 // ============================================================================
-// 8×8 2‑D DCT (基于单实例 dct8_chen_ts)
-//   • 外部接口: 展平为单个大位宽的64点并行输入/输出
-//   • 内部资源: 1 × dct8_chen_ts + 64 × IN_W RAM
+// 8×8 2‑D DCT (based on a single instance of dct8_chen_ts)
+//   • External interface: flattened 64-point parallel input/output
+//   • Internal resources: 1 × dct8_chen_ts + 64 × IN_W RAM
 // ============================================================================
 `timescale 1ns/1ps
 module dct8x8_chen_2d #(
@@ -11,61 +11,61 @@ module dct8x8_chen_2d #(
     input  logic                     clk,
     input  logic                     rst_n,
 
-    // ---------- 展平的64点输入接口 (8×8 像素) ----------
+    // ---------- Flattened 64-point input interface (8×8 pixels) ----------
     input  logic                     in_valid,
     output logic                     in_ready,
-    input  logic signed [64*IN_W-1:0] in_data,  // 64个输入点展平为一个大端口
+    input  logic signed [64*IN_W-1:0] in_data,  // Flattened 64 input points
 
-    // ---------- 展平的64点输出接口 (8×8 DCT) ----------
+    // ---------- Flattened 64-point output interface (8×8 DCT) ----------
     output logic                     out_valid,
     input  logic                     out_ready,
-    output logic signed [64*IN_W-1:0] out_data  // 64个输出点展平为一个大端口
+    output logic signed [64*IN_W-1:0] out_data  // Flattened 64 output points
 );
 
     // --------------------------------------------------------------------
-    // 内部状态
+    // Internal State
     // --------------------------------------------------------------------
     typedef enum logic [2:0] {
-        S_IDLE,        // 等待输入
-        S_ROW_PROC,    // 处理行
-        S_ROW_WAIT,    // 等待行结果
-        S_COL_PROC,    // 处理列
-        S_COL_WAIT,    // 等待列结果
-        S_DONE         // 计算完成，输出就绪
+        S_IDLE,        // Wait for input
+        S_ROW_PROC,    // Process rows
+        S_ROW_WAIT,    // Wait for row result
+        S_COL_PROC,    // Process columns
+        S_COL_WAIT,    // Wait for column result
+        S_DONE         // Computation complete, output ready
     } state_t;
 
     state_t state, nstate;
 
-    // 行/列计数
+    // Row/column counters
     logic [2:0] row_cnt, col_cnt;
     
-    // 输入缓冲区 (64 x IN_W)
+    // Input buffer (64 x IN_W)
     logic signed [IN_W-1:0] input_buffer [0:63];
     
-    // 输出缓冲区 (64 x IN_W)
+    // Output buffer (64 x IN_W)
     logic signed [IN_W-1:0] output_buffer [0:63];
 
     // --------------------------------------------------------------------
-    // 行‑>列 转置 RAM  (64 × IN_W)
+    // Row-to-column transpose RAM (64 × IN_W)
     // --------------------------------------------------------------------
     (* ram_style="block" *)
     logic signed [IN_W-1:0] trans_buff [0:63];
 
-    // 写控制
+    // Write control
     logic we_trans;
     logic signed [IN_W-1:0] wdata_trans [0:7];
 
-    // RAM写控制
+    // RAM write control
     always_ff @(posedge clk) begin
         if(we_trans) begin
-            // 写入8个元素
+            // Write 8 elements
             for(int j=0; j<8; j++) begin
                 trans_buff[row_cnt*8 + j] <= wdata_trans[j];
             end
         end
     end
 
-    // 读地址和数据
+    // Read addresses and data
     logic [5:0] raddr_trans [0:7];
     logic signed [IN_W-1:0] rdata_trans [0:7];
 
@@ -77,7 +77,7 @@ module dct8x8_chen_2d #(
     endgenerate
 
     // --------------------------------------------------------------------
-    // 与 1‑D DCT 核心的连接
+    // Connection to 1-D DCT core
     // --------------------------------------------------------------------
     logic core_in_valid, core_in_ready;
     logic core_out_valid;
@@ -97,19 +97,19 @@ module dct8x8_chen_2d #(
         .in4(core_in[4]),.in5(core_in[5]),.in6(core_in[6]),.in7(core_in[7]),
 
         .out_valid(core_out_valid),
-        .out_ready(1'b1),                // 内部全速接受
+        .out_ready(1'b1),                // Always ready internally
         .out0(core_out[0]),.out1(core_out[1]),.out2(core_out[2]),.out3(core_out[3]),
         .out4(core_out[4]),.out5(core_out[5]),.out6(core_out[6]),.out7(core_out[7])
     );
 
     // --------------------------------------------------------------------
-    // 顶层握手
+    // Top-level handshaking
     // --------------------------------------------------------------------
     assign in_ready = (state == S_IDLE);
     assign out_valid = (state == S_DONE);
 
-    // 输出映射 - 将输出缓冲区内容展平到out_data
-    // 按照行优先顺序进行拼接
+    // Output mapping – flatten the output buffer to out_data
+    // Row-major order concatenation
     always_comb begin
         for (int i = 0; i < 64; i++) begin
             out_data[i*IN_W +: IN_W] = output_buffer[i];
@@ -117,7 +117,7 @@ module dct8x8_chen_2d #(
     end
 
     // --------------------------------------------------------------------
-    // 当in_valid有效时，将展平的输入加载到缓冲区
+    // Load flattened input into buffer when in_valid is asserted
     // --------------------------------------------------------------------
     always_ff @(posedge clk) begin
         if(state == S_IDLE && in_valid) begin
@@ -128,7 +128,7 @@ module dct8x8_chen_2d #(
     end
 
     // --------------------------------------------------------------------
-    // 状态机
+    // State machine
     // --------------------------------------------------------------------
     always_ff @(posedge clk or negedge rst_n)
         if(!rst_n) state <= S_IDLE;
@@ -169,20 +169,20 @@ module dct8x8_chen_2d #(
                 if(out_ready)
                     nstate = S_IDLE;
             
-            default:;
+            default: ;
         endcase
     end
 
     // --------------------------------------------------------------------
-    // DCT核心输入数据选择
+    // DCT core input data selection
     // --------------------------------------------------------------------
     always_comb begin
-        // 默认：处理列（从转置缓冲区读取）
+        // Default: column processing (read from transpose buffer)
         for(int j=0; j<8; j++) begin
             core_in[j] = rdata_trans[j];
         end
         
-        // 行处理阶段：从输入缓冲区选择
+        // Row processing phase: select from input buffer
         if(state == S_ROW_PROC) begin
             for(int j=0; j<8; j++) begin
                 core_in[j] = input_buffer[row_cnt*8 + j];
@@ -193,7 +193,7 @@ module dct8x8_chen_2d #(
     assign core_in_valid = (state == S_ROW_PROC) || (state == S_COL_PROC);
 
     // --------------------------------------------------------------------
-    // 行计数
+    // Row counter
     // --------------------------------------------------------------------
     always_ff @(posedge clk or negedge rst_n)
         if(!rst_n)
@@ -204,11 +204,11 @@ module dct8x8_chen_2d #(
             row_cnt <= row_cnt + 3'd1;
 
     // --------------------------------------------------------------------
-    // 行结果写入转置缓冲区
+    // Write row results into transpose buffer
     // --------------------------------------------------------------------
     assign we_trans = (state == S_ROW_WAIT) && core_out_valid;
     
-    // 核心输出连接到转置缓冲区写数据端口
+    // Core output connected to transpose buffer write port
     genvar w;
     generate
         for(w=0; w<8; w++) begin : g_wdata
@@ -217,7 +217,7 @@ module dct8x8_chen_2d #(
     endgenerate
 
     // --------------------------------------------------------------------
-    // 列计数和转置缓冲区读地址生成
+    // Column counter and transpose buffer read address generation
     // --------------------------------------------------------------------
     always_ff @(posedge clk or negedge rst_n)
         if(!rst_n)
@@ -227,15 +227,15 @@ module dct8x8_chen_2d #(
         else if(state == S_COL_WAIT && core_out_valid)
             col_cnt <= col_cnt + 3'd1;
 
-    // 生成列处理的读地址
+    // Generate read addresses for column processing
     integer k;
     always_comb begin
         for(k=0; k<8; k++)
-            raddr_trans[k] = k*6'd8 + col_cnt;  // 列固定，行递增
+            raddr_trans[k] = k*6'd8 + col_cnt;  // Column fixed, row incremented
     end
 
     // --------------------------------------------------------------------
-    // 存储列处理结果到最终输出缓冲区
+    // Store column processing result into final output buffer
     // --------------------------------------------------------------------
     always_ff @(posedge clk) begin
         if(state == S_COL_WAIT && core_out_valid) begin

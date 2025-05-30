@@ -46,13 +46,11 @@ The `saperate_module/` folder and its subfolders are used for:
 ### Directory Summary
 
 verification/
-├── 1_uhv/               # Combined unit verification
-├── 2_dct_chen/          # DCT module verification
-├── 3_quantization/      # Quantization block verification
-├── 4_zigzag/            # Zigzag logic verification
-├── saperate_module/     # Isolated module test environments
-├── fixed_point/         # Fixed-point conversion modules
-├── optimization/        # Optimized RTL and synthesis comparison
-└── all_gen_multi_inout.cpp  # Shared utility
+├── 1_conversion/           # Combined unit verification
+├── 2_dct_chen/             # DCT module verification
+├── 3_quantization/         # Quantization block verification
+├── 4_zigzag/               # Zigzag logic verification
+├── 6_connection/           # Isolated module test environments
+└── 6_onboard_unit_tests/ 
 
 The onboard_unit_test folder is used to store functional tests for individual components before they are officially integrated into the system. For example, we perform basic validation for AXI-Lite, AXI4, AXI-Stream, FIFO, DMA, and interrupt functionalities. Some features were tested but ultimately omitted after evaluation and trade-offs.

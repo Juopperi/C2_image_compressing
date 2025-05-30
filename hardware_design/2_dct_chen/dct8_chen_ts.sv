@@ -1,16 +1,19 @@
 `timescale 1ns / 1ps
 
+`timescale 1ns / 1ps
+
 // ============================================================================
-// 8‑point 1‑D DCT (Chen) – 8 共享乘法器 / 零 DSP 版本
-//   • 每行 8 样本用 4 clk 完成 (P0‑P3)；仅 8 个 LUT 乘法器
-//   • 乘法器函数标注 (* use_dsp = "no" *) 强制综合到 LUT
+// 8-point 1-D DCT (Chen) – 8 shared multipliers / zero DSP version
+//   • Each row of 8 samples is completed in 4 clocks (P0–P3); uses only 8 LUT multipliers
+//   • Multiplier module marked with (* use_dsp = "no" *) to force LUT-based synthesis
 // ============================================================================
+
 
 (* use_dsp="no", use_dsp48="no" *)
 module dct8_chen_ts #(
-    parameter int IN_W     = 32,   // 数据位宽 (>= 像素 + FRAC)
-    parameter int CONST_W  = 16,   // 常量位宽
-    parameter int NUM_MUL  = 8     // 并行乘法器数 (本例=8)
+    parameter int IN_W     = 32,   
+    parameter int CONST_W  = 16,   
+    parameter int NUM_MUL  = 8     
 )(
     input  logic                      clk,
     input  logic                      rst_n,
@@ -26,10 +29,7 @@ module dct8_chen_ts #(
     output logic signed [IN_W-1:0]    out0,out1,out2,out3,out4,out5,out6,out7
 );
 
-    // --------------------------------------------------------------------
-    // 常量 (×2^FRAC，FRAC = 8)
-    // --------------------------------------------------------------------
-    localparam int FRAC     = CONST_W - 1;    // 小数位
+    localparam int FRAC     = CONST_W - 1;   
 
    
     localparam logic signed [15:0]
@@ -49,9 +49,6 @@ module dct8_chen_ts #(
     typedef enum logic [2:0] {S_IDLE,P0,P1,P2,P3,S_WAIT} state_t;
     state_t state, nstate;
 
-    // --------------------------------------------------------------------
-    // Butterfly & 中间寄存
-    // --------------------------------------------------------------------
     logic signed [IN_W-1:0]
         s0,s1,s2,s3,     // Sums
         d0,d1,d2,d3,     // Differences
@@ -61,9 +58,6 @@ module dct8_chen_ts #(
     logic signed [IN_W-1:0] y [0:7]; // final output regs
     logic signed [IN_W-1:0] t_b1, t_b5; // partial sums
 
-    // --------------------------------------------------------------------
-    // 共享乘法器 I/O
-    // --------------------------------------------------------------------
     typedef struct packed {
         logic signed [IN_W-1:0]    a;
         logic signed [CONST_W-1:0] b;
@@ -72,7 +66,6 @@ module dct8_chen_ts #(
     job_t                job   [NUM_MUL];
     logic signed [IN_W-1:0] mul_y [NUM_MUL];
 
-    // 实例化NUM_MUL个乘法器
     genvar g;
     generate
         for(g=0; g<NUM_MUL; g++) begin : mult_inst
@@ -226,7 +219,6 @@ module dct8_chen_ts #(
             end
 
             S_WAIT: if(out_ready) begin
-                // 可选：清零寄存，非必需
             end
         endcase
     end
