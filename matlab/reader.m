@@ -39,26 +39,3 @@
         hex_compare(i,1:2)=hex_data1(i,:);
         hex_compare(i,4:5)=hex_data2(i,:);
     end
-    % disp(hex_data);
-    % for k=1:1:length(jpeg_data)
-    %     jpeg_binary = pad(string(dec2bin(jpeg_data(k))),8,"left","0");
-    %     image_data(k,2) = jpeg_binary; % Force correct bit width
-    % end
-
-%Convert all data to a single string
-    % jpeg_char = '';
-    % for k=1:1:length(jpeg_data)
-    %     jpeg_char = strcat(jpeg_char, char(image_data(k,2)));
-    % end
-
-%Rewriting data to get a correct JPEG file
-    % filename = 'written_image.jpeg';
-    % fid = fopen(filename, 'w');
-    % if fid == -1
-    %     error('Error opening file.');
-    % end
-    % 
-    % for j=1:8:length(jpeg_char)-7
-    %     fwrite(fid,bin2dec(jpeg_char(j:j+7)),'uint8');
-    % end
-    % fclose(fid);
