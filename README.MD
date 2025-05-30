@@ -53,3 +53,27 @@ Examples and tests for AXI interfaces and interrupt handling on the PS side.
 2. Explore `hardware_design/` and `ip_folder/` for RTL development and integration.
 3. Refer to `analysis_tools/` for performance analysis and functional testing.
 4. Use `matlab/` tools as part of end-to-end test flows or data preparation.
+
+---
+
+##  Future Work
+
+### System-Level Validation
+While the core functionality has been validated using controlled test vectors, system-level validation with real image inputs is still pending. One planned direction is to test the system using full-resolution images from real-world scenes to observe performance under realistic data distributions. Future efforts may also include batch processing of multiple images and organizing output for downstream processing tasks.
+
+To assess output quality beyond visual inspection, metrics such as SSIM (Structural Similarity Index Measure) and PSNR (Peak Signal-to-Noise Ratio) could be incorporated. This would provide a more quantitative evaluation of image fidelity, particularly under fixed-point constraints.
+
+
+### SD Card Integration
+At present, the design does not yet support full integration with the SD card. Specifically, **the connection for transferring pre-processed input images to the system and writing post-processed compressed data back to the SD card remains incomplete**.
+
+To clarify: this limitation does not refer to low-level SD card read/write behavior itself, but rather to **the higher-level dataflow integration** — moving actual image data from and to the compression pipeline for full in-system operation. Completing this work is essential for enabling standalone, real-world use of the design on the target hardware platform.
+
+
+### Performance Optimization
+The current implementation prioritizes modularity and clarity over speed. Future versions could benefit from:
+
+- **Fine-grained pipelining**: Enabling more continuous data flow between modules rather than waiting for full 8×8 blocks to complete before processing the next stage.
+- **AXI Stream interface**: Replacing the polling-based memory-mapped I/O (MMIO) with AXI Stream, FIFO buffers, and DMA would create a fully decoupled and streaming-capable pipeline.
+- **Improved conversion logic**: Observed high LUT usage in the current conversion module wrapper suggests room for architectural simplification or redesign to reduce hardware cost.
+- **Scalability**: On larger FPGA platforms, parallelism can be increased by instantiating multiple processing cores, enhancing throughput and reducing latency.
