@@ -5,11 +5,14 @@ function code = encoding(BlockIn,VecI,VecJ,tables)
     for a=1:1:64
         VecOut(a)=BlockIn(VecI(a),VecJ(a));
     end
-    %Huffman encoding
+    %Run-length and Huffman encoding
     code="";
     zeroes=0;
     for b=2:1:64
        if (VecOut(b)~=0)
+           %When a non-zero coefficient is met, a code is assigned to it depending on:
+                %the number of zeroes between itself and the previous non-zero coefficient
+                %the number of bits needed to represent the coefficient
            %If there are more than 15 zeroes between coefficients, a
            %special code is introduced
            while zeroes>15
@@ -20,8 +23,6 @@ function code = encoding(BlockIn,VecI,VecJ,tables)
                 end
                 zeroes=zeroes-16;
            end
-           %When a non-zero coefficient is met, a code is assigned to it depending on
-           %the number of zeros before it and the bits needed to represent it
            if tables=='y'
                code=code+huffman_ac_y(zeroes,VecOut(b));
                zeroes=0;
