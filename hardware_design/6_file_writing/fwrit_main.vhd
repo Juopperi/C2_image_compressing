@@ -9,7 +9,7 @@ entity fwrit_main is
            dataready: out std_logic; --signals Huffman block that we are ready to receive data
            axi_valid: out std_logic;
            axi_ready: in std_logic;
-           axi_data: out std_logic_vector(31 downto 0)
+           axi_data: out std_logic_vector(31 downto 0) --AXI interface is 32 bits wide
         );
 end fwrit_main;
 
@@ -179,7 +179,7 @@ begin
                     entropy_el := 7;
                     byte_count := 0;
                     valid <= '0';   
-                when data =>
+                when data => -- transmission is done bit by bit; output updated every 32 bits due to AXI interface
                     if done = '1' then
                         for i in 0 to 7 loop
                             if i <= entropy_el then
@@ -276,7 +276,7 @@ begin
         end if;
     end process;
     
-    dataready<='1' when current_state = waiting else '0';                     
+    dataready<='1' when current_state = waiting else '0'; --sent to Huffman module to signal that tranmission can begin                     
     axi_valid <= valid;
     
 end Behavioral;
