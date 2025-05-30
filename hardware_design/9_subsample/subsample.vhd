@@ -31,7 +31,7 @@ begin
             -- Step 1: Subsample (4x4 block of averages from 2x2)
             for row in 0 to 3 loop
                 for col in 0 to 3 loop
-                    idx0 := (2*row)*8 + (2*col);
+                    idx0 := (2*row)*8 + (2*col);  -- the idx0 represent the one of the 2x2 block's left up corner, idx123 are the values around idx0
                     idx1 := idx0 + 1;
                     idx2 := idx0 + 8;
                     idx3 := idx0 + 9;
