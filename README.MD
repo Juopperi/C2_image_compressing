@@ -53,11 +53,3 @@ Examples and tests for AXI interfaces and interrupt handling on the PS side.
 2. Explore `hardware_design/` and `ip_folder/` for RTL development and integration.
 3. Refer to `analysis_tools/` for performance analysis and functional testing.
 4. Use `matlab/` tools as part of end-to-end test flows or data preparation.
-
----
-
-## Notes
-
-- Vivado is required for IP packaging and synthesis.
-- Verilator and GTKWave are used for simulation and debugging.
-- Some components (e.g., MATLAB scripts) require external tools or licenses.
