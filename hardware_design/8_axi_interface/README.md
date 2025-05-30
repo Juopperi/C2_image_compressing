@@ -44,29 +44,6 @@ After running the organization script, the folder will be structured as follows:
 - **SystemVerilog**: Compatible simulator
 - **Vivado** (optional): For synthesis and implementation
 
-### Quick Setup
-
-1. **Organize the files** (if needed):
-   ```bash
-   python3 organize.py
-   ```
-
-2. **Build the project**:
-   ```bash
-   cd build/
-   make -f Makefile
-   ```
-
-3. **Run self-tests**:
-   ```bash
-   make -f Makefile.self_test
-   ```
-
-4. **Test the IP core**:
-   ```bash
-   make -f Makefile.myip
-   ```
-
 ## 📋 Component Description
 
 ### RTL Components
@@ -163,13 +140,6 @@ make -f Makefile.myip clean       # Clean IP artifacts
    ./axi_self_test      # Run built-in diagnostics
    ```
 
-### Test Coverage
-
-- ✅ Register read/write operations
-- ✅ AXI protocol compliance
-- ✅ Data path integrity
-- ✅ Error handling
-- ✅ Performance benchmarks
 
 ## 📊 Performance Analysis
 
@@ -208,17 +178,4 @@ Monitor performance through:
 - Follow AXI4-Lite specification for interface compliance
 - Use consistent naming conventions for signals
 - Document register maps and memory layouts
-- Maintain backward compatibility when updating interfaces
-
-## 🐛 Known Issues
-
-- None currently reported
-
-## 📞 Support
-
-For questions or issues, refer to:
-- Project documentation in `docs/` folder
-- Log files in `logs/` folder
-- Main project README for overall context
-
----
+- Maintain backward compatibility when updating interfaces 
